@@ -6,7 +6,7 @@
     "n": 0,
     "split": "bank",
     "notes": "after-the-breakup: no bank in lines/ yet",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "after-the-breakup"
   },
   {
@@ -16,7 +16,7 @@
     "n": 0,
     "split": "bank",
     "notes": "failing-chem: no bank in lines/ yet",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "failing-chem"
   },
   {
@@ -26,7 +26,7 @@
     "n": 0,
     "split": "bank",
     "notes": "giving-stuff-away: no bank in lines/ yet",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "giving-stuff-away"
   },
   {
@@ -36,7 +36,7 @@
     "n": 0,
     "split": "bank",
     "notes": "group-chat: no bank in lines/ yet",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "group-chat"
   },
   {
@@ -46,7 +46,7 @@
     "n": 0,
     "split": "bank",
     "notes": "new-school: no bank in lines/ yet",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "new-school"
   },
   {
@@ -56,7 +56,7 @@
     "n": 68,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "after-the-breakup"
   },
   {
@@ -66,7 +66,7 @@
     "n": 32,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "after-the-breakup",
     "missing": []
   },
@@ -77,7 +77,7 @@
     "n": 134,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures); Guardian check_friend on every bubble",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "after-the-breakup"
   },
   {
@@ -87,7 +87,7 @@
     "n": 68,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "after-the-breakup",
     "details": []
   },
@@ -98,7 +98,7 @@
     "n": 68,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-22T23:16:13+00:00",
+    "created": "2026-10-22T23:18:07+00:00",
     "scenario": "after-the-breakup",
     "coverage": {
       "0": {

@@ -6,7 +6,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "engine fixture bank; keyword detector; status=ended_success, level=4",
-    "created": "2026-10-22T23:16:11+00:00",
+    "created": "2026-10-22T23:18:06+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -159,7 +159,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -168,7 +168,7 @@
     "n": 2,
     "split": "scripted",
     "notes": "engine fixture bank; keyword detector; status=ended_fail, level=0",
-    "created": "2026-10-22T23:16:11+00:00",
+    "created": "2026-10-22T23:18:06+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -217,7 +217,7 @@
     "n": 2,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -226,7 +226,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "engine fixture bank; keyword detector; status=active, level=2",
-    "created": "2026-10-22T23:16:11+00:00",
+    "created": "2026-10-22T23:18:06+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -383,7 +383,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -392,7 +392,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "engine fixture bank; keyword detector; status=active, level=1",
-    "created": "2026-10-22T23:16:11+00:00",
+    "created": "2026-10-22T23:18:06+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -551,7 +551,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -560,7 +560,7 @@
     "n": 2008,
     "split": "scripted+random",
     "notes": "every run repeated twice and compared exactly",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -569,7 +569,7 @@
     "n": 20000,
     "split": "random",
     "notes": "trust in 0..100, level step <= 1, level>=3 only after a direct ask; seeded random events",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -578,7 +578,7 @@
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -587,7 +587,7 @@
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   },
   {
     "lane": "engine",
@@ -596,6 +596,6 @@
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:16:11+00:00"
+    "created": "2026-10-22T23:18:06+00:00"
   }
 ]

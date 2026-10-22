@@ -74,28 +74,42 @@ def initial_state(scenario: Scenario | None = None, cfg: EngineConfig | None = N
     return State(trust=float(cfg.initial_trust), level=0, turn=0)
 
 
-def trust_delta(
+def trust_breakdown(
     active: frozenset[SkillLabel],
     prev_active: frozenset[SkillLabel],
     guarded: bool,
     cfg: EngineConfig,
-) -> float:
-    """Sum of active label weights minus decay.
+) -> dict[str, float]:
+    """Each term of the trust change, for X-ray mode ("+8.4 validated · −4.2 diminishing · −2 decay").
 
-    Positive labels are scaled down for guarded personas, and a positive label that was also active on
-    the previous turn counts half (diminishing returns: repeating "that sounds hard" can't farm trust).
-    Negative labels always count fully.
+    Label terms are the weight after the guarded multiplier (positive labels only). Diminishing returns
+    (a positive label also active last turn counts half) is shown as its own negative "diminishing"
+    term, and every turn has a "decay" term. Negative labels always count fully.
     """
-    delta = -float(cfg.decay_per_turn)
+    terms: dict[str, float] = {}
+    diminishing = 0.0
     for label in sorted(active):
         weight = cfg.weights.get(label, 0.0)
         if weight > 0:
             if guarded:
                 weight *= cfg.guarded_positive_multiplier
             if label in prev_active:
-                weight *= cfg.repeat_multiplier
-        delta += weight
-    return round(delta, 4)
+                diminishing -= weight * (1 - cfg.repeat_multiplier)
+        terms[label.value] = round(weight, 4)
+    if diminishing:
+        terms["diminishing"] = round(diminishing, 4)
+    terms["decay"] = -float(cfg.decay_per_turn)
+    return terms
+
+
+def trust_delta(
+    active: frozenset[SkillLabel],
+    prev_active: frozenset[SkillLabel],
+    guarded: bool,
+    cfg: EngineConfig,
+) -> float:
+    """Sum of active label weights minus decay (see trust_breakdown for the individual terms)."""
+    return round(sum(trust_breakdown(active, prev_active, guarded, cfg).values()), 4)
 
 
 def next_level(level: int, trust: float, flags: Flags, turn: int, cfg: EngineConfig) -> int:
@@ -148,7 +162,7 @@ def update(
     active = active_labels(events, cfg.event_threshold)
     turn = state.turn + 1
     guarded = scenario.persona.guardedness == "guarded"
-    delta = trust_delta(active, prev_active, guarded, cfg)
+    breakdown = trust_breakdown(active, prev_active, guarded, cfg)
 
     flags = state.flags.model_copy(deep=True)
     flags.asked_directly_ever |= SkillLabel.ASKED_DIRECTLY in active
@@ -158,11 +172,13 @@ def update(
         if state.flags.promised_secrecy:
             broke_secret = True
             # Referring after promising secrecy is still the right call: it counts, but it stings.
-            delta -= cfg.secrecy_broken_penalty
+            breakdown["secrecy_broken"] = -float(cfg.secrecy_broken_penalty)
             flags.promised_secrecy = False
     if SkillLabel.PROMISED_SECRECY in active:
         flags.promised_secrecy = True
 
+    # last_delta is exactly the sum of the shown terms (raw, before clamping trust to 0..100).
+    delta = round(sum(breakdown.values()), 4)
     trust = min(100.0, max(0.0, state.trust + delta))
     level = next_level(state.level, trust, flags, turn, cfg)
     # A promise of secrecy feels like relief to the friend in the moment (that's the trap), so the friend
@@ -175,7 +191,8 @@ def update(
         turn=turn,
         flags=flags,
         status=status,
-        last_delta=round(delta, 4),
+        last_delta=delta,
+        last_breakdown=breakdown,
     )
 
 

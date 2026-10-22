@@ -12,6 +12,8 @@
 
 - **v3 (integrator update, Sahib's decision): LLM voice.** Merged `claude/amazing-carson-31tzo3` (llm.py, contracts 1.1). New `engine/voice.py` + `engine/prompts/actor.md`: 3-tier voice (llm → bank → fallback) with `ActorOutput.source`; one retry with the rejection reason. Verifier: semantic fact-leak detection (calibrated per embedding backend, closer-to-locked-than-unlocked rule, level-3 word-list backstop), advice/resource detection, persona, shape, Guardian. 19 voice tests with fakes (leaks, persona breaks, advice, method words, schema violations, retry, FR_LLM=0, API `voice`), 1 `@pytest.mark.llm` test (3 real turns). `eval/engine/leak_set.jsonl` (87 labeled texts) + `eval/engine/verifier_eval.py` → `eval/reports/engine_verifier.json`.
 
+- **Contracts 1.2:** `State.last_breakdown` filled by `update()`: label terms (after the guarded multiplier), `diminishing`, `decay`, `secrecy_broken`; sums exactly to the raw `last_delta` (tested, including random runs). No `clamp` term because `last_delta` is pre-clamp by design.
+
 ## In progress
 - Nothing. Waiting for the data lane's real bank (`data/lines/`) to run `run_eval.py --bank-dir` and the validator on it.
 

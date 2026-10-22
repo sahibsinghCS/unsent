@@ -48,7 +48,7 @@ Each message changes trust by: **sum of the weights of the active labels − 2**
 Three adjustments:
 - **Guarded personas** (e.g. Maya) are harder to reach: positive weights × 0.7. Negative weights stay full.
 - **Diminishing returns:** a positive label that was also active on the previous message counts half. Saying "that sounds hard" five times in a row can't farm trust.
-- Trust is clamped to 0-100. The change is stored as `last_delta` (shown in X-ray mode and used for the turning point).
+- Trust is clamped to 0-100. The change is stored as `last_delta` (used for the turning point), and its parts as `last_breakdown`, which X-ray mode shows as e.g. "+8.4 validated · −4.2 diminishing · −2 decay = +2.2". The terms always add up exactly to `last_delta` (a test checks this on thousands of random turns). `last_delta` is the raw change before clamping, so a harsh message still shows its full cost even when trust is already near 0.
 
 ### 3. Disclosure levels and gates
 
@@ -92,7 +92,7 @@ Two exceptions, on purpose:
 ### 8. The LLM voice (voice.py, prompts/actor.md)
 - **What the LLM is given:** the persona and texting style, the situation, **only the facts unlocked at the current level** (locked facts are simply not in the prompt, so it can't reveal what it doesn't know), the reaction the engine chose with guidance for it (e.g. ASKED_DIRECTLY at level 2: "you are not ready to say yes"), 3-5 reviewed bank lines for that level and reaction as style examples, and the last 6 messages.
 - **Hard rules in the prompt:** no methods, means or plans; never encourage harm; stay in character; never give advice or hotlines (that's the helper's job, and the skill being practised); 1-3 short bubbles; JSON only.
-- **Everything goes through `backend/app/llm.py`:** cached (same conversation → same request → same answer, using a seed hashed from the conversation), budgeted per day, and faked in tests. Unit tests never call the API.
+- **Everything goes through `backend/app/llm.py`:** cached (same conversation → same request → same answer, using a seed hashed from the conversation; on disk in development, memory-only in production), budgeted per day, and faked in tests. Unit tests never call the API.
 - **Tiers:** (a) LLM reply that passes the verifier → `source="llm"`; if it fails, one retry with the rejection reason added to the prompt; (b) on `LLMUnavailable` or two rejections, the bank line chosen exactly as in section 7 → `"bank"`; (c) the scenario fallback line → `"fallback"`. The phone UI can show which voice answered (`Node.voice`).
 
 ### 9. The verifier (verifier.py)

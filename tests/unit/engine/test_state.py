@@ -71,6 +71,22 @@ def test_multiple_labels_add_up(cfg):
     assert trust_delta(on, frozenset(), False, cfg) == 25
 
 
+def test_breakdown_terms(open_scenario, scenario, cfg):
+    new = update(at(30), probs(L.VALIDATED, L.ASKED_DIRECTLY), open_scenario, cfg)
+    assert new.last_breakdown == {"asked_directly": 15, "validated": 12, "decay": -2}
+    guarded = update(at(30), probs(L.VALIDATED), scenario, cfg, frozenset({L.VALIDATED}))
+    assert guarded.last_breakdown == {"validated": 8.4, "diminishing": -4.2, "decay": -2}
+    promised = update(at(50), probs(L.PROMISED_SECRECY), open_scenario, cfg)
+    broke = update(promised, probs(L.REFERRED_ADULT), open_scenario, cfg)
+    assert broke.last_breakdown == {"referred_adult": 8, "decay": -2, "secrecy_broken": -10}
+
+
+def test_breakdown_sums_to_last_delta_even_when_clamped(open_scenario, cfg):
+    low = update(at(5), probs(L.DISMISSED, L.ADVICE_DUMP), open_scenario, cfg)
+    assert low.trust == 0 and low.last_delta == -32
+    assert round(sum(low.last_breakdown.values()), 4) == low.last_delta
+
+
 def test_trust_clamped(open_scenario, cfg):
     assert update(at(5), probs(L.DISMISSED), open_scenario, cfg).trust == 0
     big = probs(*[label for label in L if cfg.weights[label] > 0])
@@ -221,6 +237,8 @@ def test_property_bounds_and_steps(seed, scenario, cfg):
             assert after.flags.asked_directly_ever
         if after.status == "ended_success":
             assert after.flags.referral_turns
+        if after.turn != before.turn:
+            assert round(sum(after.last_breakdown.values()), 4) == after.last_delta
 
 
 @pytest.mark.parametrize("seed", range(10))
