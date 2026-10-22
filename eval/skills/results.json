@@ -1,0 +1,520 @@
+{
+  "test": {
+    "n": 143,
+    "scores": {
+      "keyword_baseline": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 0.5714,
+          "f1": 0.7273,
+          "support": 14
+        },
+        "validated": {
+          "precision": 0.9583,
+          "recall": 0.434,
+          "f1": 0.5974,
+          "support": 53
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 0.7419,
+          "f1": 0.8519,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 0.1071,
+          "f1": 0.1935,
+          "support": 28
+        },
+        "referred_adult": {
+          "precision": 0.9231,
+          "recall": 0.8889,
+          "f1": 0.9057,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 0.8235,
+          "f1": 0.9032,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.7,
+          "recall": 0.2059,
+          "f1": 0.3182,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 0.6667,
+          "recall": 0.375,
+          "f1": 0.48,
+          "support": 16
+        },
+        "advice_dump": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "support": 16
+        },
+        "promised_secrecy": {
+          "precision": 1.0,
+          "recall": 0.375,
+          "f1": 0.5455,
+          "support": 16
+        },
+        "macro_f1": 0.5923
+      },
+      "model_a": {
+        "checked_in": {
+          "precision": 0.7647,
+          "recall": 0.9286,
+          "f1": 0.8387,
+          "support": 14
+        },
+        "validated": {
+          "precision": 0.8276,
+          "recall": 0.9057,
+          "f1": 0.8649,
+          "support": 53
+        },
+        "asked_directly": {
+          "precision": 0.9688,
+          "recall": 1.0,
+          "f1": 0.9841,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 0.6944,
+          "recall": 0.8929,
+          "f1": 0.7812,
+          "support": 28
+        },
+        "referred_adult": {
+          "precision": 0.871,
+          "recall": 1.0,
+          "f1": 0.931,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 0.9444,
+          "recall": 1.0,
+          "f1": 0.9714,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.675,
+          "recall": 0.7941,
+          "f1": 0.7297,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 0.5652,
+          "recall": 0.8125,
+          "f1": 0.6667,
+          "support": 16
+        },
+        "advice_dump": {
+          "precision": 0.75,
+          "recall": 0.9375,
+          "f1": 0.8333,
+          "support": 16
+        },
+        "promised_secrecy": {
+          "precision": 0.7778,
+          "recall": 0.875,
+          "f1": 0.8235,
+          "support": 16
+        },
+        "macro_f1": 0.8425
+      },
+      "model_b": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 0.8571,
+          "f1": 0.9231,
+          "support": 14
+        },
+        "validated": {
+          "precision": 1.0,
+          "recall": 0.9811,
+          "f1": 0.9905,
+          "support": 53
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 0.8929,
+          "f1": 0.9434,
+          "support": 28
+        },
+        "referred_adult": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 0.9412,
+          "f1": 0.9697,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.9667,
+          "recall": 0.8529,
+          "f1": 0.9062,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 1.0,
+          "recall": 0.8125,
+          "f1": 0.8966,
+          "support": 16
+        },
+        "advice_dump": {
+          "precision": 0.9375,
+          "recall": 0.9375,
+          "f1": 0.9375,
+          "support": 16
+        },
+        "promised_secrecy": {
+          "precision": 0.9333,
+          "recall": 0.875,
+          "f1": 0.9032,
+          "support": 16
+        },
+        "macro_f1": 0.947
+      },
+      "ensemble": {
+        "checked_in": {
+          "precision": 0.9286,
+          "recall": 0.9286,
+          "f1": 0.9286,
+          "support": 14
+        },
+        "validated": {
+          "precision": 1.0,
+          "recall": 0.9811,
+          "f1": 0.9905,
+          "support": 53
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 0.9286,
+          "f1": 0.963,
+          "support": 28
+        },
+        "referred_adult": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.9091,
+          "recall": 0.8824,
+          "f1": 0.8955,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571,
+          "support": 16
+        },
+        "advice_dump": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 16
+        },
+        "promised_secrecy": {
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333,
+          "support": 16
+        },
+        "macro_f1": 0.9568
+      }
+    },
+    "ece_before": 0.1331,
+    "ece_after": 0.0127
+  },
+  "test_unseen_text": {
+    "n": 130,
+    "scores": {
+      "keyword_baseline": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 0.5385,
+          "f1": 0.7,
+          "support": 13
+        },
+        "validated": {
+          "precision": 0.9565,
+          "recall": 0.4314,
+          "f1": 0.5946,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 0.7419,
+          "f1": 0.8519,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 0.0741,
+          "f1": 0.1379,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 0.9565,
+          "recall": 0.9167,
+          "f1": 0.9362,
+          "support": 24
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 0.8235,
+          "f1": 0.9032,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.75,
+          "recall": 0.1818,
+          "f1": 0.2927,
+          "support": 33
+        },
+        "dismissed": {
+          "precision": 0.7143,
+          "recall": 0.3571,
+          "f1": 0.4762,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 1.0,
+          "recall": 0.2667,
+          "f1": 0.4211,
+          "support": 15
+        },
+        "promised_secrecy": {
+          "precision": 1.0,
+          "recall": 0.3571,
+          "f1": 0.5263,
+          "support": 14
+        },
+        "macro_f1": 0.584
+      },
+      "model_a": {
+        "checked_in": {
+          "precision": 0.8,
+          "recall": 0.9231,
+          "f1": 0.8571,
+          "support": 13
+        },
+        "validated": {
+          "precision": 0.8214,
+          "recall": 0.902,
+          "f1": 0.8598,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 0.9688,
+          "recall": 1.0,
+          "f1": 0.9841,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 0.6857,
+          "recall": 0.8889,
+          "f1": 0.7742,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 0.8889,
+          "recall": 1.0,
+          "f1": 0.9412,
+          "support": 24
+        },
+        "referred_988": {
+          "precision": 0.9444,
+          "recall": 1.0,
+          "f1": 0.9714,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.7429,
+          "recall": 0.7879,
+          "f1": 0.7647,
+          "support": 33
+        },
+        "dismissed": {
+          "precision": 0.55,
+          "recall": 0.7857,
+          "f1": 0.6471,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 0.7368,
+          "recall": 0.9333,
+          "f1": 0.8235,
+          "support": 15
+        },
+        "promised_secrecy": {
+          "precision": 0.9231,
+          "recall": 0.8571,
+          "f1": 0.8889,
+          "support": 14
+        },
+        "macro_f1": 0.8512
+      },
+      "model_b": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 0.8462,
+          "f1": 0.9167,
+          "support": 13
+        },
+        "validated": {
+          "precision": 1.0,
+          "recall": 0.9804,
+          "f1": 0.9901,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 0.8889,
+          "f1": 0.9412,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 24
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 0.9412,
+          "f1": 0.9697,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.9655,
+          "recall": 0.8485,
+          "f1": 0.9032,
+          "support": 33
+        },
+        "dismissed": {
+          "precision": 1.0,
+          "recall": 0.7857,
+          "f1": 0.88,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 0.9333,
+          "recall": 0.9333,
+          "f1": 0.9333,
+          "support": 15
+        },
+        "promised_secrecy": {
+          "precision": 0.9231,
+          "recall": 0.8571,
+          "f1": 0.8889,
+          "support": 14
+        },
+        "macro_f1": 0.9423
+      },
+      "ensemble": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 0.9231,
+          "f1": 0.96,
+          "support": 13
+        },
+        "validated": {
+          "precision": 1.0,
+          "recall": 0.9804,
+          "f1": 0.9901,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 31
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 0.9259,
+          "f1": 0.9615,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 24
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 17
+        },
+        "follow_up": {
+          "precision": 0.9355,
+          "recall": 0.8788,
+          "f1": 0.9062,
+          "support": 33
+        },
+        "dismissed": {
+          "precision": 1.0,
+          "recall": 0.7143,
+          "f1": 0.8333,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 15
+        },
+        "promised_secrecy": {
+          "precision": 1.0,
+          "recall": 0.8571,
+          "f1": 0.9231,
+          "support": 14
+        },
+        "macro_f1": 0.9574
+      }
+    },
+    "ece_before": 0.133,
+    "ece_after": 0.0129
+  }
+}
