@@ -124,7 +124,7 @@ firstreply/                          (your repo)
 ```yaml
 wt/engine:   [backend/app/engine/**, backend/app/prompts/actor*.md, tests/unit/engine/**, docs/how/engine.md, eval/reports/engine_*, eval/engine/**, wt-notes/engine.md]
 wt/safety:   [backend/app/safety/**, data/guardian/**, tests/unit/safety/**, eval/guardian/**, eval/reports/safety_*, docs/how/safety.md, wt-notes/safety.md]
-wt/data:     [scripts/data/**, tools/labeler/**, data/skills/**, docs/DATASET.md, docs/how/data.md, tests/unit/data/**, wt-notes/data.md]
+wt/data:     [scripts/data/**, tools/labeler/**, data/skills/**, docs/DATASET.md, docs/how/data.md, tests/unit/data/**, eval/reports/data_*, wt-notes/data.md]
 wt/ml:       [backend/app/ml/**, backend/app/prompts/judge*.md, models/**, tests/unit/ml/**, eval/skills/**, eval/reports/ml_*, docs/how/ml.md, wt-notes/ml.md]
 wt/whatif:   [backend/app/whatif/**, backend/app/prompts/helper_sim*.md, tests/unit/whatif/**, scripts/precompute_demo_whatif.py, eval/reports/whatif_*, docs/how/whatif.md, wt-notes/whatif.md]
 wt/redteam:  [eval/redteam/**, tests/safety/**, .github/workflows/**, scripts/report.py, backend/app/prompts/attacker*.md, eval/reports/redteam_*, docs/how/redteam.md, wt-notes/redteam.md]
@@ -528,16 +528,13 @@ PRIORITY: push data/skills/prelabeled.jsonl by Friday 12:00 CT (the ML lane depe
    messages + the reply + LLM suggestions pre-checked; keys 1–9,0 toggle the 10 labels, Enter = save & next,
    B = back, progress bar, autosave to data/skills/human_labels.jsonl. Must make 300 items doable in ~60 min.
 6. scripts/data/merge_labels.py + split.py: final label = human if present else agreed LLM label;
-   audit agreement per label (LLM vs human) → eval/reports/data_audit.json (allowed: write via your own path
-   data/skills/ and request integrator if needed); stratified 70/15/15 split, seeded, grouped by context to
+   audit agreement per label (LLM vs human) → eval/reports/data_audit.json; stratified 70/15/15 split, seeded, grouped by context to
    avoid leakage; import path for data/skills/survey_real.jsonl (anonymous consented survey replies; ALWAYS test-only).
 7. scripts/data/export_counselor.py → data/skills/counselor_sheet.csv (30 test items incl. real survey
    replies; Google-Sheets-friendly; instructions row) and import_counselor.py → counselor_labels.jsonl.
 8. docs/DATASET.md (dataset card: generation, label definitions, counts per label, audit agreement,
    limitations, ethics) + docs/how/data.md. Unit tests (offline) for dedupe, split, merge.
 ```
-*(You'll see one "allowed: … request integrator" line: the audit report path is under `eval/reports/data_*`. The integrator adds that glob to `ownership.yaml` in Phase 0 if it's missing.)*
-
 **You, Fri ~3:30–5 pm:** `make label`. Label the queue (about 300 items, about 60–75 min). Then `make data-split`. This is your most important technical contribution, and you should say so in the short answers.
 
 ### Lane 4: ML (Claude Code C) · `wt/ml` · `../fr-ml` · port 8103
