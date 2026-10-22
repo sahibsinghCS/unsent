@@ -256,7 +256,7 @@
       }
     },
     "ece_before": 0.1331,
-    "ece_after": 0.0127
+    "ece_after": 0.0125
   },
   "test_unseen_text": {
     "n": 130,
