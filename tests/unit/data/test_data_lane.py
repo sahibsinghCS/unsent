@@ -78,7 +78,7 @@ def test_kappa_perfect_and_chance():
 
 
 def test_merge_labels_human_beats_agreed(tmp_path, monkeypatch):
-    base = {l: False for l in LABELS}
+    base = {lab: False for lab in LABELS}
     a = {**base, "validated": True}
     b = {**base, "validated": True, "checked_in": True}
     sk = tmp_path

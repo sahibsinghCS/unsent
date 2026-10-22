@@ -9,7 +9,7 @@ from __future__ import annotations
 import csv
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from common import DATA, LABELS, ROOT, read_jsonl, write_jsonl
@@ -28,7 +28,7 @@ def parse(path: Path) -> list[dict]:
     for r in rows[header_at + 1 :]:
         if not r or not r[0].strip():
             continue
-        d = dict(zip(header, r))
+        d = dict(zip(header, r, strict=False))
         out.append(
             {
                 "id": d["id"].strip(),
@@ -42,7 +42,7 @@ def parse(path: Path) -> list[dict]:
 
 def compare(counselor: list[dict], final: list[dict]) -> list[dict]:
     fin = {r["id"]: r["labels"] for r in final}
-    now = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+    now = datetime.now(UTC).astimezone().isoformat(timespec="seconds")
     rows = [c for c in counselor if c["id"] in fin and not c["unsure"]]
     recs = []
     for lab in LABELS:
@@ -61,7 +61,7 @@ def compare(counselor: list[dict], final: list[dict]) -> list[dict]:
             }
         )
     exact = sum(
-        all(bool(c["labels"][l]) == bool(fin[c["id"]][l]) for l in LABELS) for c in rows
+        all(bool(c["labels"][lab]) == bool(fin[c["id"]][lab]) for lab in LABELS) for c in rows
     ) / max(1, len(rows))
     recs.append(
         {

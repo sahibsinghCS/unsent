@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import random
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from common import DATA, LABELS, ROOT, read_jsonl, write_jsonl
 
@@ -17,7 +17,7 @@ SK = DATA / "skills"
 
 def kappa(a: list[bool], b: list[bool]) -> float:
     n = len(a)
-    po = sum(x == y for x, y in zip(a, b)) / n
+    po = sum(x == y for x, y in zip(a, b, strict=True)) / n
     pa, pb = sum(a) / n, sum(b) / n
     pe = pa * pb + (1 - pa) * (1 - pb)
     return 1.0 if pe == 1 else (po - pe) / (1 - pe)
@@ -28,12 +28,12 @@ def run(audit_n: int = 100, seed: int = 42) -> dict:
     replies = {r["id"]: r for r in read_jsonl(SK / "replies.jsonl")}
     blind = {r["id"]: r for r in read_jsonl(SK / "blind_labels.jsonl")}
     ids = [i for i in replies if i in blind]
-    now = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+    now = datetime.now(UTC).astimezone().isoformat(timespec="seconds")
     records, per_label = [], {}
     for lab in LABELS:
         a = [bool(replies[i]["intended"][lab]) for i in ids]
         b = [bool(blind[i]["labels"].get(lab, False)) for i in ids]
-        agree = sum(x == y for x, y in zip(a, b)) / len(ids)
+        agree = sum(x == y for x, y in zip(a, b, strict=True)) / len(ids)
         k = kappa(a, b)
         per_label[lab] = {
             "agreement": round(agree, 4),
@@ -67,8 +67,8 @@ def run(audit_n: int = 100, seed: int = 42) -> dict:
         i
         for i in ids
         if all(
-            bool(replies[i]["intended"][l]) == bool(blind[i]["labels"].get(l, False))
-            for l in LABELS
+            bool(replies[i]["intended"][lab]) == bool(blind[i]["labels"].get(lab, False))
+            for lab in LABELS
         )
     ]
     mean_k = sum(v["kappa"] for v in per_label.values()) / len(LABELS)
@@ -101,8 +101,8 @@ def run(audit_n: int = 100, seed: int = 42) -> dict:
 
     def row(i: str, kind: str) -> dict:
         r, c = replies[i], ctx[replies[i]["context_id"]]
-        o = {l: bool(r["intended"][l]) for l in LABELS}
-        b = {l: bool(blind[i]["labels"].get(l, False)) for l in LABELS}
+        o = {lab: bool(r["intended"][lab]) for lab in LABELS}
+        b = {lab: bool(blind[i]["labels"].get(lab, False)) for lab in LABELS}
         return {
             "id": i,
             "kind": kind,
@@ -114,7 +114,7 @@ def run(audit_n: int = 100, seed: int = 42) -> dict:
             "lang": r["lang"],
             "intended": o,
             "blind": b,
-            "disagree": [l for l in LABELS if o[l] != b[l]],
+            "disagree": [lab for lab in LABELS if o[lab] != b[lab]],
         }
 
     exact_set = set(exact)
