@@ -1,5 +1,5 @@
 {
-  "from_node_id": "n_2310914c5470",
+  "from_node_id": "n_60be44b6b61a",
   "paths": [
     {
       "candidate_text": "that sounds really heavy. are you thinking about killing yourself?",
@@ -7,8 +7,8 @@
       "critic_score": 0.9,
       "nodes": [
         {
-          "id": "w_0fee69778f7d",
-          "parent_id": "n_a89cda18cd91",
+          "id": "w_98a237a2ca7c",
+          "parent_id": "n_bd73118a98ac",
           "role": "user",
           "bubbles": [
             "that sounds really heavy. are you thinking about killing yourself?"
@@ -41,11 +41,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": null,
-          "created_at": 1792708556.0826316
+          "voice": null,
+          "created_at": 1792710541.6613843
         },
         {
-          "id": "w_1468512c4deb",
-          "parent_id": "w_0fee69778f7d",
+          "id": "w_2716948b1882",
+          "parent_id": "w_98a237a2ca7c",
           "role": "friend",
           "bubbles": [
             "whats even the point"
@@ -67,11 +68,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": "asked_directly",
-          "created_at": 1792708556.0826843
+          "voice": null,
+          "created_at": 1792710541.6614108
         },
         {
-          "id": "w_c00efeccaffc",
-          "parent_id": "w_1468512c4deb",
+          "id": "w_4eb54d69cd86",
+          "parent_id": "w_2716948b1882",
           "role": "user",
           "bubbles": [
             "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you"
@@ -106,11 +108,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": null,
-          "created_at": 1792708556.0827465
+          "voice": null,
+          "created_at": 1792710541.6614597
         },
         {
-          "id": "w_1f807b4807c6",
-          "parent_id": "w_c00efeccaffc",
+          "id": "w_de80bba6a329",
+          "parent_id": "w_4eb54d69cd86",
           "role": "friend",
           "bubbles": [
             "..yeah. sometimes i think about not being here"
@@ -134,7 +137,8 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": "referred",
-          "created_at": 1792708556.0827622
+          "voice": null,
+          "created_at": 1792710541.661474
         }
       ],
       "trust_series": [
@@ -150,8 +154,8 @@
       "critic_score": 0.05,
       "nodes": [
         {
-          "id": "w_62a2138a0e7c",
-          "parent_id": "n_a89cda18cd91",
+          "id": "w_44660908a12a",
+          "parent_id": "n_bd73118a98ac",
           "role": "user",
           "bubbles": [
             "that sounds really hard, i'm sorry. i'm here"
@@ -184,11 +188,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": null,
-          "created_at": 1792708556.082813
+          "voice": null,
+          "created_at": 1792710541.661523
         },
         {
-          "id": "w_932d0c2a2de9",
-          "parent_id": "w_62a2138a0e7c",
+          "id": "w_b8537cce9a91",
+          "parent_id": "w_44660908a12a",
           "role": "friend",
           "bubbles": [
             "whats even the point"
@@ -210,11 +215,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": "validated",
-          "created_at": 1792708556.0828257
+          "voice": null,
+          "created_at": 1792710541.6615355
         },
         {
-          "id": "w_e571d5a03a34",
-          "parent_id": "w_932d0c2a2de9",
+          "id": "w_07db0aa25030",
+          "parent_id": "w_b8537cce9a91",
           "role": "user",
           "bubbles": [
             "are you thinking about suicide? you can tell me"
@@ -247,11 +253,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": null,
-          "created_at": 1792708556.0828605
+          "voice": null,
+          "created_at": 1792710541.6615696
         },
         {
-          "id": "w_7624bb33a6ed",
-          "parent_id": "w_e571d5a03a34",
+          "id": "w_fa97d00806c4",
+          "parent_id": "w_07db0aa25030",
           "role": "friend",
           "bubbles": [
             "..yeah. sometimes i think about not being here"
@@ -273,7 +280,8 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": "asked_directly",
-          "created_at": 1792708556.0828722
+          "voice": null,
+          "created_at": 1792710541.6615827
         }
       ],
       "trust_series": [
@@ -289,8 +297,8 @@
       "critic_score": 0.05,
       "nodes": [
         {
-          "id": "w_d55cf549ec0a",
-          "parent_id": "n_a89cda18cd91",
+          "id": "w_b836d17c3f3b",
+          "parent_id": "n_bd73118a98ac",
           "role": "user",
           "bubbles": [
             "i care about you. can we talk to a trusted adult together?"
@@ -325,11 +333,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": null,
-          "created_at": 1792708556.082915
+          "voice": null,
+          "created_at": 1792710541.6616266
         },
         {
-          "id": "w_177d23e0f13f",
-          "parent_id": "w_d55cf549ec0a",
+          "id": "w_03dcfb668394",
+          "parent_id": "w_b836d17c3f3b",
           "role": "friend",
           "bubbles": [
             "everyone knows about it which is great 😭"
@@ -353,11 +362,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": "referred",
-          "created_at": 1792708556.082926
+          "voice": null,
+          "created_at": 1792710541.6616378
         },
         {
-          "id": "w_30ef1ad0b66f",
-          "parent_id": "w_177d23e0f13f",
+          "id": "w_41189fdcd15a",
+          "parent_id": "w_03dcfb668394",
           "role": "user",
           "bubbles": [
             "you can also call or text 988 anytime, i'll stay with you"
@@ -393,11 +403,12 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": null,
-          "created_at": 1792708556.082962
+          "voice": null,
+          "created_at": 1792710541.661675
         },
         {
-          "id": "w_90bb2e0bdd8c",
-          "parent_id": "w_30ef1ad0b66f",
+          "id": "w_a44fad5def43",
+          "parent_id": "w_41189fdcd15a",
           "role": "friend",
           "bubbles": [
             "idk it just feels like it wont get better"
@@ -422,7 +433,8 @@
           "seen_no_reply": false,
           "line_id": null,
           "reaction": "referred",
-          "created_at": 1792708556.0829732
+          "voice": null,
+          "created_at": 1792710541.6616855
         }
       ],
       "trust_series": [

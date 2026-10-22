@@ -1,0 +1,45 @@
+{
+  "lang": "es",
+  "needs_native_review": true,
+  "title": "Si esto está pasando de verdad ahora",
+  "intro": "No necesitas palabras perfectas. Estar ahí importa. Esto es lo que puedes hacer.",
+  "steps": [
+    {
+      "id": "stay",
+      "title": "Quédate con tu amigo/a",
+      "body": "Sigue hablando o escribiendo. Dile que te alegra que te lo haya contado."
+    },
+    {
+      "id": "ask",
+      "title": "Pregunta directamente",
+      "body": "Está bien preguntar: \"¿Estás pensando en suicidarte?\" Preguntar no le mete la idea en la cabeza. Le muestra que te importa."
+    },
+    {
+      "id": "listen",
+      "title": "Escucha sin juzgar",
+      "body": "Déjale hablar. No discutas, no sermonees y no prometas que todo va a estar bien."
+    },
+    {
+      "id": "no_secret",
+      "title": "No lo guardes en secreto",
+      "body": "Nunca prometas guardar en secreto pensamientos de suicidio. Su seguridad importa más que una promesa."
+    },
+    {
+      "id": "adult",
+      "title": "Cuéntaselo hoy a un adulto de confianza",
+      "body": "Un padre o madre, consejero escolar, maestro, entrenador u otro adulto de confianza. Ofrece acompañarle."
+    },
+    {
+      "id": "988",
+      "title": "Llama o escribe al 988",
+      "body": "En EE. UU., llama o envía un mensaje de texto al 988 (Línea de Prevención del Suicidio y Crisis). Es gratis, 24/7, y hay ayuda en español."
+    },
+    {
+      "id": "911",
+      "title": "Si está en peligro inmediato, llama al 911",
+      "body": "Si podría hacerse daño ahora mismo o ya se lastimó, llama al 911 y quédate con esa persona si es seguro."
+    }
+  ],
+  "for_you": "Apoyar a un amigo es pesado. Habla también con alguien de confianza sobre cómo te sientes.",
+  "disclaimer": "FirstReply es una herramienta de práctica, no un servicio de crisis ni terapia."
+}

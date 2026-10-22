@@ -12,7 +12,9 @@ from typing import Literal, Protocol
 
 from pydantic import BaseModel, Field
 
-CONTRACTS_VERSION = "1.0"
+CONTRACTS_VERSION = (
+    "1.2"  # 1.1: voice source, moderation source; 1.2: trust breakdown, rewrite skill
+)
 
 
 class SkillLabel(StrEnum):
@@ -180,7 +182,7 @@ class GuardianResult(BaseModel):
     # categories: self_risk | concern | harm_to_other | method_seeking | prompt_injection | unsafe_friend_line
     evidence: list[str] = Field(default_factory=list)
     score: float = 0.0
-    sources: list[Literal["lexicon", "classifier"]] = Field(default_factory=list)
+    sources: list[Literal["lexicon", "classifier", "moderation"]] = Field(default_factory=list)
     latency_ms: float = 0.0
 
 
@@ -200,6 +202,9 @@ class State(BaseModel):
     flags: Flags = Field(default_factory=Flags)
     status: Literal["active", "silent", "ended_success", "ended_fail", "paused_crisis"] = "active"
     last_delta: float = 0.0  # trust change caused by the latest helper message
+    last_breakdown: dict[str, float] = Field(default_factory=dict)
+    # how last_delta was built, e.g. {"validated": 12, "asked_directly": 15, "decay": -2}
+    # (keys are SkillLabel values plus engine terms like decay / diminishing / secrecy_broken)
 
 
 class ActorOutput(BaseModel):
@@ -209,6 +214,7 @@ class ActorOutput(BaseModel):
     line_id: str | None = None
     reaction: Reaction = Reaction.NEUTRAL
     fact_ids: list[str] = Field(default_factory=list)
+    source: Literal["llm", "bank", "fallback"] = "bank"  # who wrote the words (engine decides what)
 
 
 class VerifierResult(BaseModel):
@@ -229,6 +235,7 @@ class Node(BaseModel):
     seen_no_reply: bool = False  # friend nodes: left on Seen
     line_id: str | None = None  # friend nodes: which bank line was used
     reaction: Reaction | None = None  # friend nodes
+    voice: Literal["llm", "bank", "fallback"] | None = None  # friend nodes: who wrote the words
     created_at: float = Field(default_factory=time.time)
 
 
@@ -262,6 +269,8 @@ class MessageScore(BaseModel):
     highlights: list[Highlight] = Field(default_factory=list)
     rewrite: str | None = None  # verified better reply (scores higher on the missing skill)
     rewrite_gain: float | None = None
+    rewrite_source: Literal["exemplar", "llm"] | None = None
+    rewrite_skill: str | None = None  # the RUBRIC_SKILLS entry the rewrite improves
 
 
 class TurningPoint(BaseModel):

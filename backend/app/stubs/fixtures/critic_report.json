@@ -1,7 +1,7 @@
 {
   "per_message": [
     {
-      "node_id": "n_704a82a4b55c",
+      "node_id": "n_028d8c0abcc6",
       "probs": {
         "checked_in": 0.9,
         "validated": 0.05,
@@ -25,10 +25,11 @@
         }
       ],
       "rewrite": null,
-      "rewrite_gain": null
+      "rewrite_gain": null,
+      "rewrite_source": null
     },
     {
-      "node_id": "n_2310914c5470",
+      "node_id": "n_60be44b6b61a",
       "probs": {
         "checked_in": 0.05,
         "validated": 0.05,
@@ -52,10 +53,11 @@
         }
       ],
       "rewrite": null,
-      "rewrite_gain": null
+      "rewrite_gain": null,
+      "rewrite_source": null
     },
     {
-      "node_id": "n_7fbae38629b6",
+      "node_id": "n_87a8dd4aa485",
       "probs": {
         "checked_in": 0.05,
         "validated": 0.9,
@@ -79,10 +81,11 @@
         }
       ],
       "rewrite": null,
-      "rewrite_gain": null
+      "rewrite_gain": null,
+      "rewrite_source": null
     },
     {
-      "node_id": "n_b60fdcbd0247",
+      "node_id": "n_d50ad01fce45",
       "probs": {
         "checked_in": 0.05,
         "validated": 0.05,
@@ -106,10 +109,11 @@
         }
       ],
       "rewrite": null,
-      "rewrite_gain": null
+      "rewrite_gain": null,
+      "rewrite_source": null
     },
     {
-      "node_id": "n_1d91191d1df9",
+      "node_id": "n_633170cee5ce",
       "probs": {
         "checked_in": 0.05,
         "validated": 0.9,
@@ -147,10 +151,11 @@
         }
       ],
       "rewrite": null,
-      "rewrite_gain": null
+      "rewrite_gain": null,
+      "rewrite_source": null
     },
     {
-      "node_id": "n_4d1afc7a4cad",
+      "node_id": "n_b2223989155e",
       "probs": {
         "checked_in": 0.05,
         "validated": 0.05,
@@ -174,7 +179,8 @@
         }
       ],
       "rewrite": null,
-      "rewrite_gain": null
+      "rewrite_gain": null,
+      "rewrite_source": null
     }
   ],
   "skill_summary": {
@@ -187,7 +193,7 @@
     "follow_up": 0.9
   },
   "turning_point": {
-    "node_id": "n_2310914c5470",
+    "node_id": "n_60be44b6b61a",
     "trust_drop": 22.0,
     "reason": "Trust dropped the most after this message."
   },
