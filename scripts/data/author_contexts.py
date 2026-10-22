@@ -21,8 +21,14 @@ C: dict[str, dict[int, list[list[str]]]] = {
             ["its just so embarrassing", "like everyone saw the whole thing", "anyway"],
         ],
         2: [
-            ["idk it just feels like its never gonna get better", "like whats even gonna be different tomorrow"],
-            ["i feel like im just annoying everyone", "like u guys prob dont wanna hear about this anymore"],
+            [
+                "idk it just feels like its never gonna get better",
+                "like whats even gonna be different tomorrow",
+            ],
+            [
+                "i feel like im just annoying everyone",
+                "like u guys prob dont wanna hear about this anymore",
+            ],
             ["im such a burden lol", "i keep dragging everyone down w my sad stuff"],
         ],
         3: [
@@ -50,17 +56,32 @@ C: dict[str, dict[int, list[list[str]]]] = {
         2: [
             ["i feel like i fail at everything no matter how hard i try", "it's never enough"],
             ["honestly my future is already ruined", "one grade and its basically over"],
-            ["everyone else seems to have it figured out", "and im just. here. failing at life lol"],
+            [
+                "everyone else seems to have it figured out",
+                "and im just. here. failing at life lol",
+            ],
         ],
         3: [
-            ["honestly yeah. when the pressure gets bad i think about suicide", "i dont really know how to say this"],
-            ["sometimes it feels like disappearing would be easier than letting everyone down", "that sounds dramatic i know"],
-            ["i have had thoughts about it", "not like a plan or anything. just thoughts. i dont know what to do with them"],
+            [
+                "honestly yeah. when the pressure gets bad i think about suicide",
+                "i dont really know how to say this",
+            ],
+            [
+                "sometimes it feels like disappearing would be easier than letting everyone down",
+                "that sounds dramatic i know",
+            ],
+            [
+                "i have had thoughts about it",
+                "not like a plan or anything. just thoughts. i dont know what to do with them",
+            ],
         ],
         4: [
             ["ok yeah maybe", "would you help me figure out what to say to my chem teacher?"],
             ["thanks for not being weird about it", "i actually feel a little lighter"],
-            ["i think i could talk to the counselor", "if you came with me. i dont want to do it alone"],
+            [
+                "i think i could talk to the counselor",
+                "if you came with me. i dont want to do it alone",
+            ],
         ],
     },
     "giving-stuff-away": {  # Sam: calm, upbeat, "all good", deflects with jokes
@@ -75,9 +96,15 @@ C: dict[str, dict[int, list[list[str]]]] = {
             ["my parents are fighting a lot", "so i mostly stay in my room. its chill"],
         ],
         2: [
-            ["i dunno, sometimes i think everyone would be better off without me around", "haha ignore that"],
+            [
+                "i dunno, sometimes i think everyone would be better off without me around",
+                "haha ignore that",
+            ],
             ["i just dont see anything changing", "like. ever. but all good!"],
-            ["it's kinda like im already invisible", "and it wouldnt really change much if i wasnt there"],
+            [
+                "it's kinda like im already invisible",
+                "and it wouldnt really change much if i wasnt there",
+            ],
         ],
         3: [
             ["...yeah. i have", "been having thoughts of suicide"],
@@ -141,7 +168,10 @@ C: dict[str, dict[int, list[list[str]]]] = {
         4: [
             ["ok", "would you come with me? to the counselor"],
             ["thank you. really", "nobody has asked me like that before"],
-            ["maybe i could sit with you at lunch?", "and i think i can talk to the counselor if you come"],
+            [
+                "maybe i could sit with you at lunch?",
+                "and i think i can talk to the counselor if you come",
+            ],
         ],
     },
 }

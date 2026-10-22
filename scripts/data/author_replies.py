@@ -10,26 +10,55 @@ from pools import HARD, POOLS, TOPIC
 L = LABELS
 # Recipes: which labels are TRUE. Strings starting with "@" draw from HARD pools.
 RECIPES: list[list[str]] = [
-    ["checked_in"], ["validated"], ["asked_directly"], ["encouraged_help"], ["referred_adult"],
-    ["referred_988"], ["follow_up"], ["dismissed"], ["advice_dump"], ["promised_secrecy"],
-    ["checked_in", "validated"], ["validated", "asked_directly"], ["checked_in", "asked_directly"],
-    ["validated", "encouraged_help"], ["validated", "referred_adult"], ["asked_directly", "follow_up"],
-    ["referred_adult", "follow_up"], ["referred_988", "encouraged_help"],
-    ["validated", "referred_adult", "follow_up"], ["validated", "asked_directly", "encouraged_help"],
-    ["dismissed", "advice_dump"], ["promised_secrecy", "validated"], ["validated", "advice_dump"],
-    ["dismissed", "referred_988"], ["follow_up", "encouraged_help"],
-    ["@vague_leading"], ["@offtopic"], ["@answers"],
-    ["checked_in", "follow_up"], ["asked_directly", "referred_adult"],
+    ["checked_in"],
+    ["validated"],
+    ["asked_directly"],
+    ["encouraged_help"],
+    ["referred_adult"],
+    ["referred_988"],
+    ["follow_up"],
+    ["dismissed"],
+    ["advice_dump"],
+    ["promised_secrecy"],
+    ["checked_in", "validated"],
+    ["validated", "asked_directly"],
+    ["checked_in", "asked_directly"],
+    ["validated", "encouraged_help"],
+    ["validated", "referred_adult"],
+    ["asked_directly", "follow_up"],
+    ["referred_adult", "follow_up"],
+    ["referred_988", "encouraged_help"],
+    ["validated", "referred_adult", "follow_up"],
+    ["validated", "asked_directly", "encouraged_help"],
+    ["dismissed", "advice_dump"],
+    ["promised_secrecy", "validated"],
+    ["validated", "advice_dump"],
+    ["dismissed", "referred_988"],
+    ["follow_up", "encouraged_help"],
+    ["@vague_leading"],
+    ["@offtopic"],
+    ["@answers"],
+    ["checked_in", "follow_up"],
+    ["asked_directly", "referred_adult"],
     ["validated", "asked_directly", "referred_adult", "follow_up"],
-    ["promised_secrecy", "dismissed"], ["advice_dump", "encouraged_help"],
-    ["referred_988", "follow_up"], ["validated", "referred_988"],
-    ["promised_secrecy", "follow_up"], ["promised_secrecy", "asked_directly"],
+    ["promised_secrecy", "dismissed"],
+    ["advice_dump", "encouraged_help"],
+    ["referred_988", "follow_up"],
+    ["validated", "referred_988"],
+    ["promised_secrecy", "follow_up"],
+    ["promised_secrecy", "asked_directly"],
     ["@tricky_pos"],
 ]
 EMOJI = {
-    "validated": ["🥺", "💔", "🫂"], "checked_in": ["🥺", "👀"], "follow_up": ["❤️", "🫂"],
-    "encouraged_help": ["🙏", "❤️"], "referred_adult": ["🙏", "❤️"], "referred_988": ["❤️", "🙏"],
-    "asked_directly": ["🥺", "😟"], "dismissed": ["😂", "🙄"], "advice_dump": ["😅", "🤷"],
+    "validated": ["🥺", "💔", "🫂"],
+    "checked_in": ["🥺", "👀"],
+    "follow_up": ["❤️", "🫂"],
+    "encouraged_help": ["🙏", "❤️"],
+    "referred_adult": ["🙏", "❤️"],
+    "referred_988": ["❤️", "🙏"],
+    "asked_directly": ["🥺", "😟"],
+    "dismissed": ["😂", "🙄"],
+    "advice_dump": ["😅", "🤷"],
     "promised_secrecy": ["🤐", "🤞"],
 }
 GLUE_CLEAN = [" ", " ", "\n"]
@@ -46,9 +75,9 @@ def typo(s: str, rng: random.Random) -> str:
         j = rng.randrange(1, len(w) - 2)
         mode = rng.choice(["swap", "drop", "dup"])
         if mode == "swap":
-            w = w[:j] + w[j + 1] + w[j] + w[j + 2:]
+            w = w[:j] + w[j + 1] + w[j] + w[j + 2 :]
         elif mode == "drop":
-            w = w[:j] + w[j + 1:]
+            w = w[:j] + w[j + 1 :]
         else:
             w = w[:j] + w[j] + w[j:]
         words[i] = w
@@ -56,7 +85,11 @@ def typo(s: str, rng: random.Random) -> str:
 
 
 def pick_phrase(label: str, kind: str, sid: str, rng: random.Random) -> str:
-    if kind in ("clean", "slang", "lowercase", "typo", "emoji") and label in TOPIC[sid] and rng.random() < 0.3:
+    if (
+        kind in ("clean", "slang", "lowercase", "typo", "emoji")
+        and label in TOPIC[sid]
+        and rng.random() < 0.3
+    ):
         t = rng.choice(TOPIC[sid][label])
         return t.lower().rstrip(".") if kind == "slang" else t
     pool_kind = kind
@@ -80,8 +113,13 @@ def make(recipe: list[str], sid: str, rng: random.Random) -> tuple[str, str, str
             text, style = text + " " + rng.choice(["🥺", "😬", "😭"]), "emoji"
         return text, style, lang, {x: x in labs for x in L}
     r = rng.random()
-    kind = "es" if r < 0.12 else "mix" if r < 0.16 else rng.choices(
-        ["clean", "slang", "lowercase", "typo", "emoji"], [32, 28, 12, 10, 12])[0]
+    kind = (
+        "es"
+        if r < 0.12
+        else "mix"
+        if r < 0.16
+        else rng.choices(["clean", "slang", "lowercase", "typo", "emoji"], [32, 28, 12, 10, 12])[0]
+    )
     glue_pool = GLUE_CLEAN if kind in ("clean", "es", "mix", "emoji") else GLUE_SLANG
     parts = [pick_phrase(lab, kind, sid, rng) for lab in recipe]
     glue = rng.choice(glue_pool)
@@ -137,7 +175,7 @@ if __name__ == "__main__":
     write_jsonl(DATA / "skills" / "replies.jsonl", rows)
     from collections import Counter
 
-    c = Counter(l for r in rows for l, v in r["intended"].items() if v)
+    c = Counter(k for r in rows for k, v in r["intended"].items() if v)
     print(len(rows), "replies", dict(c))
     print(Counter(r["lang"] for r in rows), Counter(r["style"] for r in rows))
     print("none-label:", sum(1 for r in rows if not any(r["intended"].values())))

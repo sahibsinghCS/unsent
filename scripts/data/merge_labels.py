@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from common import DATA, LABELS, ROOT, read_jsonl, write_jsonl
+from common import DATA, LABELS, read_jsonl, write_jsonl
 
 SK = DATA / "skills"
 

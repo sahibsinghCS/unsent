@@ -461,24 +461,60 @@ HARD: dict[str, list[tuple[str, list[str]]]] = {
     "tricky_pos": [
         ("call 988 or whatever lol", ["referred_988", "dismissed"]),
         ("text 988 i guess, they deal w this stuff. anyway", ["referred_988", "dismissed"]),
-        ("I won't tell anyone else, except the counselor, because I care about you.", ["referred_adult"]),
-        ("i wont keep this secret from the counselor, but ill be there w u the whole time", ["referred_adult", "follow_up"]),
-        ("I can't promise to keep this secret because I want you safe. Can we tell your mom together?", ["referred_adult"]),
-        ("I'm not going to keep this a secret, I care about you too much. I'll go with you to talk to someone.", ["referred_adult", "encouraged_help"]),
-        ("no puedo prometerte guardar el secreto, me importas mucho. ¿Vamos con la consejera?", ["referred_adult"]),
-        ("ok that sounds awful lol, I'm sorry. that's honestly a lot and I'm glad you told me", ["validated"]),
+        (
+            "I won't tell anyone else, except the counselor, because I care about you.",
+            ["referred_adult"],
+        ),
+        (
+            "i wont keep this secret from the counselor, but ill be there w u the whole time",
+            ["referred_adult", "follow_up"],
+        ),
+        (
+            "I can't promise to keep this secret because I want you safe. Can we tell your mom together?",
+            ["referred_adult"],
+        ),
+        (
+            "I'm not going to keep this a secret, I care about you too much. I'll go with you to talk to someone.",
+            ["referred_adult", "encouraged_help"],
+        ),
+        (
+            "no puedo prometerte guardar el secreto, me importas mucho. ¿Vamos con la consejera?",
+            ["referred_adult"],
+        ),
+        (
+            "ok that sounds awful lol, I'm sorry. that's honestly a lot and I'm glad you told me",
+            ["validated"],
+        ),
         ("Are you okay?", ["checked_in"]),
         ("are u thinking abt suicide or smth?", ["asked_directly"]),
         ("¿te sientes así de mal que piensas en suicidarte?", ["asked_directly"]),
-        ("Is this about wanting to hurt yourself? I'm asking because I'm scared for you.", ["asked_directly", "validated"]),
-        ("do u think about killing urself sometimes? ur not in trouble, i just want to know", ["asked_directly"]),
-        ("whoa. thank you for telling me that. are you thinking about suicide right now?", ["validated", "asked_directly"]),
-        ("you should just call 988 lol. have you tried sleeping more", ["referred_988", "advice_dump", "dismissed"]),
-        ("Just talk to a counselor, I guess. It's not that deep though", ["referred_adult", "dismissed"]),
+        (
+            "Is this about wanting to hurt yourself? I'm asking because I'm scared for you.",
+            ["asked_directly", "validated"],
+        ),
+        (
+            "do u think about killing urself sometimes? ur not in trouble, i just want to know",
+            ["asked_directly"],
+        ),
+        (
+            "whoa. thank you for telling me that. are you thinking about suicide right now?",
+            ["validated", "asked_directly"],
+        ),
+        (
+            "you should just call 988 lol. have you tried sleeping more",
+            ["referred_988", "advice_dump", "dismissed"],
+        ),
+        (
+            "Just talk to a counselor, I guess. It's not that deep though",
+            ["referred_adult", "dismissed"],
+        ),
         ("I love you, you matter to me so much", ["validated"]),
         ("you matter to me, and I'm going to be here tomorrow too", ["validated", "follow_up"]),
         ("that doesn't sound dramatic at all, it sounds like you're really hurting", ["validated"]),
-        ("not gonna lie I'm kind of freaking out but I'm here. are you thinking of ending your life?", ["follow_up", "asked_directly"]),
+        (
+            "not gonna lie I'm kind of freaking out but I'm here. are you thinking of ending your life?",
+            ["follow_up", "asked_directly"],
+        ),
         ("have you ever thought about suiciding? sorry I'm bad at this", ["asked_directly"]),
         ("do u wanna kms or something? i just want to understand", ["asked_directly"]),
         ("tell me the truth: r u having suicidal thoughts?", ["asked_directly"]),

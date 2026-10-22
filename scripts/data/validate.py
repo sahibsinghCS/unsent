@@ -15,18 +15,34 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA, LABELS, METHOD_WORDS, SCENARIOS, load_scenario, read_jsonl  # noqa: E402
 
-from backend.app.contracts import Exemplar, Line, Reaction  # noqa: E402
+from backend.app.contracts import Exemplar, Line  # noqa: E402
 
 PROBLEMS: list[str] = []
 REPORT: dict[str, object] = {}
 
 CATEGORIES = {
-    "self_risk": 170, "concern": 60, "harm_to_other": 60, "method_seeking": 40, "prompt_injection": 40,
-    "asking_friend": 140, "tricky_negative": 110, "neutral": 65,
+    "self_risk": 170,
+    "concern": 60,
+    "harm_to_other": 60,
+    "method_seeking": 40,
+    "prompt_injection": 40,
+    "asking_friend": 140,
+    "tricky_negative": 110,
+    "neutral": 65,
 }
 LINE_REACTIONS = [
-    "neutral", "checked_in", "validated", "asked_directly", "encouraged_help", "referred",
-    "follow_up", "dismissed", "advice_dump", "promised_secrecy", "secrecy_broken", "off_topic",
+    "neutral",
+    "checked_in",
+    "validated",
+    "asked_directly",
+    "encouraged_help",
+    "referred",
+    "follow_up",
+    "dismissed",
+    "advice_dump",
+    "promised_secrecy",
+    "secrecy_broken",
+    "off_topic",
 ]
 
 
@@ -48,7 +64,11 @@ def check_skills() -> None:
     if len(ctxs) < 75:
         bad(f"skills: only {len(ctxs)} contexts (<75)")
     for c in ctxs:
-        if c["scenario_id"] not in SCENARIOS or c["level"] not in range(5) or not c["friend_messages"]:
+        if (
+            c["scenario_id"] not in SCENARIOS
+            or c["level"] not in range(5)
+            or not c["friend_messages"]
+        ):
             bad(f"skills: bad context {c['context_id']}")
         if METHOD_WORDS.search(" ".join(c["friend_messages"])):
             bad(f"skills: method word in context {c['context_id']}")
@@ -79,7 +99,12 @@ def check_skills() -> None:
     es = (langs["es"] + langs["mix"]) / max(1, len(reps))
     if not 0.10 <= es <= 0.22:
         bad(f"skills: Spanish/Spanglish share {es:.0%} outside 10-22%")
-    REPORT["skills"] = {"contexts": len(ctxs), "replies": len(reps), "label_positives": dict(pos), "spanish_share": round(es, 3)}
+    REPORT["skills"] = {
+        "contexts": len(ctxs),
+        "replies": len(reps),
+        "label_positives": dict(pos),
+        "spanish_share": round(es, 3),
+    }
 
 
 def check_guardian() -> None:
@@ -101,10 +126,16 @@ def check_guardian() -> None:
     ids = [r["id"] for r in rows]
     if len(ids) != len(set(ids)):
         bad("guardian: duplicate ids")
-    sp = {n: read_jsonl(DATA / "guardian" / "splits" / f"{n}.jsonl") for n in ("train", "val", "test")}
+    sp = {
+        n: read_jsonl(DATA / "guardian" / "splits" / f"{n}.jsonl") for n in ("train", "val", "test")
+    }
     if sum(len(v) for v in sp.values()) != len(rows):
         bad("guardian: splits do not cover messages.jsonl")
-    REPORT["guardian"] = {"total": len(rows), "by_category": dict(cnt), "splits": {k: len(v) for k, v in sp.items()}}
+    REPORT["guardian"] = {
+        "total": len(rows),
+        "by_category": dict(cnt),
+        "splits": {k: len(v) for k, v in sp.items()},
+    }
 
 
 def check_lines() -> None:
@@ -117,7 +148,7 @@ def check_lines() -> None:
         sc = load_scenario(sid)
         fact_level = {f["id"]: int(lv) for lv, spec in sc["levels"].items() for f in spec["facts"]}
         cells: dict[tuple[int, str], int] = defaultdict(int)
-        seen: set[str] = set()
+        seen: set[tuple] = set()
         ids: set[str] = set()
         rows = read_jsonl(path)
         for row in rows:
@@ -137,13 +168,19 @@ def check_lines() -> None:
                 if fid not in fact_level:
                     bad(f"lines: {line.id} unknown fact {fid}")
                 elif fact_level[fid] > line.level:
-                    bad(f"lines: {line.id} reveals {fid} (level {fact_level[fid]}) at level {line.level}")
+                    bad(
+                        f"lines: {line.id} reveals {fid} (level {fact_level[fid]}) at level {line.level}"
+                    )
             text = " ".join(line.bubbles)
             if METHOD_WORDS.search(text):
                 bad(f"lines: method word in {line.id}")
             if any(len(b) > 140 or not b.strip() for b in line.bubbles):
                 bad(f"lines: {line.id} bubble empty or too long")
-            k = norm(text)
+            k = (
+                line.level,
+                line.reaction.value,
+                norm(text),
+            )  # very short lines may repeat across cells
             if k in seen:
                 bad(f"lines: duplicate line text {line.id}")
             seen.add(k)
@@ -159,10 +196,15 @@ def check_lines() -> None:
         if cells[(4, "success")] < need:
             missing.append("L4/success")
         if missing:
-            bad(f"lines: {path.name} coverage gaps: {', '.join(missing[:12])}{' ...' if len(missing) > 12 else ''}")
+            bad(
+                f"lines: {path.name} coverage gaps: {', '.join(missing[:12])}{' ...' if len(missing) > 12 else ''}"
+            )
         summary[path.name] = len(rows)
     REPORT["lines"] = summary
-    if not any(k.endswith(".en.jsonl") for k in summary) or len([k for k in summary if k.endswith(".en.jsonl")]) < 5:
+    if (
+        not any(k.endswith(".en.jsonl") for k in summary)
+        or len([k for k in summary if k.endswith(".en.jsonl")]) < 5
+    ):
         bad("lines: need an .en.jsonl file for each of the 5 scenarios")
 
 
