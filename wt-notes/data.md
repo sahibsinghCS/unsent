@@ -11,10 +11,10 @@
 - Nothing. Stretch done: Spanish line bank `data/lines/after-the-breakup.es.jsonl` (201 lines, all cells).
 
 ## Update (integrator request: free-form + leakage)
-- Added `replies_freeform.jsonl` (382 hand-written replies), fixed composed joins and Guardian doubled words, re-ran ONE blind pass (1,207 rows). Agreement: composed 85.9% exact / mean kappa 0.949; free-form 74.9% / 0.879.
-- New splits incl. `test_freeform.jsonl` (141, 0.0% 5-gram leakage vs train; composed test 21.0%). `eval/reports/data_leakage.json`. No normalized text in more than one split.
+- Added `replies_freeform.jsonl` (443 hand-written replies incl. asked_directly/follow_up hard negatives), fixed composed joins and Guardian doubled words, re-ran ONE blind pass (1,268 rows). Agreement: composed 85.9% exact / mean kappa 0.949; free-form 77.4% / 0.883.
+- New splits incl. `test_freeform.jsonl` (171, 0.0% 5-gram leakage vs train; composed test 21.0%). `eval/reports/data_leakage.json`. No normalized text in more than one split.
 - Did NOT merge origin/claude/amazing-carson-31tzo3 (AGENTS rule: never merge; integrator said skip).
-- queue.jsonl now 332 rows (212 disagreements + 120 audit); final.jsonl 995 rows until Sahib labels them.
+- queue.jsonl now 336 rows (216 disagreements + 120 audit); final.jsonl 1,052 rows until Sahib labels them.
 
 ## Decisions
 - Disagreements are dropped from `final.jsonl` until Sahib labels them (human > agreed); `--provisional` keeps intended labels for early training.
@@ -28,7 +28,7 @@
 ## Known issues
 - Agreement is very high (mean κ 0.991) because replies are authored from clear phrases; real-world difficulty is higher (see DATASET.md limitations).
 - Spanish is not yet native-reviewed. All lines are `review_status: draft`.
-- Sahib must label `data/skills/queue.jsonl` (332 rows) then run `merge_labels.py && split.py`; counselor sheet at `data/skills/counselor_sheet.csv`.
+- Sahib must label `data/skills/queue.jsonl` (336 rows) then run `merge_labels.py && split.py`; counselor sheet at `data/skills/counselor_sheet.csv`.
 
 ## Numbers
 - Blind agreement: composed 85.9% exact (mean κ 0.949), free-form 74.9% (κ 0.879) (`eval/reports/data_agreement.json`).

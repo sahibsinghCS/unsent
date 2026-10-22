@@ -184,3 +184,15 @@ def test_follow_up_is_not_triggered_by_lunch_or_tomorrow_alone():
         if any(w in r["text"].lower() for w in words) and not r["intended"]["follow_up"]
     ]
     assert len(neg) >= 30
+
+
+def test_asked_directly_hard_negatives_exist():
+    rows = read_jsonl(DATA / "skills" / "replies_freeform.jsonl")
+    thinking = [
+        r
+        for r in rows
+        if any(w in r["text"].lower() for w in ("thinking about", "thought about", "thinking of"))
+        and not r["intended"]["asked_directly"]
+    ]
+    direct = [r for r in rows if r["intended"]["asked_directly"]]
+    assert len(thinking) >= 30 and len(direct) >= 40

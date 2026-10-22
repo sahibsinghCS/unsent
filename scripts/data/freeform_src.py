@@ -897,22 +897,50 @@ _EXTRA2: list[tuple[str, str, str]] = [
 _EXTRA3: list[tuple[str, str, str]] = [
     ("breakup-L0-1", "ok but have you tried just not thinking about him", "x"),
     ("breakup-L0-2", "are you thinking about texting him? i just want to make sure you're ok", "c"),
-    ("breakup-L0-3", "have you thought about talking to him, like actually closing the chapter?", "x"),
+    (
+        "breakup-L0-3",
+        "have you thought about talking to him, like actually closing the chapter?",
+        "x",
+    ),
     ("breakup-L1-1", "what are you thinking about when you can't sleep?", "c"),
-    ("breakup-L1-2", "are you thinking about the whole school stuff again? how are you holding up", "c"),
-    ("breakup-L1-3", "have you thought about changing your seat in class so you don't have to see him?", "x"),
+    (
+        "breakup-L1-2",
+        "are you thinking about the whole school stuff again? how are you holding up",
+        "c",
+    ),
+    (
+        "breakup-L1-3",
+        "have you thought about changing your seat in class so you don't have to see him?",
+        "x",
+    ),
     ("chem-L0-2", "are you thinking about the test right now? what's going on", "c"),
     ("chem-L0-3", "have you thought about getting a tutor?", "x"),
-    ("chem-L1-1", "have you thought about telling your mom about the grade? i can be there when you do", "r"),
-    ("chem-L1-2", "are you thinking about dropping chem? you could talk to the counselor about it with me", "r"),
+    (
+        "chem-L1-1",
+        "have you thought about telling your mom about the grade? i can be there when you do",
+        "r",
+    ),
+    (
+        "chem-L1-2",
+        "are you thinking about dropping chem? you could talk to the counselor about it with me",
+        "r",
+    ),
     ("chem-L1-3", "are you thinking about college again? you look stressed, are you ok?", "c"),
     ("chem-L2-2", "have you thought about retaking it next semester? one grade isn't the end", "x"),
     ("sam-L0-1", "i was thinking about you at lunch. you ok?", "c"),
     ("sam-L0-2", "have you thought about selling the setup instead of giving it away?", "x"),
     ("sam-L0-3", "are you thinking about getting a new hoodie lol", "d"),
     ("sam-L1-2", "have you thought about talking to your parents about the fighting?", "x"),
-    ("sam-L1-3", "are you thinking about moving rooms or something? how are you doing at home", "c"),
-    ("sam-L2-2", "have you thought about doing something fun this weekend to get out of the house?", "x"),
+    (
+        "sam-L1-3",
+        "are you thinking about moving rooms or something? how are you doing at home",
+        "c",
+    ),
+    (
+        "sam-L2-2",
+        "have you thought about doing something fun this weekend to get out of the house?",
+        "x",
+    ),
     ("gc-L0-1", "are you thinking about quitting the group chat? i'd leave too", "-"),
     ("gc-L0-2", "have you thought about blocking everyone in it?", "x"),
     ("gc-L1-1", "are you thinking about the gc again? how are you doing", "c"),
@@ -924,7 +952,11 @@ _EXTRA3: list[tuple[str, str, str]] = [
     ("ns-L1-1", "have you thought about telling your old friends how it feels?", "x"),
     ("ns-L1-2", "are you thinking about moving back? is that why you've been so quiet?", "c"),
     ("ns-L1-3", "thinking about you today. how are you really?", "c"),
-    ("ns-L2-2", "have you thought about talking to the counselor about feeling invisible? i'll go with you", "r"),
+    (
+        "ns-L2-2",
+        "have you thought about talking to the counselor about feeling invisible? i'll go with you",
+        "r",
+    ),
     ("breakup-L2-1", "what are you thinking about right now?", "c"),
     ("chem-L2-1", "are you thinking about the grade or about everything?", "c"),
     ("sam-L2-1", "have you thought about what you'd like to change at home?", "-"),
@@ -955,7 +987,11 @@ _EXTRA3: list[tuple[str, str, str]] = [
     ("sam-L4-1", "¿sientes que no quieres seguir viviendo?", "a"),
     ("gc-L4-1", "¿has tenido ganas de morirte?", "a"),
     ("ns-L4-1", "are you pensando en suicidarte? sorry for asking so straight", "a"),
-    ("breakup-L4-1", "that took guts to say. i want to ask plainly, are you thinking about killing yourself?", "v a"),
+    (
+        "breakup-L4-1",
+        "that took guts to say. i want to ask plainly, are you thinking about killing yourself?",
+        "v a",
+    ),
 ]
 
 
