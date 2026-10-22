@@ -170,13 +170,33 @@ def test_big_drop_goes_silent(open_scenario, cfg):
     assert update(at(60, level=2), probs(L.DISMISSED), open_scenario, cfg).status == "silent"
 
 
-def test_low_trust_and_no_gain_goes_silent(open_scenario, cfg):
-    assert update(at(21), probs(), open_scenario, cfg).status == "silent"  # 19, delta -2
-    assert update(at(25), probs(), open_scenario, cfg).status == "active"  # 23
+def test_decay_alone_never_goes_silent(open_scenario, scenario, cfg):
+    # Real case: trust 22, "you've seemed really down lately. what's been going on?" with no labels.
+    for persona in (open_scenario, scenario):
+        new = update(at(22), probs(), persona, cfg)
+        assert new.last_delta == -2 and new.trust == 20 and new.status == "active"
+    assert update(at(12), probs(), open_scenario, cfg).status == "active"  # 10, still answered
+
+
+def test_low_trust_and_negative_label_goes_silent(open_scenario, cfg):
+    assert update(at(25), probs(L.ADVICE_DUMP), open_scenario, cfg).status == "silent"  # 13
+    assert update(at(25), probs(L.ADVICE_DUMP), open_scenario, cfg).last_delta == -12
+    assert update(at(40), probs(L.ADVICE_DUMP), open_scenario, cfg).status == "active"  # 28
+
+
+def test_neutral_low_trust_gets_guarded_neutral_reply(engine, scenario):
+    from .conftest import Convo
+
+    convo = Convo(engine, scenario)
+    convo.path[-1].state_after = at(22, turn=2)
+    friend = convo.say("you've seemed really down lately. what's been going on?", probs())
+    assert not friend.seen_no_reply and friend.bubbles
+    assert friend.reaction.value in ("neutral", "off_topic")
 
 
 def test_validation_recovers_from_silence(open_scenario, cfg):
-    silent = update(at(21), probs(), open_scenario, cfg)
+    silent = update(at(25), probs(L.ADVICE_DUMP), open_scenario, cfg)
+    assert silent.status == "silent"
     assert update(silent, probs(L.VALIDATED), open_scenario, cfg).status == "active"
 
 
