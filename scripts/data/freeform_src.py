@@ -828,9 +828,66 @@ _EXTRA: list[tuple[str, str, str]] = [
     ),
 ]
 
+# Third batch (ML request): hard negatives for follow_up that mention lunch / school / tonight / tomorrow /
+# later WITHOUT committing to stay or check in, plus genuine follow-ups phrased without those words.
+_EXTRA2: list[tuple[str, str, str]] = [
+    ("breakup-L0-1", "you seemed off at lunch today. is something going on?", "c"),
+    ("chem-L0-1", "i saw you in the hallway after school and you looked wiped. you ok?", "c"),
+    ("gc-L0-1", "did something happen at school today? you left so fast", "c"),
+    ("ns-L0-1", "how was school today, really?", "c"),
+    ("sam-L0-1", "what happened at lunch? you walked out in the middle of it", "c"),
+    ("breakup-L1-1", "how are you feeling tonight?", "c"),
+    ("chem-L1-1", "tonight might be really hard with the grade and everything. that makes total sense", "v"),
+    ("gc-L1-1", "i wish i'd noticed at lunch that you were upset. i'm sorry i missed it", "v"),
+    ("ns-L1-1", "i saw what happened at school. that's messed up and i'm sorry", "v"),
+    ("sam-L1-1", "you looked upset when you left school. i've been thinking about it", "c"),
+    ("breakup-L1-3", "lol you'll feel better tomorrow, trust me", "d"),
+    ("chem-L1-2", "just sleep tonight and see how you feel tomorrow", "x"),
+    ("gc-L1-2", "tomorrow is a new day. it'll all be forgotten", "d"),
+    ("ns-L1-2", "school is stressful for everyone lately, you're not the only one", "d"),
+    ("sam-L1-2", "ugh the lunch line was insane today lol. anyway", "d"),
+    ("breakup-L2-1", "later you should write it all down in a journal, that really helps", "x"),
+    ("chem-L2-1", "you have a quiz tomorrow, right? did you study", "d"),
+    ("gc-L2-1", "ok i gotta go to school early tomorrow, talk later maybe", "d"),
+    ("ns-L2-1", "tomorrow's friday, so at least that's something. cheer up", "d"),
+    ("sam-L2-1", "tonight you should really just rest and stop thinking about it", "x"),
+    ("breakup-L2-2", "what did you eat for lunch? you look really thin lately", "-"),
+    ("chem-L2-2", "is it everything at school or just chem?", "c"),
+    ("gc-L2-2", "does it get worse at lunch or after school?", "c"),
+    ("ns-L2-2", "te vi muy callada en el almuerzo, ¿pasa algo?", "c"),
+    ("sam-L2-2", "¿cómo te fue en la escuela hoy? te noto raro", "c"),
+    ("breakup-L3-1", "esta noche puede ser muy difícil, tiene sentido que te sientas así", "v"),
+    ("chem-L3-1", "wow. thank you for telling me. tonight must feel so heavy", "v"),
+    ("gc-L3-1", "i'm so sorry you've been dealing with that at school and at home", "v"),
+    ("ns-L3-1", "that sounds really lonely, going through that at night. i'm sorry", "v"),
+    ("sam-L3-1", "mañana tienes clases, ¿verdad? ¿cómo vas con todo?", "c"),
+    ("breakup-L3-2", "i'm here for you. not going anywhere", "f"),
+    ("chem-L3-2", "i'm just a text away, any hour. don't hesitate", "f"),
+    ("gc-L3-2", "message me whenever. i'll answer, even if it's the middle of the night", "f"),
+    ("ns-L3-2", "i'll keep checking in on you, okay? you're not a one-time thing", "f"),
+    ("sam-L3-2", "count on me. i'm staying right here", "f"),
+    ("breakup-L2-3", "i'm not leaving you to deal with this on your own. i'll stay on the phone", "f"),
+    ("chem-L2-3", "call me anytime. 3am, i don't care. i mean it", "f"),
+    ("gc-L2-3", "i'll be around this weekend too, just so you know", "f"),
+    ("ns-L2-3", "i'll check on you every day, even when you say you're fine", "f"),
+    ("sam-L2-3", "i'm in this with you. i'm not going to disappear on you", "f"),
+    ("breakup-L4-1", "this isn't a one-time thing, i'll keep asking how you are", "f"),
+    ("chem-L4-1", "i'll come over saturday if you want company", "f"),
+    ("gc-L4-1", "i'm staying, ok? whatever happens", "f"),
+    ("ns-L4-1", "estoy aquí, no me voy a ningún lado", "f"),
+    ("sam-L4-1", "te voy a seguir escribiendo, ¿vale? no estás solo", "f"),
+    ("breakup-L4-2", "cuenta conmigo siempre, a la hora que sea", "f"),
+    ("chem-L4-2", "i'll keep my phone on loud for you", "f"),
+    ("gc-L4-2", "want me to stay on the call with you until you feel okay?", "f"),
+    ("ns-L4-2", "i'll wait here as long as you need", "f"),
+    ("sam-L4-2", "i'll ping you on monday just to see how you're doing", "f"),
+]
 
-def merged() -> dict[str, list[tuple[str, str]]]:
-    out = {k: list(v) for k, v in FF.items()}
-    for ctx, text, codes in _EXTRA:
-        out[ctx].append((text, codes))
-    return out
+
+def ordered() -> list[tuple[str, str, str]]:
+    """Stable order (ids never shift): base + second batch by context as first released, then the third batch."""
+    out = []
+    for ctx, items in FF.items():
+        out += [(ctx, t, c) for t, c in items]
+        out += [(c2, t, cd) for c2, t, cd in _EXTRA if c2 == ctx]
+    return out + list(_EXTRA2)

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from common import DATA, LABELS, write_jsonl
-from freeform_src import merged
+from freeform_src import ordered
 
 CODE = {
     "c": "checked_in",
@@ -34,8 +34,8 @@ SPANISH_WORDS = (
 
 def build() -> list[dict]:
     rows, seen = [], set()
-    for ctx_id, items in merged().items():
-        for text, codes in items:
+    for ctx_id, text, codes in ordered():
+        if True:
             key = " ".join(text.lower().split())
             assert key not in seen, text
             seen.add(key)
