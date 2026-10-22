@@ -33,7 +33,10 @@ def main(path: str, name: str) -> None:
     created = datetime.now(UTC).isoformat(timespec="seconds")
     note = f"frozen Guardian @ {commit}, never trained on this set; embedder={get_embedder().name}"
     records = []
-    for label, g in (("combined", Guardian()), ("lexicon_only", Guardian(use_classifier=False))):
+    for label, g in (
+        ("combined", Guardian(use_moderation=False)),
+        ("lexicon_only", Guardian(use_classifier=False, use_moderation=False)),
+    ):
         preds = [predicted_class(g.check_user(r["text"], [])) for r in rows]
         s = score(rows, preds)
         counts = Counter(r["category"] for r in rows)

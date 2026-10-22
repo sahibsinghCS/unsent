@@ -1,0 +1,11 @@
+[
+ {
+  "lane": "safety",
+  "metric": "moderation_compare",
+  "value": null,
+  "n": 0,
+  "split": "test",
+  "notes": "not run (no key): set OPENAI_API_KEY and rerun this script",
+  "created": "2026-10-22T23:12:13+00:00"
+ }
+]

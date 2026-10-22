@@ -13,7 +13,7 @@ Every message the user types goes through the Guardian **before anything else ru
 | **crisis / pause** | the helper themself sounds at risk ("honestly i want to die too", "kms") | pause the role-play and show crisis resources |
 | **block** | the message would hurt the friend ("kys", "just do it"), asks *how/when/with what* (method-seeking), or tries to break the app (prompt injection) | don't send it; show a short teaching note |
 
-It also checks every **friend** line (`check_friend`). A line that mentions a plan, a means, encouragement, graphic detail or "I'm an AI" is never shown. All 2,206 friend lines we have (scenario files plus the data lane's line bank) pass.
+It also checks every **friend** line (`check_friend`), including the replies OpenAI writes in v3. Those are natural sentences, so the lexicon also covers natural phrasings of plans ("i already know how i'd do it"), inevitability ("my mind is made up"), suicide as a relief or solution, graphic detail, and AI refusals or persona breaks ("I'm sorry, but I can't help with that", "As an AI…"). A line that mentions a plan, a means, encouragement, graphic detail or "I'm an AI" is never shown. All 2,206 friend lines we have (scenario files plus the data lane's line bank) pass.
 
 ## How it works
 
@@ -43,6 +43,13 @@ Four steps, all on the computer running the app (no internet, no AI service):
    - The priority order is **crisis > block > concern > none**.
    - Lexicon hits are trusted, because the lexicon is speaker-aware and reviewed by people.
    - The classifier can add flags. But if the lexicon recognized an **allowed** phrase (asking the friend, everyday hyperbole, a negation) and found nothing risky, the classifier needs 99% confidence to overrule it. That protects the skill we teach.
+
+**Optional fifth step: OpenAI moderation** (`moderation.py`). In v3 the friend's wording comes from OpenAI, and the Guardian can also ask OpenAI's **free** moderation endpoint for a second opinion. It is only supporting evidence:
+- If our Guardian flags a message and moderation agrees, the result lists `moderation` as a source, next to its score.
+- If our Guardian finds nothing at all and moderation is very sure about self-harm (≥ 0.8), the result goes up to **concern** (show resources, keep practicing). Moderation alone can never pause the practice or block a message.
+- **Our speaker rules always win.** Moderation reads "are you thinking about killing yourself?" as self-harm content, because it doesn't know who is talking. For us that question is the skill we teach. When our lexicon recognizes it as asking the friend, moderation's score only appears in the evidence as "overruled by speaker rules". This is a good thing to show a judge: a big company's general filter would punish the most important thing a helper can say, and ours doesn't.
+- Offline (no key, `FR_LLM=0`, budget spent, API error) moderation is simply skipped, and the Guardian decides exactly as before. A test checks this. `FR_GUARDIAN_MODERATION=0` turns it off.
+- All the numbers below are for the **local** Guardian. `eval/guardian/moderation_compare.py` compares local vs moderation vs combined on the slang, Spanish and asking-the-friend subsets. It needs `OPENAI_API_KEY`, and it **has not been run yet** (no key in the build environment). `eval/reports/safety_moderation.json` says "not run (no key)".
 
 If the trained model file is missing, or was built with a different embedder, the Guardian runs on the lexicon alone. If anything inside it crashes, it **fails safe**: the helper gets resources and the friend line is blocked. It never crashes the app.
 
@@ -122,6 +129,6 @@ Emoji is the one place the normalizer makes things slightly worse. It turns 😭
 
 1. **"Is this safe? What if a real kid in crisis uses it?"** If the user says anything that sounds like they are at risk, even in slang ("kms", "sewerslide", "k.m.s"), the practice stops and shows 988 and "talk to a trusted adult". We tuned for recall: 100% on the test split, and we report the 82% we got on unseen data before training. If the Guardian itself breaks, it fails safe and shows resources.
 2. **"Won't it flag teens for asking 'are you suicidal?'"** No. That's the skill we teach, so it's our headline metric: 0 false flags out of 37 test questions, 0 of 140 on the data lane's set before we trained on it, and 0 of 53 in our paired tests. The speaker rules look at who the sentence is about: "i want to die" is the helper, "do you want to die?" is asking the friend.
-3. **"Why not just use ChatGPT or a moderation API?"** We don't send teens' private messages to a company. Our Guardian is also free, works offline, takes ~5 ms, gives the same answer every time, and every decision shows its evidence (the matched phrase or the classifier's confidence). Judges can read the whole lexicon.
+3. **"Why not just use ChatGPT or OpenAI's moderation API?"** We do use OpenAI's free moderation as an *optional second opinion*, but it can't decide on its own. It flags "are you thinking about killing yourself?" as self-harm because it can't tell who is speaking, and our speaker rules overrule it. We don't send teens' private messages to a company. Our Guardian is also free, works offline, takes ~5 ms, gives the same answer every time, and every decision shows its evidence (the matched phrase or the classifier's confidence). Judges can read the whole lexicon.
 4. **"How do you know your numbers aren't fake?"** `eval/guardian/run_eval.py` regenerates every number from the data in the repo. The data lane's test split was never trained on, and we report the uncomfortable numbers too (82% before training, the emoji robustness dip).
 5. **"What about kids who try to sneak past it ('k1ll mys3lf', 'k i l l')?"** The normalizer undoes leetspeak, spacing, stretching and swapped letters before checking. Without it, only 38% of leetspeak decisions stayed correct; with it, 99% do.

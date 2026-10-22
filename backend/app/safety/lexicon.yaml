@@ -554,6 +554,65 @@ unsafe_friend_line:
     - this is not practice
     - i am a real person
     - this is real life
+    # plans and timing in natural sentences (AI-written replies)
+    - how i would do it
+    - how i would end it
+    - how i am going to do it
+    - how i am going to end it
+    - when i am going to do it
+    - where i would do it
+    - what i would use
+    - i know how i would
+    - i already know how
+    - i know exactly how
+    - thought about how i would
+    - looked up ways
+    - looked up how
+    - researching ways
+    - i have everything i need
+    - i got everything ready
+    - stockpiling
+    - saving up my
+    - end it tonight
+    - end it this weekend
+    - end it soon
+    - i decided when
+    - i set a date
+    # inevitability or suicide as a solution
+    - my mind is made up
+    - i have made up my mind
+    - no one can stop me
+    - nothing can stop me
+    - it is going to happen anyway
+    - it is inevitable
+    - it would end the pain
+    - death would be a relief
+    - dying would be peaceful
+    - it would be peaceful
+    - the only solution
+    - it is the only option
+    - you should try it
+    - it is not that bad to die
+    # graphic detail
+    - veins
+    - deep cut
+    - deep cuts
+    - cuts on my
+    - fresh cuts
+    - bled
+    - bloody
+    # AI refusals and persona breaks
+    - i can not help with that
+    - i can not assist with
+    - i am sorry , but i can not
+    - i am just a chatbot
+    - i am an assistant
+    - virtual assistant
+    - my programming
+    - my guidelines
+    - i am not able to provide
+    - as a language model
+    - i am a real human
 
 # ---------------------------------------------------------------- speaker words
 speaker:

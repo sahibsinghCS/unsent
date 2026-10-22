@@ -28,6 +28,11 @@
   - `eval/guardian/external_check.py` → `safety_external_data_lane.json` (frozen model on the data lane set, before training on it)
 - Tests: `tests/unit/safety/`. There's one normalizer test per rule, plus 53 speaker-awareness pairs. Each pair is checked three ways: risky side flagged, asking side allowed, and allowed by the lexicon alone. Guardian tests cover the tiers, friend lines, fallback, embedder mismatch and fail-safe.
 - `docs/how/safety.md`
+- **v3 (integrator update):**
+  - merged `claude/amazing-carson-31tzo3` (`llm.py`, contracts 1.1)
+  - `safety/moderation.py`: optional OpenAI moderation as supporting evidence only. It supports a local flag, or raises none → concern at self-harm ≥ 0.8 when nothing was allowed. It never pauses or blocks alone. Speaker rules win. Offline behaviour is identical (tested with `llm.register_fake("moderation", ...)`).
+  - `check_friend` covers AI-written free text: plans and timing, inevitability, suicide as relief or solution, graphic detail, AI refusals and persona breaks. Tests: 16 unsafe and 8 safe natural replies.
+  - `eval/guardian/moderation_compare.py` → `safety_moderation.json`: currently "not run (no key)".
 
 ## In progress
 - Nothing. The lane is complete.
@@ -48,7 +53,11 @@
 - **Frontend:** `GuardianResult.evidence` holds readable reasons (matched phrase, or `classifier p(self_risk)=0.83`). These are good for X-ray mode and the "Try the Guardian" box.
 - **Data lane (optional):** more *real-sounding* indirect self-risk phrasings would help. The frozen model missed 18% of the data lane's self-risk rows before training. We'd also like more harm_to_other insults. That's the weakest class: recall 0.81 on test (3 of 16 missed). Concern recall is 0.94 (n=17).
 
+- **Integrator / Sahib:** with `OPENAI_API_KEY` set, run `uv run python eval/guardian/moderation_compare.py` once to fill `safety_moderation.json` (free endpoint).
+- **Engine:** call `check_friend` on every AI-written bubble. Anything other than level "none" means fall back to the bank line.
+
 ## Known issues
+- Moderation adds a network round trip per helper message when a key is set (cached per text). The local p95 of 6.5 ms excludes it. Set `FR_GUARDIAN_MODERATION=0` if demo latency matters.
 - Robustness to emoji: 93% with the normalizer vs 96% without. Emoji tags nudge the classifier on borderline concern and harm messages.
 - The test split was looked at while editing lexicon rules (documented in `docs/how/safety.md`). The clean numbers are the external pre-training check and the holdout.
 - Context beyond the "me too" rule isn't used.
@@ -72,7 +81,8 @@
   - prompt_injection 1.00 (n=10)
   - none 1.00 (n=81)
 - **Latency (CPU):** p50 4.6 ms, p95 6.5 ms
-- **Friend lines flagged:** 0 / 2,206
+- **Friend lines flagged:** 0 / 2,206 (still 0 after the free-text additions)
+- **Moderation comparison:** not run (no key)
 - **Robustness, with vs without normalizer:**
   - leetspeak 0.99 vs 0.38
   - spacing 0.98 vs 0.81

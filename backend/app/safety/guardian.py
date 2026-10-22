@@ -1,6 +1,7 @@
 """SAFETY lane entry point: the real Guardian.
 
-check_user(helper message):  normalize -> speaker-aware lexicon -> trained classifier -> combine.
+check_user(helper message):  normalize -> speaker-aware lexicon -> trained classifier -> combine
+                             (+ optional OpenAI moderation as supporting evidence; see moderation.py).
 check_friend(friend line):   normalize -> unsafe-friend-line lexicon (plans, means, encouragement,
                              graphic detail, persona breaks). Anything flagged is never shown.
 
@@ -12,10 +13,12 @@ the friend line blocked).
 from __future__ import annotations
 
 import logging
+import os
 import threading
 import time
 
 from backend.app.contracts import GuardianResult, Node
+from backend.app.safety import moderation
 from backend.app.safety.lexicon import Hit, get_lexicon
 from backend.app.safety.model import Decision, GuardianModel, Thresholds, decide
 from backend.app.safety.normalizer import normalize
@@ -25,8 +28,21 @@ log = logging.getLogger(__name__)
 
 
 class Guardian:
-    def __init__(self, use_classifier: bool = True, use_lexicon: bool = True) -> None:
+    def __init__(
+        self,
+        use_classifier: bool = True,
+        use_lexicon: bool = True,
+        use_moderation: bool | None = None,
+    ) -> None:
         self.use_classifier, self.use_lexicon = use_classifier, use_lexicon
+        if use_moderation is None:  # optional OpenAI signal; FR_GUARDIAN_MODERATION=0 turns it off
+            use_moderation = os.getenv("FR_GUARDIAN_MODERATION", "1").strip().lower() not in {
+                "0",
+                "false",
+                "no",
+                "off",
+            }
+        self.use_moderation = use_moderation
         self._model: GuardianModel | None = None
         self._model_note = "not loaded"
         self._loaded = False
@@ -85,7 +101,10 @@ class Guardian:
                 lex.allowed.append(Hit("agreement", norm.text, "friend shared nothing risky"))
         model = self.model()
         probs = model.predict_proba([norm.text])[0] if model else None
-        return decide(lex, probs, model.thresholds if model else Thresholds())
+        decision = decide(lex, probs, model.thresholds if model else Thresholds())
+        if self.use_moderation:
+            decision = moderation.combine(decision, lex, moderation.fetch(text))
+        return decision
 
     # ------------------------------------------------------------------ friend lines
     def check_friend(self, text: str) -> GuardianResult:

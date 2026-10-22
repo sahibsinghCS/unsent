@@ -210,9 +210,9 @@ def main() -> None:
     emb_note = f"embedder={embedder.name}"
 
     combined, lex_only, clf_only = (
-        Guardian(),
-        Guardian(use_classifier=False),
-        Guardian(use_lexicon=False),
+        Guardian(use_moderation=False),  # local numbers only; moderation_compare.py covers OpenAI
+        Guardian(use_classifier=False, use_moderation=False),
+        Guardian(use_lexicon=False, use_moderation=False),
     )
     if combined.model() is None:
         emb_note += " (classifier artifact missing: lexicon only)"
