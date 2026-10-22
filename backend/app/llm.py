@@ -9,7 +9,9 @@ What it is used for (and nothing else):
 It is never used in unit tests (fakes) and never to generate datasets (data is written into files).
 
 Every call is cached (same input -> same output), logged (token counts and estimated cost; never message
-text in production) and capped by a daily budget. If the key is missing, the budget is spent, or the API
+text) and capped by a daily budget. Privacy: in production (FR_ENV=prod) the cache lives only in memory and
+expires with the session TTL (60 min), so nothing derived from a conversation is written to disk. In
+development it is a disk cache under .cache/llm/ (gitignored) for repeatable tests and demos. If the key is missing, the budget is spent, or the API
 fails, calls raise LLMUnavailable and callers fall back to local behaviour (e.g. the reviewed line bank).
 """
 
@@ -26,7 +28,7 @@ from typing import Any, TypeVar
 
 from pydantic import BaseModel, ValidationError
 
-from backend.app.config import ROOT, env_flag, is_prod
+from backend.app.config import ROOT, env_flag, is_prod, session_ttl_seconds
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -143,7 +145,28 @@ def _cache_key(payload: dict[str, Any]) -> str:
     ).hexdigest()
 
 
+def cache_mode() -> str:
+    """'disk' (dev default: repeatable tests and demos), 'memory' (prod default: nothing written to disk,
+    entries expire with the session TTL) or 'off'. Override with FR_LLM_CACHE."""
+    mode = os.getenv("FR_LLM_CACHE", "").strip().lower()
+    if mode in {"disk", "memory", "off"}:
+        return mode
+    return "memory" if is_prod() else "disk"
+
+
+_memory_cache: dict[str, tuple[float, dict]] = {}
+
+
 def _cache_get(key: str) -> dict | None:
+    mode = cache_mode()
+    if mode == "off":
+        return None
+    if mode == "memory":
+        item = _memory_cache.get(key)
+        if item is None or time.time() - item[0] > session_ttl_seconds():
+            _memory_cache.pop(key, None)
+            return None
+        return item[1]
     path = CACHE_DIR / key[:2] / f"{key}.json"
     if path.exists():
         try:
@@ -154,6 +177,15 @@ def _cache_get(key: str) -> dict | None:
 
 
 def _cache_put(key: str, value: dict) -> None:
+    mode = cache_mode()
+    if mode == "off":
+        return
+    if mode == "memory":
+        cutoff = time.time() - session_ttl_seconds()
+        for stale in [k for k, (ts, _) in _memory_cache.items() if ts < cutoff]:
+            del _memory_cache[stale]
+        _memory_cache[key] = (time.time(), value)
+        return
     path = CACHE_DIR / key[:2] / f"{key}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
@@ -241,7 +273,6 @@ def chat_json(
             "tokens_out": tokens_out,
             "est_cost_usd": (tokens_in * price_in + tokens_out * price_out) / 1_000_000,
             "latency_ms": round(latency_ms),
-            **({} if is_prod() else {"chars_out": len(content)}),
         }
     )
     try:
