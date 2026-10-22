@@ -66,7 +66,7 @@ Three adjustments:
 - **Hysteresis:** the friend only drops a level if trust falls **15 below** the current level's threshold (e.g. level 2 starts at 45, so it drops only below 30). Without it, the friend would flicker between "open" and "closed" when trust wobbles around a threshold.
 
 ### 4. Silence ("left on Seen")
-The friend doesn't reply this turn if trust dropped by **15 or more**, or if trust is **below 20 and didn't go up**. Silence is not the end: apologizing and validating raise trust and the friend starts answering again.
+The friend doesn't reply this turn if trust dropped by **15 or more**, or if trust is **below 20 and the message was hurtful** (dismissive, advice-dumping or promising secrecy). The slow −2 drift alone never causes silence: a caring message the detector didn't recognize still gets a short, guarded reply. Silence is not the end: apologizing and validating raise trust and the friend starts answering again.
 
 Two exceptions, on purpose:
 - **Promising secrecy is answered** ("ok good. please dont tell anyone"): it feels like relief to the friend in the moment, which is exactly why it's a trap. The cost shows up in trust and in the feedback.

@@ -19,6 +19,7 @@ REFERRAL_LABELS = frozenset({SkillLabel.REFERRED_ADULT, SkillLabel.REFERRED_988}
 ENDED = ("ended_success", "ended_fail")
 SECRECY_ONLY = frozenset({SkillLabel.PROMISED_SECRECY})
 HARSH_LABELS = frozenset({SkillLabel.DISMISSED, SkillLabel.ADVICE_DUMP})
+NEGATIVE = frozenset({SkillLabel.DISMISSED, SkillLabel.ADVICE_DUMP, SkillLabel.PROMISED_SECRECY})
 
 
 @dataclass(frozen=True)
@@ -184,7 +185,7 @@ def update(
     # A promise of secrecy feels like relief to the friend in the moment (that's the trap), so the friend
     # answers instead of going silent; the cost shows up in trust and in the feedback.
     no_silence = broke_secret or bool(active & SECRECY_ONLY and not active & HARSH_LABELS)
-    status = _status(state, trust, delta, level, turn, cfg, no_silence)
+    status = _status(state, trust, delta, level, turn, cfg, no_silence, bool(active & NEGATIVE))
     return State(
         trust=round(trust, 4),
         level=level,
@@ -204,11 +205,14 @@ def _status(
     turn: int,
     cfg: EngineConfig,
     no_silence: bool = False,
+    negative: bool = False,
 ):
     """Priority: success > fail (trust < fail_floor on 2 turns in a row, or out of turns) > silent > active.
 
     Never silent when a secret is promised (it feels like relief in the moment) or broken (the friend
     reacts: "you promised..."), because those moments teach more than being left on Seen.
+    Silence needs a big drop, or low trust plus something hurtful (dismissed / advice_dump /
+    promised_secrecy): decay alone never leaves a caring-but-undetected message on Seen.
     """
     if level == 4:
         return "ended_success"
@@ -218,7 +222,7 @@ def _status(
         return "ended_fail"
     if no_silence:
         return "active"
-    if delta <= -cfg.silence_drop or (trust < cfg.silence_floor and delta <= 0):
+    if delta <= -cfg.silence_drop or (trust < cfg.silence_floor and negative):
         return "silent"
     return "active"
 
