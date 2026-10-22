@@ -34,6 +34,7 @@ async function run(device) {
   page.on('console', (m) => m.type() === 'error' && !/Failed to load resource/.test(m.text()) && errors.push(m.text()));
 
   const shot = async (name, opts = {}) => {
+    if (opts.full) await page.evaluate(() => window.scrollTo(0, 0)); // keep the sticky header at the top
     await page.waitForTimeout(450); // let charts and pop-in animations settle
     await page.screenshot({ path: `${OUT}${name}-${device}.png`, fullPage: opts.full ?? false });
     log(`${name}-${device}.png`);
@@ -181,7 +182,26 @@ async function run(device) {
   await page.getByTestId('guardian-box').scrollIntoViewIfNeeded();
   await shot('19-how-guardian');
 
-  // 13. Privacy, 404, Spanish + dark mode
+  // 13. End states: a warm success and a gentle fail (fresh sessions, typed through the UI)
+  const fresh = async (scenario) => {
+    const view = await page.request.post(`${BASE}/api/sessions`, { data: { scenario_id: scenario, locale: 'en', country: 'US' } }).then((r) => r.json());
+    await page.goto(`${BASE}/chat/${view.session_id}`);
+    await page.getByTestId('composer').waitFor();
+  };
+  await fresh('failing-chem');
+  await send('hey are you ok? you seemed really off today');
+  await send('that sounds really hard. are you thinking about killing yourself?');
+  await send("i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you");
+  await send("i'm here. we can call 988 together and i'll check on you tonight");
+  await page.getByTestId('end-success').waitFor();
+  await shot('24-chat-success');
+  await fresh('new-school');
+  await send('lol you will be fine');
+  await send("lol don't say that");
+  await page.getByTestId('end-fail').waitFor();
+  await shot('25-chat-fail');
+
+  // 14. Privacy, 404, Spanish + dark mode
   await page.goto(`${BASE}/privacy`);
   await shot('20-privacy');
   await page.goto(`${BASE}/nope`);

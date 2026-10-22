@@ -1,6 +1,6 @@
 import { ApiError, api, request } from '../api/client';
 
-function mockFetch(impl: () => Promise<Partial<Response>>) {
+function mockFetch(impl: (...args: unknown[]) => Promise<Partial<Response>>) {
   const fn = vi.fn(impl);
   vi.stubGlobal('fetch', fn);
   return fn;

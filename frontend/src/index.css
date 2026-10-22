@@ -18,9 +18,9 @@
     --brand: 15 118 110;
     --brand-soft: 213 238 233;
     --brand-ink: 255 255 255;
-    --warm: 214 92 72;
+    --warm: 194 70 50;
     --warm-soft: 252 228 220;
-    --good: 21 128 61;
+    --good: 20 112 54;
     --good-soft: 220 245 228;
     --bad: 190 40 40;
     --bad-soft: 253 226 226;
@@ -44,7 +44,7 @@
     --good-soft: 20 60 38;
     --bad: 248 113 113;
     --bad-soft: 72 26 26;
-    --bubble-me: 20 140 128;
+    --bubble-me: 16 112 104;
     --bubble-them: 38 50 53;
     color-scheme: dark;
   }

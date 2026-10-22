@@ -9,8 +9,16 @@
     "theme_light": "Switch to light mode",
     "menu": "Menu",
     "footer": "FirstReply is a practice tool, not a crisis service. In immediate danger, call 911. In the US, call or text 988 any time.",
-    "footer_links": { "real": "If it's real", "how": "How it works", "privacy": "Privacy" },
-    "nav": { "practice": "Practice", "how": "How it works", "privacy": "Privacy" },
+    "footer_links": {
+      "real": "If it's real",
+      "how": "How it works",
+      "privacy": "Privacy"
+    },
+    "nav": {
+      "practice": "Practice",
+      "how": "How it works",
+      "privacy": "Privacy"
+    },
     "loading": "Loading…",
     "retry": "Try again",
     "back": "Back",
@@ -28,9 +36,18 @@
     "stat_kicker": "The first person they tell is usually a friend.",
     "features_title": "Nobody teaches us what to say. So practice it.",
     "features": {
-      "practice": { "title": "Practice", "body": "Text a realistic friend who opens up in layers, but only if you listen, validate and ask directly." },
-      "feedback": { "title": "Feedback", "body": "See your trust graph, the exact words that helped or hurt, and better replies that were checked before you see them." },
-      "safety": { "title": "Safety first", "body": "Every message is checked by our Guardian first. Real help is one tap away on every screen, and nothing is stored." }
+      "practice": {
+        "title": "Practice",
+        "body": "Text a realistic friend who opens up in layers, but only if you listen, validate and ask directly."
+      },
+      "feedback": {
+        "title": "Feedback",
+        "body": "See your trust graph, the exact words that helped or hurt, and better replies that were checked before you see them."
+      },
+      "safety": {
+        "title": "Safety first",
+        "body": "Every message is checked by our Guardian first. Real help is one tap away on every screen, and nothing is stored."
+      }
     },
     "demo": {
       "friend1": "honestly idk why i even bother anymore",
@@ -83,7 +100,13 @@
     "trust_graph_desc": "Trust starts at {start} and is now {now}.",
     "turn": "Turn {n}",
     "ladder": "How much they've shared",
-    "levels": ["Surface", "Stress", "Hopeless", "Thoughts of suicide", "Open to help"],
+    "levels": [
+      "Surface",
+      "Stress",
+      "Hopeless",
+      "Thoughts of suicide",
+      "Open to help"
+    ],
     "skills": "Skills you've used",
     "skills_hint": "Chips light up when our skill detector notices them.",
     "error_send": "Message not sent.",
@@ -200,7 +223,13 @@
   },
   "real": {
     "country": "Where are you?",
-    "countries": { "US": "United States", "CA": "Canada", "GB": "United Kingdom", "AU": "Australia", "other": "Somewhere else" },
+    "countries": {
+      "US": "United States",
+      "CA": "Canada",
+      "GB": "United Kingdom",
+      "AU": "Australia",
+      "other": "Somewhere else"
+    },
     "call": "Call {number}",
     "text": "Text {number}",
     "emergency": "Immediate danger? Call {number}",
@@ -216,20 +245,47 @@
     "sub": "No chatbot improvises here. Every word the friend can say is written in advance and checked by code. The intelligence is our own trained models, rules and algorithms, running locally for free.",
     "pipeline_title": "What happens when you hit Send",
     "pipeline": {
-      "you": { "name": "Your message", "desc": "typed by you, the helper" },
-      "guardian": { "name": "Guardian", "desc": "safety check first, under 50 ms" },
-      "skills": { "name": "Skill detector", "desc": "two trained models, 10 labels" },
-      "engine": { "name": "State engine", "desc": "trust 0–100, disclosure 0–4" },
-      "lines": { "name": "Line bank", "desc": "pre-written, reviewed replies" },
-      "verifier": { "name": "Verifier", "desc": "fact gating, no repeats" },
-      "friend": { "name": "Friend replies", "desc": "plus X-ray data for you" }
+      "you": {
+        "name": "Your message",
+        "desc": "typed by you"
+      },
+      "guardian": {
+        "name": "Guardian",
+        "desc": "safety check, < 50 ms"
+      },
+      "skills": {
+        "name": "Skill detector",
+        "desc": "2 trained models"
+      },
+      "engine": {
+        "name": "State engine",
+        "desc": "trust 0–100, levels 0–4"
+      },
+      "lines": {
+        "name": "Line bank",
+        "desc": "pre-written, reviewed"
+      },
+      "verifier": {
+        "name": "Verifier",
+        "desc": "facts gated, no repeats"
+      },
+      "friend": {
+        "name": "Friend replies",
+        "desc": "+ X-ray data for you"
+      }
     },
     "status_title": "Live component status",
     "real": "trained",
     "stub": "placeholder",
     "metrics_title": "Measured numbers",
     "metrics_empty": "No evaluation reports yet. Numbers appear here as each part is trained and tested.",
-    "metric_cols": { "lane": "Part", "metric": "Metric", "value": "Value", "n": "n", "split": "Split" },
+    "metric_cols": {
+      "lane": "Part",
+      "metric": "Metric",
+      "value": "Value",
+      "n": "n",
+      "split": "Split"
+    },
     "does_title": "What the AI does",
     "does": [
       "Detects 10 helping and hurting behaviours in your message, with calibrated probabilities.",

@@ -1,5 +1,8 @@
 {
-  "_meta": { "needs_native_review": true, "note": "Spanish UI strings drafted by an agent. A native speaker must review before release." },
+  "_meta": {
+    "needs_native_review": true,
+    "note": "Spanish UI strings drafted by an agent. A native speaker must review before release."
+  },
   "app": {
     "name": "FirstReply",
     "tagline": "Practica el mensaje que podría salvar la vida de un amigo.",
@@ -10,8 +13,16 @@
     "theme_light": "Cambiar a modo claro",
     "menu": "Menú",
     "footer": "FirstReply es una herramienta de práctica, no un servicio de crisis. Si hay peligro inmediato, llama al 911. En EE. UU., llama o escribe al 988 a cualquier hora.",
-    "footer_links": { "real": "Si es real", "how": "Cómo funciona", "privacy": "Privacidad" },
-    "nav": { "practice": "Practicar", "how": "Cómo funciona", "privacy": "Privacidad" },
+    "footer_links": {
+      "real": "Si es real",
+      "how": "Cómo funciona",
+      "privacy": "Privacidad"
+    },
+    "nav": {
+      "practice": "Practicar",
+      "how": "Cómo funciona",
+      "privacy": "Privacidad"
+    },
     "loading": "Cargando…",
     "retry": "Reintentar",
     "back": "Volver",
@@ -29,9 +40,18 @@
     "stat_kicker": "La primera persona a quien se lo cuentan suele ser un amigo.",
     "features_title": "Nadie nos enseña qué decir. Así que practícalo.",
     "features": {
-      "practice": { "title": "Practica", "body": "Escríbele a un amigo realista que se abre poco a poco, pero solo si escuchas, validas y preguntas directamente." },
-      "feedback": { "title": "Comentarios", "body": "Mira tu gráfica de confianza, las palabras exactas que ayudaron o dañaron y mejores respuestas verificadas." },
-      "safety": { "title": "La seguridad primero", "body": "Nuestro Guardián revisa cada mensaje primero. La ayuda real está a un toque en cada pantalla y no se guarda nada." }
+      "practice": {
+        "title": "Practica",
+        "body": "Escríbele a un amigo realista que se abre poco a poco, pero solo si escuchas, validas y preguntas directamente."
+      },
+      "feedback": {
+        "title": "Comentarios",
+        "body": "Mira tu gráfica de confianza, las palabras exactas que ayudaron o dañaron y mejores respuestas verificadas."
+      },
+      "safety": {
+        "title": "La seguridad primero",
+        "body": "Nuestro Guardián revisa cada mensaje primero. La ayuda real está a un toque en cada pantalla y no se guarda nada."
+      }
     },
     "demo": {
       "friend1": "la verdad no sé ni para qué me esfuerzo ya",
@@ -84,7 +104,13 @@
     "trust_graph_desc": "La confianza empezó en {start} y ahora es {now}.",
     "turn": "Turno {n}",
     "ladder": "Cuánto te ha contado",
-    "levels": ["Superficie", "Estrés", "Desesperanza", "Pensamientos de suicidio", "Abierto a recibir ayuda"],
+    "levels": [
+      "Superficie",
+      "Estrés",
+      "Desesperanza",
+      "Pensamientos de suicidio",
+      "Abierto a recibir ayuda"
+    ],
     "skills": "Habilidades que usaste",
     "skills_hint": "Se iluminan cuando nuestro detector las nota.",
     "error_send": "No se envió el mensaje.",
@@ -201,7 +227,13 @@
   },
   "real": {
     "country": "¿Dónde estás?",
-    "countries": { "US": "Estados Unidos", "CA": "Canadá", "GB": "Reino Unido", "AU": "Australia", "other": "Otro lugar" },
+    "countries": {
+      "US": "Estados Unidos",
+      "CA": "Canadá",
+      "GB": "Reino Unido",
+      "AU": "Australia",
+      "other": "Otro lugar"
+    },
     "call": "Llamar al {number}",
     "text": "Escribir al {number}",
     "emergency": "¿Peligro inmediato? Llama al {number}",
@@ -217,20 +249,47 @@
     "sub": "Aquí ningún chatbot improvisa. Cada palabra del amigo está escrita de antemano y verificada por código. La inteligencia son nuestros propios modelos, reglas y algoritmos, que corren localmente y gratis.",
     "pipeline_title": "Qué pasa cuando tocas Enviar",
     "pipeline": {
-      "you": { "name": "Tu mensaje", "desc": "lo escribes tú, quien ayuda" },
-      "guardian": { "name": "Guardián", "desc": "primero seguridad, menos de 50 ms" },
-      "skills": { "name": "Detector", "desc": "dos modelos entrenados, 10 etiquetas" },
-      "engine": { "name": "Motor de estado", "desc": "confianza 0–100, apertura 0–4" },
-      "lines": { "name": "Banco de líneas", "desc": "respuestas escritas y revisadas" },
-      "verifier": { "name": "Verificador", "desc": "control de datos, sin repetir" },
-      "friend": { "name": "Responde el amigo", "desc": "y datos de rayos X para ti" }
+      "you": {
+        "name": "Tu mensaje",
+        "desc": "lo escribes tú"
+      },
+      "guardian": {
+        "name": "Guardián",
+        "desc": "seguridad, < 50 ms"
+      },
+      "skills": {
+        "name": "Detector",
+        "desc": "2 modelos entrenados"
+      },
+      "engine": {
+        "name": "Motor de estado",
+        "desc": "confianza, niveles 0–4"
+      },
+      "lines": {
+        "name": "Banco de líneas",
+        "desc": "escritas y revisadas"
+      },
+      "verifier": {
+        "name": "Verificador",
+        "desc": "datos controlados"
+      },
+      "friend": {
+        "name": "Responde el amigo",
+        "desc": "+ datos de rayos X"
+      }
     },
     "status_title": "Estado de los componentes",
     "real": "entrenado",
     "stub": "provisional",
     "metrics_title": "Números medidos",
     "metrics_empty": "Aún no hay informes de evaluación. Los números aparecerán aquí a medida que se entrene y pruebe cada parte.",
-    "metric_cols": { "lane": "Parte", "metric": "Métrica", "value": "Valor", "n": "n", "split": "Conjunto" },
+    "metric_cols": {
+      "lane": "Parte",
+      "metric": "Métrica",
+      "value": "Valor",
+      "n": "n",
+      "split": "Conjunto"
+    },
     "does_title": "Lo que hace la IA",
     "does": [
       "Detecta 10 conductas que ayudan o dañan en tu mensaje, con probabilidades calibradas.",
