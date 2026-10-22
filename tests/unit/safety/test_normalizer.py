@@ -28,6 +28,8 @@ def test_leetspeak():
     assert normalize("$uicide").text == "suicide"
     assert normalize("w4nt t0 d1e").text == "want to die"
     assert normalize("ky$").text == "kys"
+    assert normalize("1 h0p3 y0u").text == "i hope you"
+    assert normalize("i have 1 dog").text == "i have 1 dog"
 
 
 def test_numbers_without_letters_are_not_leetspeak():
@@ -79,6 +81,13 @@ def test_common_misspellings():
     assert normalize("suiside").text == "suicide"
     assert normalize("myslef").text == "myself"
     assert normalize("urself").text == "yourself"
+
+
+def test_swapped_letters_fixed_only_into_lexicon_words():
+    out = normalize("i wnat to be daed")
+    assert out.text == "i want to be dead"
+    assert "fixed swapped letters" in out.notes
+    assert normalize("the frmo team").text == "the frmo team"  # not a lexicon word: untouched
 
 
 def test_texting_shorthand():

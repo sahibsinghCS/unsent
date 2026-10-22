@@ -14,6 +14,10 @@ from __future__ import annotations
 import re
 import unicodedata
 from dataclasses import dataclass, field
+from functools import lru_cache
+from pathlib import Path
+
+import yaml
 
 ZERO_WIDTH = re.compile("[​-‏⁠-⁤﻿­͏︀-️]")
 QUOTES = str.maketrans({"‘": "'", "’": "'", "‚": "'", "′": "'", "`": "'",
@@ -165,14 +169,20 @@ def normalize(text: str) -> Normalized:
 
     deleeted = [(lead, _deleet_token(core), trail) for lead, core, trail in tokens]
     if deleeted != tokens:
+        # in a leetspeak message a lone "1" is the word "i" ("1 h0p3 y0u ...")
+        deleeted = [(ld, "i" if c == "1" else c, tr) for ld, c, tr in deleeted]
         out.notes.append("leetspeak -> letters")
 
     squeezed = [(lead, re.sub(r"([a-z])\1{2,}", r"\1\1", core), tr) for lead, core, tr in deleeted]
     if squeezed != deleeted:
         out.notes.append("shortened stretched letters")
 
+    fixed = [(lead, _fix_swap(core), trail) for lead, core, trail in squeezed]
+    if fixed != squeezed:
+        out.notes.append("fixed swapped letters")
+
     words, mapped = [], False
-    for lead, core, trail in squeezed:
+    for lead, core, trail in fixed:
         canon = WORD_MAP.get(core)
         if canon is None and re.fullmatch(r"[a-z]*([a-z])\1[a-z]*", core or "-"):
             canon = WORD_MAP.get(re.sub(r"([a-z])\1", r"\1", core))  # "suiciidde" -> "suicide"
@@ -187,6 +197,45 @@ def normalize(text: str) -> Normalized:
     t = re.sub(r"([?!.,;¿¡])", r" \1 ", t)  # punctuation as its own token
     out.text = re.sub(r"\s+", " ", t).strip()
     return out
+
+
+@lru_cache(maxsize=1)
+def _vocab() -> frozenset[str]:
+    """Every word used in lexicon.yaml (plus canonical slang), for the swapped-letter fix."""
+    data = yaml.safe_load(Path(__file__).with_name("lexicon.yaml").read_text(encoding="utf-8"))
+    words: set[str] = set()
+
+    def walk(node) -> None:
+        if isinstance(node, dict):
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for item in node:
+                walk(item)
+        elif isinstance(node, str):
+            words.update(fold_accents(node.lower()).replace("'", "").split())
+
+    walk(data)
+    words.update(w for v in WORD_MAP.values() for w in v.split())
+    return frozenset(w for w in words if w.isalpha())
+
+
+def _fix_swap(word: str) -> str:
+    """'wnat' -> 'want', 'siucidarme' -> 'suicidarme': one swapped pair of neighbouring letters.
+
+    Only for words of 4+ letters that are not lexicon words already, and only if the swap turns
+    them INTO a lexicon word, so ordinary words are left alone.
+    """
+    if len(word) < 4 or not word.isalpha():
+        return word
+    vocab = _vocab()
+    if word in vocab or word in WORD_MAP:
+        return word
+    for k in range(len(word) - 1):
+        candidate = word[:k] + word[k + 1] + word[k] + word[k + 2 :]
+        if candidate in vocab:
+            return candidate
+    return word
 
 
 def squeeze(text: str) -> str:

@@ -30,9 +30,9 @@
     "asking_fpr": 0.02
   },
   "sklearn": "1.9.1",
-  "train_seconds": 4.4,
+  "train_seconds": 3.9,
   "size_kb": 90.4,
-  "created": "2026-10-22T22:56:57+00:00",
+  "created": "2026-10-22T23:00:52+00:00",
   "thresholds": {
     "crisis": 0.8,
     "concern": 0.85,
