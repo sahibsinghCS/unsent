@@ -166,6 +166,9 @@ Python 3.11, FastAPI, SQLite, sentence-transformers, scikit-learn, numpy/pandas,
 
 ---
 
+## Build plan
+- `PLAN_WORKTREES.md`: the parallel build plan (worktrees, lanes, tools, mission prompts, merge protocol, schedule)
+
 ## Related research files
 - `research/CAC_2026_WINNING_IDEAS.md`: rules, rubric, IL-11 winners, round-1 ideas
 - `research/CAC_2026_IDEAS_ROUND2.md`: round-2 ideas
