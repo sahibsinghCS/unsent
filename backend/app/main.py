@@ -6,6 +6,10 @@ Run locally:  make dev        (real components where implemented)
 
 from __future__ import annotations
 
+import logging
+import os
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -37,12 +41,36 @@ class SPAStaticFiles(StaticFiles):
         return response
 
 
+def warm_up() -> None:
+    """Load every model once at startup, so the first real message isn't slow (FR_WARMUP=0 skips)."""
+    from backend.app import embed, services
+
+    try:
+        services.status()  # imports every component and loads its artifacts
+        embed.embed(["warm up"])
+        services.guardian().check_user("warm up", [])
+        services.skills().predict("warm up", [])
+    except Exception:  # warm-up must never stop the server from starting
+        logging.getLogger("firstreply").exception("warm-up failed (continuing)")
+    on_startup = getattr(ops, "on_startup", None)  # DEPLOY lane hook
+    if callable(on_startup):
+        on_startup()
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    if os.getenv("FR_WARMUP", "1") != "0":
+        warm_up()
+    yield
+
+
 def mount_frontend(app: FastAPI, directory: Path) -> None:
     """Mount the built frontend at / (after the API routes, so /api/* always wins)."""
     app.mount("/", SPAStaticFiles(directory=directory, html=True), name="frontend")
 
 
 app = FastAPI(
+    lifespan=lifespan,
     title="FirstReply API",
     version=CONTRACTS_VERSION,
     description=(

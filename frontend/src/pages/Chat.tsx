@@ -1,0 +1,420 @@
+/**
+ * The practice chat. The conversation is the server's root → head path (SessionView.nodes); every
+ * turn appends the nodes from the TurnResponse. Friend bubbles are revealed one at a time behind a
+ * typing indicator. X-ray mode shows the Guardian, skill probabilities and trust math per message.
+ */
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ApiError, api } from '../api/client';
+import type { Node, SessionView } from '../api/models';
+import { Icon } from '../components/Icon';
+import { Bubble, ContactHeader, PhoneFrame, TypingDots } from '../components/Phone';
+import { DisclosureLadder, SkillChips } from '../components/Progress';
+import { BlockedCard, CrisisModal } from '../components/Safety';
+import { ErrorBox, Spinner } from '../components/Status';
+import { TreeDrawer } from '../components/TreeDrawer';
+import { TrustChart } from '../components/TrustChart';
+import { XrayFriend, XrayHelper } from '../components/Xray';
+import { usePrefs } from '../i18n';
+import { isEnded, labelsSeen, trustPoints } from '../lib/conversation';
+import { scenarioById } from '../lib/scenarios';
+import { load, save } from '../lib/storage';
+import { signed } from '../lib/trustMath';
+import { prefersReducedMotion, typingDelay } from '../lib/typingDelay';
+
+const MAX_CHARS = 500;
+const SEEN_DELAY_MS = 900;
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Which friend node is mid-reveal and how many of its bubbles are visible so far. */
+type Reveal = { id: string; shown: number } | null;
+
+export function Chat() {
+  const { sessionId = '' } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { t } = usePrefs();
+
+  const [view, setView] = useState<SessionView | null>(null);
+  const [loadError, setLoadError] = useState<ApiError | null>(null);
+  const [name, setName] = useState('');
+  const [reveal, setReveal] = useState<Reveal>(null);
+  const [typing, setTyping] = useState(false);
+  const [pendingText, setPendingText] = useState<string | null>(null);
+  // What-if "Try this in the chat" hands over a suggested reply through router state.
+  const [draft, setDraft] = useState<string>(() => (location.state as { draft?: string } | null)?.draft ?? '');
+  const [sendError, setSendError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [xray, setXray] = useState(() => load('fr.xray') === '1');
+  const [selected, setSelected] = useState<string | null>(null);
+  const [treeOpen, setTreeOpen] = useState(false);
+
+  const animation = useRef(0); // bumping this cancels an in-progress reveal
+  const scroller = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
+
+  const loadSession = useCallback(() => {
+    setLoadError(null);
+    api.session(sessionId).then(
+      (v) => {
+        setView(v);
+        scenarioById(v.scenario_id).then((s) => setName(s?.persona_name ?? ''), () => undefined);
+      },
+      (e: ApiError) => setLoadError(e),
+    );
+  }, [sessionId]);
+  useEffect(loadSession, [loadSession]);
+  useEffect(() => () => void animation.current++, []);
+
+  const nodes = useMemo(() => view?.nodes ?? [], [view]);
+  const last = nodes[nodes.length - 1];
+  const status = last?.state_after.status;
+  const ended = isEnded(status);
+  const crisisNode = status === 'paused_crisis' && last?.role === 'system' ? last : null;
+  const points = useMemo(() => trustPoints(nodes), [nodes]);
+  const { seen, latest } = useMemo(() => labelsSeen(nodes), [nodes]);
+  const friendName = name || '…';
+
+  // Keep the newest message in view.
+  useEffect(() => {
+    const el = scroller.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+  }, [nodes.length, reveal, typing, pendingText, xray, selected]);
+
+  /** Reveal a friend reply bubble by bubble, each after its own typing delay. */
+  async function animateFriend(node: Node) {
+    const token = ++animation.current;
+    const reduced = prefersReducedMotion();
+    if (node.seen_no_reply || node.bubbles.length === 0) {
+      setReveal({ id: node.id, shown: 0 });
+      await sleep(reduced ? 0 : SEEN_DELAY_MS);
+    } else {
+      for (let i = 0; i < node.bubbles.length; i++) {
+        if (token !== animation.current) return;
+        setReveal({ id: node.id, shown: i });
+        setTyping(true);
+        await sleep(typingDelay(node.bubbles[i], reduced));
+      }
+    }
+    if (token !== animation.current) return;
+    setReveal(null);
+    setTyping(false);
+  }
+
+  async function send() {
+    const text = draft.trim();
+    if (!text || busy || ended || crisisNode) return;
+    setBusy(true);
+    setSendError(null);
+    setSelected(null);
+    setPendingText(text);
+    setDraft('');
+    setTyping(true);
+    try {
+      const turn = await api.send(sessionId, text);
+      const added = [turn.user_node, turn.friend_node, turn.system_node].filter((n): n is Node => !!n);
+      if (turn.friend_node) setReveal({ id: turn.friend_node.id, shown: 0 });
+      else setTyping(false);
+      setView((v) => v && { ...v, head_id: added[added.length - 1].id, state: turn.state_after, nodes: [...v.nodes, ...added] });
+      setPendingText(null);
+      if (turn.friend_node) await animateFriend(turn.friend_node);
+    } catch (e) {
+      const error = e as ApiError;
+      setTyping(false);
+      setPendingText(null);
+      setDraft(text);
+      setSendError(`${t('chat.error_send')} ${error.message}`);
+      if (error.status === 404) setLoadError(error);
+    } finally {
+      setBusy(false);
+      input.current?.focus();
+    }
+  }
+
+  async function rewindTo(nodeId: string, prefill?: string) {
+    animation.current++;
+    setBusy(true);
+    setSendError(null);
+    try {
+      const v = await api.rewind(sessionId, nodeId);
+      setView(v);
+      setReveal(null);
+      setTyping(false);
+      setSelected(null);
+      setTreeOpen(false);
+      if (prefill !== undefined) setDraft(prefill);
+      setTimeout(() => input.current?.focus(), 0);
+    } catch (e) {
+      setSendError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
+      event.preventDefault();
+      void send();
+    }
+  }
+
+  function toggleXray() {
+    setXray((on) => {
+      save('fr.xray', on ? '0' : '1');
+      return !on;
+    });
+  }
+
+  if (loadError) {
+    return loadError.status === 404 ? (
+      <div className="mx-auto max-w-md px-4 py-16 text-center">
+        <p className="text-lg font-semibold">{t('errors.session_gone')}</p>
+        <Link to="/practice" className="btn-primary mt-6">
+          {t('feedback.new_scenario')}
+        </Link>
+      </div>
+    ) : (
+      <ErrorBox message={loadError.message} onRetry={loadSession} />
+    );
+  }
+  if (!view) return <Spinner />;
+
+  const trustNow = points[points.length - 1]?.trust ?? 0;
+  const lastDelta = points.length > 1 ? points[points.length - 1].delta : 0;
+
+  /** Render one node of the path. */
+  function renderNode(node: Node, idx: number) {
+    const prev = nodes[idx - 1] ?? null;
+    const next = nodes[idx + 1] ?? null;
+
+    if (node.role === 'friend') {
+      if (node.seen_no_reply) return null; // shown as "Seen" under the helper's message
+      const shown = reveal?.id === node.id ? reveal.shown : node.bubbles.length;
+      return (
+        <div className="space-y-1">
+          {node.bubbles.slice(0, shown).map((b, i) => (
+            <Bubble key={i} tail={i === shown - 1}>
+              {b}
+            </Bubble>
+          ))}
+          {xray && idx > 0 && shown === node.bubbles.length && <XrayFriend node={node} />}
+        </div>
+      );
+    }
+
+    if (node.role === 'system') {
+      if (prev?.guardian?.action === 'block_message') return <BlockedCard message={node.bubbles[0]} />;
+      return (
+        <p className="mx-auto w-fit rounded-full bg-warm-soft px-3 py-1 text-xs font-medium text-ink" role="note">
+          {t('chat.crisis.title')}
+        </p>
+      );
+    }
+
+    // Helper (user) message
+    const blocked = node.guardian?.action === 'block_message';
+    const paused = node.guardian?.action === 'pause_roleplay';
+    const concern = node.guardian?.action === 'show_resources';
+    const showSeen = next?.seen_no_reply && reveal?.id !== next.id;
+    const canRewind = !blocked && !paused && !!node.parent_id;
+    return (
+      <div className="space-y-1">
+        <div className="flex justify-end">
+          <button
+            type="button"
+            disabled={!canRewind || busy}
+            onClick={() => setSelected(selected === node.id ? null : node.id)}
+            aria-expanded={canRewind ? selected === node.id : undefined}
+            aria-label={`${t('chat.you')}: ${node.bubbles[0]}`}
+            className={`max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md px-3.5 py-2 text-left text-[15px] leading-snug text-white animate-pop-in disabled:cursor-default ${
+              blocked ? 'bg-me/45 line-through decoration-white/60' : 'bg-me hover:brightness-110'
+            } ${selected === node.id ? 'ring-2 ring-warm ring-offset-2 ring-offset-surface' : ''}`}
+          >
+            {node.bubbles[0]}
+          </button>
+        </div>
+        {selected === node.id && (
+          <div className="flex justify-end gap-2 animate-pop-in">
+            <button type="button" className="btn-ghost px-3 py-1.5 text-xs" onClick={() => rewindTo(node.parent_id!, node.bubbles[0])} data-testid="rewind-here">
+              <Icon name="rewind" className="h-3.5 w-3.5" />
+              {busy ? t('chat.rewinding') : t('chat.rewind')}
+            </button>
+          </div>
+        )}
+        {showSeen && (
+          <p className="pr-1 text-right text-[11px] font-medium text-muted animate-pop-in" data-testid="seen">
+            {t('chat.seen')}
+          </p>
+        )}
+        {concern && <p className="ml-auto max-w-[80%] text-right text-xs text-muted">{t('chat.concern')}</p>}
+        {xray && (node.guardian || node.events) && <XrayHelper node={node} before={prev?.state_after ?? null} />}
+        {xray && showSeen && next && <div className="flex justify-start"><XrayFriend node={next} /></div>}
+      </div>
+    );
+  }
+
+  const header = (
+    <ContactHeader
+      name={friendName}
+      sub={
+        typing ? (
+          <span className="text-brand">{t('chat.typing', { name: friendName })}…</span>
+        ) : (
+          <span>
+            {t('chat.trust')} <span className="mono-num font-semibold text-ink">{Math.round(trustNow)}</span>
+          </span>
+        )
+      }
+      right={
+        <div className="flex items-center gap-1">
+          <button type="button" onClick={() => setTreeOpen(true)} className="rounded-full p-2 text-muted hover:bg-sunken hover:text-ink" aria-label={t('chat.branches')} title={t('chat.branches')}>
+            <Icon name="branch" className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={xray}
+            onClick={toggleXray}
+            title={xray ? t('chat.xray_off') : t('chat.xray_on')}
+            className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition ${
+              xray ? 'border-brand bg-brand text-brand-ink' : 'border-line text-muted hover:text-ink'
+            }`}
+            data-testid="xray-toggle"
+          >
+            <Icon name="eye" className="h-3.5 w-3.5" />
+            {t('chat.xray')}
+          </button>
+        </div>
+      }
+    />
+  );
+
+  const composer = ended ? (
+    <div className="border-t border-line bg-surface p-3">
+      <button type="button" className="btn-primary w-full" onClick={() => navigate(`/feedback/${sessionId}`)}>
+        {t('chat.ended.see_feedback')}
+      </button>
+    </div>
+  ) : (
+    <form
+      className="border-t border-line bg-surface p-2.5"
+      onSubmit={(e) => {
+        e.preventDefault();
+        void send();
+      }}
+    >
+      {sendError && (
+        <p role="alert" className="mb-2 rounded-lg bg-bad-soft px-3 py-1.5 text-xs text-bad">
+          {sendError}
+        </p>
+      )}
+      <div className="flex items-end gap-2">
+        <label htmlFor="composer" className="sr-only">
+          {t('chat.placeholder', { name: friendName })}
+        </label>
+        <textarea
+          id="composer"
+          ref={input}
+          rows={1}
+          value={draft}
+          maxLength={MAX_CHARS}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder={t('chat.placeholder', { name: friendName })}
+          disabled={!!crisisNode}
+          aria-describedby="composer-count"
+          className="max-h-32 min-h-[2.6rem] flex-1 resize-none rounded-3xl border border-line bg-bg px-4 py-2.5 text-[15px] leading-snug placeholder:text-muted focus:border-brand"
+          data-testid="composer"
+        />
+        <button type="submit" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-brand-ink transition disabled:opacity-40" disabled={!draft.trim() || busy} aria-label={t('chat.send')}>
+          <Icon name="send" className="h-4 w-4" />
+        </button>
+      </div>
+      <p id="composer-count" className={`mono-num mt-1 pr-12 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-warm' : 'text-muted'}`}>
+        {t('chat.counter', { n: draft.length })}
+      </p>
+    </form>
+  );
+
+  return (
+    <div className="mx-auto grid max-w-6xl gap-6 px-3 py-5 sm:px-6 lg:grid-cols-[minmax(0,26rem)_1fr] lg:items-start">
+      <div className="lg:sticky lg:top-20">
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <h1 className="text-lg font-bold">{t('chat.with', { name: friendName })}</h1>
+          <button type="button" className="btn-ghost px-4 py-2" onClick={() => navigate(`/feedback/${sessionId}`)} disabled={points.length < 2} data-testid="finish">
+            <Icon name="flag" className="h-4 w-4" />
+            {t('chat.finish')}
+          </button>
+        </div>
+        <PhoneFrame header={header} footer={composer} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
+          <div ref={scroller} className="h-full space-y-2.5 overflow-y-auto overscroll-contain bg-surface px-3 py-4" aria-live="polite" aria-relevant="additions" data-testid="messages">
+            {nodes.map((node, idx) => (
+              <Fragment key={node.id}>{renderNode(node, idx)}</Fragment>
+            ))}
+            {pendingText && (
+              <div className="flex justify-end opacity-70">
+                <div className="max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] leading-snug text-white">{pendingText}</div>
+              </div>
+            )}
+            {typing && <TypingDots label={t('chat.typing', { name: friendName })} />}
+            {ended && !reveal && (
+              <div
+                className={`mt-4 rounded-2xl p-4 text-center animate-pop-in ${status === 'ended_success' ? 'bg-gradient-to-br from-good-soft to-brand-soft' : 'bg-sunken'}`}
+                data-testid={status === 'ended_success' ? 'end-success' : 'end-fail'}
+              >
+                <p className="text-3xl" aria-hidden="true">
+                  {status === 'ended_success' ? '💛' : '🌧️'}
+                </p>
+                <p className="mt-1 font-bold">{status === 'ended_success' ? t('chat.ended.success_title') : t('chat.ended.fail_title')}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{status === 'ended_success' ? t('chat.ended.success_body') : t('chat.ended.fail_body')}</p>
+                <p className="mt-2 text-xs text-muted">{t('chat.ended.rewind_hint')}</p>
+              </div>
+            )}
+          </div>
+        </PhoneFrame>
+      </div>
+
+      <aside className="space-y-4" aria-label={t('chat.panel_title')}>
+        <section className="card p-4">
+          <div className="mb-2 flex items-end justify-between">
+            <div>
+              <h2 className="eyebrow">{t('chat.trust_graph')}</h2>
+              <p className="mono-num text-3xl font-extrabold" data-testid="trust-now">
+                {Math.round(trustNow)}
+                <span className="text-base font-semibold text-muted">/100</span>
+              </p>
+            </div>
+            {points.length > 1 && (
+              <span className={`chip mono-num border-transparent text-sm ${lastDelta > 0 ? 'bg-good-soft text-good' : lastDelta < 0 ? 'bg-bad-soft text-bad' : 'bg-sunken text-muted'}`}>
+                {signed(lastDelta)}
+              </span>
+            )}
+          </div>
+          <TrustChart points={points} />
+        </section>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          <section className="card p-4">
+            <h2 className="eyebrow mb-3">{t('chat.ladder')}</h2>
+            <DisclosureLadder level={last?.state_after.level ?? 0} />
+          </section>
+          <section className="card p-4">
+            <h2 className="eyebrow mb-1">{t('chat.skills')}</h2>
+            <p className="mb-3 text-xs text-muted">{t('chat.skills_hint')}</p>
+            <SkillChips seen={seen} latest={latest} />
+          </section>
+        </div>
+      </aside>
+
+      <CrisisModal
+        key={crisisNode?.id ?? 'none'}
+        open={!!crisisNode}
+        message={crisisNode?.bubbles[0]}
+        onAcknowledge={() => {
+          const userNode = nodes.find((n) => n.id === crisisNode?.parent_id);
+          if (userNode?.parent_id) void rewindTo(userNode.parent_id);
+        }}
+      />
+      <TreeDrawer sessionId={sessionId} open={treeOpen} onClose={() => setTreeOpen(false)} onJump={(id) => rewindTo(id)} />
+    </div>
+  );
+}
