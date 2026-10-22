@@ -113,7 +113,7 @@ def build(per_context: int = 11, seed: int = 7) -> list[dict]:
             recipe = RECIPES[(ci * per_context + j) % len(RECIPES)]
             for _ in range(60):
                 text, style, lang, intended = make(recipe, ctx["scenario_id"], rng)
-                key = text.lower().strip()
+                key = " ".join(text.lower().replace("\n", " ").split()).rstrip(".?! ")
                 if key not in seen:
                     seen.add(key)
                     break
