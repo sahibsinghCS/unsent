@@ -1,4 +1,4 @@
-# State-engine weights and thresholds (ENGINE lane owns this file).
+# State-engine weights and thresholds (ENGINE lane owns this file). Explained in docs/how/engine.md.
 weights:
   checked_in: 8
   validated: 12
@@ -12,6 +12,7 @@ weights:
   promised_secrecy: -15
 decay_per_turn: 2
 guarded_positive_multiplier: 0.7
+repeat_multiplier: 0.5          # a positive label also active last turn counts half
 initial_trust: 30
 level_up_thresholds: [0, 25, 45, 60, 75]
 hysteresis: 15
@@ -20,5 +21,16 @@ silence_floor: 20
 fail_floor: 10
 fail_turns: 2
 secrecy_broken_penalty: 10
+referral_window: 3              # level 4 needs a referral in this turn or the 2 before it
 max_turns: 16
 event_threshold: 0.5
+# Line selection (actor.py)
+off_topic_max_similarity: 0.2   # no labels + max cosine to the conversation below this -> OFF_TOPIC
+off_topic_min_words: 3          # shorter messages ("ok", "hmm") are NEUTRAL, never OFF_TOPIC
+exact_level_bonus: 0.05
+new_fact_bonus: 0.05            # prefer lines that reveal something new (progressive disclosure)
+# LLM voice verifier (verifier.py): cosine(bubble, locked fact) at or above this = leak.
+# Calibrated per embedding backend on eval/engine/leak_set.jsonl (see eval/reports/engine_verifier.json).
+fact_leak_threshold:
+  fastembed: 0.43
+  hash: 0.25

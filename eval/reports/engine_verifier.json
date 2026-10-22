@@ -1,0 +1,176 @@
+[
+  {
+    "lane": "engine",
+    "metric": "leak_embedding_precision_hash",
+    "value": 1.0,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=24 fp=0 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:07+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_embedding_recall_hash",
+    "value": 0.96,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=24 fp=0 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:07+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_lexicon_precision_hash",
+    "value": 1.0,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:07+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_lexicon_recall_hash",
+    "value": 0.12,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:07+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_combined_precision_hash",
+    "value": 1.0,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=25 fp=0 fn=0; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:07+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_combined_recall_hash",
+    "value": 1.0,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=25 fp=0 fn=0; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:07+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_embedding_precision_fastembed",
+    "value": 0.96,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:13+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_embedding_recall_fastembed",
+    "value": 0.96,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:13+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_lexicon_precision_fastembed",
+    "value": 1.0,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:13+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_lexicon_recall_fastembed",
+    "value": 0.12,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:13+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_combined_precision_fastembed",
+    "value": 0.96,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:13+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_combined_recall_fastembed",
+    "value": 0.96,
+    "n": 43,
+    "split": "leak_set_test",
+    "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
+    "created": "2026-10-22T23:18:13+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "verifier_catch_rate_fake_hash",
+    "value": 1.0,
+    "n": 19,
+    "split": "fake_outputs",
+    "notes": "hand-written fake LLM outputs; hash embeddings; per kind: advice 3/3, leak 9/9, method 1/1, persona 3/3, shape 3/3",
+    "created": "2026-10-22T23:18:13+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "verifier_false_reject_rate_fake_hash",
+    "value": 0.0,
+    "n": 13,
+    "split": "fake_outputs",
+    "notes": "good outputs wrongly rejected",
+    "created": "2026-10-22T23:18:13+00:00",
+    "wrongly_rejected": []
+  },
+  {
+    "lane": "engine",
+    "metric": "verifier_catch_rate_fake_fastembed",
+    "value": 1.0,
+    "n": 19,
+    "split": "fake_outputs",
+    "notes": "hand-written fake LLM outputs; fastembed embeddings; per kind: advice 3/3, leak 9/9, method 1/1, persona 3/3, shape 3/3",
+    "created": "2026-10-22T23:18:16+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "verifier_false_reject_rate_fake_fastembed",
+    "value": 0.0769,
+    "n": 13,
+    "split": "fake_outputs",
+    "notes": "good outputs wrongly rejected",
+    "created": "2026-10-22T23:18:16+00:00",
+    "wrongly_rejected": [
+      {
+        "bubbles": [
+          "honestly not great",
+          "i cant sleep lately"
+        ],
+        "reasons": [
+          "leaks locked fact f2a (similarity 0.47)"
+        ]
+      }
+    ]
+  },
+  {
+    "lane": "engine",
+    "metric": "verifier_catch_rate_real",
+    "value": null,
+    "n": 0,
+    "split": "real_outputs",
+    "notes": "not measured: no OPENAI_API_KEY in the build environment (run make test-llm with a key)",
+    "created": "2026-10-22T23:18:16+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "leak_thresholds",
+    "value": null,
+    "n": 0,
+    "split": "leak_set",
+    "notes": "{\"hash\": 0.25, \"fastembed\": 0.43}",
+    "created": "2026-10-22T23:18:16+00:00"
+  }
+]
