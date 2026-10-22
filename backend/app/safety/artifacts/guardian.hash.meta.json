@@ -1,0 +1,42 @@
+{
+  "embedder": "hash-char-ngrams-512",
+  "classes": [
+    "none",
+    "concern",
+    "self_risk",
+    "harm_to_other",
+    "method_seeking",
+    "prompt_injection"
+  ],
+  "features": "embedding(normalized) + char_wb tfidf 2-5 (max 12000)",
+  "model": "LogisticRegression(multinomial, C=8, class_weight=balanced)",
+  "seed": 13,
+  "n": {
+    "train": 326,
+    "val": 70,
+    "test": 71
+  },
+  "sources": [
+    "guardian_extra/messages.jsonl"
+  ],
+  "val": {
+    "self_risk_recall": 1.0,
+    "asking_fpr": 0.0,
+    "macro_f1": 1.0,
+    "targets_met": true
+  },
+  "targets": {
+    "self_risk_recall": 0.95,
+    "asking_fpr": 0.02
+  },
+  "sklearn": "1.9.1",
+  "train_seconds": 4.4,
+  "size_kb": 90.4,
+  "created": "2026-10-22T22:56:57+00:00",
+  "thresholds": {
+    "crisis": 0.8,
+    "concern": 0.85,
+    "block": 0.85,
+    "veto": 0.99
+  }
+}

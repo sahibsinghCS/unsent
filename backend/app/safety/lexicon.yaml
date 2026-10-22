@@ -1,9 +1,492 @@
-# Human-reviewable safety lexicon (SAFETY lane owns this file). Patterns match normalised text.
-self_risk: []
-concern: []
-harm_to_other: []
-method_seeking: []
-prompt_injection: []
-asking_friend: []      # helper asking the friend directly: ALWAYS allowed, never flagged
-tricky_negative: []    # "this test is killing me", "i'm dead lol": never flagged
-unsafe_friend_line: []
+# FirstReply Guardian lexicon (SAFETY lane). Human-reviewable: a counselor can read and edit this.
+#
+# How matching works
+# - Every phrase is run through the same normalizer as the message (lowercase, no accents,
+#   leetspeak fixed, "dont" -> "do not", "u" -> "you"), so write phrases in plain English/Spanish.
+# - Phrases match whole words. Stretched letters match too ("diiiie" matches "die").
+# - "explicit" phrases count wherever they appear (their wording already says who is speaking).
+# - "framed" phrases need a speaker check: the nearest pronoun before the phrase decides who it is
+#   about. "i want to die" -> the helper (risk). "do you want to die?" -> asking the friend (good).
+#   With no pronoun at all, a statement counts as first person ("wanna die rn") and a question
+#   counts as asking the friend ("suicidal?").
+# - A phrase right after a negation ("i would never kill myself") does not count.
+# - A phrase after a reflection marker ("you said ...") is the helper repeating the friend's words
+#   back, which is a good listening skill, so it never counts as the helper's own risk.
+#
+# Safety rule for this file: words for means are listed only so we can BLOCK them. No phrase here
+# describes how to do anything, and nothing here may ever be shown to the user as content.
+
+# ---------------------------------------------------------------- self_risk -> crisis, pause role-play
+# The HELPER themself sounds at risk. Must be first person. Includes algospeak and Spanish.
+self_risk:
+  explicit:
+    - kms
+    - kill myself
+    - killing myself
+    - unalive myself
+    - unaliving myself
+    - end my life
+    - ending my life
+    - take my own life
+    - take my life
+    - wish i was dead
+    - wish i were dead
+    - wish i could die
+    - wish i could just die
+    - wish i was not alive
+    - i do not want to be alive
+    - i do not want to live
+    - i do not wanna live anymore
+    - better off without me
+    - better off if i was gone
+    - better off if i was dead
+    - no one would care if i died
+    - no one would miss me if i died
+    - hurt myself
+    - hurting myself
+    - harm myself
+    - cut myself
+    - cutting myself
+    - commit suicide myself
+    - i am going to end it
+    # Spanish (first-person verb forms already say who is speaking)
+    - quiero morirme
+    - quiero morir
+    - me quiero morir
+    - no quiero vivir
+    - ya no quiero vivir
+    - me quiero matar
+    - quiero matarme
+    - me voy a matar
+    - voy a matarme
+    - quiero suicidarme
+    - me voy a suicidar
+    - pienso en suicidarme
+    - pienso en matarme
+    - estarian mejor sin mi
+    - ya no quiero estar aqui
+    - estoy cansado de vivir
+    - estoy cansada de vivir
+    - quiero quitarme la vida
+    - hacerme dano
+  framed:
+    - want to die
+    - wanna die
+    - want to be dead
+    - want to end it
+    - want to end it all
+    - end it all
+    - unalive
+    - sewerslide
+    - suicidal
+    - thinking about suicide
+    - think about suicide
+    - thought about suicide
+    - thoughts about suicide
+    - thinking of suicide
+    - thinking about ending it
+    - thoughts of suicide
+    - commit suicide
+    - do not want to be here anymore
+    - do not want to be here
+    - do not want to live anymore
+    - do not want to exist
+    - better off dead
+    - no reason to live
+    - nothing to live for
+    - tired of living
+    - done living
+    - do not want to wake up
+    - never wake up
+    - self harm
+
+# ---------------------------------------------------------------- concern -> show resources, continue
+# Ambiguous distress from the HELPER. We do not stop the practice; we gently show resources.
+concern:
+  explicit:
+    - i can not do this anymore
+    - i can not take it anymore
+    - i can not take this anymore
+    - i can not keep going
+    - i am so tired of everything
+    - i am tired of everything
+    - i hate my life
+    - i hate myself
+    - i feel hopeless
+    - i am hopeless
+    - i feel like a burden
+    - i am a burden
+    - i want to disappear
+    - i wish i could disappear
+    - i wish i was never born
+    - i wish i was not born
+    - what is the point of anything
+    - what is the point of living
+    - what is the point of trying
+    - i am not okay either
+    - i am not ok either
+    - i am struggling too
+    - i feel empty
+    - i feel numb
+    - i am done with everything
+    - i give up on everything
+    - no one cares about me
+    - no one would miss me
+    - i feel worthless
+    - i am worthless
+    - nothing matters anymore
+    - dead inside
+    - everything is pointless
+    - my life is pointless
+    - i feel that way too
+    - i feel like that too
+    - ya no puedo mas
+    - no aguanto mas
+    - estoy cansado de todo
+    - estoy cansada de todo
+    - odio mi vida
+    - nadie me quiere
+    - quiero desaparecer
+    - soy una carga
+    - me siento vacio
+    - me siento vacia
+    - me siento sin esperanza
+    - yo tambien me siento asi
+  # Personal distress words: need "i" (or no pronoun) as the speaker.
+  framed:
+    - feel so hopeless
+    - feeling hopeless
+    - feel so alone
+    - falling apart
+    - barely holding on
+    - have nothing left
+    - can not take this
+    - can not do this anymore
+    - not okay
+    - not doing okay
+    - exhausted with life
+
+# ---------------------------------------------------------------- harm_to_other -> block
+# The helper pushing the FRIEND toward harm, or telling them no one cares.
+harm_to_other:
+  explicit:
+    - kys
+    - go die
+    - just die
+    - you should die
+    - you should just die
+    - why do not you kill yourself
+    - why do not you just die
+    - why do not you just kill yourself
+    - i hope you die
+    - i want you to die
+    - just do it
+    - then do it
+    - do it then
+    - do it already
+    - go ahead and do it
+    - no one would care if you died
+    - no one would miss you
+    - no one cares about you
+    - everyone would be better off without you
+    - the world would be better without you
+    - you would be better off dead
+    - you are better off dead
+    - do everyone a favor
+    - nobody likes you anyway
+    - matate
+    - muerete
+    - ojala te mueras
+    - hazlo ya
+    - nadie te extranaria
+  # These count only as a command: at the start of a sentence or right after a cue word
+  # ("you SHOULD kill yourself"). "do you want to kill yourself?" is a question, not a command.
+  imperative:
+    - kill yourself
+    - unalive yourself
+    - end your life
+    - die
+  imperative_cues: [just, go, should, then, please, better, already, honestly, literally, bro, lol]
+  # Count unless the speaker is "i" ("i feel like no one would care" is the helper's own pain).
+  framed:
+    - no one would care
+    - no one would notice
+
+# ---------------------------------------------------------------- method_seeking -> block
+# The helper asking HOW, WHEN, WHERE or WITH WHAT. Safe messaging: never discuss methods.
+method_seeking:
+  explicit:
+    - how would you do it
+    - how would you do that
+    - how would you kill yourself
+    - how would you end it
+    - how would you go about it
+    - how are you going to do it
+    - how will you do it
+    - how do you plan to do it
+    - how do you plan to
+    - how would you even do it
+    - how you would do it
+    - how you would do that
+    - have you decided how
+    - picked how
+    - what would you do it with
+    - when are you going to do it
+    - when will you do it
+    - when would you do it
+    - where would you do it
+    - where will you do it
+    - what would you use
+    - what will you use
+    - what are you going to use
+    - which method
+    - what method
+    - what way would you
+    - como lo harias
+    - como lo vas a hacer
+    - con que lo harias
+    - cuando lo vas a hacer
+    - donde lo harias
+  # Words for means. With a first-person speaker -> concern; otherwise -> method talk (block).
+  means:
+    - pills
+    - overdose
+    - gun
+    - firearm
+    - rope
+    - noose
+    - knife
+    - blade
+    - razor
+    - poison
+    - bleach
+    - the bridge
+    - a bridge
+    - train tracks
+    - jump off
+    - hang yourself
+    - hang myself
+    - slit
+    - pastillas
+    - pistola
+    - cuerda
+    - emoji_knife
+    - emoji_gun
+    - emoji_pill
+
+# ---------------------------------------------------------------- prompt_injection -> block
+# Trying to make the app break character. (The friend is a reviewed line bank, so this cannot
+# actually change what the friend says; we block it to keep the practice on track.)
+prompt_injection:
+  explicit:
+    - ignore all previous instructions
+    - ignore previous instructions
+    - ignore your instructions
+    - ignore all instructions
+    - ignore the instructions
+    - disregard your instructions
+    - disregard previous instructions
+    - forget your instructions
+    - forget everything you were told
+    - system prompt
+    - developer mode
+    - jailbreak
+    - you are now a
+    - you are now an
+    - pretend you are
+    - pretend to be
+    - act as a
+    - act as an
+    - new instructions
+    - repeat your instructions
+    - reveal your prompt
+    - break character
+    - stop being the friend
+    - dan mode
+    - ignora las instrucciones
+    - ignora tus instrucciones
+
+# ---------------------------------------------------------------- asking_friend -> ALLOWED
+# Asking the friend directly about suicide is the most important skill we teach. Never flag it.
+# A sentence that names a topic below AND points it at "you" is a direct question to the friend.
+# A match here also stops the classifier from flagging the message on a hunch.
+asking_friend:
+  explicit:
+    - are you thinking about killing yourself
+    - are you thinking of killing yourself
+    - are you thinking about suicide
+    - are you thinking of suicide
+    - have you thought about suicide
+    - have you thought about killing yourself
+    - are you suicidal
+    - do you want to kill yourself
+    - do you want to die
+    - do you feel like you want to die
+    - are you having thoughts of suicide
+    - are you thinking about ending your life
+    - do you ever think about ending your life
+    - estas pensando en suicidarte
+    - estas pensando en quitarte la vida
+    - piensas en suicidarte
+    - has pensado en suicidarte
+    - has pensado en quitarte la vida
+    - quieres morir
+    - quieres suicidarte
+  topics:
+    - suicide
+    - suicidal
+    - sewerslide
+    - kill yourself
+    - killing yourself
+    - end your life
+    - ending your life
+    - take your life
+    - take your own life
+    - unalive yourself
+    - unalive
+    - hurt yourself
+    - hurting yourself
+    - self harm
+    - want to die
+    - be alive
+    - live anymore
+    - be here anymore
+    - want to be here
+    - end it
+    - ending it
+    - suicidarte
+    - matarte
+    - quitarte la vida
+    - morir
+    - morirte
+    - hacerte dano
+    - estar aqui
+  # Spanish second-person verb forms also point at the friend.
+  second_person_verbs: [quieres, estas, piensas, has, tienes, sientes, pensaste, pensado]
+
+# ---------------------------------------------------------------- tricky_negative -> ALLOWED
+# Everyday teen hyperbole that LOOKS risky but is not. These words are masked before risk
+# matching, and the classifier needs much more confidence to flag a message that contains them.
+tricky_negative:
+  explicit:
+    - killing me
+    - is killing me
+    - are killing me
+    - killed it
+    - kill it
+    - killing it
+    - i am dead
+    - i am deceased
+    - i am dying
+    - im weak
+    - to die for
+    - would die for
+    - dying of laughter
+    - dying laughing
+    - die laughing
+    - could die of embarrassment
+    - died of embarrassment
+    - dead tired
+    - dead serious
+    - scared to death
+    - bored to death
+    - drop dead
+    - deadline
+    - my phone died
+    - phone is dead
+    - battery died
+    - kill time
+    - killing time
+    - would kill for
+    - going to kill me
+    - gonna kill me
+    - me muero de risa
+    - me muero de hambre
+    - me mata
+    - mataste
+
+# ---------------------------------------------------------------- unsafe_friend_line -> line never shown
+# For FRIEND lines (check_friend): plans, encouragement, graphic detail, persona breaks.
+# Means words (method_seeking.means) and harm_to_other phrases are checked for friend lines too.
+unsafe_friend_line:
+  explicit:
+    - i have a plan
+    - i made a plan
+    - i have it planned
+    - i know how i would do it
+    - i know how i am going to do it
+    - i picked a day
+    - i picked a date
+    - tonight is the night
+    - suicide note
+    - goodbye note
+    - goodbye letter
+    - i have been saving up
+    - i looked up how
+    - searched how to
+    - you should do it too
+    - we should do it together
+    - suicide is the answer
+    - it is the only way out
+    - the only way out
+    - it would solve everything
+    - they will be sorry when i am gone
+    - they will regret it when i am gone
+    - blood
+    - bleeding
+    - wrists
+    - gore
+    - as an ai
+    - language model
+    - i am an ai
+    - i am a bot
+    - i am not real
+    - chatgpt
+    - openai
+    - system prompt
+    - this is not practice
+    - i am a real person
+    - this is real life
+
+# ---------------------------------------------------------------- speaker words
+speaker:
+  first_person: [i, me, my, myself, mine, yo, mi, conmigo]
+  second_person: [you, your, yours, yourself, tu, te, ti, usted, contigo]
+  third_person: [it, he, she, they, him, her, them, his, their, himself, herself, themselves, someone, somebody, ella, ellos, ellas]
+  # Words that mean the helper is repeating the friend's words back ("you said you don't want to be here?")
+  reflection_markers:
+    - you said
+    - you just said
+    - you told me
+    - you mean
+    - when you say
+    - when you said
+    - you feel like
+    - you are saying
+    - you think
+    - do you think
+    - are you thinking
+    - do you feel like
+    - sounds like you
+    - it sounds like
+    - dijiste
+    - me dijiste
+    - cuando dices
+  negators: [not, never, nunca, jamas]
+  # Negation is cancelled by these ("i can't STOP thinking about suicide" is still risk).
+  negation_breakers: [stop, help, quit]
+  # A short "me too" right after the friend shares suicidal thoughts is the helper's own distress.
+  agreement:
+    - me too
+    - same
+    - same here
+    - honestly same
+    - literally same
+    - me too honestly
+    - i feel the same
+    - i feel the same way
+    - i do too
+    - mood
+    - relatable
+    - yo tambien
+    - igual yo
