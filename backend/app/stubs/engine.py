@@ -108,10 +108,16 @@ class StubEngine:
         if bank:
             line = bank[0]
             return ActorOutput(
-                bubbles=line.bubbles, line_id=line.id, reaction=reaction, fact_ids=line.fact_ids
+                bubbles=line.bubbles,
+                line_id=line.id,
+                reaction=reaction,
+                fact_ids=line.fact_ids,
+                source="bank",
             )
         fallback = scenario.fallback_lines.get(state.level) or ["..."]
-        return ActorOutput(bubbles=[fallback[state.turn % len(fallback)]], reaction=reaction)
+        return ActorOutput(
+            bubbles=[fallback[state.turn % len(fallback)]], reaction=reaction, source="fallback"
+        )
 
     def verify(self, output: ActorOutput, scenario: Scenario, state: State) -> VerifierResult:
         return VerifierResult(ok=True)

@@ -12,7 +12,7 @@ from typing import Literal, Protocol
 
 from pydantic import BaseModel, Field
 
-CONTRACTS_VERSION = "1.0"
+CONTRACTS_VERSION = "1.1"  # 1.1: voice source fields, moderation source (additive)
 
 
 class SkillLabel(StrEnum):
@@ -180,7 +180,7 @@ class GuardianResult(BaseModel):
     # categories: self_risk | concern | harm_to_other | method_seeking | prompt_injection | unsafe_friend_line
     evidence: list[str] = Field(default_factory=list)
     score: float = 0.0
-    sources: list[Literal["lexicon", "classifier"]] = Field(default_factory=list)
+    sources: list[Literal["lexicon", "classifier", "moderation"]] = Field(default_factory=list)
     latency_ms: float = 0.0
 
 
@@ -209,6 +209,7 @@ class ActorOutput(BaseModel):
     line_id: str | None = None
     reaction: Reaction = Reaction.NEUTRAL
     fact_ids: list[str] = Field(default_factory=list)
+    source: Literal["llm", "bank", "fallback"] = "bank"  # who wrote the words (engine decides what)
 
 
 class VerifierResult(BaseModel):
@@ -229,6 +230,7 @@ class Node(BaseModel):
     seen_no_reply: bool = False  # friend nodes: left on Seen
     line_id: str | None = None  # friend nodes: which bank line was used
     reaction: Reaction | None = None  # friend nodes
+    voice: Literal["llm", "bank", "fallback"] | None = None  # friend nodes: who wrote the words
     created_at: float = Field(default_factory=time.time)
 
 
@@ -262,6 +264,7 @@ class MessageScore(BaseModel):
     highlights: list[Highlight] = Field(default_factory=list)
     rewrite: str | None = None  # verified better reply (scores higher on the missing skill)
     rewrite_gain: float | None = None
+    rewrite_source: Literal["exemplar", "llm"] | None = None
 
 
 class TurningPoint(BaseModel):

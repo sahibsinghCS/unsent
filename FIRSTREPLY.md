@@ -1,180 +1,246 @@
-# FirstReply: master plan
+# FirstReply: the complete idea (final design, v3)
 
-> **⚠️ Update, Oct 22 night:** the build now runs as **cloud agents** with a **zero-cost architecture**: no OpenAI or other paid API, and the friend speaks from a reviewed line bank. Where this file conflicts with [`docs/LANES.md`](docs/LANES.md), **docs/LANES.md wins**.
-
-
-*Everything decided so far, in one place. Last updated Thu Oct 22, 2026. Deadline: **Mon Oct 26, 11:00 am CT** (12:00 pm ET). Plan to submit by 9 am CT.*
+*Updated Thu Oct 22, 2026, late night. This is the single source of truth for what we're building. Build details for agents are in `docs/LANES.md`.*
 
 ---
 
-## The idea in one sentence
-**FirstReply lets teens practice the text that could save a friend's life: they chat with a realistic AI friend who's struggling while models I built score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.**
+## 1. One sentence
+**FirstReply lets teens practice the text that could save a friend's life: they chat with a realistic AI friend who's struggling while models we built score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.**
 
-Short version (for the video and short answers): *A safety-first simulator that trains teens to respond when a friend texts that they're not okay.*
+Short version: *a safety-first simulator that trains teens to respond when a friend texts that they're not okay.*
 
----
+## 2. The problem
+- **CDC YRBS 2023:** 39.7% of US high schoolers had persistent sadness or hopelessness. **20.4% seriously considered suicide.** 9.5% attempted.
+- Teens with suicidal thoughts tend to **tell a friend before a counselor**, and often hide it from parents.
+- Adults get gatekeeper training like **QPR (Question, Persuade, Refer)**, but its effect **fades within about 6 months**. Teens, who actually get the texts, almost never get trained, and nobody gets to *practice*.
 
-## 1. The problem
-- **CDC YRBS 2023:** 39.7% of US high schoolers had persistent sadness or hopelessness, **20.4% seriously considered suicide** (27% of girls, 14% of boys), and 9.5% attempted. [CDC](https://www.cdc.gov/mmwr/volumes/73/su/su7304a9.htm)
-- Young people **prefer telling peers over professionals** when they have suicidal thoughts ([McGillivray 2022](https://bmcpsychiatry.biomedcentral.com/track/pdf/10.1186/s12888-021-03636-x)), and they often hide it from parents ([2025 study](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12414306/)). The first person to know is usually a friend.
-- Adults get gatekeeper training (**QPR**: Question, Persuade, Refer), but its effect on knowledge and confidence **fades within about 6 months** ([Orygen](https://www.orygen.org.au/Research/Research-Areas/Suicide-Prevention/Orygen_Suicide_prevention_research_bulletin), [QPR Institute](https://qprinstitute.com/research-theory)). Teens, who actually get the texts, almost never get this training, and nobody gets to practice.
-- Worldwide: suicide is a leading cause of death among young people (WHO). The app switches crisis lines by country (988 in the US).
+## 3. Who it's for
+**High-school students who are the first to hear that a friend isn't okay.** Secondary audience: school counselors and teachers who want a free, safe practice tool.
 
-## 2. Audience
-High-school students who are the first to hear that a friend isn't okay. Secondary audience: school counselors and teachers who want a free, safe practice tool for students.
-
-## 3. Why it can win
-- **Mental health keeps reaching the podium**, but past winners help the person who is struggling: Free Mind Bot FL-08 2023, The Help Desk CT-01 2022, Mental Moji, MindWell Connect, NeuroCalmAI, SafeHavenAI. **No CAC winner trains the friend.**
-- **The AI is essential:** realistic role-play plus scoring of free-form replies can't be done with a database or fixed decision tree.
-- **Real engineering, not a wrapper:** trained models, a state engine, safety measurements, automated testing, search.
-- **True personal angle:** I'm a high schooler, so I'm the audience. The classmate survey (see checklist) turns that into evidence.
-- **No outside data needed**, so all the time goes into the product and the evaluation.
-
-**Competitor:** Kognito Friend2Friend is sold to schools. It's a scripted multiple-choice avatar simulation that takes about 25 minutes. FirstReply is **free, open-ended texting with unlimited practice, scores on each message, and a "what if" simulation.** Static guides (Seize the Awkward, Jed) and crisis lines don't let you practice.
-
-**Solo is fine:** 56% of 2021–2025 CAC winners worked alone (905 of 1,607). IL-11's last 3 winners were solo.
+## 4. Why it can win the Congressional App Challenge
+- **Mental health reaches the podium every year**, but every past winner helps the *person who is struggling* (mood trackers, chatbots). **No CAC winner trains the friend.**
+- **It isn't an AI wrapper.** The AI only writes the friend's words. Our own deterministic engine, verifier, safety model and trained scoring models make every decision, and we measured each one.
+- **Safety is engineered and measured,** not promised: a speaker-aware Guardian, a fact-leak verifier, automated red-team tests and a counselor review.
+- **True personal angle:** Sahib is a high schooler, so he *is* the audience (backed by a classmate survey).
+- **Solo works:** 56% of 2021–2025 CAC winners worked alone, and IL-11's last 3 winners were solo.
 
 ---
 
-## 4. How CAC works
-1. Register at congressionalappchallenge.us and confirm the district by street address. ZIP 60502 is split between IL-11 (Foster) and IL-14 (Underwood).
-2. Submit:
-   - app name and description
-   - a **public YouTube video, 1–3 min** (must include: my name, app name, one-sentence purpose, target audience, languages/tools used, the app working, what I learned)
-   - a **GitHub link**
-   - **short answers** (e.g., "What technical challenge did you face and how did you solve it?")
-   - an **AI-use disclosure**
-3. The office recruits a judging panel (engineers, educators, professionals). They score on: **quality of idea** (creativity, originality, real problem), **implementation** (UX and design), and **coding skill**. Evaluations are due around Nov 23.
-4. Winners are announced around December–January. The app is featured by the House and displayed at the Capitol, and the winner is invited to #HouseOfCode in DC.
-5. **Usually no live Q&A.** Judges see only the video, the short answers and the code. → **The README is my interview.** The video has to show the engineering.
+## 5. What the user experiences (every feature)
+
+### Practice
+1. **Landing page:** the one-liner, a phone mockup, the CDC stat, "Start practicing."
+2. **Pick a friend.** 5 scenarios, each a different person and situation:
+   | Friend | Situation | Style |
+   |---|---|---|
+   | Maya, 16 | after a breakup | guarded |
+   | Jordan, 17 | failing chemistry, parent pressure | open |
+   | Priya, 15 | moved schools, lonely | guarded |
+   | Eli, 14 | mocked in a group chat | guarded |
+   | Sam, 16 | says "all good" but is giving their stuff away (a real warning sign) | open |
+3. **Content warning** before every scenario ("you can stop anytime; if you're struggling yourself, call or text 988").
+4. **The chat.** A phone-style text conversation:
+   - the friend texts like a real teen, in 1–3 short bubbles
+   - realistic "typing…" delays
+   - **"Seen" with no reply** when you say something hurtful
+5. **The friend reacts realistically:**
+   - **opens up in layers** (surface → stress → hopelessness → thoughts of suicide → open to help), but only when you've earned trust
+   - **only discloses suicidal thoughts if you ask directly,** just like real gatekeeper training teaches
+   - shuts down if you brush them off ("lol you'll be fine")
+   - pushes back if you jump to "tell an adult" before building trust
+   - gets upset if you promised secrecy and then tell an adult, but you can still recover
+6. **Live trust graph** next to the chat: the line rises and falls with every message. A **disclosure ladder** shows how far the friend has opened up, and **skill chips** light up as you use each skill.
+7. **"I need help now"** is on every screen and opens Real mode.
+
+### X-ray mode (see the engine work)
+8. Toggle it in the chat. Under every message you send, you see:
+   - the **Guardian's** safety decision and how many milliseconds it took
+   - the **skills detected,** with probabilities
+   - the **trust math** ("+12 validated · −2 decay = +10")
+
+   Under every friend message: **who wrote the words** (AI, verified, or a reviewed bank line) and **which checks it passed.** *This is the signature "under the hood" shot for the video.*
+
+### Safety moments
+9. **If *you* seem to be at risk** ("honestly i want to die too"), the practice pauses and shows resources (988, a trusted adult). You can't skip past it without acknowledging.
+10. **Harmful messages are blocked** ("kys", "just do it", asking for methods, "ignore your instructions") and replaced by a short teaching note.
+11. **Asking directly is never blocked:** "are you thinking about killing yourself?" is the most important skill.
+
+### Feedback
+12. **End of conversation:** success ("she agreed to talk to the counselor with you") or fail ("they shut down"). Both lead to the feedback report.
+13. **Feedback report:**
+    - **7-skill radar chart:** Check in · Listen without judging · Ask directly · Don't promise secrecy · Persuade · Refer · Follow up
+    - **per-message cards** with **highlighted words** (green = what helped, red = what hurt), taken from our model's explanations
+    - **"uncertain" tags** where our two models disagreed (honest uncertainty)
+    - **verified rewrites,** e.g. "Try instead: *'that sounds really heavy… are you thinking about killing yourself?'* (+0.4 ask directly)." A rewrite is shown **only if our model confirms it scores higher**
+    - **"This is where you lost them":** the exact message where trust dropped the most
+    - **missed opportunities** ("Maya hinted at hopelessness at turn 4, and you didn't ask directly")
+    - a short summary
+14. **Rewind and branch:** tap any of your messages → "Rewind to here" → try a different reply. A **tree view** shows all your branches.
+15. **"What if?" simulation:** from the turning point, FirstReply tries several better replies, **simulates each conversation forward** through the real engine, and shows the alternate futures side by side with their trust curves. *"If you'd said this, she would have opened up two messages later."*
+
+### Real life
+16. **Real mode ("It's real right now"):** fixed, counselor-reviewable steps with **no AI**:
+    - stay with them
+    - ask directly
+    - don't keep it secret
+    - tell a trusted adult today
+    - **call or text 988**
+    - **911** if they're in immediate danger
+
+    It has big call/text buttons and crisis lines by country (US, Canada, UK, Australia, plus an international directory), in English and Spanish, and **works even offline.**
+17. **After-session check-in:** "How are you feeling after that?" A 😔 answer shows resources.
+
+### Trust and transparency
+18. **"How it works" page:**
+    - an architecture diagram
+    - **live evaluation numbers** (model accuracy, safety recall, false-positive rate, safety tests passing)
+    - "what the AI does and doesn't do"
+    - a **"Try the Guardian" box** (watch "are you thinking about suicide?" pass while "kms" is caught)
+19. **Privacy page:** no accounts, no analytics. Conversations live only in server memory and are deleted after 60 minutes. Nothing is used for training.
+20. **English and Spanish,** accessible (keyboard, screen-reader labels, contrast, reduced motion), mobile-first, installable.
 
 ---
 
-## 5. Product features
-| Feature | What the user sees |
-|---|---|
-| **Practice chat** | A phone-style text conversation with a struggling "friend": typing bubbles, realistic delays, several texts in a row, "Seen" when I mess up, teen texting style. 5 scenarios (breakup, failing a class, moving schools, being bullied, "fine" but giving things away). |
-| **The friend opens up in layers** | The friend only reveals more when I validate their feelings and **ask directly**. Dismissing them ("lol you'll be fine") makes them shut down. |
-| **Live trust graph** | A line next to the chat that rises and falls with every message I send. |
-| **Feedback card** | Scores on 7 skills: check in, listen without judging, **ask directly**, **don't promise secrecy**, persuade, **refer to a trusted adult or 988**, follow up. Shows the exact words that helped or hurt, plus suggested rewrites that are checked before they're shown. |
-| **Rewind and branch** | Tap any message, rewind, try a different reply, and see the conversation tree. |
-| **"Here's where you lost them" + "what if"** | Finds the message where trust dropped most, then simulates better replies forward: *"If you'd said this, she would have opened up 2 messages later."* |
-| **"It's real right now" mode** | **No AI.** A fixed, vetted step-by-step plan: what to say, tell an adult today, call or text 988, 911 if there's immediate danger. |
-| **Safety design** | Content warning before starting, a check-in after each session, 988 always visible, crisis line chosen by country, no conversations stored, Spanish support. |
-| *Stretch* | Voice-call mode (browser speech), spaced practice reminders for weak skills |
-| *Roadmap only (mention in video)* | Teacher/counselor class dashboard |
-
----
-
-## 6. Technical design (how it isn't an AI wrapper)
-**The idea:** *LLMs are unreliable judges and unsafe actors, so in FirstReply the LLM is only the friend's voice. My own models and algorithms make every decision, and every decision is measured.*
-
-### Architecture
+## 6. How it works (architecture)
 ```
-User message
-   │
-   ▼
-[1] GUARDIAN  (local, no LLM, <50 ms)        ← always first, works offline
-   │  slang normalizer → risk phrases → my trained risk classifier
-   │  user at risk → pause, show 988 / trusted adult, end role-play
-   ▼
-[2] SKILL DETECTOR  (my trained model)        ← decides what the user did
-   │  asked_directly, validated, dismissed, advice_dumped,
-   │  promised_secrecy, referred_adult, referred_988, follow_up
-   ▼
-[3] STATE ENGINE  (pure Python, deterministic, unit-tested)
-   │  trust(t+1) = clamp(trust(t) + Σ w_i·event_i − decay, 0, 100)
-   │  disclosure level 0→4 unlocks at thresholds (with hysteresis)
-   ▼
-[4] ACTOR  (LLM = the friend's voice only)
-   │  gets the scenario fact sheet, limited to the facts unlocked at the current level
-   ▼
-[5] VERIFIER: leaked locked facts? contradicted fact sheet? unsafe content?
-   │  → regenerate (max 2) → otherwise a pre-written fallback line
-   ▼
-Phone UI + live trust graph
-   │  (end of conversation)
-   ▼
-[6] CRITIC: my classifier + LLM judge ensemble → calibrated scores
-[7] TURNING POINT + "WHAT IF" search (Monte Carlo rollouts on the conversation tree)
+Your message
+ │
+ ├─▶ 1. GUARDIAN (safety, runs first, local, <50 ms)
+ │      slang normalizer → speaker-aware lexicon → trained safety classifier (+ OpenAI's free moderation
+ │      as an extra signal when online) → crisis: pause + resources │ block: teaching note │ ok: continue
+ │
+ ├─▶ 2. SKILL DETECTOR (our trained ML, local)
+ │      probability for each of 10 behaviours: checked in · validated · asked directly · encouraged help ·
+ │      referred to an adult · referred to 988 · followed up · dismissed · advice-dumped · promised secrecy
+ │
+ ├─▶ 3. STATE ENGINE (deterministic rules = the friend's "mind")
+ │      trust 0–100 (weighted skills − decay, diminishing returns), disclosure level 0–4 with gates
+ │      (level 3 only after a direct ask; level 4 only after a referral) and hysteresis, silence ("Seen"),
+ │      the secrecy flag, success/fail endings
+ │
+ ├─▶ 4. FRIEND VOICE (OpenAI writes the words; it decides nothing)
+ │      the prompt contains only: the persona and texting style, the facts unlocked at the current level,
+ │      the reaction the engine chose, and examples from the reviewed line bank
+ │
+ ├─▶ 5. VERIFIER (our code checks every AI reply)
+ │      leaked a locked fact? (embedding similarity) · failed the Guardian? · broke character or gave advice? ·
+ │      too long? → regenerate once → else the best REVIEWED LINE-BANK line → else a safe fallback line
+ │
+ └─▶ phone UI + live trust graph + X-ray mode
+
+End of chat ─▶ CRITIC: calibrated scores, word highlights, uncertainty, verified rewrites, 7-skill summary,
+               turning point, missed opportunities
+"What if"   ─▶ ROLLOUTS: better candidate replies simulated forward through the real engine + voice
 ```
-
-### Each component in detail
-1. **State engine (the friend)**
-   - **What's built:** scenario JSON fact sheets with facts at disclosure levels 0–4 (never methods) that a counselor can review; trust weights for each persona (guarded or open); hysteresis on the thresholds so the level doesn't flicker; the generator-verifier loop.
-   - **What gets measured:** unit tests showing the same messages always produce the same trust path; how often the verifier catches a leak.
-2. **Skill detector (my model)**
-   - **What's built:** about 700 replies (LLM-generated, including slang, typos, emoji and Spanish), **every label hand-checked**, split into train, validation and held-out test sets. Sentence embeddings (`all-MiniLM-L6-v2`) feed one logistic regression per skill. Leave-one-word-out occlusion highlights the words that mattered.
-   - **What gets measured:** precision, recall and F1 per skill on the held-out set, plus a confusion matrix.
-3. **Critic (scoring)**
-   - **What's built:** my classifier and an LLM judge score every message, and disagreements are shown as "uncertain." Isotonic calibration. Suggested rewrites are re-scored and shown only if they score higher.
-   - **What gets measured:** a reliability diagram, and **Cohen's kappa against 30 replies labeled by a counselor that the system never saw**, with a bootstrap confidence interval.
-4. **Guardian (safety)**
-   - **What's built:** a normalizer for teen slang ("kms," "unalive," "kys," 🪦, leetspeak, stretched letters, Spanish); a risk-phrase list; an embedding classifier; a threshold chosen for high recall; prompt-injection blocking.
-   - **What gets measured:** recall (how often it misses a risky message) on a test set full of slang and disguised wording; robustness before and after adding the normalizer; latency under 50 ms.
-5. **Red-team harness**
-   - **What's built:** attacker bots that are dismissive, try to get method content, try to break the persona, try prompt injection, use heavy slang, or are in crisis themselves. About 100 conversations, checked automatically every turn.
-   - **What gets measured:** a coverage matrix of attack type × scenario. **Every failure becomes a test** in `tests/safety/`, and **GitHub Actions** runs the suite on every push (README badge). The README shows the failures found and how they were fixed.
-6. **Rewind, turning point, "what if"**
-   - **What's built:** saved state at every message; turning-point detection (the message with the biggest trust drop); Monte Carlo rollouts (N=4 candidate replies, scored by the Critic, simulated 3 turns forward, cached).
-   - **What gets measured:** a demo where the best simulated reply actually improves the friend's trust path.
-
-### Tech stack
-Python 3.11, FastAPI, SQLite, sentence-transformers, scikit-learn, numpy/pandas, pytest, GitHub Actions; front end in HTML, Tailwind and JS as an installable PWA; Chart.js for the trust graph; one LLM API for the Actor and the LLM judge.
+**Why this matters:** the AI makes the friend sound real, but **our code controls what the friend may say and when, checks every reply, and does all the scoring.** If the API key is missing, the budget is reached or OpenAI is down, the friend switches to the **reviewed line bank** and everything still works safely.
 
 ---
 
-## 7. Build plan
-| When | Build |
+## 7. The machine learning (what we trained and how)
+
+### 7a. Skill detector: what the user did
+- **Input:** your message plus the friend's last message.
+- **Output:** a probability for each of the **10 labels**, defined in `docs/LABEL_GUIDE.md`.
+- **Two different models, combined:**
+  - **Model A, meaning:** a multilingual sentence-embedding model running locally (`paraphrase-multilingual-MiniLM-L12-v2`, so English and Spanish work), then one logistic regression per label.
+  - **Model B, wording:** character and word n-gram TF-IDF, then logistic regression. It's robust to slang, typos and "u ok??".
+  - **Stacking + calibration:** a small model learns how to combine A and B on a validation set. Platt scaling makes the probabilities honest, so "80%" really means right about 80% of the time.
+  - **Uncertainty:** when A and B strongly disagree, the feedback says "uncertain" instead of pretending.
+- **Explanations:** *leave-one-word-out occlusion.* Remove each word, see how much the score drops, and highlight the words that mattered. The highlights come from our model's math, not from an AI's opinion.
+- **Measured against baselines** on held-out test data: a keyword baseline, Model A alone, Model B alone, and the ensemble. We report per-label precision, recall, F1, macro-F1, a reliability (calibration) diagram and confusion matrices.
+
+### 7b. Guardian: is this message safe?
+- **Speaker-aware.** The user plays the helper, so "are you thinking about killing yourself?" is *good* (allowed). "i want to kill myself too" means the **user** may be at risk (crisis). "kys" is harmful toward the friend (blocked).
+- **Layers:**
+  1. a **normalizer** for teen text (leetspeak "k1ll", spacing "k m s", stretched letters, emoji, Spanish accents, misspellings)
+  2. a **human-reviewable lexicon,** including algospeak like "unalive"/"sewerslide" and a whitelist of **tricky negatives** ("this test is killing me", "i'm dead 💀")
+  3. a **trained classifier** (embeddings + TF-IDF, logistic regression)
+  4. **OpenAI's free moderation endpoint** as an extra signal when online
+- **Tuned for recall:** it should almost never miss a real risk. **The headline number is the false-positive rate on good helper questions,** because a Guardian that blocks "are you thinking about suicide?" would punish the exact skill we teach.
+- **Measured:** recall and precision per category, robustness to slang and disguised wording (with vs without the normalizer), latency, and a comparison with OpenAI moderation on teen slang.
+
+### 7c. State engine: the friend's mind (rules, not ML)
+- Fully deterministic and unit-tested: the same messages always give the same trust path.
+- The weights, thresholds, gates, hysteresis, silence and secrecy rules all live in one config file, so they're easy to explain and tune.
+
+### 7d. Verifier: guarding the AI
+- **Fact-leak detection:** each AI reply is compared (embedding similarity) with the facts the friend is **not yet allowed** to reveal. Too similar means it's rejected.
+- It also checks every bubble with the Guardian and catches persona breaks or advice-giving.
+- We report **how often the verifier caught a bad AI reply.**
+
+---
+
+## 8. The data (no API money spent)
+All written by AI coding agents into files, and checked by people:
+| Dataset | Size | Used for |
+|---|---|---|
+| Practice replies, labeled with the 10 labels | ~800 (incl. ~15% Spanish/Spanglish) | Training and testing the skill detector |
+| Guardian examples | ~700 (incl. ~140 "asking the friend directly" hard negatives and ~120 tricky negatives) | Training and testing the Guardian |
+| Reviewed friend line bank | ~1,000 lines (5 friends × 5 levels × every reaction) | The AI's style examples **and** the safe fallback voice |
+| Exemplar replies | ~200 | Rewrite suggestions and "what if" candidates |
+| Attack messages | ~250 | Red-team testing |
+
+**Labeling quality:**
+- The writer's intended labels plus a **second, independent "blind" labeling pass.** Disagreements and a random audit sample go to **Sahib, who hand-labels them** with a fast keyboard labeling tool.
+- Agreement is reported.
+
+**Extra test sets:**
+- **real anonymous classmate replies** (survey, with consent), test-only
+- an optional **cross-model set** written in ChatGPT, to show the model generalizes beyond one AI's writing style
+
+**Expert check:** a school counselor labels 30 replies. We report agreement with them (Cohen's kappa, with a 95% confidence interval).
+
+---
+
+## 9. Numbers we will publish (real values, whatever they are)
+| Metric | Where it shows up |
 |---|---|
-| **Thu night** | Register for CAC. Repo and FastAPI skeleton. 3 scenario fact sheets. Guardian phrase list and normalizer. Start generating the dataset. |
-| **Fri** | State engine and tests. Actor and verifier loop. Phone UI and live trust graph. Hand-check labels. Train the skill detector. **Email the school counselor or psych teacher (morning).** |
-| **Sat** | Critic ensemble and calibration. Word highlights. Rewind tree and turning point. "What if" rollouts. Deploy. |
-| **Sun** | Red-team harness and safety tests in CI. Counselor's 30 labels → kappa. Classmate survey. README with diagrams and evaluation tables. Record the video. Write the short answers. |
-| **Mon by 9 am CT** | Submit. |
-
-**Cut order if behind:** DistilRoBERTa fine-tune (stretch) → calibration plot → full red-team matrix (keep 30 conversations) → "what if" rollouts (keep turning-point detection).
-**Never cut:** the Guardian, the state engine, my own skill detector, the counselor review, the "It's real" mode.
+| Skill-detector macro-F1 vs the keyword baseline (held-out test; real-survey subset) | README, How-it-works page, video |
+| Agreement with a school counselor (kappa, 95% CI) | README, video, short answer |
+| Guardian: self-risk recall · **false-positive rate on good questions** · slang robustness · latency · vs OpenAI moderation | README, video |
+| Verifier: % of AI replies caught and replaced | README |
+| Red-team: attacks blocked; method-content leaks (target **0**) · safety tests passing (CI badge) | README, GitHub |
+| Response time under load | README |
 
 ---
 
-## 8. Video plan (about 2:45)
-| Time | Shot |
-|---|---|
-| 0:00–0:15 | Phone screen: *"honestly idk why i even bother anymore."* "What would you text back? One in five high schoolers seriously considered suicide last year, and the first person they tell is usually a friend. Nobody teaches us what to say." |
-| 0:15–0:35 | I reply badly ("lol don't say that"). The **trust graph drops** and the friend leaves me on Seen. |
-| 0:35–1:05 | Rewind, ask directly. The friend opens up. The feedback card **highlights the exact words.** |
-| 1:05–1:30 | **"Here's where you lost them" plus the "what if" simulation.** |
-| 1:30–2:05 | **Under the hood:** architecture diagram; "the LLM is only the voice"; the skill detector's F1; the counselor kappa; the Guardian catching "unalive"; the **safety suite badge.** |
-| 2:05–2:30 | "It's real" mode (no AI, 988), counselor review, classmate survey result. |
-| 2:30–2:45 | Name, app name, purpose, audience, languages and tools, what I learned. |
+## 10. Cost and safety of the API
+- OpenAI is used **only** for the friend's wording, plus optional rewrite suggestions, free moderation and a small red-team run.
+- A small model, **every response cached,** a **daily budget** (automatic fallback to the line bank) and per-IP rate limits on the public demo.
+- **Set a monthly spending limit in the OpenAI dashboard.**
+- Expect fractions of a cent per message. **No API money is spent generating data.**
 
 ---
 
-## 9. Short-answer draft: "What technical challenge did you face?"
-> *Draft, finish with real numbers after the build.* Large language models are unreliable judges and can be unsafe actors, which is unacceptable for a suicide-prevention tool. So I designed FirstReply so the LLM only writes the friend's messages, and my own components make every decision. A safety layer that runs locally catches risk language, including teen slang like "unalive," before any AI call. I trained a classifier on [N] hand-checked replies to detect seven helping skills (F1 = [x] on held-out data). A deterministic state engine I wrote decides how much the friend opens up. A verifier blocks the AI from revealing too much or saying anything unsafe. I tested it with [100] automated adversarial conversations; every failure became a permanent test, and [147/147] now pass in CI. My scoring agrees with a school counselor's labels at kappa = [x].
+## 11. What judges will see
+- **Video (≤3 min):**
+  1. phone hook ("honestly idk why i even bother anymore"), then the CDC stat
+  2. a bad reply → the trust graph drops → "Seen"
+  3. rewind → ask directly → the friend opens up → **highlighted words**
+  4. **"here's where you lost them" plus the what-if simulation**
+  5. **X-ray mode** with the numbers
+  6. Real mode
+  7. the required items (name, purpose, audience, tools, what I learned)
+- **Short answers:** "The LLM is only the voice": our engine, verifier, Guardian and trained models make every decision, and here are the measured numbers.
+- **GitHub:** clean modules, tests, CI badge, evaluation tables, `HOW_IT_WORKS.md`, an honest AI-use disclosure.
+
+## 12. How it's being built
+- **Parallel lanes** on separate branches, each owning its own files. Shared contracts mean the pieces fit together.
+- **Wave A (running now):** engine, safety, data, ML, frontend.
+- **Wave B (from Friday):** what-if, red-team + CI, deploy.
+- **Merge windows:** Fri 10 pm first full playable build · Sat 10 pm feature freeze · Sun 2 pm code freeze.
+- **Submit Sunday by 10 pm CT** (the deadline is Mon 11 am CT, during school).
+
+## 13. What only Sahib does
+1. Confirm the district by street address and **register** on congressionalappchallenge.us.
+2. Add `OPENAI_API_KEY` to the cloud environment settings and set a spending limit.
+3. Make the 5 friends' texting voices sound like real teens (edit `data/scenarios/*.json`).
+4. **Label** the disagreement queue (~1 hour, Friday after school).
+5. Ask a **school counselor** to review the rubric and scenarios and label 30 replies. Run the **classmate survey.**
+6. Check every crisis number on its official website.
+7. Merge, play-test, record the **video,** write the **short answers** and an **honest AI-use disclosure.**
 
 ---
 
-## 10. Checklist
-- [ ] Confirm district by street address, then **register today**
-- [ ] Email a school counselor or psych teacher Friday morning: review the rubric and scenarios, label 30 replies
-- [ ] Classmate survey (10+): "If a friend texted 'idk why I even bother anymore,' would you know what to say?"
-- [ ] Core working by Fri night, deployed by Sat night
-- [ ] Real numbers (F1, kappa, Guardian recall, safety suite) in the README
-- [ ] `HOW_IT_WORKS.md`: understand every component well enough to explain it without notes
-- [ ] Video under 3:00 with the required items; set to **public**
-- [ ] AI-use disclosure written honestly
-- [ ] **Submit by 9 am CT Monday**
-
----
-
-## Build plan
-- `PLAN_WORKTREES.md`: the parallel build plan (worktrees, lanes, tools, mission prompts, merge protocol, schedule)
-
-## Related research files
-- `research/CAC_2026_WINNING_IDEAS.md`: rules, rubric, IL-11 winners, round-1 ideas
-- `research/CAC_2026_IDEAS_ROUND2.md`: round-2 ideas
-- `research/CAC_2026_IDEAS_ROUND3_FINAL.md`: final top 10
-- `research/FIRSTREPLY_VS_CARECREW.md`: comparison (the panel scores there are **simulated AI-judge estimates, not real data**)
-- `research/FIRSTREPLY_TECH_DESIGN.md`: the detailed technical design (merged into this file)
+## 14. Short-answer draft: "What technical challenge did you face?"
+> *Fill in the real numbers after the build.* Large language models are great at sounding human but can't be trusted to decide anything in a suicide-prevention tool. So in FirstReply the AI only writes the friend's words. A deterministic state engine I designed decides what the friend is allowed to reveal. A verifier rejects any AI reply that leaks a locked fact or fails our safety check, and falls back to a reviewed line. A speaker-aware Guardian catches risk, including teen slang like "unalive," without flagging the most important question: "are you thinking about suicide?" (false-positive rate [x]%). Two models I trained detect seven helping skills (macro-F1 [x] vs [y] for keywords), with calibrated probabilities and word-level explanations. Their scores agree with a school counselor at kappa [x]. [N] automated attack conversations found [k] failures, which are now permanent tests.
