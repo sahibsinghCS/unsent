@@ -1,0 +1,975 @@
+[
+  {
+    "lane": "engine",
+    "metric": "pacing_excellent_open_max_turns_to_success",
+    "value": 4,
+    "n": 2,
+    "split": "scripted_labels",
+    "notes": "target <= 7; per scenario: failing-chem=4, giving-stuff-away=4",
+    "created": "2026-10-22T23:54:41+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "pacing_excellent_guarded_max_turns_to_success",
+    "value": 5,
+    "n": 3,
+    "split": "scripted_labels",
+    "notes": "target <= 8; per scenario: after-the-breakup=5, group-chat=5, new-school=5",
+    "created": "2026-10-22T23:54:41+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "pacing_one_slip_open_max_turns_to_success",
+    "value": 7,
+    "n": 2,
+    "split": "scripted_labels",
+    "notes": "target <= 10; per scenario: failing-chem=7, giving-stuff-away=7",
+    "created": "2026-10-22T23:54:41+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "pacing_one_slip_guarded_max_turns_to_success",
+    "value": 9,
+    "n": 3,
+    "split": "scripted_labels",
+    "notes": "target <= 10; per scenario: after-the-breakup=9, group-chat=9, new-school=9",
+    "created": "2026-10-22T23:54:41+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "pacing_targets_met",
+    "value": 1.0,
+    "n": 35,
+    "split": "scripted_labels",
+    "notes": "targets a-e over all 5 scenarios; failures: none",
+    "created": "2026-10-22T23:54:41+00:00",
+    "runs": [
+      {
+        "scenario": "after-the-breakup",
+        "persona": "guarded",
+        "helper": "excellent",
+        "status": "ended_success",
+        "turns": 5,
+        "turns_to_success": 5,
+        "max_level": 4,
+        "trust": [
+          34.4,
+          42.0,
+          52.0,
+          65.4,
+          75.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "after-the-breakup",
+        "persona": "guarded",
+        "helper": "one_slip",
+        "status": "ended_success",
+        "turns": 9,
+        "turns_to_success": 9,
+        "max_level": 4,
+        "trust": [
+          34.4,
+          12.4,
+          20.0,
+          28.4,
+          38.4,
+          46.8,
+          56.4,
+          69.0,
+          76.6
+        ],
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "after-the-breakup",
+        "persona": "guarded",
+        "helper": "dismissive",
+        "status": "ended_fail",
+        "turns": 2,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          8.0,
+          6.0
+        ],
+        "levels": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "after-the-breakup",
+        "persona": "guarded",
+        "helper": "advice_only",
+        "status": "ended_fail",
+        "turns": 6,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          18.0,
+          22.4,
+          10.4,
+          14.8,
+          2.8,
+          7.2
+        ],
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "after-the-breakup",
+        "persona": "guarded",
+        "helper": "never_asks",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 2,
+        "trust": [
+          34.4,
+          42.0,
+          50.4,
+          60.0,
+          67.6,
+          75.2,
+          83.6,
+          88.0,
+          95.6,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "scenario": "after-the-breakup",
+        "persona": "guarded",
+        "helper": "never_refers",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 3,
+        "trust": [
+          34.4,
+          42.0,
+          52.0,
+          54.0,
+          63.6,
+          66.4,
+          74.0,
+          76.0,
+          80.4,
+          83.2,
+          90.8,
+          92.8,
+          97.2,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      {
+        "scenario": "failing-chem",
+        "persona": "open",
+        "helper": "excellent",
+        "status": "ended_success",
+        "turns": 4,
+        "turns_to_success": 4,
+        "max_level": 4,
+        "trust": [
+          36.0,
+          46.0,
+          59.0,
+          75.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "failing-chem",
+        "persona": "open",
+        "helper": "one_slip",
+        "status": "ended_success",
+        "turns": 7,
+        "turns_to_success": 7,
+        "max_level": 4,
+        "trust": [
+          36.0,
+          14.0,
+          24.0,
+          35.0,
+          48.0,
+          59.0,
+          71.5
+        ],
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "failing-chem",
+        "persona": "open",
+        "helper": "dismissive",
+        "status": "ended_fail",
+        "turns": 2,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          8.0,
+          6.0
+        ],
+        "levels": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "failing-chem",
+        "persona": "open",
+        "helper": "advice_only",
+        "status": "ended_fail",
+        "turns": 8,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          18.0,
+          24.0,
+          12.0,
+          18.0,
+          6.0,
+          12.0,
+          0.0,
+          6.0
+        ],
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "failing-chem",
+        "persona": "open",
+        "helper": "never_asks",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 2,
+        "trust": [
+          36.0,
+          46.0,
+          57.0,
+          69.5,
+          79.5,
+          89.5,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "scenario": "failing-chem",
+        "persona": "open",
+        "helper": "never_refers",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 3,
+        "trust": [
+          36.0,
+          46.0,
+          59.0,
+          62.0,
+          74.5,
+          78.5,
+          88.5,
+          91.5,
+          97.5,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      {
+        "scenario": "giving-stuff-away",
+        "persona": "open",
+        "helper": "excellent",
+        "status": "ended_success",
+        "turns": 4,
+        "turns_to_success": 4,
+        "max_level": 4,
+        "trust": [
+          36.0,
+          46.0,
+          59.0,
+          75.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "giving-stuff-away",
+        "persona": "open",
+        "helper": "one_slip",
+        "status": "ended_success",
+        "turns": 7,
+        "turns_to_success": 7,
+        "max_level": 4,
+        "trust": [
+          36.0,
+          14.0,
+          24.0,
+          35.0,
+          48.0,
+          59.0,
+          71.5
+        ],
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "giving-stuff-away",
+        "persona": "open",
+        "helper": "dismissive",
+        "status": "ended_fail",
+        "turns": 2,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          8.0,
+          6.0
+        ],
+        "levels": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "giving-stuff-away",
+        "persona": "open",
+        "helper": "advice_only",
+        "status": "ended_fail",
+        "turns": 8,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          18.0,
+          24.0,
+          12.0,
+          18.0,
+          6.0,
+          12.0,
+          0.0,
+          6.0
+        ],
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "giving-stuff-away",
+        "persona": "open",
+        "helper": "never_asks",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 2,
+        "trust": [
+          36.0,
+          46.0,
+          57.0,
+          69.5,
+          79.5,
+          89.5,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "scenario": "giving-stuff-away",
+        "persona": "open",
+        "helper": "never_refers",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 3,
+        "trust": [
+          36.0,
+          46.0,
+          59.0,
+          62.0,
+          74.5,
+          78.5,
+          88.5,
+          91.5,
+          97.5,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      {
+        "scenario": "group-chat",
+        "persona": "guarded",
+        "helper": "excellent",
+        "status": "ended_success",
+        "turns": 5,
+        "turns_to_success": 5,
+        "max_level": 4,
+        "trust": [
+          34.4,
+          42.0,
+          52.0,
+          65.4,
+          75.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "group-chat",
+        "persona": "guarded",
+        "helper": "one_slip",
+        "status": "ended_success",
+        "turns": 9,
+        "turns_to_success": 9,
+        "max_level": 4,
+        "trust": [
+          34.4,
+          12.4,
+          20.0,
+          28.4,
+          38.4,
+          46.8,
+          56.4,
+          69.0,
+          76.6
+        ],
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "group-chat",
+        "persona": "guarded",
+        "helper": "dismissive",
+        "status": "ended_fail",
+        "turns": 2,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          8.0,
+          6.0
+        ],
+        "levels": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "group-chat",
+        "persona": "guarded",
+        "helper": "advice_only",
+        "status": "ended_fail",
+        "turns": 6,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          18.0,
+          22.4,
+          10.4,
+          14.8,
+          2.8,
+          7.2
+        ],
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "group-chat",
+        "persona": "guarded",
+        "helper": "never_asks",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 2,
+        "trust": [
+          34.4,
+          42.0,
+          50.4,
+          60.0,
+          67.6,
+          75.2,
+          83.6,
+          88.0,
+          95.6,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "scenario": "group-chat",
+        "persona": "guarded",
+        "helper": "never_refers",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 3,
+        "trust": [
+          34.4,
+          42.0,
+          52.0,
+          54.0,
+          63.6,
+          66.4,
+          74.0,
+          76.0,
+          80.4,
+          83.2,
+          90.8,
+          92.8,
+          97.2,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      {
+        "scenario": "new-school",
+        "persona": "guarded",
+        "helper": "excellent",
+        "status": "ended_success",
+        "turns": 5,
+        "turns_to_success": 5,
+        "max_level": 4,
+        "trust": [
+          34.4,
+          42.0,
+          52.0,
+          65.4,
+          75.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "new-school",
+        "persona": "guarded",
+        "helper": "one_slip",
+        "status": "ended_success",
+        "turns": 9,
+        "turns_to_success": 9,
+        "max_level": 4,
+        "trust": [
+          34.4,
+          12.4,
+          20.0,
+          28.4,
+          38.4,
+          46.8,
+          56.4,
+          69.0,
+          76.6
+        ],
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          3,
+          4
+        ]
+      },
+      {
+        "scenario": "new-school",
+        "persona": "guarded",
+        "helper": "dismissive",
+        "status": "ended_fail",
+        "turns": 2,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          8.0,
+          6.0
+        ],
+        "levels": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "new-school",
+        "persona": "guarded",
+        "helper": "advice_only",
+        "status": "ended_fail",
+        "turns": 6,
+        "turns_to_success": null,
+        "max_level": 0,
+        "trust": [
+          18.0,
+          22.4,
+          10.4,
+          14.8,
+          2.8,
+          7.2
+        ],
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "new-school",
+        "persona": "guarded",
+        "helper": "never_asks",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 2,
+        "trust": [
+          34.4,
+          42.0,
+          50.4,
+          60.0,
+          67.6,
+          75.2,
+          83.6,
+          88.0,
+          95.6,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "scenario": "new-school",
+        "persona": "guarded",
+        "helper": "never_refers",
+        "status": "ended_fail",
+        "turns": 16,
+        "turns_to_success": null,
+        "max_level": 3,
+        "trust": [
+          34.4,
+          42.0,
+          52.0,
+          54.0,
+          63.6,
+          66.4,
+          74.0,
+          76.0,
+          80.4,
+          83.2,
+          90.8,
+          92.8,
+          97.2,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "levels": [
+          1,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ]
+      }
+    ]
+  }
+]

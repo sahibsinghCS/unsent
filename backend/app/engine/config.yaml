@@ -11,10 +11,10 @@ weights:
   advice_dump: -10
   promised_secrecy: -15
 decay_per_turn: 2
-guarded_positive_multiplier: 0.7
+guarded_positive_multiplier: 0.8   # tuned with eval/engine/pacing.py (was 0.7: too slow)
 repeat_multiplier: 0.5          # a positive label also active last turn counts half
 initial_trust: 30
-level_up_thresholds: [0, 25, 45, 60, 75]
+level_up_thresholds: [0, 25, 40, 55, 70]   # tuned with eval/engine/pacing.py (was 0, 25, 45, 60, 75)
 hysteresis: 15
 silence_drop: 15
 silence_floor: 20
@@ -22,7 +22,10 @@ fail_floor: 10
 fail_turns: 2
 secrecy_broken_penalty: 10
 referral_window: 3              # level 4 needs a referral in this turn or the 2 before it
+ask_unlock_trust: 45            # at level 2, a direct ask with trust >= this unlocks level 3 (below its threshold)
+disclosure_referral_bonus: 5    # a referral once the friend has disclosed (level >= 3) earns a bonus
 max_turns: 16
+turning_point_min_drop: 5        # smaller dips (decay, diminishing returns) are not turning points
 event_threshold: 0.5
 # Line selection (actor.py)
 off_topic_max_similarity: 0.2   # no labels + max cosine to the conversation below this -> OFF_TOPIC

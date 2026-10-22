@@ -36,7 +36,14 @@ def test_skips_unscored_nodes():
     blocked = Node(
         id="blk", parent_id=None, role="user", bubbles=["kys"], state_after=State(last_delta=-50)
     )
-    assert turning_point([blocked, user("a", -2, 1)]).node_id == "a"
+    assert turning_point([blocked, user("a", -12, 1, L.ADVICE_DUMP)]).node_id == "a"
+
+
+def test_tiny_drops_are_not_turning_points():
+    # A good conversation where trust only dipped by decay or diminishing returns: nothing to fix.
+    path = [user("a", 5, 1, L.VALIDATED), user("b", -0.25, 2, L.FOLLOW_UP), user("c", -4.9, 3)]
+    assert turning_point(path) is None
+    assert turning_point([*path, user("d", -5, 4, L.ADVICE_DUMP)]).node_id == "d"
 
 
 def test_secrecy_broken_reason():

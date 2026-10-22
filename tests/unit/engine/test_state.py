@@ -26,7 +26,7 @@ def at(trust: float, level: int = 0, turn: int = 3, **flags) -> State:
 
 def test_config_matches_yaml(cfg):
     assert cfg.weights[L.VALIDATED] == 12 and cfg.weights[L.DISMISSED] == -20
-    assert cfg.level_up_thresholds == (0, 25, 45, 60, 75)
+    assert cfg.level_up_thresholds == (0, 25, 40, 55, 70)
     assert cfg.max_turns == 16 and cfg.event_threshold == 0.5
     assert load_config().weights == cfg.weights
 
@@ -47,7 +47,7 @@ def test_open_persona_full_weight(open_scenario, cfg):
 
 
 def test_guarded_persona_scales_positive_only(scenario, cfg):
-    assert update(at(30), probs(L.VALIDATED), scenario, cfg).last_delta == pytest.approx(6.4)
+    assert update(at(30), probs(L.VALIDATED), scenario, cfg).last_delta == pytest.approx(7.6)
     assert update(at(50), probs(L.DISMISSED), scenario, cfg).last_delta == -22
 
 
@@ -75,7 +75,7 @@ def test_breakdown_terms(open_scenario, scenario, cfg):
     new = update(at(30), probs(L.VALIDATED, L.ASKED_DIRECTLY), open_scenario, cfg)
     assert new.last_breakdown == {"asked_directly": 15, "validated": 12, "decay": -2}
     guarded = update(at(30), probs(L.VALIDATED), scenario, cfg, frozenset({L.VALIDATED}))
-    assert guarded.last_breakdown == {"validated": 8.4, "diminishing": -4.2, "decay": -2}
+    assert guarded.last_breakdown == {"validated": 9.6, "diminishing": -4.8, "decay": -2}
     promised = update(at(50), probs(L.PROMISED_SECRECY), open_scenario, cfg)
     broke = update(promised, probs(L.REFERRED_ADULT), open_scenario, cfg)
     assert broke.last_breakdown == {"referred_adult": 8, "decay": -2, "secrecy_broken": -10}
@@ -106,6 +106,32 @@ def test_level_3_gate_needs_direct_ask(open_scenario, cfg):
     assert asked.level == 3 and asked.flags.asked_directly_ever
 
 
+def test_direct_ask_unlocks_level_3_early(open_scenario, cfg):
+    # Level 3 normally needs 55, but at level 2 a direct ask with trust >= 45 opens it.
+    state = at(36, level=2)
+    asked = update(state, probs(L.ASKED_DIRECTLY), open_scenario, cfg)  # 49
+    assert asked.trust < cfg.level_up_thresholds[3] and asked.level == 3
+    earlier = update(
+        at(36, level=2, asked_directly_ever=True), probs(L.VALIDATED), open_scenario, cfg
+    )
+    assert earlier.trust == 46 and earlier.level == 2  # an old ask doesn't unlock early
+
+
+def test_low_trust_direct_ask_still_deflects(open_scenario, scenario, cfg):
+    for persona in (open_scenario, scenario):
+        low = update(at(30), probs(L.DISMISSED), persona, cfg)
+        asked = update(low, probs(L.ASKED_DIRECTLY), persona, cfg)
+        assert asked.trust <= 25 and asked.level < 3 and asked.flags.asked_directly_ever
+
+
+def test_referral_after_disclosure_bonus(open_scenario, cfg):
+    state = at(56, level=3, asked_directly_ever=True)
+    new = update(state, probs(L.REFERRED_ADULT), open_scenario, cfg)
+    assert new.last_breakdown["referral_after_disclosure"] == 5 and new.last_delta == 11
+    before = update(at(41, level=2), probs(L.REFERRED_ADULT), open_scenario, cfg)
+    assert "referral_after_disclosure" not in before.last_breakdown
+
+
 def test_level_3_gate_remembers_earlier_ask(open_scenario, cfg):
     state = at(70, level=2, asked_directly_ever=True)
     assert update(state, probs(L.VALIDATED), open_scenario, cfg).level == 3
@@ -127,9 +153,9 @@ def test_referral_window(open_scenario, cfg, ref_turn, reaches_4):
 
 
 def test_hysteresis_holds_level_near_threshold(open_scenario, cfg):
-    # Level 2 starts at 45; the friend only steps down below 45 - 15 = 30.
-    assert update(at(33, level=2), probs(), open_scenario, cfg).level == 2  # 31
-    assert update(at(31, level=2), probs(), open_scenario, cfg).level == 1  # 29
+    # Level 2 starts at 40; the friend only steps down below 40 - 15 = 25.
+    assert update(at(28, level=2), probs(), open_scenario, cfg).level == 2  # 26
+    assert update(at(26, level=2), probs(), open_scenario, cfg).level == 1  # 24
 
 
 def test_level_drops_at_most_one_per_turn(open_scenario, cfg):

@@ -45,13 +45,17 @@ def drop_reason(node: Node, before_flags_secret: bool) -> str:
 
 
 def turning_point(path: Sequence[Node]) -> TurningPoint | None:
-    """The helper message with the most negative last_delta (earliest wins ties); None if trust never
-    dropped."""
+    """The helper message with the most negative last_delta (earliest wins ties).
+
+    Only drops of at least `turning_point_min_drop` (5) count: a dip from decay or diminishing returns
+    isn't a mistake, so a good conversation gets None (and the critic praises instead).
+    """
     worst: tuple[Node, bool] | None = None
     secret = False
     for node in _helper_nodes(path):
         delta = node.state_after.last_delta
-        if delta < 0 and (worst is None or delta < worst[0].state_after.last_delta):
+        big_enough = delta <= -default_config().turning_point_min_drop
+        if big_enough and (worst is None or delta < worst[0].state_after.last_delta):
             worst = (node, secret)
         secret = node.state_after.flags.promised_secrecy
     if worst is None:

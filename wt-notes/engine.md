@@ -14,6 +14,9 @@
 
 - **Contracts 1.2:** `State.last_breakdown` filled by `update()`: label terms (after the guarded multiplier), `diminishing`, `decay`, `secrecy_broken`; sums exactly to the raw `last_delta` (tested, including random runs). No `clamp` term because `last_delta` is pre-clamp by design.
 
+- **Pacing (integrator request after the full-real playtest):** `eval/engine/pacing.py` (scripted label sequences × 5 scenarios, targets a-e) → `eval/reports/engine_pacing.json` + `eval/engine/pacing.png`; tuned config: guarded 0.8, thresholds [0,25,40,55,70], `ask_unlock_trust: 45` (at level 2 a direct ask unlocks level 3), `disclosure_referral_bonus: 5`. All 35 checks pass; `tests/unit/engine/test_pacing.py` guards them. Integrator's real new-school run now succeeds at message 6.
+- **Turning point:** only drops ≥ 5 (`turning_point_min_drop`), else None.
+
 ## In progress
 - Nothing. Waiting for the data lane's real bank (`data/lines/`) to run `run_eval.py --bank-dir` and the validator on it.
 
@@ -43,10 +46,11 @@
 - LLM voice not tried against the real API from this environment (no key). Run `make test-llm` and `make spike` with a key, then add real outputs to the catch-rate eval.
 
 ## Numbers
+- Pacing (worst scenario, messages to success): excellent open 4 / guarded 5; one slip open 7 / guarded 9; dismissive, advice-only, never-asks, never-refers never succeed; low-trust ask deflects (35/35 checks).
+- Scripted (keyword detector, fixture bank), after tuning: good → success in 4; dismissive → fail in 2; apology → success in 8; secrecy→refer → 52.6 at turn 8. Random labels: 4.7% success.
 - LLM-voice verifier (held-out half of leak set, n=43): fastembed precision 0.96 / recall 0.96 (threshold 0.43); hash 1.0 / 1.0 (threshold 0.25; the set is lexically close to the facts, so treat hash as a test-only number). Word-list alone: recall 0.12.
 - Catch rate on 19 fake bad LLM outputs: 1.0 (both backends); false rejects on 13 good ones: 0/13 hash, 1/13 fastembed. Real-output catch rate: not measured (no OPENAI_API_KEY here).
-- Scripted (keyword detector, fixture bank, Maya): good → success in 8 turns (trust 79.5); dismissive → fail in 2 turns; apology → recovered to 58.1 (level 2); secrecy→refer → 44.7, SECRECY_BROKEN shown.
-- Determinism 1.0 (n=2,008 runs); invariant violations 0 / 20,000 random updates; random labels: 0.5% success, 99.5% fail.
+- Determinism 1.0 (n=2,008 runs); invariant violations 0 / 20,000 random updates; random labels: 4.7% success.
 - Fixture bank: 68 lines, 32/32 required cells, Guardian pass 134/134 bubbles, 0 violations.
 - Real bank: not available yet.
 

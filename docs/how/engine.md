@@ -46,7 +46,7 @@ Each message changes trust by: **sum of the weights of the active labels − 2**
 | advice_dump ("just sleep more") | −10 | Jumping to fixes feels like not listening. |
 
 Three adjustments:
-- **Guarded personas** (e.g. Maya) are harder to reach: positive weights × 0.7. Negative weights stay full.
+- **Guarded personas** (e.g. Maya) are harder to reach: positive weights × 0.8. Negative weights stay full.
 - **Diminishing returns:** a positive label that was also active on the previous message counts half. Saying "that sounds hard" five times in a row can't farm trust.
 - Trust is clamped to 0-100. The change is stored as `last_delta` (used for the turning point), and its parts as `last_breakdown`, which X-ray mode shows as e.g. "+8.4 validated · −4.2 diminishing · −2 decay = +2.2". The terms always add up exactly to `last_delta` (a test checks this on thousands of random turns). `last_delta` is the raw change before clamping, so a harsh message still shows its full cost even when trust is already near 0. When clamping happens (e.g. trust 5 and a −32 message), X-ray mode shows the visible change (−5) separately from the message's full cost (−32).
 
@@ -56,14 +56,16 @@ Three adjustments:
 |---|---|---|
 | 0 | surface ("just tired") | 0 |
 | 1 | stress ("can't sleep") | 25 |
-| 2 | hopeless ("feels like a burden") | 45 |
-| 3 | suicidal thoughts | 60 **and** you have asked directly at least once |
-| 4 | open to help → success | 75 **and** level 3 reached **and** a referral (adult or 988) in this turn or the 2 before |
+| 2 | hopeless ("feels like a burden") | 40 |
+| 3 | suicidal thoughts | 55 **and** you have asked directly at least once, **or** you ask directly right now while trust is at least 45 |
+| 4 | open to help → success | 70 **and** level 3 reached **and** a referral (adult or 988) in this turn or the 2 before |
 
 - The level moves **at most one step per turn**, so the friend opens up gradually.
 - **Why the level-3 gate?** In real life people often only disclose suicidal thoughts when someone asks directly. A helper who is kind but never asks will plateau at "hopeless". That mirrors gatekeeper training and teaches the most important skill.
 - **Why the level-4 gate?** Success means the friend accepts help, so the helper must actually connect them to help, recently enough that it's part of this moment.
-- **Hysteresis:** the friend only drops a level if trust falls **15 below** the current level's threshold (e.g. level 2 starts at 45, so it drops only below 30). Without it, the friend would flicker between "open" and "closed" when trust wobbles around a threshold.
+- **Asking directly opens the door:** once the friend is at level 2 (hopeless) and trust is at least 45, a direct question ("are you thinking about suicide?") is enough to reach level 3 even below its usual 55. That's the moment gatekeeper training is built around: people often tell the truth when someone finally asks. At low trust (25 or less) the same question still gets a deflection ("what?? no, why would you ask that").
+- **Referring after they open up pays off:** a referral once the friend has disclosed (level 3 or more) earns a +5 bonus (`referral_after_disclosure` in X-ray mode).
+- **Hysteresis:** the friend only drops a level if trust falls **15 below** the current level's threshold (e.g. level 2 starts at 40, so it drops only below 25). Without it, the friend would flicker between "open" and "closed" when trust wobbles around a threshold.
 
 ### 4. Silence ("left on Seen")
 The friend doesn't reply this turn if trust dropped by **15 or more**, or if trust is **below 20 and the message was hurtful** (dismissive, advice-dumping or promising secrecy). The slow −2 drift alone never causes silence: a caring message the detector didn't recognize still gets a short, guarded reply. Silence is not the end: apologizing and validating raise trust and the friend starts answering again.
@@ -112,7 +114,7 @@ uv run python -m backend.app.engine.verifier --all [--bank-dir DIR] [--allow-gap
 It prints a table and exits 1 on any violation, so a bad line can't sneak into the demo.
 
 ### 10. Turning point and missed opportunities (turning_point.py)
-- **Turning point:** the helper message with the most negative `last_delta` (earliest on ties), with a reason like "Trust dropped 22 after a dismissive reply."
+- **Turning point:** the helper message with the most negative `last_delta` (earliest on ties), with a reason like "Trust dropped 22 after a dismissive reply." Only drops of 5 or more count: in a good conversation, small dips from the −2 drift or diminishing returns aren't mistakes, so there is no turning point and the feedback praises instead.
 - **Missed opportunities** (each names the turn): the friend reached "hopeless" and the next reply didn't ask directly; the friend disclosed suicidal thoughts and no trusted adult or 988 came up within 2 replies; a promise of secrecy; being left on Seen.
 
 ## Why this approach (and what we considered instead)
@@ -125,19 +127,33 @@ It prints a table and exits 1 on any violation, so a bad line can't sneak into t
 
 | Scripted conversation (Maya, guarded) | Turns | Final trust | Result |
 |---|---|---|---|
-| good (check in, validate, ask directly, refer, follow up) | 8 | 79.5 | **success** |
+| good (check in, validate, ask directly, refer) | 4 | 75.0 | **success** |
 | dismissive ("lol", "you'll be fine") | 2 | 0 | **fail** (Seen, then shut down) |
-| apology then recovery | 8 | 58.1 | still active, recovered from 11.6 to level 2 |
-| secrecy promised, then referral | 8 | 44.7 | still active, SECRECY_BROKEN reaction shown |
+| apology then recovery | 8 | 72.2 | **success** after recovering from Seen |
+| secrecy promised, then referral | 8 | 52.6 | still active, SECRECY_BROKEN reaction shown |
 
 - **Determinism:** every run done twice and compared exactly: identical (1.0), n = 2,008 runs.
-- **Invariants:** 1,000 seeded random conversations × 20 turns (n = 20,000 updates): **0 violations** (trust in 0-100, level moves ≤ 1 per turn, level ≥ 3 only after a direct ask). With *random* labels, 99.5% fail and 0.5% succeed: you can't stumble into success by chance.
+- **Invariants:** 1,000 seeded random conversations × 20 turns (n = 20,000 updates): **0 violations** (trust in 0-100, level moves ≤ 1 per turn, level ≥ 3 only after a direct ask). With *random* labels (many labels "on" every turn), 95.3% fail and 4.7% succeed, and every success includes a direct ask and a referral.
 - **Fixture bank** (68 lines, 134 bubbles, written by the engine lane for testing): 100% of required cells covered (32/32), 100% of bubbles pass the Guardian `check_friend`, 0 violations.
 - **LLM-voice verifier** (`eval/reports/engine_verifier.json`): on a hand-labeled set of 87 friend texts across all 5 scenarios (45 leaks, 42 not), the threshold is picked on one half (best F2, because a missed leak is worse than a false alarm) and measured on the other half (n = 43). With the real embedding model: **precision 0.96, recall 0.96** (embeddings alone: same; word-list alone: recall 0.12, so the embeddings do the real work). Catch rate on 19 hand-written bad LLM outputs (leaks, persona breaks, advice, method words, bad shape): **19/19 (1.0)**; good outputs wrongly rejected: 1/13 (a wrong rejection only means the friend uses a bank line). Real LLM outputs: not measured yet (no API key in the build environment; `make test-llm`).
 - **Real bank:** not yet available from the data lane at the time of writing; `run_eval.py --bank-dir` will report it.
-- **Tests:** 173 engine unit tests (`tests/unit/engine/`), including 60 seeded property tests.
+- **Tests:** 183 engine unit tests (`tests/unit/engine/`), including 60 seeded property tests.
 
 ![trust trajectories](../../eval/engine/trajectories.png)
+
+### Pacing: can an excellent helper win, and only an excellent one?
+`uv run python eval/engine/pacing.py` plays scripted helpers whose labels are given directly (so it tests the engine's rules, not the detector) against all 5 scenarios. The numbers in `config.yaml` were tuned with it (guarded ×0.7 → 0.8, thresholds 45/60/75 → 40/55/70, plus the "ask opens the door" and referral-bonus rules) because an excellent helper in a real guarded run got stuck at level 2. Results (`eval/reports/engine_pacing.json`, `eval/engine/pacing.png`), messages until success, worst scenario:
+
+| Helper | Open persona | Guarded persona | Target |
+|---|---|---|---|
+| Excellent (check in, validate, ask directly, refer + offer to go, follow up) | 4 | 5 | ≤ 7 / ≤ 8 |
+| Good with one slip (one dismissive message, then apology + validation) | 7 | 9 | ≤ 10 |
+| Dismissive / advice-only | never past level 1, fails | never past level 1, fails | — |
+| Never asks directly / never refers | never succeeds | never succeeds | — |
+
+4 messages is the fastest possible (the friend moves one level per message), and only if every message is the right move.
+
+![pacing](../../eval/engine/pacing.png)
 
 ## Limitations
 - The leak set was written by the same lane that built the detector and is small (87 texts); real LLM outputs may phrase leaks in ways it doesn't cover. That's why there are three layers: locked facts are never in the prompt, the verifier checks meaning, and the bank is the fallback.
@@ -145,11 +161,11 @@ It prints a table and exits 1 on any violation, so a bad line can't sneak into t
 - The friend can only be as varied as the line bank; with a small bank it falls back to generic lines more often.
 - Diminishing returns needs the previous message's labels, which the frozen `State` contract doesn't store; the engine remembers them per State object in memory (exact inside one server process; after a restart, the first message counts at full weight).
 - Off-topic detection depends on the embedding model; with the test-only hash embeddings it is a rough character-level guess.
-- A guarded friend needs about 8 good messages to reach success, which is realistic but means short demos may end at level 3.
+- Pacing is tuned on scripted label sequences; with the real detector a miss (a caring message it doesn't recognize) costs a turn. An excellent helper wins in 4-6 messages.
 
 ## Questions a judge might ask (with answers)
 1. **"Isn't this just an AI chatbot?"** No. The LLM is only the voice. Our state machine decides how the friend feels, what they're willing to share and how they react; the LLM only words that decision, and it is never shown the secrets the friend isn't ready to share. Our verifier checks every reply (fact leaks by meaning, character breaks, advice, the Guardian), and if anything fails, the friend uses a reviewed line from our bank. Turn the LLM off and the whole app still works.
 2. **"Why can't I get the friend to open up just by being nice?"** Because real people often only share suicidal thoughts when asked directly. Level 3 is locked until you ask. That's the most important lesson in suicide-prevention training, and the engine enforces it.
 3. **"Couldn't I just spam 'that sounds hard' to win?"** No: repeating the same positive move counts half, there's a −2 drift every turn, and the last step needs a real referral to an adult or 988.
 4. **"What if the LLM says something unsafe or reveals too much?"** It can't reach the screen: the verifier rejects it (19 of 19 deliberately bad replies caught in our test), the LLM gets one retry told what was wrong, and then the friend falls back to a reviewed bank line. Bank lines themselves are checked with the Guardian before the demo and again at runtime.
-5. **"How do you know it works?"** 173 unit tests (including 60 random property tests), an evaluation that replays four scripted conversations (good → success, dismissive → fail, apology → recovery, secrecy → "you promised" then recovery), and a determinism check: the same conversation always produces exactly the same friend.
+5. **"How do you know it works?"** 183 unit tests (including 60 random property tests), an evaluation that replays four scripted conversations (good → success, dismissive → fail, apology → recovery, secrecy → "you promised" then recovery), and a determinism check: the same conversation always produces exactly the same friend.
