@@ -1,6 +1,7 @@
-"""Line-bank actor: picks the friend's next line (ENGINE lane). See docs/how/engine.md.
+"""Line-bank actor: decides the friend's reaction and picks a bank line (ENGINE lane). See docs/how/engine.md.
 
-The friend never improvises. Every reply is a pre-written, reviewed line from the line bank
+The reaction chosen here steers every voice: the LLM voice (voice.py) words it, and when the LLM is off or
+its reply fails the verifier, the friend uses a pre-written, reviewed line from the line bank
 (data/lines/<scenario>.<locale>.jsonl), chosen in four steps:
   1. reaction: WHY the friend replies this way (from the helper's detected labels and the state),
   2. candidates: lines with that reaction at the current level, widening to lower levels, then NEUTRAL,
@@ -257,6 +258,7 @@ def to_output(candidate: Candidate) -> ActorOutput:
         line_id=line.id if line else None,
         reaction=candidate.reaction,
         fact_ids=list(line.fact_ids) if line else [],
+        source="bank" if line else "fallback",
     )
 
 
@@ -276,6 +278,19 @@ def generate(
     )
 
 
+def decide_reaction(
+    state: State,
+    history: Sequence[Node],
+    user_text: str,
+    events: SkillProbs,
+    cfg: EngineConfig | None = None,
+) -> Reaction:
+    """The reaction for this turn, from the detected labels and the state change."""
+    cfg = cfg or default_config()
+    active = active_labels(events, cfg.event_threshold)
+    return choose_reaction(state, active, user_text, history, cfg, state_before(history))
+
+
 def ranked_candidates(
     scenario: Scenario,
     state: State,
@@ -291,8 +306,7 @@ def ranked_candidates(
     if state.status == "silent":
         return [Candidate(Reaction.DISMISSED, (), None)]
     bank = load_bank(scenario.id, locale) if bank is None else bank
-    active = active_labels(events, cfg.event_threshold)
-    reaction = choose_reaction(state, active, user_text, history, cfg, state_before(history))
+    reaction = decide_reaction(state, history, user_text, events, cfg)
     before = state_before(history)
     leveled_up = before is not None and state.level > before.level
     found = candidates(scenario, state, history, user_text, reaction, bank, cfg, leveled_up)

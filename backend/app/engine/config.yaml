@@ -29,3 +29,8 @@ off_topic_max_similarity: 0.2   # no labels + max cosine to the conversation bel
 off_topic_min_words: 3          # shorter messages ("ok", "hmm") are NEUTRAL, never OFF_TOPIC
 exact_level_bonus: 0.05
 new_fact_bonus: 0.05            # prefer lines that reveal something new (progressive disclosure)
+# LLM voice verifier (verifier.py): cosine(bubble, locked fact) at or above this = leak.
+# Calibrated per embedding backend on eval/engine/leak_set.jsonl (see eval/reports/engine_verifier.json).
+fact_leak_threshold:
+  fastembed: 0.43
+  hash: 0.25

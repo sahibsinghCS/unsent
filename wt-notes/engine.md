@@ -7,8 +7,10 @@
 - `engine/turning_point.py`: turning point with reasons; missed opportunities (no direct ask at L2, no referral within 2 turns of L3, secrecy, Seen).
 - `engine/service.py`: `IMPLEMENTED = True`; `generate()` walks the ranked list until a line verifies. Extra method `missed_opportunities(path, friend_name)` for the critic.
 - Fixture bank: `tests/unit/engine/fixtures/after-the-breakup.en.jsonl` (68 lines, draft, safe-messaging checked) + frozen scenario copy.
-- 154 engine tests (60 seeded property tests). `make check`, `make smoke` pass with the engine on.
+- 173 engine tests (60 seeded property tests). `make check`, `make smoke` pass with the engine on.
 - `eval/engine/run_eval.py` → `eval/reports/engine_trajectories.json`, `eval/reports/engine_bank.json`, `eval/engine/*.png`.
+
+- **v3 (integrator update, Sahib's decision): LLM voice.** Merged `claude/amazing-carson-31tzo3` (llm.py, contracts 1.1). New `engine/voice.py` + `engine/prompts/actor.md`: 3-tier voice (llm → bank → fallback) with `ActorOutput.source`; one retry with the rejection reason. Verifier: semantic fact-leak detection (calibrated per embedding backend, closer-to-locked-than-unlocked rule, level-3 word-list backstop), advice/resource detection, persona, shape, Guardian. 19 voice tests with fakes (leaks, persona breaks, advice, method words, schema violations, retry, FR_LLM=0, API `voice`), 1 `@pytest.mark.llm` test (3 real turns). `eval/engine/leak_set.jsonl` (87 labeled texts) + `eval/engine/verifier_eval.py` → `eval/reports/engine_verifier.json`.
 
 ## In progress
 - Nothing. Waiting for the data lane's real bank (`data/lines/`) to run `run_eval.py --bank-dir` and the validator on it.
@@ -21,6 +23,10 @@
 - **Level-up turns disclose**: when the friend moves up after a supportive message, lines revealing the new level's facts go first (a NEUTRAL disclosure may replace the reaction, except for ASKED_DIRECTLY, which always gets a direct answer).
 - `FR_ENGINE_BANK_DIR` env var (engine-only) points the actor at another bank (believability checks, eval).
 - Required-cell gaps count as violations in the CLI unless `--allow-gaps`.
+- **Leak detection only runs on LLM wording**; bank lines are gated by their declared `fact_ids` (embedding checks on reviewed lines would only add false rejections). The bank validator does run the level-3 word-list on lines below level 3.
+- **Advice/resource detection runs on every source** (the friend never gives 988 etc.).
+- `run_eval.py` pins `FR_LLM=0` so engine numbers are free and deterministic even if a key is in `.env`.
+- Leak threshold: best F2 on the even half of the leak set; reported on the odd half.
 
 ## Requests
 - **integrator (contracts, additive):** add `State.last_labels: list[SkillLabel] = []` so diminishing returns survives serialization/restarts; the engine would then drop its side table.
@@ -32,8 +38,11 @@
 - With the keyword stub detector, "thank you for telling me" isn't detected as validation (friend treats it as neutral). The ML detector should fix this.
 - Guarded friends need ~8 good messages to succeed (by design; tune `guarded_positive_multiplier` if demos feel slow).
 - Off-topic detection under hash embeddings is approximate.
+- LLM voice not tried against the real API from this environment (no key). Run `make test-llm` and `make spike` with a key, then add real outputs to the catch-rate eval.
 
 ## Numbers
+- LLM-voice verifier (held-out half of leak set, n=43): fastembed precision 0.96 / recall 0.96 (threshold 0.43); hash 1.0 / 1.0 (threshold 0.25; the set is lexically close to the facts, so treat hash as a test-only number). Word-list alone: recall 0.12.
+- Catch rate on 19 fake bad LLM outputs: 1.0 (both backends); false rejects on 13 good ones: 0/13 hash, 1/13 fastembed. Real-output catch rate: not measured (no OPENAI_API_KEY here).
 - Scripted (keyword detector, fixture bank, Maya): good → success in 8 turns (trust 79.5); dismissive → fail in 2 turns; apology → recovered to 58.1 (level 2); secrecy→refer → 44.7, SECRECY_BROKEN shown.
 - Determinism 1.0 (n=2,008 runs); invariant violations 0 / 20,000 random updates; random labels: 0.5% success, 99.5% fail.
 - Fixture bank: 68 lines, 32/32 required cells, Guardian pass 134/134 bubbles, 0 violations.

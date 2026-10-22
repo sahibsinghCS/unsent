@@ -5,7 +5,9 @@
    -> eval/engine/trajectory_<name>.png, eval/engine/trajectories.png, eval/reports/engine_trajectories.json
 2. Line-bank coverage + validation for every scenario that has a bank (--bank-dir, default data/lines),
    plus the engine's own fixture bank -> eval/reports/engine_bank.json
-3. Determinism: everything is run twice and compared; 1,000 seeded random conversations check the
+3. LLM-voice verifier: fact-leak threshold calibration (precision/recall) and catch rate on fake bad
+   outputs -> eval/reports/engine_verifier.json (see verifier_eval.py)
+4. Determinism: everything is run twice and compared; 1,000 seeded random conversations check the
    state-machine invariants -> included in engine_trajectories.json
 """
 
@@ -22,6 +24,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 os.environ.setdefault("FR_EMBED", "hash")
+os.environ.setdefault(
+    "FR_LLM", "0"
+)  # measure the engine's decisions with the bank voice: free + deterministic
 
 from backend.app.content import LINES_DIR, load_scenarios  # noqa: E402
 from backend.app.contracts import Node, SkillLabel  # noqa: E402
@@ -332,6 +337,16 @@ def bank_report(bank_dir: Path) -> list[dict]:
     return out
 
 
+def run_verifier_eval() -> list[dict]:
+    """LLM-voice verifier: leak-threshold calibration + catch rate -> eval/reports/engine_verifier.json."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("verifier_eval", OUT_DIR / "verifier_eval.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.run()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -411,6 +426,11 @@ def main(argv: list[str] | None = None) -> int:
     (REPORTS / "engine_bank.json").write_text(
         json.dumps(bank_report(bank_dir), indent=2) + "\n", encoding="utf-8"
     )
+
+    verifier_records = run_verifier_eval()
+    for rec in verifier_records:
+        if "catch_rate" in rec["metric"] or "combined" in rec["metric"]:
+            print(f"{rec['metric']:<42} {rec['value']}  (n={rec['n']})")
 
     for res in results:
         print(

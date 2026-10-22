@@ -7,13 +7,16 @@ from __future__ import annotations
 
 import threading
 import weakref
+from collections import Counter
 from collections.abc import Sequence
 from pathlib import Path
 
+from backend.app import llm
 from backend.app.contracts import (
     ActorOutput,
     Line,
     Node,
+    Reaction,
     Scenario,
     SkillLabel,
     SkillProbs,
@@ -21,7 +24,7 @@ from backend.app.contracts import (
     TurningPoint,
     VerifierResult,
 )
-from backend.app.engine import actor, verifier
+from backend.app.engine import actor, verifier, voice
 from backend.app.engine import state as engine_state
 from backend.app.engine import turning_point as tp
 from backend.app.engine.state import EngineConfig, default_config
@@ -35,6 +38,8 @@ class Engine:
     def __init__(self, cfg: EngineConfig | None = None, bank_dir: Path | None = None) -> None:
         self.cfg = cfg or default_config()
         self.bank_dir = bank_dir
+        self.llm_attempts = 2  # first try + one retry told why it was rejected
+        self.voice_stats: Counter[str] = Counter()
         # Labels active on the message that produced each State, keyed by the State object itself.
         # The frozen contract's State has no field for this, and diminishing returns needs it; the
         # pipeline always feeds back the exact State object update() returned, so this is exact.
@@ -91,16 +96,51 @@ class Engine:
         events: SkillProbs,
         locale: str,
     ) -> ActorOutput:
-        """The best-ranked reply that passes the verifier (scenario fallback lines as a last resort)."""
+        """Three voices, best first, each checked by the verifier:
+        (a) LLM wording of the engine's decision (up to 2 tries; the 2nd is told why the 1st failed),
+        (b) the best verified bank line, (c) the scenario's fallback line."""
         bank = self.bank(scenario.id, locale)
         ranked = actor.ranked_candidates(
             scenario, state, history, user_text, events, locale, bank, self.cfg
         )
+        if state.status != "silent":
+            reaction = actor.decide_reaction(state, history, user_text, events, self.cfg)
+            output = self._llm_voice(scenario, state, history, reaction, ranked, bank)
+            if output is not None:
+                return output
         for candidate in ranked:
             output = actor.to_output(candidate)
             if verifier.verify(output, scenario, state, bank).ok:
                 return output
         return actor.to_output(ranked[-1])
+
+    def _llm_voice(
+        self,
+        scenario: Scenario,
+        state: State,
+        history: list[Node],
+        reaction: Reaction,
+        ranked: list[actor.Candidate],
+        bank: Sequence[Line],
+    ) -> ActorOutput | None:
+        """A verified LLM reply, or None (LLM off / unavailable / rejected twice) -> bank voice."""
+        lines = [c.line for c in ranked if c.line is not None]
+        examples = [ln for ln in lines if ln.reaction == reaction][: voice.MAX_EXAMPLES]
+        examples = examples or lines[: voice.MAX_EXAMPLES]
+        rejection: str | None = None
+        for _ in range(self.llm_attempts):
+            try:
+                output = voice.llm_reply(scenario, state, history, reaction, examples, rejection)
+            except llm.LLMUnavailable:
+                self.voice_stats["llm_unavailable"] += 1
+                return None
+            result = verifier.verify(output, scenario, state, bank)
+            if result.ok:
+                self.voice_stats["llm_ok"] += 1
+                return output
+            self.voice_stats["llm_rejected"] += 1
+            rejection = "; ".join(result.reasons)
+        return None
 
     def verify(
         self,

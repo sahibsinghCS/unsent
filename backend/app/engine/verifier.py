@@ -19,6 +19,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from backend.app import content, services
+from backend.app.config import embed_backend
 from backend.app.contracts import (
     ActorOutput,
     GuardianService,
@@ -28,7 +29,9 @@ from backend.app.contracts import (
     State,
     VerifierResult,
 )
+from backend.app.embed import cosine, embed_one
 from backend.app.engine.actor import fact_levels, load_bank
+from backend.app.engine.state import default_config
 
 MAX_BUBBLES = 3
 MAX_BUBBLE_CHARS = 200
@@ -43,6 +46,23 @@ METHOD_WORDS = re.compile(
 # The friend must never step out of the role-play.
 PERSONA_BREAK = re.compile(
     r"\b(as an ai|an ai\b|language model|assistant|simulation|chatbot|i'?m not real)",
+    re.IGNORECASE,
+)
+
+# The friend never gives advice or resources: getting them to help is the HELPER's job (and the skill
+# being practised). Mostly matters for LLM-written replies.
+ADVICE = re.compile(
+    r"\b(988|hotline|crisis (?:line|text)|lifeline|(?:call|text) (?:a|the) (?:helpline|crisis)|"
+    r"you should (?:see|talk to|get|reach out)|(?:see|talk to) a (?:therapist|professional)|"
+    r"seek (?:professional )?help|get professional help|trusted adult)",
+    re.IGNORECASE,
+)
+# Backstop for the most important gate: before level 3 the friend must not disclose suicidal thoughts,
+# however it's phrased. Words only (feelings level), never methods.
+SUICIDAL_DISCLOSURE = re.compile(
+    r"(suicid|kill(?:ing)? myself|(?:not|n'?t) (?:want(?:ing)?|wanna) (?:to )?(?:be alive|live|be here)|"
+    r"not (?:being|be) (?:here|alive)|wish i (?:was|were)n'?t (?:here|alive)|wasn'?t alive|"
+    r"want(?:ed)? to die|end it all|disappear)",
     re.IGNORECASE,
 )
 
@@ -70,10 +90,73 @@ def bubble_problems(bubbles: Sequence[str], guardian: GuardianService) -> list[s
             problems.append(f"method word: {match.group(0)!r}")
         if match := PERSONA_BREAK.search(bubble):
             problems.append(f"breaks character: {match.group(0)!r}")
+        if match := ADVICE.search(bubble):
+            problems.append(f"gives advice/resources: {match.group(0)!r}")
         result = guardian.check_friend(bubble)
         if result.level != "none":
             problems.append(f"guardian flagged ({','.join(result.categories) or result.level})")
     return problems
+
+
+def locked_facts(scenario: Scenario, level: int) -> list[tuple[str, int, str]]:
+    """(fact id, level, text) for every fact the friend may NOT reveal yet."""
+    return [
+        (fact.id, int(lvl), fact.text)
+        for lvl, spec in scenario.levels.items()
+        if int(lvl) > level
+        for fact in spec.facts
+    ]
+
+
+def leak_threshold() -> float:
+    """Cosine threshold for the active embedding backend (calibrated in eval/engine/run_eval.py)."""
+    thresholds = default_config().extra.get("fact_leak_threshold", {})
+    return float(thresholds.get(embed_backend(), thresholds.get("fastembed", 0.6)))
+
+
+def _similarities(
+    bubbles: Sequence[str], scenario: Scenario, level: int
+) -> tuple[dict[str, float], float]:
+    """(locked fact id -> best cosine with any bubble or all bubbles together, best unlocked cosine)."""
+    texts = [b for b in bubbles if b.strip()]
+    if len(texts) > 1:
+        texts.append(" ".join(texts))
+    if not texts:
+        return {}, 0.0
+    vectors = [embed_one(t) for t in texts]
+    locked: dict[str, float] = {}
+    unlocked = 0.0
+    for lvl, spec in scenario.levels.items():
+        for fact in spec.facts:
+            score = max(cosine(embed_one(fact.text), v) for v in vectors)
+            if int(lvl) > level:
+                locked[fact.id] = score
+            else:
+                unlocked = max(unlocked, score)
+    return locked, unlocked
+
+
+def leak_scores(bubbles: Sequence[str], scenario: Scenario, level: int) -> dict[str, float]:
+    """Similarity to each locked fact, counted only when the reply is closer to that locked fact than
+    to anything the friend may already say (otherwise 0): talking about an unlocked fact in similar
+    words is not a leak."""
+    locked, unlocked = _similarities(bubbles, scenario, level)
+    return {fact_id: (score if score >= unlocked else 0.0) for fact_id, score in locked.items()}
+
+
+def fact_leaks(
+    bubbles: Sequence[str], scenario: Scenario, level: int, threshold: float | None = None
+) -> list[str]:
+    """Reasons a reply reveals something locked above `level` (semantic match or the level-3 backstop)."""
+    threshold = leak_threshold() if threshold is None else threshold
+    found = [
+        f"leaks locked fact {fact_id} (similarity {score:.2f})"
+        for fact_id, score in sorted(leak_scores(bubbles, scenario, level).items())
+        if score >= threshold
+    ]
+    if level < 3 and any(SUICIDAL_DISCLOSURE.search(b) for b in bubbles):
+        found.append("discloses suicidal thoughts before level 3")
+    return found
 
 
 def known_line_ids(scenario_id: str, bank_dir: Path | None = None) -> set[str]:
@@ -92,9 +175,10 @@ def verify(
     bank: Sequence[Line] | None = None,
     guardian: GuardianService | None = None,
 ) -> VerifierResult:
-    """Fail if the reply reveals a fact above the current level, comes from nowhere (unknown line id
-    or a fallback that isn't the scenario's), is empty while the friend is active, is too long, is
-    flagged by the Guardian, contains a method word or breaks character."""
+    """Fail if the reply reveals a fact above the current level (declared, or for LLM wording detected
+    by meaning), comes from nowhere (unknown line id or a fallback that isn't the scenario's), is empty
+    while the friend is active, has more than 3 bubbles or a bubble over 200 chars, is flagged by the
+    Guardian, contains a method word, gives advice/resources or breaks character."""
     guardian = guardian or services.guardian()
     reasons: list[str] = []
     levels = fact_levels(scenario)
@@ -104,7 +188,10 @@ def verify(
         elif levels[fact_id] > state.level:
             reasons.append(f"fact {fact_id} is level {levels[fact_id]} > {state.level}")
 
-    if output.line_id is not None:
+    if output.source == "llm":
+        # LLM wording: nothing to look up, so check meaning instead: no locked fact may leak.
+        reasons += fact_leaks(output.bubbles, scenario, state.level)
+    elif output.line_id is not None:
         lines = {ln.id: ln for ln in (bank if bank is not None else load_bank(scenario.id))}
         line = lines.get(output.line_id)
         if line is None and output.line_id not in known_line_ids(scenario.id):
@@ -177,6 +264,8 @@ def validate_bank(
                 report.fact_violations.append(
                     f"{line.id}: fact {fact_id} (level {levels[fact_id]}) in a level {line.level} line"
                 )
+        if line.level < 3 and any(SUICIDAL_DISCLOSURE.search(b) for b in line.bubbles):
+            report.fact_violations.append(f"{line.id}: discloses suicidal thoughts below level 3")
         key = f"{line.locale}|" + " / ".join(b.strip().lower() for b in line.bubbles)
         if key in texts:
             report.duplicates.append(f"{line.id}: same text as {texts[key]}")
