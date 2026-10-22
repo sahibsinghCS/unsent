@@ -1,8 +1,8 @@
 {
-  "session_id": "s_23f2307bb2c7",
+  "session_id": "s_5e3e753fdaba",
   "scenario_id": "after-the-breakup",
-  "head_id": "n_090a7027e287",
-  "root_id": "n_090a7027e287",
+  "head_id": "n_0c54a50934ae",
+  "root_id": "n_0c54a50934ae",
   "state": {
     "trust": 30.0,
     "level": 0,
@@ -17,7 +17,7 @@
   },
   "nodes": [
     {
-      "id": "n_090a7027e287",
+      "id": "n_0c54a50934ae",
       "parent_id": null,
       "role": "friend",
       "bubbles": [
@@ -41,7 +41,8 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": "opening",
-      "created_at": 1792708556.0142882
+      "voice": null,
+      "created_at": 1792710541.5905497
     }
   ]
 }
