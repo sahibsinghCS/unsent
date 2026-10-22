@@ -1,0 +1,293 @@
+{
+  "app": {
+    "name": "FirstReply",
+    "tagline": "Practice the text that could save a friend's life.",
+    "help_now": "I need help now",
+    "skip": "Skip to content",
+    "language": "Language",
+    "theme_dark": "Switch to dark mode",
+    "theme_light": "Switch to light mode",
+    "menu": "Menu",
+    "footer": "FirstReply is a practice tool, not a crisis service. In immediate danger, call 911. In the US, call or text 988 any time.",
+    "footer_links": { "real": "If it's real", "how": "How it works", "privacy": "Privacy" },
+    "nav": { "practice": "Practice", "how": "How it works", "privacy": "Privacy" },
+    "loading": "Loading…",
+    "retry": "Try again",
+    "back": "Back",
+    "close": "Close",
+    "offline": "Can't reach the FirstReply server right now."
+  },
+  "landing": {
+    "eyebrow": "Suicide-prevention practice for teens",
+    "title": "Practice the text that could save a friend's life.",
+    "sub": "Chat with a simulated friend who's struggling. Models we trained score every reply, keep it safe, and show you exactly where you lost them and what would have worked.",
+    "start": "Start practicing",
+    "how": "See how it works",
+    "stat": "1 in 5 US high schoolers seriously considered suicide last year.",
+    "stat_source": "CDC Youth Risk Behavior Survey, 2023",
+    "stat_kicker": "The first person they tell is usually a friend.",
+    "features_title": "Nobody teaches us what to say. So practice it.",
+    "features": {
+      "practice": { "title": "Practice", "body": "Text a realistic friend who opens up in layers, but only if you listen, validate and ask directly." },
+      "feedback": { "title": "Feedback", "body": "See your trust graph, the exact words that helped or hurt, and better replies that were checked before you see them." },
+      "safety": { "title": "Safety first", "body": "Every message is checked by our Guardian first. Real help is one tap away on every screen, and nothing is stored." }
+    },
+    "demo": {
+      "friend1": "honestly idk why i even bother anymore",
+      "you1": "that sounds really heavy. are you thinking about killing yourself?",
+      "friend2": "…yeah. sometimes",
+      "you2": "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
+      "trust": "Trust"
+    }
+  },
+  "practice": {
+    "title": "Choose a friend to text",
+    "sub": "Each scenario is a different person and situation. Guarded friends take more patience.",
+    "open": "Open",
+    "guarded": "Guarded",
+    "age": "{age} years old",
+    "start": "Text {name}",
+    "error": "Couldn't load scenarios.",
+    "draft": "Draft content"
+  },
+  "cw": {
+    "title": "Before you start",
+    "covers": "This practice talks about:",
+    "points": [
+      "Your friend is simulated. Nothing you type reaches a real person.",
+      "You can stop at any time. The \"I need help now\" button is always at the top.",
+      "If any of this feels close to home, please talk to someone. In the US, call or text 988."
+    ],
+    "cancel": "Not now",
+    "begin": "I understand, start",
+    "starting": "Starting…"
+  },
+  "chat": {
+    "with": "Texting {name}",
+    "typing": "{name} is typing",
+    "seen": "Seen",
+    "placeholder": "Text {name}…",
+    "send": "Send",
+    "counter": "{n}/500",
+    "finish": "Finish",
+    "xray": "X-ray",
+    "xray_on": "Turn X-ray mode on: see what our models saw",
+    "xray_off": "Turn X-ray mode off",
+    "you": "You",
+    "rewind": "Rewind to here",
+    "rewinding": "Rewinding…",
+    "branches": "Branches",
+    "panel_title": "How it's going",
+    "trust": "Trust",
+    "trust_graph": "Trust over time",
+    "trust_graph_desc": "Trust starts at {start} and is now {now}.",
+    "turn": "Turn {n}",
+    "ladder": "How much they've shared",
+    "levels": ["Surface", "Stress", "Hopeless", "Thoughts of suicide", "Open to help"],
+    "skills": "Skills you've used",
+    "skills_hint": "Chips light up when our skill detector notices them.",
+    "error_send": "Message not sent.",
+    "ended": {
+      "success_title": "They're letting you help.",
+      "success_body": "You stayed, you asked, and you connected them to help. That's exactly what a friend can do.",
+      "fail_title": "They shut down.",
+      "fail_body": "That's okay. This is practice, and this is how you learn. Let's see what happened.",
+      "see_feedback": "See your feedback",
+      "rewind_hint": "Or tap one of your messages to rewind and try a different reply."
+    },
+    "crisis": {
+      "title": "Let's pause the practice",
+      "body": "It sounds like you might be going through something hard yourself, and that matters more than any practice.",
+      "call": "Call 988",
+      "text": "Text 988",
+      "adult": "Talk to a trusted adult today: a parent, counselor, teacher or coach.",
+      "emergency": "If you're in immediate danger, call 911.",
+      "ack": "I've seen these resources",
+      "continue": "Return to practice",
+      "real": "Open full help page"
+    },
+    "blocked": {
+      "title": "That message wasn't sent",
+      "teach": "In a real conversation, words like that can push someone further away. Try saying what you're worried about, or ask how they're feeling."
+    },
+    "concern": "If any of this feels close to home, you can call or text 988 any time.",
+    "empty_reply": "(no reply)"
+  },
+  "tree": {
+    "title": "Conversation branches",
+    "desc": "Every rewind starts a new branch. Your current path is highlighted. Tap a message to jump there.",
+    "start": "Start",
+    "current": "current"
+  },
+  "xray": {
+    "guardian": "Guardian",
+    "level": "level",
+    "action": "action",
+    "latency": "{ms} ms",
+    "evidence": "evidence",
+    "sources": "via",
+    "no_flags": "No safety concerns",
+    "skills": "Skill detector",
+    "trust_math": "Trust math",
+    "reaction": "Reaction",
+    "line": "Line",
+    "fallback": "scenario fallback",
+    "seen": "Left on Seen (trust fell too far)",
+    "level_label": "Disclosure level {n}"
+  },
+  "labels": {
+    "checked_in": "checked in",
+    "validated": "validated",
+    "asked_directly": "asked directly",
+    "encouraged_help": "encouraged help",
+    "referred_adult": "trusted adult",
+    "referred_988": "mentioned 988",
+    "follow_up": "followed up",
+    "dismissed": "dismissed",
+    "advice_dump": "advice dump",
+    "promised_secrecy": "promised secrecy",
+    "decay": "decay",
+    "other": "other"
+  },
+  "skills": {
+    "check_in": "Check in",
+    "listen": "Listen",
+    "ask_directly": "Ask directly",
+    "no_secrecy": "No secrecy",
+    "persuade": "Persuade",
+    "refer": "Refer",
+    "follow_up": "Follow up"
+  },
+  "feedback": {
+    "title": "Your feedback",
+    "loading": "Scoring your conversation…",
+    "error": "Couldn't build your feedback.",
+    "skills_title": "Your 7 helping skills",
+    "summary_title": "In short",
+    "lost_title": "This is where you lost them",
+    "lost_body": "Trust dropped by {drop} points after this message.",
+    "no_lost": "Trust never dropped. Nice work keeping them with you.",
+    "missed_title": "Missed opportunities",
+    "messages_title": "Message by message",
+    "legend_good": "helped",
+    "legend_bad": "hurt",
+    "uncertain": "uncertain: {labels}",
+    "uncertain_hint": "Our two models disagreed here, so treat this score with caution.",
+    "try_instead": "Try instead",
+    "gain": "{gain} {skill}",
+    "try_again": "Try again from here",
+    "what_if": "What if?",
+    "new_scenario": "Practice another friend",
+    "back_chat": "Back to chat",
+    "message_n": "Message {n}",
+    "no_messages": "You didn't send any messages yet."
+  },
+  "whatif": {
+    "title": "What if you'd said something else?",
+    "sub": "We replayed the conversation from your message with stronger replies, through the same trust engine and friend line bank.",
+    "simulated": "Simulated",
+    "simulated_hint": "These are simulations, not real people. They show how the model reacts.",
+    "best": "Best path",
+    "score": "Critic score {score}",
+    "overlay": "All paths, trust over time",
+    "you_said": "What you said",
+    "start": "Start",
+    "step": "Step {n}",
+    "error": "Couldn't run the simulation.",
+    "back": "Back to feedback",
+    "try_this": "Try this in the chat",
+    "trust_end": "Trust {from} → {to}"
+  },
+  "real": {
+    "country": "Where are you?",
+    "countries": { "US": "United States", "CA": "Canada", "GB": "United Kingdom", "AU": "Australia", "other": "Somewhere else" },
+    "call": "Call {number}",
+    "text": "Text {number}",
+    "emergency": "Immediate danger? Call {number}",
+    "visit": "Website",
+    "offline": "Showing the copy saved in the app (the server isn't reachable).",
+    "no_ai": "Fixed text written in advance and reviewed. No AI is involved on this page.",
+    "for_you": "For you",
+    "review_note": "Spanish text awaiting native-speaker review.",
+    "back": "Back to practice"
+  },
+  "how": {
+    "title": "How FirstReply works",
+    "sub": "No chatbot improvises here. Every word the friend can say is written in advance and checked by code. The intelligence is our own trained models, rules and algorithms, running locally for free.",
+    "pipeline_title": "What happens when you hit Send",
+    "pipeline": {
+      "you": { "name": "Your message", "desc": "typed by you, the helper" },
+      "guardian": { "name": "Guardian", "desc": "safety check first, under 50 ms" },
+      "skills": { "name": "Skill detector", "desc": "two trained models, 10 labels" },
+      "engine": { "name": "State engine", "desc": "trust 0–100, disclosure 0–4" },
+      "lines": { "name": "Line bank", "desc": "pre-written, reviewed replies" },
+      "verifier": { "name": "Verifier", "desc": "fact gating, no repeats" },
+      "friend": { "name": "Friend replies", "desc": "plus X-ray data for you" }
+    },
+    "status_title": "Live component status",
+    "real": "trained",
+    "stub": "placeholder",
+    "metrics_title": "Measured numbers",
+    "metrics_empty": "No evaluation reports yet. Numbers appear here as each part is trained and tested.",
+    "metric_cols": { "lane": "Part", "metric": "Metric", "value": "Value", "n": "n", "split": "Split" },
+    "does_title": "What the AI does",
+    "does": [
+      "Detects 10 helping and hurting behaviours in your message, with calibrated probabilities.",
+      "Checks every message for safety before anything else runs.",
+      "Explains which of your words moved each score.",
+      "Suggests better replies, but only ones that score higher when re-checked."
+    ],
+    "doesnt_title": "What the AI doesn't do",
+    "doesnt": [
+      "It doesn't write the friend's words live. Every line is pre-written and reviewed.",
+      "It doesn't give advice for real crises. Real mode is fixed text.",
+      "It doesn't diagnose anyone or replace a counselor.",
+      "It doesn't use paid AI services or send your messages anywhere."
+    ],
+    "privacy_title": "Privacy",
+    "privacy": [
+      "No accounts, no names, no emails.",
+      "Conversations live only in memory and are deleted after 60 minutes of inactivity.",
+      "No analytics, no tracking, no ads, no outside fonts or scripts."
+    ],
+    "try_title": "Try the Guardian",
+    "try_sub": "Type a message as the helper and see what the Guardian decides. Asking a friend directly about suicide is the right move, so it must never be flagged.",
+    "try_placeholder": "Type a message…",
+    "try_check": "Check",
+    "presets": "Try:",
+    "result": "Result",
+    "allowed": "Allowed",
+    "crisis": "Crisis: pause and show resources",
+    "concern": "Concern: show gentle resources",
+    "blocked": "Blocked"
+  },
+  "checkin": {
+    "title": "How are you feeling after that?",
+    "sub": "Practicing this can bring things up. There's no wrong answer.",
+    "good": "Good",
+    "okay": "Okay",
+    "low": "Not great",
+    "thanks": "Thanks for checking in.",
+    "low_body": "Thank you for saying so. You don't have to carry this alone. Talk to someone you trust, or call or text 988 any time.",
+    "done": "Continue"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "intro": "FirstReply is built so there is nothing to leak.",
+    "points": [
+      "No accounts. We never ask for your name, email or age.",
+      "Your practice conversation is kept in the server's memory only while you use it, and deleted after 60 minutes of inactivity. It is never written to disk or a database.",
+      "No analytics, cookies for tracking, ads or third-party scripts. Fonts are your device's own.",
+      "Your language, theme and country choices are saved only in your own browser.",
+      "All AI runs on our own server with models we trained. Nothing is sent to an outside AI company."
+    ]
+  },
+  "notfound": {
+    "title": "This page wandered off.",
+    "body": "We couldn't find that page. If your practice session expired, you can start a new one.",
+    "home": "Go home"
+  },
+  "errors": {
+    "session_gone": "This practice session has expired (sessions are deleted after 60 minutes). Start a new one any time."
+  }
+}

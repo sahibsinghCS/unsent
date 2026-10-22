@@ -1,0 +1,294 @@
+{
+  "_meta": { "needs_native_review": true, "note": "Spanish UI strings drafted by an agent. A native speaker must review before release." },
+  "app": {
+    "name": "FirstReply",
+    "tagline": "Practica el mensaje que podría salvar la vida de un amigo.",
+    "help_now": "Necesito ayuda ya",
+    "skip": "Saltar al contenido",
+    "language": "Idioma",
+    "theme_dark": "Cambiar a modo oscuro",
+    "theme_light": "Cambiar a modo claro",
+    "menu": "Menú",
+    "footer": "FirstReply es una herramienta de práctica, no un servicio de crisis. Si hay peligro inmediato, llama al 911. En EE. UU., llama o escribe al 988 a cualquier hora.",
+    "footer_links": { "real": "Si es real", "how": "Cómo funciona", "privacy": "Privacidad" },
+    "nav": { "practice": "Practicar", "how": "Cómo funciona", "privacy": "Privacidad" },
+    "loading": "Cargando…",
+    "retry": "Reintentar",
+    "back": "Volver",
+    "close": "Cerrar",
+    "offline": "No se puede conectar con el servidor de FirstReply ahora."
+  },
+  "landing": {
+    "eyebrow": "Práctica de prevención del suicidio para adolescentes",
+    "title": "Practica el mensaje que podría salvar la vida de un amigo.",
+    "sub": "Chatea con un amigo simulado que está pasando por un mal momento. Modelos que entrenamos evalúan cada respuesta, la mantienen segura y te muestran dónde lo perdiste y qué habría funcionado.",
+    "start": "Empezar a practicar",
+    "how": "Ver cómo funciona",
+    "stat": "1 de cada 5 estudiantes de secundaria en EE. UU. consideró seriamente el suicidio el año pasado.",
+    "stat_source": "Encuesta YRBS de los CDC, 2023",
+    "stat_kicker": "La primera persona a quien se lo cuentan suele ser un amigo.",
+    "features_title": "Nadie nos enseña qué decir. Así que practícalo.",
+    "features": {
+      "practice": { "title": "Practica", "body": "Escríbele a un amigo realista que se abre poco a poco, pero solo si escuchas, validas y preguntas directamente." },
+      "feedback": { "title": "Comentarios", "body": "Mira tu gráfica de confianza, las palabras exactas que ayudaron o dañaron y mejores respuestas verificadas." },
+      "safety": { "title": "La seguridad primero", "body": "Nuestro Guardián revisa cada mensaje primero. La ayuda real está a un toque en cada pantalla y no se guarda nada." }
+    },
+    "demo": {
+      "friend1": "la verdad no sé ni para qué me esfuerzo ya",
+      "you1": "suena muy pesado. ¿estás pensando en suicidarte?",
+      "friend2": "…sí. a veces",
+      "you2": "me alegra mucho que me lo contaras. ¿hablamos mañana con el consejero? yo voy contigo",
+      "trust": "Confianza"
+    }
+  },
+  "practice": {
+    "title": "Elige a un amigo para escribirle",
+    "sub": "Cada escenario es una persona y situación diferente. Los amigos reservados necesitan más paciencia.",
+    "open": "Abierto",
+    "guarded": "Reservado",
+    "age": "{age} años",
+    "start": "Escribir a {name}",
+    "error": "No se pudieron cargar los escenarios.",
+    "draft": "Contenido en borrador"
+  },
+  "cw": {
+    "title": "Antes de empezar",
+    "covers": "Esta práctica habla de:",
+    "points": [
+      "Tu amigo es simulado. Nada de lo que escribas llega a una persona real.",
+      "Puedes parar cuando quieras. El botón \"Necesito ayuda ya\" siempre está arriba.",
+      "Si algo de esto te toca de cerca, habla con alguien. En EE. UU., llama o escribe al 988."
+    ],
+    "cancel": "Ahora no",
+    "begin": "Entiendo, empezar",
+    "starting": "Empezando…"
+  },
+  "chat": {
+    "with": "Chateando con {name}",
+    "typing": "{name} está escribiendo",
+    "seen": "Visto",
+    "placeholder": "Escribe a {name}…",
+    "send": "Enviar",
+    "counter": "{n}/500",
+    "finish": "Terminar",
+    "xray": "Rayos X",
+    "xray_on": "Activar modo rayos X: mira lo que vieron nuestros modelos",
+    "xray_off": "Desactivar modo rayos X",
+    "you": "Tú",
+    "rewind": "Volver aquí",
+    "rewinding": "Volviendo…",
+    "branches": "Ramas",
+    "panel_title": "Cómo va",
+    "trust": "Confianza",
+    "trust_graph": "Confianza en el tiempo",
+    "trust_graph_desc": "La confianza empezó en {start} y ahora es {now}.",
+    "turn": "Turno {n}",
+    "ladder": "Cuánto te ha contado",
+    "levels": ["Superficie", "Estrés", "Desesperanza", "Pensamientos de suicidio", "Abierto a recibir ayuda"],
+    "skills": "Habilidades que usaste",
+    "skills_hint": "Se iluminan cuando nuestro detector las nota.",
+    "error_send": "No se envió el mensaje.",
+    "ended": {
+      "success_title": "Te está dejando ayudar.",
+      "success_body": "Te quedaste, preguntaste y lo conectaste con ayuda. Eso es justo lo que puede hacer un amigo.",
+      "fail_title": "Se cerró.",
+      "fail_body": "Está bien. Esto es práctica, y así se aprende. Veamos qué pasó.",
+      "see_feedback": "Ver tus comentarios",
+      "rewind_hint": "O toca uno de tus mensajes para volver e intentar otra respuesta."
+    },
+    "crisis": {
+      "title": "Pausemos la práctica",
+      "body": "Parece que tú también podrías estar pasando por algo difícil, y eso importa más que cualquier práctica.",
+      "call": "Llamar al 988",
+      "text": "Escribir al 988",
+      "adult": "Habla hoy con un adulto de confianza: tu madre o padre, un consejero, un maestro o un entrenador.",
+      "emergency": "Si estás en peligro inmediato, llama al 911.",
+      "ack": "He visto estos recursos",
+      "continue": "Volver a la práctica",
+      "real": "Abrir la página de ayuda"
+    },
+    "blocked": {
+      "title": "Ese mensaje no se envió",
+      "teach": "En una conversación real, palabras así pueden alejar más a alguien. Intenta decir lo que te preocupa o pregúntale cómo se siente."
+    },
+    "concern": "Si algo de esto te toca de cerca, puedes llamar o escribir al 988 a cualquier hora.",
+    "empty_reply": "(sin respuesta)"
+  },
+  "tree": {
+    "title": "Ramas de la conversación",
+    "desc": "Cada vez que vuelves atrás empieza una rama nueva. Tu camino actual está resaltado. Toca un mensaje para ir ahí.",
+    "start": "Inicio",
+    "current": "actual"
+  },
+  "xray": {
+    "guardian": "Guardián",
+    "level": "nivel",
+    "action": "acción",
+    "latency": "{ms} ms",
+    "evidence": "evidencia",
+    "sources": "vía",
+    "no_flags": "Sin problemas de seguridad",
+    "skills": "Detector de habilidades",
+    "trust_math": "Cálculo de confianza",
+    "reaction": "Reacción",
+    "line": "Línea",
+    "fallback": "línea de respaldo",
+    "seen": "Lo dejó en Visto (la confianza bajó demasiado)",
+    "level_label": "Nivel de apertura {n}"
+  },
+  "labels": {
+    "checked_in": "preguntó cómo está",
+    "validated": "validó",
+    "asked_directly": "preguntó directo",
+    "encouraged_help": "animó a pedir ayuda",
+    "referred_adult": "adulto de confianza",
+    "referred_988": "mencionó el 988",
+    "follow_up": "dio seguimiento",
+    "dismissed": "le restó importancia",
+    "advice_dump": "sermón de consejos",
+    "promised_secrecy": "prometió secreto",
+    "decay": "desgaste",
+    "other": "otros"
+  },
+  "skills": {
+    "check_in": "Preguntar",
+    "listen": "Escuchar",
+    "ask_directly": "Preguntar directo",
+    "no_secrecy": "Sin secretos",
+    "persuade": "Animar",
+    "refer": "Derivar",
+    "follow_up": "Dar seguimiento"
+  },
+  "feedback": {
+    "title": "Tus comentarios",
+    "loading": "Evaluando tu conversación…",
+    "error": "No se pudieron generar tus comentarios.",
+    "skills_title": "Tus 7 habilidades para ayudar",
+    "summary_title": "En resumen",
+    "lost_title": "Aquí es donde lo perdiste",
+    "lost_body": "La confianza bajó {drop} puntos después de este mensaje.",
+    "no_lost": "La confianza nunca bajó. Bien hecho.",
+    "missed_title": "Oportunidades perdidas",
+    "messages_title": "Mensaje por mensaje",
+    "legend_good": "ayudó",
+    "legend_bad": "dañó",
+    "uncertain": "incierto: {labels}",
+    "uncertain_hint": "Nuestros dos modelos no estuvieron de acuerdo aquí; toma este puntaje con cautela.",
+    "try_instead": "Prueba mejor",
+    "gain": "{gain} {skill}",
+    "try_again": "Intentar de nuevo desde aquí",
+    "what_if": "¿Y si…?",
+    "new_scenario": "Practicar con otro amigo",
+    "back_chat": "Volver al chat",
+    "message_n": "Mensaje {n}",
+    "no_messages": "Todavía no enviaste mensajes."
+  },
+  "whatif": {
+    "title": "¿Y si hubieras dicho otra cosa?",
+    "sub": "Repetimos la conversación desde tu mensaje con mejores respuestas, usando el mismo motor de confianza y banco de líneas.",
+    "simulated": "Simulado",
+    "simulated_hint": "Son simulaciones, no personas reales. Muestran cómo reacciona el modelo.",
+    "best": "Mejor camino",
+    "score": "Puntaje del crítico {score}",
+    "overlay": "Todos los caminos, confianza en el tiempo",
+    "you_said": "Lo que dijiste",
+    "start": "Inicio",
+    "step": "Paso {n}",
+    "error": "No se pudo ejecutar la simulación.",
+    "back": "Volver a los comentarios",
+    "try_this": "Probar esto en el chat",
+    "trust_end": "Confianza {from} → {to}"
+  },
+  "real": {
+    "country": "¿Dónde estás?",
+    "countries": { "US": "Estados Unidos", "CA": "Canadá", "GB": "Reino Unido", "AU": "Australia", "other": "Otro lugar" },
+    "call": "Llamar al {number}",
+    "text": "Escribir al {number}",
+    "emergency": "¿Peligro inmediato? Llama al {number}",
+    "visit": "Sitio web",
+    "offline": "Mostrando la copia guardada en la app (no hay conexión con el servidor).",
+    "no_ai": "Texto fijo, escrito de antemano y revisado. Esta página no usa IA.",
+    "for_you": "Para ti",
+    "review_note": "Texto en español pendiente de revisión por un hablante nativo.",
+    "back": "Volver a practicar"
+  },
+  "how": {
+    "title": "Cómo funciona FirstReply",
+    "sub": "Aquí ningún chatbot improvisa. Cada palabra del amigo está escrita de antemano y verificada por código. La inteligencia son nuestros propios modelos, reglas y algoritmos, que corren localmente y gratis.",
+    "pipeline_title": "Qué pasa cuando tocas Enviar",
+    "pipeline": {
+      "you": { "name": "Tu mensaje", "desc": "lo escribes tú, quien ayuda" },
+      "guardian": { "name": "Guardián", "desc": "primero seguridad, menos de 50 ms" },
+      "skills": { "name": "Detector", "desc": "dos modelos entrenados, 10 etiquetas" },
+      "engine": { "name": "Motor de estado", "desc": "confianza 0–100, apertura 0–4" },
+      "lines": { "name": "Banco de líneas", "desc": "respuestas escritas y revisadas" },
+      "verifier": { "name": "Verificador", "desc": "control de datos, sin repetir" },
+      "friend": { "name": "Responde el amigo", "desc": "y datos de rayos X para ti" }
+    },
+    "status_title": "Estado de los componentes",
+    "real": "entrenado",
+    "stub": "provisional",
+    "metrics_title": "Números medidos",
+    "metrics_empty": "Aún no hay informes de evaluación. Los números aparecerán aquí a medida que se entrene y pruebe cada parte.",
+    "metric_cols": { "lane": "Parte", "metric": "Métrica", "value": "Valor", "n": "n", "split": "Conjunto" },
+    "does_title": "Lo que hace la IA",
+    "does": [
+      "Detecta 10 conductas que ayudan o dañan en tu mensaje, con probabilidades calibradas.",
+      "Revisa la seguridad de cada mensaje antes que nada.",
+      "Explica qué palabras tuyas movieron cada puntaje.",
+      "Sugiere mejores respuestas, pero solo las que puntúan más alto al volver a revisarlas."
+    ],
+    "doesnt_title": "Lo que la IA no hace",
+    "doesnt": [
+      "No escribe en vivo las palabras del amigo. Cada línea está escrita y revisada de antemano.",
+      "No da consejos para crisis reales. El modo real es texto fijo.",
+      "No diagnostica a nadie ni reemplaza a un consejero.",
+      "No usa servicios de IA de pago ni envía tus mensajes a ningún lado."
+    ],
+    "privacy_title": "Privacidad",
+    "privacy": [
+      "Sin cuentas, sin nombres, sin correos.",
+      "Las conversaciones viven solo en memoria y se borran tras 60 minutos de inactividad.",
+      "Sin analítica, sin rastreo, sin anuncios, sin fuentes ni scripts externos."
+    ],
+    "try_title": "Prueba el Guardián",
+    "try_sub": "Escribe un mensaje como quien ayuda y mira qué decide el Guardián. Preguntarle directamente a un amigo sobre el suicidio es lo correcto, así que nunca debe marcarse.",
+    "try_placeholder": "Escribe un mensaje…",
+    "try_check": "Revisar",
+    "presets": "Prueba:",
+    "result": "Resultado",
+    "allowed": "Permitido",
+    "crisis": "Crisis: pausar y mostrar recursos",
+    "concern": "Preocupación: mostrar recursos",
+    "blocked": "Bloqueado"
+  },
+  "checkin": {
+    "title": "¿Cómo te sientes después de esto?",
+    "sub": "Practicar esto puede remover cosas. No hay respuesta incorrecta.",
+    "good": "Bien",
+    "okay": "Regular",
+    "low": "No muy bien",
+    "thanks": "Gracias por contarnos.",
+    "low_body": "Gracias por decirlo. No tienes que cargar con esto solo/a. Habla con alguien de confianza, o llama o escribe al 988 a cualquier hora.",
+    "done": "Continuar"
+  },
+  "privacy": {
+    "title": "Privacidad",
+    "intro": "FirstReply está hecho para que no haya nada que filtrar.",
+    "points": [
+      "Sin cuentas. Nunca pedimos tu nombre, correo ni edad.",
+      "Tu conversación de práctica solo se guarda en la memoria del servidor mientras la usas y se borra tras 60 minutos de inactividad. Nunca se escribe en disco ni en una base de datos.",
+      "Sin analítica, cookies de rastreo, anuncios ni scripts de terceros. Las fuentes son las de tu dispositivo.",
+      "Tu idioma, tema y país se guardan solo en tu navegador.",
+      "Toda la IA corre en nuestro propio servidor con modelos que entrenamos. No se envía nada a empresas de IA externas."
+    ]
+  },
+  "notfound": {
+    "title": "Esta página se perdió.",
+    "body": "No encontramos esa página. Si tu sesión de práctica expiró, puedes empezar una nueva.",
+    "home": "Ir al inicio"
+  },
+  "errors": {
+    "session_gone": "Esta sesión de práctica expiró (se borran tras 60 minutos). Puedes empezar una nueva cuando quieras."
+  }
+}

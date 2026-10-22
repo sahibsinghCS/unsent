@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens. Calm teal for trust, a warm coral accent for care, cream paper instead of clinical
+ * white. Every pair used for text meets WCAG AA contrast. Values are "R G B" so Tailwind can add
+ * opacity (bg-brand/10). Change the look of the whole app here.
+ */
+@layer base {
+  :root {
+    --bg: 251 248 243;
+    --surface: 255 255 255;
+    --sunken: 243 238 230;
+    --ink: 28 37 41;
+    --muted: 87 99 104;
+    --line: 226 219 208;
+    --brand: 15 118 110;
+    --brand-soft: 213 238 233;
+    --brand-ink: 255 255 255;
+    --warm: 214 92 72;
+    --warm-soft: 252 228 220;
+    --good: 21 128 61;
+    --good-soft: 220 245 228;
+    --bad: 190 40 40;
+    --bad-soft: 253 226 226;
+    --bubble-me: 15 118 110;
+    --bubble-them: 236 231 223;
+    color-scheme: light;
+  }
+  .dark {
+    --bg: 14 22 24;
+    --surface: 22 32 35;
+    --sunken: 17 26 28;
+    --ink: 232 238 236;
+    --muted: 160 175 176;
+    --line: 44 58 61;
+    --brand: 45 190 170;
+    --brand-soft: 20 60 56;
+    --brand-ink: 6 30 28;
+    --warm: 244 140 118;
+    --warm-soft: 70 36 30;
+    --good: 74 222 128;
+    --good-soft: 20 60 38;
+    --bad: 248 113 113;
+    --bad-soft: 72 26 26;
+    --bubble-me: 20 140 128;
+    --bubble-them: 38 50 53;
+    color-scheme: dark;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-bg text-ink font-sans antialiased; }
+  /* One visible, consistent focus ring for keyboard users everywhere. */
+  :focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-bg; }
+  h1, h2, h3 { @apply tracking-tight; }
+}
+
+@layer components {
+  .card { @apply rounded-2xl border border-line bg-surface shadow-card; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-brand text-brand-ink hover:brightness-110 active:brightness-95; }
+  .btn-ghost { @apply btn border border-line bg-surface text-ink hover:bg-sunken; }
+  .btn-warm { @apply btn bg-warm text-white hover:brightness-110 dark:text-[rgb(40_10_6)]; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium; }
+  .eyebrow { @apply text-xs font-semibold uppercase tracking-wider text-muted; }
+  .mono-num { @apply font-mono tabular-nums; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+}

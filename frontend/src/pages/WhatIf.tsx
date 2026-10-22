@@ -1,0 +1,167 @@
+/**
+ * What-if (POST /whatif): stronger replies from the chosen message, simulated forward through the
+ * real trust engine and line bank. Paths sit side by side (stacked on phones), each with its own mini
+ * chat and trust curve, plus an overlay of every path against what you actually said.
+ */
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { ApiError, api } from '../api/client';
+import type { Node, WhatIfPath, WhatIfResult } from '../api/models';
+import { Icon } from '../components/Icon';
+import { OverlayChart, type Series } from '../components/OverlayChart';
+import { Bubble } from '../components/Phone';
+import { ErrorBox, Spinner } from '../components/Status';
+import { TrustChart } from '../components/TrustChart';
+import { tokenColor } from '../lib/chart';
+import { usePrefs } from '../i18n';
+import { isScoredUserNode } from '../lib/conversation';
+import { strongestLabel } from '../lib/labels';
+
+const PATH_COLORS = ['#8b5cf6', '#0ea5e9', '#f59e0b', '#db2777'];
+
+/** Trust points for a simulated path: its starting trust, then after each simulated helper message. */
+function pathPoints(path: WhatIfPath) {
+  const start = path.trust_series[0] ?? 0;
+  return [
+    { trust: start, delta: 0, label: null },
+    ...path.nodes.filter(isScoredUserNode).map((n) => ({ trust: n.state_after.trust, delta: n.state_after.last_delta ?? 0, label: strongestLabel(n.events) })),
+  ];
+}
+
+/** What actually happened from the same message: trust before it, then after each later helper message. */
+function actualSeries(nodes: Node[], fromId: string): number[] {
+  const index = nodes.findIndex((n) => n.id === fromId);
+  if (index < 1) return [];
+  return [nodes[index - 1].state_after.trust, ...nodes.slice(index).filter(isScoredUserNode).map((n) => n.state_after.trust)];
+}
+
+export function WhatIf() {
+  const { sessionId = '' } = useParams();
+  const [params] = useSearchParams();
+  const nodeId = params.get('node');
+  const navigate = useNavigate();
+  const { t } = usePrefs();
+  const [result, setResult] = useState<WhatIfResult | null>(null);
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const load = useCallback(() => {
+    setError(null);
+    setResult(null);
+    Promise.all([api.whatif(sessionId, nodeId), api.session(sessionId)]).then(
+      ([r, view]) => {
+        setResult(r);
+        setNodes(view.nodes);
+      },
+      (e: ApiError) => setError(e),
+    );
+  }, [sessionId, nodeId]);
+  useEffect(load, [load]);
+
+  const series = useMemo<Series[]>(() => {
+    if (!result) return [];
+    const simulated = result.paths.map((p, i) => ({
+      label: `${i + 1}. ${p.strategy.replace(/_/g, ' ')}`,
+      values: p.trust_series,
+      color: i === result.best_index ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length],
+      emphasis: (i === result.best_index ? 'best' : 'normal') as Series['emphasis'],
+    }));
+    const actual = actualSeries(nodes, result.from_node_id);
+    return actual.length > 1 ? [...simulated, { label: t('whatif.you_said'), values: actual, color: tokenColor('muted'), emphasis: 'actual' }] : simulated;
+  }, [result, nodes, t]);
+
+  async function tryInChat(text: string) {
+    if (!result) return;
+    const from = nodes.find((n) => n.id === result.from_node_id);
+    if (!from?.parent_id) return;
+    try {
+      await api.rewind(sessionId, from.parent_id);
+      navigate(`/chat/${sessionId}`, { state: { draft: text } });
+    } catch (e) {
+      setError(e as ApiError);
+    }
+  }
+
+  if (error) return <ErrorBox message={`${t('whatif.error')} ${error.message}`} onRetry={error.status === 409 ? undefined : load} />;
+  if (!result) return <Spinner />;
+
+  const original = nodes.find((n) => n.id === result.from_node_id);
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <Link to={`/feedback/${sessionId}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand">
+        <Icon name="back" className="h-4 w-4" />
+        {t('whatif.back')}
+      </Link>
+      <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
+        <div className="max-w-2xl">
+          <h1 className="text-3xl font-bold sm:text-4xl">{t('whatif.title')}</h1>
+          <p className="mt-2 text-muted">{t('whatif.sub')}</p>
+        </div>
+        {result.simulated && (
+          <span className="chip border-warm/50 bg-warm-soft px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-ink" title={t('whatif.simulated_hint')} data-testid="simulated">
+            <Icon name="sparkle" className="h-4 w-4 text-warm" />
+            {t('whatif.simulated')}
+          </span>
+        )}
+      </div>
+
+      {original && (
+        <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl bg-sunken p-4">
+          <span className="eyebrow">{t('whatif.you_said')}</span>
+          <span className="rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] text-white line-through decoration-white/50">{original.bubbles.join(' ')}</span>
+        </div>
+      )}
+
+      <section className="card mt-6 p-5">
+        <h2 className="eyebrow mb-3">{t('whatif.overlay')}</h2>
+        <OverlayChart series={series} />
+        <p className="mt-2 text-xs text-muted">{t('whatif.simulated_hint')}</p>
+      </section>
+
+      <ol className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {result.paths.map((path, i) => {
+          const best = i === result.best_index;
+          const series = path.trust_series;
+          return (
+            <li key={i} className={`card flex flex-col p-4 ${best ? 'ring-2 ring-brand' : ''}`} data-testid="whatif-path">
+              <div className="mb-3 flex flex-wrap items-center gap-2">
+                <span className="grid h-6 w-6 place-items-center rounded-full text-xs font-bold text-white" style={{ background: best ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length] }}>
+                  {i + 1}
+                </span>
+                <span className="chip border-line font-mono">{path.strategy}</span>
+                {best && <span className="chip border-transparent bg-brand text-brand-ink">★ {t('whatif.best')}</span>}
+                <span className="mono-num ml-auto text-xs text-muted">{t('whatif.score', { score: path.critic_score.toFixed(2) })}</span>
+              </div>
+              <p className="text-[15px] font-semibold leading-snug">“{path.candidate_text}”</p>
+              <div className="my-3 space-y-1.5 rounded-2xl bg-sunken/70 p-3 text-sm">
+                {path.nodes.map((n) =>
+                  n.role === 'system' ? null : n.seen_no_reply ? (
+                    <p key={n.id} className="text-right text-[11px] text-muted">
+                      {t('chat.seen')}
+                    </p>
+                  ) : (
+                    n.bubbles.map((b, j) => (
+                      <Bubble key={n.id + j} me={n.role === 'user'} className="!text-[13px]">
+                        {b}
+                      </Bubble>
+                    ))
+                  ),
+                )}
+              </div>
+              <div className="mt-auto">
+                <p className="mono-num mb-1 text-xs text-muted">
+                  {t('whatif.trust_end', { from: Math.round(series[0] ?? 0), to: Math.round(series[series.length - 1] ?? 0) })}
+                </p>
+                <TrustChart points={pathPoints(path)} height={110} />
+                <button type="button" className="btn-ghost mt-3 w-full text-xs" onClick={() => tryInChat(path.candidate_text)}>
+                  {t('whatif.try_this')}
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
