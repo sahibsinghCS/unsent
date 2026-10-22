@@ -58,8 +58,18 @@ export interface Metrics {
   components: Record<string, string>;
   records: MetricRecord[];
 }
+/** /api/health `llm` block (contracts 1.1): the OpenAI "voice" gateway's live status. */
+export interface LlmStatus {
+  enabled: boolean;
+  fake: boolean;
+  has_key: boolean;
+  model_actor: string;
+  spent_today_usd: number;
+  daily_budget_usd: number;
+}
 export interface Health {
   ok: boolean;
   contracts_version: string;
   components: Record<string, string>;
+  llm?: LlmStatus;
 }

@@ -43,3 +43,22 @@ describe('app shell', () => {
     expect(screen.getByRole('contentinfo')).toHaveTextContent(/988/);
   });
 });
+
+describe('X-ray voice chip (contracts 1.1)', () => {
+  it('says who wrote the friend\'s words', async () => {
+    const { VoiceChip } = await import('../components/Xray');
+    renderApp(
+      <>
+        <VoiceChip voice="llm" />
+        <VoiceChip voice="bank" />
+        <VoiceChip voice="fallback" />
+      </>,
+    );
+    expect(screen.getAllByTestId('voice-chip').map((c) => c.textContent)).toEqual(['AI, verified ✓', 'Reviewed line', 'Fallback']);
+  });
+  it('renders nothing for old payloads without a voice', async () => {
+    const { VoiceChip } = await import('../components/Xray');
+    renderApp(<VoiceChip voice={null} />);
+    expect(screen.queryByTestId('voice-chip')).not.toBeInTheDocument();
+  });
+});

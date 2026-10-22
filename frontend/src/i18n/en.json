@@ -156,7 +156,13 @@
     "line": "Line",
     "fallback": "scenario fallback",
     "seen": "Left on Seen (trust fell too far)",
-    "level_label": "Disclosure level {n}"
+    "level_label": "Disclosure level {n}",
+    "voice": {
+      "label": "Words",
+      "llm": "AI, verified ✓",
+      "bank": "Reviewed line",
+      "fallback": "Fallback"
+    }
   },
   "labels": {
     "checked_in": "checked in",
@@ -203,7 +209,9 @@
     "new_scenario": "Practice another friend",
     "back_chat": "Back to chat",
     "message_n": "Message {n}",
-    "no_messages": "You didn't send any messages yet."
+    "no_messages": "You didn't send any messages yet.",
+    "rewrite_llm": "Suggested by AI, verified by our model",
+    "rewrite_exemplar": "From our exemplar bank"
   },
   "whatif": {
     "title": "What if you'd said something else?",
@@ -242,7 +250,7 @@
   },
   "how": {
     "title": "How FirstReply works",
-    "sub": "No chatbot improvises here. Every word the friend can say is written in advance and checked by code. The intelligence is our own trained models, rules and algorithms, running locally for free.",
+    "sub": "The AI is only the voice. OpenAI words the friend's replies, but our own code decides everything that matters: what the friend may reveal, whether a reply is safe, and how you're scored. Every AI reply is checked before you see it, and the app still works without it.",
     "pipeline_title": "What happens when you hit Send",
     "pipeline": {
       "you": {
@@ -262,12 +270,12 @@
         "desc": "trust 0–100, levels 0–4"
       },
       "lines": {
-        "name": "Line bank",
-        "desc": "pre-written, reviewed"
+        "name": "Friend voice",
+        "desc": "AI wording or reviewed line"
       },
       "verifier": {
         "name": "Verifier",
-        "desc": "facts gated, no repeats"
+        "desc": "facts gated, safety re-checked"
       },
       "friend": {
         "name": "Friend replies",
@@ -288,23 +296,23 @@
     },
     "does_title": "What the AI does",
     "does": [
-      "Detects 10 helping and hurting behaviours in your message, with calibrated probabilities.",
-      "Checks every message for safety before anything else runs.",
+      "Detects 10 helping and hurting behaviours in your message with our own trained models, with calibrated probabilities.",
+      "Checks every message for safety before anything else runs (our Guardian).",
       "Explains which of your words moved each score.",
-      "Suggests better replies, but only ones that score higher when re-checked."
+      "Lets OpenAI word the friend's replies, inside limits our engine sets, verified before you see them."
     ],
     "doesnt_title": "What the AI doesn't do",
     "doesnt": [
-      "It doesn't write the friend's words live. Every line is pre-written and reviewed.",
-      "It doesn't give advice for real crises. Real mode is fixed text.",
+      "The AI never decides what the friend reveals, how you score, or whether something is safe.",
+      "It doesn't give advice for real crises. Real mode is fixed text with no AI.",
       "It doesn't diagnose anyone or replace a counselor.",
-      "It doesn't use paid AI services or send your messages anywhere."
+      "It doesn't need to be on: without it, the friend uses pre-written, reviewed lines."
     ],
     "privacy_title": "Privacy",
     "privacy": [
       "No accounts, no names, no emails.",
-      "Conversations live only in memory and are deleted after 60 minutes of inactivity.",
-      "No analytics, no tracking, no ads, no outside fonts or scripts."
+      "Conversations live in server memory and are deleted after 60 minutes of inactivity.",
+      "When the AI voice is on, recent messages are sent to OpenAI only to word the friend's reply. No analytics, tracking or ads."
     ],
     "try_title": "Try the Guardian",
     "try_sub": "Type a message as the helper and see what the Guardian decides. Asking a friend directly about suicide is the right move, so it must never be flagged.",
@@ -315,7 +323,34 @@
     "allowed": "Allowed",
     "crisis": "Crisis: pause and show resources",
     "concern": "Concern: show gentle resources",
-    "blocked": "Blocked"
+    "blocked": "Blocked",
+    "voice_title": "The AI is only the voice",
+    "voice_sub": "Our state engine decides what the friend is ready to say. The AI only chooses how to say it, and our verifier and Guardian check every reply before it's shown.",
+    "voice_llm_title": "What the AI (OpenAI) does",
+    "voice_llm": [
+      "Words the friend's reply in a teen texting style, from what our engine allows at that moment.",
+      "Suggests better replies for your feedback, which our own model re-scores before showing.",
+      "Adds a free, extra moderation signal next to our Guardian."
+    ],
+    "voice_code_title": "What our code decides",
+    "voice_code": [
+      "Trust, disclosure level, silence and endings (state engine).",
+      "Which facts the friend may reveal at each level, and whether a reply is allowed (verifier).",
+      "Whether your message is safe, or a crisis (Guardian, always first).",
+      "Every score, highlight and turning point (our trained models)."
+    ],
+    "llm_title": "Live AI voice status",
+    "llm_on": "on",
+    "llm_off": "off",
+    "llm_fake": "test mode (fake replies)",
+    "llm_enabled": "AI voice",
+    "llm_key": "API key",
+    "llm_key_yes": "set",
+    "llm_key_no": "missing",
+    "llm_model": "model",
+    "llm_spent": "spent today",
+    "llm_fallback": "If the AI is off, has no key, reaches its daily budget or fails, the friend uses our reviewed line bank instead. X-ray mode shows which one wrote each reply.",
+    "llm_unknown": "Status unavailable."
   },
   "checkin": {
     "title": "How are you feeling after that?",
@@ -332,10 +367,10 @@
     "intro": "FirstReply is built so there is nothing to leak.",
     "points": [
       "No accounts. We never ask for your name, email or age.",
-      "Your practice conversation is kept in the server's memory only while you use it, and deleted after 60 minutes of inactivity. It is never written to disk or a database.",
-      "No analytics, cookies for tracking, ads or third-party scripts. Fonts are your device's own.",
-      "Your language, theme and country choices are saved only in your own browser.",
-      "All AI runs on our own server with models we trained. Nothing is sent to an outside AI company."
+      "Your practice conversation is kept in the server's memory while you use it and deleted after 60 minutes of inactivity. It isn't tied to you in any way.",
+      "When the AI voice is on, your recent practice messages are sent to OpenAI only so it can word the simulated friend's next reply. Scoring and safety checks run on our own server with models we trained.",
+      "No analytics, tracking cookies, ads or third-party scripts. Fonts are your device's own.",
+      "Your language, theme and country choices are saved only in your own browser."
     ]
   },
   "notfound": {

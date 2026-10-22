@@ -4,7 +4,7 @@
  */
 import { useEffect, useState, type FormEvent } from 'react';
 import { api } from '../api/client';
-import type { GuardianResult, Metrics } from '../api/models';
+import type { GuardianResult, Health, Metrics } from '../api/models';
 import { Icon } from '../components/Icon';
 import { PipelineDiagram } from '../components/PipelineDiagram';
 import { usePrefs } from '../i18n';
@@ -118,13 +118,82 @@ function GuardianBox() {
   );
 }
 
+/** "The AI is only the voice": what the LLM does vs what our code decides, plus its live status. */
+function VoiceSection({ health, failed }: { health: Health | null; failed: boolean }) {
+  const { t, tl } = usePrefs();
+  const llm = health?.llm;
+  const rows: [string, string, boolean][] = llm
+    ? [
+        [t('how.llm_enabled'), llm.fake ? t('how.llm_fake') : llm.enabled ? t('how.llm_on') : t('how.llm_off'), llm.enabled],
+        [t('how.llm_key'), llm.has_key ? t('how.llm_key_yes') : t('how.llm_key_no'), llm.has_key],
+        [t('how.llm_model'), llm.model_actor, true],
+        [t('how.llm_spent'), `$${llm.spent_today_usd.toFixed(2)} / $${llm.daily_budget_usd.toFixed(2)}`, llm.spent_today_usd < llm.daily_budget_usd],
+      ]
+    : [];
+  return (
+    <section className="card mt-5 p-5 sm:p-6" data-testid="voice-section">
+      <h2 className="flex items-center gap-2 text-xl font-bold">
+        <Icon name="sparkle" className="h-5 w-5 text-warm" />
+        {t('how.voice_title')}
+      </h2>
+      <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted">{t('how.voice_sub')}</p>
+      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl bg-warm-soft/50 p-4">
+          <h3 className="font-bold">{t('how.voice_llm_title')}</h3>
+          <ul className="mt-2 space-y-2 text-sm leading-relaxed">
+            {tl('how.voice_llm').map((item, i) => (
+              <li key={i} className="flex gap-2">
+                <Icon name="message" className="mt-0.5 h-4 w-4 shrink-0 text-warm" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-2xl bg-brand-soft/60 p-4">
+          <h3 className="font-bold">{t('how.voice_code_title')}</h3>
+          <ul className="mt-2 space-y-2 text-sm leading-relaxed">
+            {tl('how.voice_code').map((item, i) => (
+              <li key={i} className="flex gap-2">
+                <Icon name="shield" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-2xl border border-line p-4" data-testid="llm-status">
+          <h3 className="font-bold">{t('how.llm_title')}</h3>
+          {rows.length === 0 ? (
+            <p className="mt-2 text-sm text-muted">{failed ? t('app.offline') : health ? t('how.llm_unknown') : t('app.loading')}</p>
+          ) : (
+            <dl className="mt-2 space-y-1.5 text-sm">
+              {rows.map(([label, value, ok]) => (
+                <div key={label} className="flex items-center justify-between gap-3">
+                  <dt className="text-muted">{label}</dt>
+                  <dd className="flex items-center gap-1.5 font-mono text-xs">
+                    <span className={`h-2 w-2 rounded-full ${ok ? 'bg-good' : 'bg-warm'}`} aria-hidden="true" />
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          <p className="mt-3 text-xs leading-relaxed text-muted">{t('how.llm_fallback')}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function How() {
   const { t, tl } = usePrefs();
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [metricsError, setMetricsError] = useState(false);
+  const [health, setHealth] = useState<Health | null>(null);
+  const [healthError, setHealthError] = useState(false);
 
   useEffect(() => {
     api.metrics().then(setMetrics, () => setMetricsError(true));
+    api.health().then(setHealth, () => setHealthError(true));
   }, []);
 
   const records = metrics?.records ?? [];
@@ -139,6 +208,8 @@ export function How() {
         <h2 className="mb-4 text-xl font-bold">{t('how.pipeline_title')}</h2>
         <PipelineDiagram />
       </section>
+
+      <VoiceSection health={health} failed={healthError} />
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_2fr]">
         <section className="card p-5" data-testid="component-status">

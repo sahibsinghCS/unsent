@@ -304,7 +304,7 @@ export interface components {
              */
             score: number;
             /** Sources */
-            sources?: ("lexicon" | "classifier")[];
+            sources?: ("lexicon" | "classifier" | "moderation")[];
             /**
              * Latency Ms
              * @default 0
@@ -354,6 +354,8 @@ export interface components {
             rewrite?: string | null;
             /** Rewrite Gain */
             rewrite_gain?: number | null;
+            /** Rewrite Source */
+            rewrite_source?: ("exemplar" | "llm") | null;
         };
         /**
          * Node
@@ -385,6 +387,8 @@ export interface components {
             /** Line Id */
             line_id?: string | null;
             reaction?: components["schemas"]["Reaction"] | null;
+            /** Voice */
+            voice?: ("llm" | "bank" | "fallback") | null;
             /** Created At */
             created_at?: number;
         };

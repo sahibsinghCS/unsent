@@ -1,5 +1,5 @@
 /**
- * Inline SVG of the pipeline: You → Guardian → Skill detector → State engine → Line bank →
+ * Inline SVG of the pipeline: You → Guardian → Skill detector → State engine → Friend voice →
  * Verifier → Friend. The Guardian can stop a message early (crisis pause / blocked). Drawn
  * horizontally on wide screens and vertically on phones; colors come from the theme tokens.
  */

@@ -87,6 +87,7 @@ async function run(device) {
   await shot('07-chat-xray');
   const math = await page.locator('[data-testid="xray-helper"]').last().innerText();
   if (!/Trust math/.test(math) || !/=/.test(math)) throw new Error('X-ray trust math missing');
+  await page.locator('[data-testid="xray-friend"] [data-testid="voice-chip"]').first().waitFor(); // who wrote the words
   await page.getByTestId('xray-toggle').click();
 
   // 5. Blocked message -> teaching card
@@ -138,12 +139,12 @@ async function run(device) {
     const report = await response.json();
     const target = report.turning_point?.node_id ?? report.per_message[0]?.node_id;
     for (const m of report.per_message) {
-      if (m.node_id === target) Object.assign(m, { rewrite: 'that sounds really heavy. are you thinking about killing yourself?', rewrite_gain: 0.41, rewrite_skill: 'ask_directly', uncertain: ['validated'] });
+      if (m.node_id === target) Object.assign(m, { rewrite: 'that sounds really heavy. are you thinking about killing yourself?', rewrite_gain: 0.41, rewrite_skill: 'ask_directly', rewrite_source: 'llm', uncertain: ['validated'] });
     }
     await route.fulfill({ response, json: report });
   });
   await page.reload();
-  await page.getByTestId('rewrite').waitFor();
+  await page.getByTestId('rewrite-source').waitFor();
   await page.getByTestId('turning-point').scrollIntoViewIfNeeded();
   await page.getByTestId('rewrite').scrollIntoViewIfNeeded();
   await shot('13-feedback-rewrite');
@@ -174,6 +175,7 @@ async function run(device) {
   // 12. Transparency + Try the Guardian
   await page.goto(`${BASE}/how`);
   await page.getByTestId('guardian-box').waitFor();
+  await page.getByTestId('llm-status').locator('dl').waitFor(); // live LLM status from /api/health
   await page.getByRole('button', { name: '“kms”' }).click();
   await page.getByTestId('guardian-result').waitFor();
   await shot('18-how', { full: true });

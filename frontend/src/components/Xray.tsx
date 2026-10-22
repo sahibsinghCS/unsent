@@ -91,10 +91,29 @@ export function XrayHelper({ node, before }: { node: Node; before: State | null 
   );
 }
 
+const VOICE_STYLE: Record<string, string> = {
+  llm: 'border-transparent bg-brand-soft text-ink',
+  bank: 'border-transparent bg-good-soft text-good',
+  fallback: 'border-line bg-sunken text-muted',
+};
+
+/** Who wrote the friend's words (contracts 1.1): the AI (always verified), a reviewed bank line, or a fallback. */
+export function VoiceChip({ voice }: { voice?: string | null }) {
+  const { t } = usePrefs();
+  if (!voice) return null;
+  return (
+    <span className={`chip font-semibold ${VOICE_STYLE[voice] ?? VOICE_STYLE.fallback}`} data-testid="voice-chip" title={t('xray.voice.label')}>
+      <Icon name={voice === 'llm' ? 'sparkle' : 'check'} className="h-3 w-3" />
+      {t(`xray.voice.${voice}`)}
+    </span>
+  );
+}
+
 export function XrayFriend({ node }: { node: Node }) {
   const { t } = usePrefs();
   return (
     <div className="mt-1 flex max-w-[22rem] flex-wrap items-center gap-1.5 text-[11px] text-muted animate-pop-in" data-testid="xray-friend">
+      <VoiceChip voice={node.voice} />
       {node.reaction && (
         <span className="chip border-line bg-surface font-mono">
           {t('xray.reaction')}: <b className="text-ink">{node.reaction}</b>

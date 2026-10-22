@@ -229,6 +229,11 @@ export function Feedback() {
                       )}
                     </p>
                     <p className="mt-1.5 text-[15px] leading-relaxed">“{score.rewrite}”</p>
+                    {score.rewrite_source && (
+                      <p className="mt-1.5 text-xs text-muted" data-testid="rewrite-source">
+                        {score.rewrite_source === 'llm' ? t('feedback.rewrite_llm') : t('feedback.rewrite_exemplar')}
+                      </p>
+                    )}
                   </div>
                 )}
                 <div className="mt-4">{actions(score.node_id)}</div>

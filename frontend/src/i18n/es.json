@@ -160,7 +160,13 @@
     "line": "Línea",
     "fallback": "línea de respaldo",
     "seen": "Lo dejó en Visto (la confianza bajó demasiado)",
-    "level_label": "Nivel de apertura {n}"
+    "level_label": "Nivel de apertura {n}",
+    "voice": {
+      "label": "Palabras",
+      "llm": "IA, verificado ✓",
+      "bank": "Línea revisada",
+      "fallback": "Respaldo"
+    }
   },
   "labels": {
     "checked_in": "preguntó cómo está",
@@ -207,7 +213,9 @@
     "new_scenario": "Practicar con otro amigo",
     "back_chat": "Volver al chat",
     "message_n": "Mensaje {n}",
-    "no_messages": "Todavía no enviaste mensajes."
+    "no_messages": "Todavía no enviaste mensajes.",
+    "rewrite_llm": "Sugerido por IA, verificado por nuestro modelo",
+    "rewrite_exemplar": "De nuestro banco de ejemplos"
   },
   "whatif": {
     "title": "¿Y si hubieras dicho otra cosa?",
@@ -246,7 +254,7 @@
   },
   "how": {
     "title": "Cómo funciona FirstReply",
-    "sub": "Aquí ningún chatbot improvisa. Cada palabra del amigo está escrita de antemano y verificada por código. La inteligencia son nuestros propios modelos, reglas y algoritmos, que corren localmente y gratis.",
+    "sub": "La IA es solo la voz. OpenAI redacta las respuestas del amigo, pero nuestro propio código decide todo lo importante: qué puede contar el amigo, si una respuesta es segura y cómo se te evalúa. Cada respuesta de la IA se revisa antes de que la veas, y la app funciona sin ella.",
     "pipeline_title": "Qué pasa cuando tocas Enviar",
     "pipeline": {
       "you": {
@@ -266,12 +274,12 @@
         "desc": "confianza, niveles 0–4"
       },
       "lines": {
-        "name": "Banco de líneas",
-        "desc": "escritas y revisadas"
+        "name": "Voz del amigo",
+        "desc": "IA o línea revisada"
       },
       "verifier": {
         "name": "Verificador",
-        "desc": "datos controlados"
+        "desc": "datos y seguridad"
       },
       "friend": {
         "name": "Responde el amigo",
@@ -292,23 +300,23 @@
     },
     "does_title": "Lo que hace la IA",
     "does": [
-      "Detecta 10 conductas que ayudan o dañan en tu mensaje, con probabilidades calibradas.",
-      "Revisa la seguridad de cada mensaje antes que nada.",
+      "Detecta 10 conductas que ayudan o dañan en tu mensaje con nuestros propios modelos entrenados, con probabilidades calibradas.",
+      "Revisa la seguridad de cada mensaje antes que nada (nuestro Guardián).",
       "Explica qué palabras tuyas movieron cada puntaje.",
-      "Sugiere mejores respuestas, pero solo las que puntúan más alto al volver a revisarlas."
+      "Deja que OpenAI redacte las respuestas del amigo, dentro de los límites de nuestro motor, verificadas antes de que las veas."
     ],
     "doesnt_title": "Lo que la IA no hace",
     "doesnt": [
-      "No escribe en vivo las palabras del amigo. Cada línea está escrita y revisada de antemano.",
-      "No da consejos para crisis reales. El modo real es texto fijo.",
+      "La IA nunca decide qué revela el amigo, cómo te evaluamos ni si algo es seguro.",
+      "No da consejos para crisis reales. El modo real es texto fijo sin IA.",
       "No diagnostica a nadie ni reemplaza a un consejero.",
-      "No usa servicios de IA de pago ni envía tus mensajes a ningún lado."
+      "No necesita estar activada: sin ella, el amigo usa líneas escritas y revisadas."
     ],
     "privacy_title": "Privacidad",
     "privacy": [
       "Sin cuentas, sin nombres, sin correos.",
-      "Las conversaciones viven solo en memoria y se borran tras 60 minutos de inactividad.",
-      "Sin analítica, sin rastreo, sin anuncios, sin fuentes ni scripts externos."
+      "Las conversaciones viven en la memoria del servidor y se borran tras 60 minutos de inactividad.",
+      "Con la voz de IA activada, los mensajes recientes se envían a OpenAI solo para redactar la respuesta del amigo. Sin analítica, rastreo ni anuncios."
     ],
     "try_title": "Prueba el Guardián",
     "try_sub": "Escribe un mensaje como quien ayuda y mira qué decide el Guardián. Preguntarle directamente a un amigo sobre el suicidio es lo correcto, así que nunca debe marcarse.",
@@ -319,7 +327,34 @@
     "allowed": "Permitido",
     "crisis": "Crisis: pausar y mostrar recursos",
     "concern": "Preocupación: mostrar recursos",
-    "blocked": "Bloqueado"
+    "blocked": "Bloqueado",
+    "voice_title": "La IA es solo la voz",
+    "voice_sub": "Nuestro motor de estado decide qué está listo para decir el amigo. La IA solo elige cómo decirlo, y nuestro verificador y el Guardián revisan cada respuesta antes de mostrarla.",
+    "voice_llm_title": "Lo que hace la IA (OpenAI)",
+    "voice_llm": [
+      "Redacta la respuesta del amigo con estilo de mensaje adolescente, a partir de lo que nuestro motor permite en ese momento.",
+      "Sugiere mejores respuestas para tus comentarios, que nuestro modelo vuelve a evaluar antes de mostrarlas.",
+      "Añade una señal de moderación extra y gratuita junto a nuestro Guardián."
+    ],
+    "voice_code_title": "Lo que decide nuestro código",
+    "voice_code": [
+      "Confianza, nivel de apertura, silencios y finales (motor de estado).",
+      "Qué datos puede revelar el amigo en cada nivel y si una respuesta se permite (verificador).",
+      "Si tu mensaje es seguro o una crisis (Guardián, siempre primero).",
+      "Cada puntaje, resaltado y punto de quiebre (nuestros modelos entrenados)."
+    ],
+    "llm_title": "Estado de la voz de IA",
+    "llm_on": "activada",
+    "llm_off": "desactivada",
+    "llm_fake": "modo de prueba (respuestas falsas)",
+    "llm_enabled": "Voz de IA",
+    "llm_key": "Clave de API",
+    "llm_key_yes": "configurada",
+    "llm_key_no": "falta",
+    "llm_model": "modelo",
+    "llm_spent": "gastado hoy",
+    "llm_fallback": "Si la IA está desactivada, no tiene clave, llega a su presupuesto diario o falla, el amigo usa nuestro banco de líneas revisadas. El modo rayos X muestra quién escribió cada respuesta.",
+    "llm_unknown": "Estado no disponible."
   },
   "checkin": {
     "title": "¿Cómo te sientes después de esto?",
@@ -336,10 +371,10 @@
     "intro": "FirstReply está hecho para que no haya nada que filtrar.",
     "points": [
       "Sin cuentas. Nunca pedimos tu nombre, correo ni edad.",
-      "Tu conversación de práctica solo se guarda en la memoria del servidor mientras la usas y se borra tras 60 minutos de inactividad. Nunca se escribe en disco ni en una base de datos.",
+      "Tu conversación de práctica se guarda en la memoria del servidor mientras la usas y se borra tras 60 minutos de inactividad. No está vinculada a ti de ninguna forma.",
+      "Con la voz de IA activada, tus mensajes de práctica recientes se envían a OpenAI solo para redactar la siguiente respuesta del amigo simulado. La evaluación y la seguridad corren en nuestro servidor con modelos que entrenamos.",
       "Sin analítica, cookies de rastreo, anuncios ni scripts de terceros. Las fuentes son las de tu dispositivo.",
-      "Tu idioma, tema y país se guardan solo en tu navegador.",
-      "Toda la IA corre en nuestro propio servidor con modelos que entrenamos. No se envía nada a empresas de IA externas."
+      "Tu idioma, tema y país se guardan solo en tu navegador."
     ]
   },
   "notfound": {
