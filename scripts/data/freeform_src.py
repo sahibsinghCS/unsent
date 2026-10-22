@@ -892,10 +892,77 @@ _EXTRA2: list[tuple[str, str, str]] = [
 ]
 
 
+# Fourth batch (ML request): hard negatives for asked_directly ("thinking about / have you thought about" with
+# NON-suicide topics) and genuine direct asks phrased in less common ways.
+_EXTRA3: list[tuple[str, str, str]] = [
+    ("breakup-L0-1", "ok but have you tried just not thinking about him", "x"),
+    ("breakup-L0-2", "are you thinking about texting him? i just want to make sure you're ok", "c"),
+    ("breakup-L0-3", "have you thought about talking to him, like actually closing the chapter?", "x"),
+    ("breakup-L1-1", "what are you thinking about when you can't sleep?", "c"),
+    ("breakup-L1-2", "are you thinking about the whole school stuff again? how are you holding up", "c"),
+    ("breakup-L1-3", "have you thought about changing your seat in class so you don't have to see him?", "x"),
+    ("chem-L0-2", "are you thinking about the test right now? what's going on", "c"),
+    ("chem-L0-3", "have you thought about getting a tutor?", "x"),
+    ("chem-L1-1", "have you thought about telling your mom about the grade? i can be there when you do", "r"),
+    ("chem-L1-2", "are you thinking about dropping chem? you could talk to the counselor about it with me", "r"),
+    ("chem-L1-3", "are you thinking about college again? you look stressed, are you ok?", "c"),
+    ("chem-L2-2", "have you thought about retaking it next semester? one grade isn't the end", "x"),
+    ("sam-L0-1", "i was thinking about you at lunch. you ok?", "c"),
+    ("sam-L0-2", "have you thought about selling the setup instead of giving it away?", "x"),
+    ("sam-L0-3", "are you thinking about getting a new hoodie lol", "d"),
+    ("sam-L1-2", "have you thought about talking to your parents about the fighting?", "x"),
+    ("sam-L1-3", "are you thinking about moving rooms or something? how are you doing at home", "c"),
+    ("sam-L2-2", "have you thought about doing something fun this weekend to get out of the house?", "x"),
+    ("gc-L0-1", "are you thinking about quitting the group chat? i'd leave too", "-"),
+    ("gc-L0-2", "have you thought about blocking everyone in it?", "x"),
+    ("gc-L1-1", "are you thinking about the gc again? how are you doing", "c"),
+    ("gc-L1-2", "have you thought about showing a teacher the screenshots?", "r"),
+    ("gc-L1-3", "are you thinking about switching lunch tables? i'll come with you", "f"),
+    ("gc-L2-2", "have you thought about transferring schools? it might help", "x"),
+    ("ns-L0-1", "are you thinking about joining a club? i can go with you", "f"),
+    ("ns-L0-2", "have you thought about sitting with the art kids at lunch?", "x"),
+    ("ns-L1-1", "have you thought about telling your old friends how it feels?", "x"),
+    ("ns-L1-2", "are you thinking about moving back? is that why you've been so quiet?", "c"),
+    ("ns-L1-3", "thinking about you today. how are you really?", "c"),
+    ("ns-L2-2", "have you thought about talking to the counselor about feeling invisible? i'll go with you", "r"),
+    ("breakup-L2-1", "what are you thinking about right now?", "c"),
+    ("chem-L2-1", "are you thinking about the grade or about everything?", "c"),
+    ("sam-L2-1", "have you thought about what you'd like to change at home?", "-"),
+    ("gc-L2-1", "are you thinking about telling your mom? i can help you figure out how", "r"),
+    ("ns-L2-1", "have you thought about writing your feelings down? it can help", "x"),
+    ("breakup-L3-2", "¿has pensado en hablar con tu mamá de lo del ex?", "r"),
+    ("chem-L3-2", "¿estás pensando en cambiarte de clase de química?", "-"),
+    ("sam-L3-3", "¿en qué estás pensando ahora mismo?", "c"),
+    ("gc-L3-3", "¿has pensado en dejar el chat? yo lo dejaría", "x"),
+    ("ns-L3-3", "¿estás pensando en volver a tu escuela vieja? cuéntame", "c"),
+    ("breakup-L3-1", "that sounds awful. when you say you're done, do you mean with life?", "v a"),
+    ("breakup-L4-3", "are you having thoughts of hurting yourself?", "a"),
+    ("chem-L3-1", "do you ever think life isn't worth living? you can tell me straight", "a"),
+    ("chem-L4-3", "has it gotten so bad you've considered taking your own life?", "a"),
+    ("sam-L3-1", "i have to ask. are you wanting to die?", "a"),
+    ("sam-L4-3", "is part of you thinking you'd be better off dead? i won't judge", "a"),
+    ("gc-L3-1", "are you thinking of ending things for good, like ending your life?", "a"),
+    ("gc-L4-3", "when you said disappear, did you mean you want to die?", "a"),
+    ("ns-L3-1", "r u thinking about harming urself or just not wanting to be here", "a"),
+    ("ns-L4-3", "do you have thoughts about not waking up tomorrow?", "a"),
+    ("breakup-L2-3", "have you had any thoughts of self-harm?", "a"),
+    ("chem-L2-3", "are you considering suicide?", "a"),
+    ("sam-L2-3", "is this the kind of sad where you think about dying?", "a"),
+    ("gc-L2-3", "okay, honest question. do you want to stay alive right now?", "a"),
+    ("ns-L2-3", "¿has pensado en hacerte daño o en terminar con tu vida?", "a"),
+    ("breakup-L3-3", "cuando dices que ya no puedes más, ¿te refieres a quitarte la vida?", "a"),
+    ("chem-L3-3", "¿estás pensando en el suicidio? te lo pregunto en serio", "a"),
+    ("sam-L4-1", "¿sientes que no quieres seguir viviendo?", "a"),
+    ("gc-L4-1", "¿has tenido ganas de morirte?", "a"),
+    ("ns-L4-1", "are you pensando en suicidarte? sorry for asking so straight", "a"),
+    ("breakup-L4-1", "that took guts to say. i want to ask plainly, are you thinking about killing yourself?", "v a"),
+]
+
+
 def ordered() -> list[tuple[str, str, str]]:
     """Stable order (ids never shift): base + second batch by context as first released, then the third batch."""
     out = []
     for ctx, items in FF.items():
         out += [(ctx, t, c) for t, c in items]
         out += [(c2, t, cd) for c2, t, cd in _EXTRA if c2 == ctx]
-    return out + list(_EXTRA2)
+    return out + list(_EXTRA2) + list(_EXTRA3)
