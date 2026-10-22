@@ -81,6 +81,8 @@ class Guardian:
             shared = _friend_risk(history)
             if shared:
                 lex.hits.append(Hit("concern", f"agreed with: {shared}", "me too after friend"))
+            else:  # "same lol" about a test or a game is just small talk
+                lex.allowed.append(Hit("agreement", norm.text, "friend shared nothing risky"))
         model = self.model()
         probs = model.predict_proba([norm.text])[0] if model else None
         return decide(lex, probs, model.thresholds if model else Thresholds())

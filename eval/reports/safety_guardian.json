@@ -2,281 +2,335 @@
  {
   "lane": "safety",
   "metric": "combined.macro_f1",
-  "value": 0.9835,
-  "n": 71,
+  "value": 0.9713,
+  "n": 172,
   "split": "test",
   "notes": "6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "combined.asking_friend_fpr",
   "value": 0.0,
-  "n": 18,
+  "n": 37,
   "split": "test",
   "notes": "asking the friend flagged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "combined.self_risk_recall",
   "value": 1.0,
-  "n": 12,
+  "n": 37,
   "split": "test",
   "notes": "helper risk -> crisis",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "lexicon_only.macro_f1",
-  "value": 0.9501,
-  "n": 71,
+  "value": 0.8267,
+  "n": 172,
   "split": "test",
   "notes": "6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "lexicon_only.asking_friend_fpr",
   "value": 0.0,
-  "n": 18,
+  "n": 37,
   "split": "test",
   "notes": "asking the friend flagged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "lexicon_only.self_risk_recall",
-  "value": 0.9167,
-  "n": 12,
+  "value": 0.8378,
+  "n": 37,
   "split": "test",
   "notes": "helper risk -> crisis",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "classifier_only.macro_f1",
-  "value": 0.87,
-  "n": 71,
+  "value": 0.9036,
+  "n": 172,
   "split": "test",
   "notes": "6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "classifier_only.asking_friend_fpr",
-  "value": 0.0556,
-  "n": 18,
+  "value": 0.0,
+  "n": 37,
   "split": "test",
   "notes": "asking the friend flagged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "classifier_only.self_risk_recall",
-  "value": 0.6667,
-  "n": 12,
+  "value": 1.0,
+  "n": 37,
   "split": "test",
   "notes": "helper risk -> crisis",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "asking_friend_fpr",
   "value": 0.0,
-  "n": 18,
+  "n": 37,
   "split": "test",
   "notes": "HEADLINE, combined; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "self_risk_recall",
   "value": 1.0,
-  "n": 12,
+  "n": 37,
   "split": "test",
   "notes": "HEADLINE, combined; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "self_risk_flagged_any",
   "value": 1.0,
-  "n": 12,
+  "n": 37,
   "split": "test",
   "notes": "crisis or other flag",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "benign_fpr",
   "value": 0.0,
-  "n": 35,
+  "n": 81,
   "split": "test",
   "notes": "asking+tricky+neutral",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "test_data_lane.asking_friend_fpr",
+  "value": 0.0,
+  "n": 21,
+  "split": "test",
+  "notes": "test rows from guardian/messages.jsonl",
+  "created": "2026-10-22T23:06:16+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "test_data_lane.self_risk_recall",
+  "value": 1.0,
+  "n": 26,
+  "split": "test",
+  "notes": "test rows from guardian/messages.jsonl",
+  "created": "2026-10-22T23:06:16+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "test_data_lane.macro_f1",
+  "value": 0.9756,
+  "n": 105,
+  "split": "test",
+  "notes": "test rows from guardian/messages.jsonl",
+  "created": "2026-10-22T23:06:16+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "test_safety_lane.asking_friend_fpr",
+  "value": 0.0,
+  "n": 16,
+  "split": "test",
+  "notes": "test rows from guardian_extra/messages.jsonl",
+  "created": "2026-10-22T23:06:16+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "test_safety_lane.self_risk_recall",
+  "value": 1.0,
+  "n": 11,
+  "split": "test",
+  "notes": "test rows from guardian_extra/messages.jsonl",
+  "created": "2026-10-22T23:06:16+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "test_safety_lane.macro_f1",
+  "value": 0.9624,
+  "n": 67,
+  "split": "test",
+  "notes": "test rows from guardian_extra/messages.jsonl",
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "none.precision",
-  "value": 1.0,
-  "n": 35,
+  "value": 0.9759,
+  "n": 81,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "none.recall",
   "value": 1.0,
-  "n": 35,
+  "n": 81,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "none.f1",
-  "value": 1.0,
-  "n": 35,
+  "value": 0.9878,
+  "n": 81,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "concern.precision",
   "value": 1.0,
-  "n": 9,
+  "n": 17,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "concern.recall",
-  "value": 0.8889,
-  "n": 9,
+  "value": 0.9412,
+  "n": 17,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "concern.f1",
-  "value": 0.9412,
-  "n": 9,
+  "value": 0.9697,
+  "n": 17,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "self_risk.precision",
-  "value": 0.9231,
-  "n": 12,
+  "value": 0.9487,
+  "n": 37,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "self_risk.recall",
   "value": 1.0,
-  "n": 12,
+  "n": 37,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "self_risk.f1",
-  "value": 0.96,
-  "n": 12,
+  "value": 0.9737,
+  "n": 37,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "harm_to_other.precision",
   "value": 1.0,
-  "n": 7,
+  "n": 16,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "harm_to_other.recall",
-  "value": 1.0,
-  "n": 7,
+  "value": 0.8125,
+  "n": 16,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "harm_to_other.f1",
-  "value": 1.0,
-  "n": 7,
+  "value": 0.8966,
+  "n": 16,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "method_seeking.precision",
   "value": 1.0,
-  "n": 5,
+  "n": 11,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "method_seeking.recall",
   "value": 1.0,
-  "n": 5,
+  "n": 11,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "method_seeking.f1",
   "value": 1.0,
-  "n": 5,
+  "n": 11,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "prompt_injection.precision",
   "value": 1.0,
-  "n": 3,
+  "n": 10,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "prompt_injection.recall",
   "value": 1.0,
-  "n": 3,
+  "n": 10,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "prompt_injection.f1",
   "value": 1.0,
-  "n": 3,
+  "n": 10,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
@@ -285,7 +339,7 @@
   "n": 53,
   "split": "pairs",
   "notes": "",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
@@ -294,7 +348,7 @@
   "n": 53,
   "split": "pairs",
   "notes": "",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
@@ -303,7 +357,7 @@
   "n": 17,
   "split": "holdout",
   "notes": "written after freezing; never tuned on",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
@@ -312,7 +366,7 @@
   "n": 14,
   "split": "holdout",
   "notes": "written after freezing; never tuned on",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
@@ -321,132 +375,132 @@
   "n": 59,
   "split": "holdout",
   "notes": "written after freezing; never tuned on",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.leetspeak.with_normalizer",
-  "value": 1.0,
-  "n": 54,
+  "value": 0.9922,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.leetspeak.without_normalizer",
-  "value": 0.3704,
-  "n": 54,
+  "value": 0.3828,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.spacing.with_normalizer",
-  "value": 1.0,
-  "n": 54,
+  "value": 0.9844,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.spacing.without_normalizer",
-  "value": 0.7407,
-  "n": 54,
+  "value": 0.8125,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.stretching.with_normalizer",
-  "value": 1.0,
-  "n": 54,
+  "value": 0.9609,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.stretching.without_normalizer",
-  "value": 0.9815,
-  "n": 54,
+  "value": 0.9219,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.emoji.with_normalizer",
-  "value": 0.9444,
-  "n": 54,
+  "value": 0.9297,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.emoji.without_normalizer",
-  "value": 1.0,
-  "n": 54,
+  "value": 0.9609,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.typo.with_normalizer",
-  "value": 1.0,
-  "n": 54,
+  "value": 0.9844,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.typo.without_normalizer",
-  "value": 0.7593,
-  "n": 54,
+  "value": 0.875,
+  "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "latency_ms_p50",
-  "value": 4.4903,
-  "n": 213,
+  "value": 4.6048,
+  "n": 516,
   "split": "test",
   "notes": "check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "latency_ms_p95",
-  "value": 6.1057,
-  "n": 213,
+  "value": 6.4507,
+  "n": 516,
   "split": "test",
   "notes": "target < 50 ms",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "friend_lines_flagged",
   "value": 0.0,
-  "n": 85,
-  "split": "scenarios",
+  "n": 2206,
+  "split": "scenarios+line_bank",
   "notes": "should be 0",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  },
  {
   "lane": "safety",
   "metric": "self_risk_average_precision",
-  "value": 0.8353,
-  "n": 71,
+  "value": 0.9962,
+  "n": 172,
   "split": "test",
   "notes": "classifier only, PR curve PNG",
-  "created": "2026-10-22T23:01:03+00:00"
+  "created": "2026-10-22T23:06:16+00:00"
  }
 ]

@@ -18,6 +18,9 @@ from backend.app.safety.normalizer import Normalized, normalize, squeeze
 LEXICON_PATH = Path(__file__).with_name("lexicon.yaml")
 BOUNDARIES = {".", "!", "?", ";", "¿", "¡"}
 STRIP = "\"'()[]*:~"
+WEAK_FIRST = {"me", "my", "mi"}  # count only right before the phrase ("makes me want to die")
+# Commands that need a cue word ("just kms", "go end it"); alone they mean something else.
+CUE_ONLY = {("kms",), ("end", "it"), ("disappear",), ("desaparece",)}
 RISK_CATEGORIES = ("self_risk", "concern", "harm_to_other", "method_seeking", "prompt_injection")
 
 
@@ -83,7 +86,7 @@ class Lexicon:
         self.p = {
             f"{cat}.{kind}": _Phrases(sec.get(cat, {}).get(kind, []))
             for cat in (*RISK_CATEGORIES, "asking_friend", "tricky_negative", "unsafe_friend_line")
-            for kind in ("explicit", "framed", "imperative", "means", "topics")
+            for kind in ("explicit", "framed", "framed_second", "imperative", "means", "topics")
         }
         sp = sec["speaker"]
         self.first = {squeeze(w) for w in sp["first_person"]}
@@ -101,6 +104,8 @@ class Lexicon:
         """Nearest pronoun before word i in the same sentence: first / second / third / None."""
         for j in range(i - 1, sent.start - 1, -1):
             w = sq[j]
+            if w in WEAK_FIRST and j < i - 1:
+                continue  # "my friend told ME about ..." is not the helper's own feeling
             if w in self.first:
                 return "first"
             if w in self.second or w in self.second_verbs:
@@ -157,10 +162,18 @@ class Lexicon:
     def _scan_sentence(self, raw, sq, words, sent: _Sentence, res: LexiconResult) -> None:
         text = lambda a, b: " ".join(raw[a:b]).strip(STRIP)  # noqa: E731
 
+        method = list(self._spans("method_seeking.explicit", words, sent))
+        in_method = lambda a, b: any(a < mb and ma < b for ma, mb in method)  # noqa: E731
+
         for cat in ("self_risk", "concern"):
             for a, b in self._spans(f"{cat}.explicit", words, sent):
-                if self._negated(sq, sent, a):
+                if in_method(a, b):
                     continue
+                if self._negated(sq, sent, a):
+                    res.allowed.append(Hit("negated", text(a, b), "negated"))
+                    continue
+                if a > sent.start and sq[a - 1] in {"go", "should"}:
+                    continue  # "go kms" is aimed at the friend (harm), not the helper's own risk
                 if self._reflected(raw, sq, sent, a):
                     res.allowed.append(Hit("asking_friend", text(a, b), "reflection"))
                 elif sent.question and self._speaker(sq, sent, a) == "second":
@@ -168,7 +181,10 @@ class Lexicon:
                 else:
                     res.hits.append(Hit(cat, text(a, b), "first person"))
             for a, b in self._spans(f"{cat}.framed", words, sent):
+                if in_method(a, b):
+                    continue
                 if self._negated(sq, sent, a):
+                    res.allowed.append(Hit("negated", text(a, b), "negated"))
                     continue
                 if self._reflected(raw, sq, sent, a):
                     res.allowed.append(Hit("asking_friend", text(a, b), "reflection"))
@@ -190,7 +206,9 @@ class Lexicon:
             if self._negated(sq, sent, a) or self._reflected(raw, sq, sent, a):
                 continue
             before = sq[max(sent.start, a - 2) : a]
-            clause_start = a == sent.start or raw[a - 1] == ","
+            if sq[a:b] == ["end", "it"] and b < sent.end and sq[b] == "with":
+                continue  # "just end it with him" is breakup advice
+            clause_start = (a == sent.start or raw[a - 1] == ",") and tuple(sq[a:b]) not in CUE_ONLY
             if clause_start or any(w in self.cues for w in before):
                 res.hits.append(Hit("harm_to_other", text(a, b), "command"))
         for a, b in self._spans("harm_to_other.framed", words, sent):
@@ -201,7 +219,13 @@ class Lexicon:
             else:
                 res.hits.append(Hit("concern", text(a, b), "first person"))
 
-        for a, b in self._spans("method_seeking.explicit", words, sent):
+        for a, b in self._spans("harm_to_other.framed_second", words, sent):
+            if sent.question or self._negated(sq, sent, a) or self._reflected(raw, sq, sent, a):
+                continue
+            if self._speaker(sq, sent, a) == "second":
+                res.hits.append(Hit("harm_to_other", text(a, b), "insult aimed at the friend"))
+
+        for a, b in method:
             res.hits.append(Hit("method_seeking", text(a, b), "asks how/when/with what"))
         for a, b in self._spans("method_seeking.means", words, sent):
             if self._speaker(sq, sent, a) == "first" or "myself" in sq[a:b]:

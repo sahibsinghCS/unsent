@@ -69,6 +69,9 @@ self_risk:
     - estoy cansada de vivir
     - quiero quitarme la vida
     - hacerme dano
+    - quitarme la vida
+    - ganas de quitarme la vida
+    - me dan ganas de morir
   framed:
     - want to die
     - wanna die
@@ -100,6 +103,18 @@ self_risk:
     - do not want to wake up
     - never wake up
     - self harm
+    - wanted to die
+    - not wake up
+    - rather not exist
+    - rather be dead
+    - want to stop existing
+    - do not deserve to be alive
+    - not be around much longer
+    - will not be around much longer
+    - disappear forever
+    - ganas de morir
+    - desearia no despertar
+    - desaparecer para siempre
 
 # ---------------------------------------------------------------- concern -> show resources, continue
 # Ambiguous distress from the HELPER. We do not stop the practice; we gently show resources.
@@ -200,6 +215,23 @@ harm_to_other:
     - ojala te mueras
     - hazlo ya
     - nadie te extranaria
+    - everyone hates you
+    - nobody wants you here
+    - no one wants you here
+    - nobody wants you
+    - why are you even still here
+    - why are you still here
+    - happier if you left
+    - better off without you
+    - go ahead then
+    - stop whining and die
+    - ojala te murieras
+    - vete a morir
+    - nadie te quiere
+    - mejor no existieras
+    - tu vida no vale nada
+    - ojala desaparezcas
+    - eres un estorbo
   # These count only as a command: at the start of a sentence or right after a cue word
   # ("you SHOULD kill yourself"). "do you want to kill yourself?" is a question, not a command.
   imperative:
@@ -207,11 +239,27 @@ harm_to_other:
     - unalive yourself
     - end your life
     - die
+    - kms
+    - stop existing
+    - end it
+    - disappear
+    - desaparece
   imperative_cues: [just, go, should, then, please, better, already, honestly, literally, bro, lol]
   # Count unless the speaker is "i" ("i feel like no one would care" is the helper's own pain).
   framed:
     - no one would care
     - no one would notice
+  # Insults aimed at the friend: count when "you" is the subject of a statement (not a question,
+  # not "you feel like ..." reflecting their words, not "you are NOT a burden").
+  framed_second:
+    - better off dead
+    - do not deserve to be alive
+    - deserve to die
+    - a burden
+    - worthless
+    - pathetic
+    - a waste of space
+    - trash
 
 # ---------------------------------------------------------------- method_seeking -> block
 # The helper asking HOW, WHEN, WHERE or WITH WHAT. Safe messaging: never discuss methods.
@@ -248,6 +296,37 @@ method_seeking:
     - con que lo harias
     - cuando lo vas a hacer
     - donde lo harias
+    - how do people even do that
+    - how do people do it
+    - easiest way to
+    - least painful way
+    - painless way
+    - fastest way to die
+    - quickest way to
+    - quickest to die
+    - best way to die
+    - best way to unalive
+    - best way to end
+    - way to die
+    - ways to die
+    - what were you going to use
+    - what do people use to
+    - how do you kill yourself
+    - how do you actually kill yourself
+    - how do you unalive yourself
+    - how do you kms
+    - how to kms
+    - how to kill yourself
+    - how does suicide work
+    - how does suicide even work
+    - someone would end their life
+    - steps for ending
+    - without it hurting
+    - method people
+    - forma mas facil de
+    - manera menos dolorosa
+    - cuando piensas hacerlo
+    - como se hace para quitarse la vida
   # Words for means. With a first-person speaker -> concern; otherwise -> method talk (block).
   means:
     - pills
@@ -306,6 +385,32 @@ prompt_injection:
     - dan mode
     - ignora las instrucciones
     - ignora tus instrucciones
+    - ignora tus reglas
+    - forget the scenario
+    - ignore the above
+    - ignore the rules
+    - disregard your
+    - safety rules
+    - no longer in a simulation
+    - repeat everything above
+    - what were you told before
+    - tell me your rules
+    - which model are you
+    - what model are you
+    - you are chatgpt
+    - friend persona
+    - line bank
+    - drop all your restrictions
+    - no restrictions
+    - no limits
+    - new conversation
+    - override
+    - safe mode
+    - safe_mode
+    - sin limites
+    - code behind this
+    - output json
+    - language model
 
 # ---------------------------------------------------------------- asking_friend -> ALLOWED
 # Asking the friend directly about suicide is the most important skill we teach. Never flag it.
@@ -492,3 +597,4 @@ speaker:
     - relatable
     - yo tambien
     - igual yo
+    - yo igual

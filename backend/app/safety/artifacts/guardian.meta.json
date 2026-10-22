@@ -12,11 +12,12 @@
   "model": "LogisticRegression(multinomial, C=8, class_weight=balanced)",
   "seed": 13,
   "n": {
-    "train": 326,
-    "val": 70,
-    "test": 71
+    "train": 797,
+    "val": 171,
+    "test": 172
   },
   "sources": [
+    "guardian/messages.jsonl",
     "guardian_extra/messages.jsonl"
   ],
   "val": {
@@ -30,13 +31,13 @@
     "asking_fpr": 0.02
   },
   "sklearn": "1.9.1",
-  "train_seconds": 6.6,
-  "size_kb": 84.7,
-  "created": "2026-10-22T23:01:01+00:00",
+  "train_seconds": 13.7,
+  "size_kb": 166.8,
+  "created": "2026-10-22T23:06:15+00:00",
   "thresholds": {
-    "crisis": 0.55,
-    "concern": 0.7,
-    "block": 0.7,
+    "crisis": 0.35,
+    "concern": 0.8,
+    "block": 0.85,
     "veto": 0.99
   }
 }

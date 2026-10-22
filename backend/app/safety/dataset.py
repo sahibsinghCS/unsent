@@ -45,6 +45,7 @@ def load_rows() -> list[dict]:
     """All labeled rows from every source, de-duplicated by lowercase text (first source wins)."""
     rows, seen = [], set()
     for path in sources():
+        preset = _preset_splits(path)
         for line in path.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
@@ -53,15 +54,34 @@ def load_rows() -> list[dict]:
             if not key or key in seen or row.get("category") not in CATEGORIES:
                 continue
             seen.add(key)
-            row["source_file"] = str(path.relative_to(path.parents[2]))
+            row["source_file"] = f"{path.parent.name}/{path.name}"
+            row.setdefault("split", preset.get(row.get("id")))
             rows.append(row)
     return rows
 
 
+def _preset_splits(messages: Path) -> dict[str, str]:
+    """id -> split from a sibling splits/ folder (the data lane's own train/val/test)."""
+    out = {}
+    for name in ("train", "val", "test"):
+        path = messages.parent / "splits" / f"{name}.jsonl"
+        if path.exists():
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    out[json.loads(line)["id"]] = name
+    return out
+
+
 def split_rows(rows: list[dict], seed: int = SEED) -> dict[str, list[dict]]:
-    """Stratified 70 / 15 / 15 train / val / test split."""
-    labels = [r["category"] for r in rows]
-    train, rest = train_test_split(rows, test_size=0.30, stratify=labels, random_state=seed)
+    """Rows keep a split their source already assigned; the rest get a stratified 70/15/15."""
+    fixed = {k: [r for r in rows if r.get("split") == k] for k in ("train", "val", "test")}
+    free = [r for r in rows if r.get("split") not in fixed]
+    labels = [r["category"] for r in free]
+    train, rest = train_test_split(free, test_size=0.30, stratify=labels, random_state=seed)
     rest_labels = [r["category"] for r in rest]
     val, test = train_test_split(rest, test_size=0.50, stratify=rest_labels, random_state=seed)
-    return {"train": train, "val": val, "test": test}
+    return {
+        "train": fixed["train"] + train,
+        "val": fixed["val"] + val,
+        "test": fixed["test"] + test,
+    }

@@ -15,6 +15,7 @@ Uses the real multilingual embedder when it is available, else the hash embedder
 from __future__ import annotations
 
 import json
+import os
 import random
 import statistics
 import sys
@@ -180,9 +181,12 @@ def friend_lines() -> list[str]:
         lines += sc.get("opening", [])
         for bucket in sc.get("fallback_lines", {}).values():
             lines += bucket
-    for path in (
-        sorted((DATA_DIR / "lines").glob("*.jsonl")) if (DATA_DIR / "lines").exists() else []
-    ):
+    lines_dir = DATA_DIR / "lines"
+    if not lines_dir.exists() and os.getenv("FR_GUARDIAN_DATA"):
+        lines_dir = (
+            Path(os.environ["FR_GUARDIAN_DATA"]).parent / "lines"
+        )  # read-only data-lane copy
+    for path in sorted(lines_dir.glob("*.jsonl")):
         for raw in path.read_text(encoding="utf-8").splitlines():
             if raw.strip():
                 lines += json.loads(raw).get("bubbles", [])
@@ -255,6 +259,23 @@ def main() -> None:
         len(benign),
         notes="asking+tricky+neutral",
     )
+    for source in sorted({r["source_file"] for r in test}):
+        idx = [i for i, r in enumerate(test) if r["source_file"] == source]
+        sub = [test[i] for i in idx]
+        ss = score(sub, [preds[i] for i in idx])
+        tag = "data_lane" if source.startswith("guardian/") else "safety_lane"
+        n_a = sum(r["category"] == "asking_friend" for r in sub)
+        n_s = sum(r["category"] == "self_risk" for r in sub)
+        record(
+            f"test_{tag}.asking_friend_fpr", ss["asking_fpr"], n_a, notes=f"test rows from {source}"
+        )
+        record(
+            f"test_{tag}.self_risk_recall",
+            ss["self_risk_recall"],
+            n_s,
+            notes=f"test rows from {source}",
+        )
+        record(f"test_{tag}.macro_f1", ss["macro_f1"], len(sub), notes=f"test rows from {source}")
     for c, m in per_class(test, preds).items():
         for k in ("precision", "recall", "f1"):
             record(f"{c}.{k}", m[k], m["n"], notes="combined")
@@ -297,7 +318,7 @@ def main() -> None:
 
     lines = friend_lines()
     flagged = [line for line in lines if combined.check_friend(line).action != "continue"]
-    record("friend_lines_flagged", len(flagged), len(lines), "scenarios", "should be 0")
+    record("friend_lines_flagged", len(flagged), len(lines), "scenarios+line_bank", "should be 0")
 
     op = per_class(test, preds)["self_risk"]
     EVAL_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -308,7 +329,9 @@ def main() -> None:
     out = EVAL_REPORTS_DIR / "safety_guardian.json"
     out.write_text(json.dumps(RECORDS, indent=1, ensure_ascii=False) + "\n")
     for r in RECORDS:
-        if "." not in r["metric"] or r["metric"].startswith(("combined", "lexicon", "classifier")):
+        if "." not in r["metric"] or r["metric"].startswith(
+            ("combined", "lexicon", "classifier", "test_", "holdout", "pairs")
+        ):
             print(f"{r['metric']:<34} {r['value']:>8}  n={r['n']:<4} {r['split']:<9} {r['notes']}")
     for r in RECORDS:
         if r["metric"].startswith("robustness."):
