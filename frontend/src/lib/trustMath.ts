@@ -1,31 +1,14 @@
 /**
- * "The trust math" shown in X-ray mode, e.g. "+12 validated · −2 decay = +10".
+ * "The trust math" shown in X-ray mode, e.g. "+12 validated · +15 asked directly · −2 decay = +25".
  *
- * The API gives us the real total change (state_after.last_delta) and the detected labels, but not
- * the engine's per-label breakdown. We show each detected label's nominal weight (the published
- * engine weights in backend/app/engine/config.yaml) and put whatever is left over (decay per turn,
- * the guarded-persona multiplier, the 0–100 cap...) into one "other" term, so the shown equation
- * always adds up to the engine's actual number.
+ * The engine sends its own breakdown of every trust change (State.last_breakdown): one term per
+ * detected label plus engine terms like "decay", "diminishing" or "secrecy_broken", summing to
+ * last_delta. We show exactly those numbers. If a breakdown is missing (older or stub engines), we
+ * show only the total change rather than guessing how it splits.
  */
-import type { SkillLabel, SkillProbs } from '../api/models';
-import { activeLabels } from './labels';
-
-export const LABEL_WEIGHTS: Record<SkillLabel, number> = {
-  checked_in: 8,
-  validated: 12,
-  asked_directly: 15,
-  encouraged_help: 6,
-  referred_adult: 8,
-  referred_988: 6,
-  follow_up: 5,
-  dismissed: -20,
-  advice_dump: -10,
-  promised_secrecy: -15,
-};
-export const DECAY_PER_TURN = 2;
 
 export interface TrustTerm {
-  /** A label id, or "decay" / "other" for the remainder. */
+  /** A label id or an engine term ("decay", "diminishing", "secrecy_broken", ...). */
   key: string;
   value: number;
 }
@@ -38,12 +21,14 @@ export function signed(value: number, digits = 0): string {
   return rounded > 0 ? `+${body}` : `−${body}`;
 }
 
-/** Split a trust change into per-label terms plus a remainder that makes the sum exact. */
-export function trustTerms(events: SkillProbs | null | undefined, delta: number): TrustTerm[] {
-  const terms: TrustTerm[] = activeLabels(events).map((label) => ({ key: label, value: LABEL_WEIGHTS[label] }));
-  const remainder = Math.round((delta - terms.reduce((sum, t) => sum + t.value, 0)) * 10) / 10;
-  if (remainder !== 0) terms.push({ key: remainder === -DECAY_PER_TURN ? 'decay' : 'other', value: remainder });
-  return terms;
+/** Signed with one decimal only when needed (+12, −2.5). */
+export const signedAuto = (value: number) => signed(value, Number.isInteger(Number(value.toFixed(1))) ? 0 : 1);
+
+/** The engine's breakdown as display terms, in the engine's order, skipping zero terms. */
+export function trustTerms(breakdown: Record<string, number> | null | undefined): TrustTerm[] {
+  return Object.entries(breakdown ?? {})
+    .filter(([, value]) => typeof value === 'number' && Math.abs(value) >= 0.05)
+    .map(([key, value]) => ({ key, value }));
 }
 
 /**
@@ -51,8 +36,7 @@ export function trustTerms(events: SkillProbs | null | undefined, delta: number)
  *   formatTrustMath([{validated, 12}, {decay, -2}], 10) → "+12 validated · −2 decay = +10"
  */
 export function formatTrustMath(terms: TrustTerm[], delta: number, name: (key: string) => string = (k) => k.replace(/_/g, ' ')): string {
-  const total = signed(delta, Number.isInteger(delta) ? 0 : 1);
-  if (terms.length === 0) return `${total}`;
-  const parts = terms.map((t) => `${signed(t.value, Number.isInteger(t.value) ? 0 : 1)} ${name(t.key)}`);
-  return `${parts.join(' · ')} = ${total}`;
+  const total = signedAuto(delta);
+  if (terms.length === 0) return total;
+  return `${terms.map((t) => `${signedAuto(t.value)} ${name(t.key)}`).join(' · ')} = ${total}`;
 }

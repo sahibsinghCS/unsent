@@ -176,7 +176,9 @@
     "advice_dump": "advice dump",
     "promised_secrecy": "promised secrecy",
     "decay": "decay",
-    "other": "other"
+    "other": "other",
+    "diminishing": "diminishing",
+    "secrecy_broken": "secrecy broken"
   },
   "skills": {
     "check_in": "Check in",
@@ -364,12 +366,18 @@
   },
   "privacy": {
     "title": "Privacy",
-    "intro": "FirstReply is built so there is nothing to leak.",
+    "intro": "FirstReply is built so there is as little as possible to leak.",
+    "_meta": {
+      "verify": "The 'openai' point must be checked against OpenAI's current API data policy (openai.com/policies) before release."
+    },
     "points": [
       "No accounts. We never ask for your name, email or age.",
-      "Your practice conversation is kept in the server's memory while you use it and deleted after 60 minutes of inactivity. It isn't tied to you in any way.",
-      "When the AI voice is on, your recent practice messages are sent to OpenAI only so it can word the simulated friend's next reply. Scoring and safety checks run on our own server with models we trained.",
-      "No analytics, tracking cookies, ads or third-party scripts. Fonts are your device's own.",
+      "Your practice conversation lives only in the server's memory and is deleted after 60 minutes of inactivity. There is no database and no analytics.",
+      "When the AI voice is on, your recent practice messages, plus the simulated friend's persona and the facts it's allowed to share, are sent to OpenAI to word the friend's next reply. On the live site its cache stays in memory and expires after the same 60 minutes. Nothing from your conversation is written to disk.",
+      "OpenAI's API policy says API data isn't used to train its models by default and may be kept for up to 30 days for abuse monitoring. See openai.com/policies.",
+      "Our usage log stores only token counts, estimated cost, model and response time. It never stores message text.",
+      "With the AI voice off, nothing is sent anywhere: the friend uses our reviewed, pre-written lines.",
+      "Scoring and safety checks always run on our own server with models we trained. No tracking cookies, ads or third-party scripts. Fonts are your device's own.",
       "Your language, theme and country choices are saved only in your own browser."
     ]
   },

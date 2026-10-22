@@ -10,45 +10,36 @@ describe('signed', () => {
   });
 });
 
-describe('trust math', () => {
-  it('formats the README example: +12 validated · −2 decay = +10', () => {
-    const terms = trustTerms({ validated: 0.9, dismissed: 0.05 }, 10);
-    expect(terms).toEqual([
-      { key: 'validated', value: 12 },
-      { key: 'decay', value: -2 },
-    ]);
-    expect(formatTrustMath(terms, 10)).toBe('+12 validated · −2 decay = +10');
+describe('trust math (engine breakdown, State.last_breakdown)', () => {
+  it('formats the engine breakdown in its own order', () => {
+    const terms = trustTerms({ validated: 12, asked_directly: 15, decay: -2 });
+    expect(formatTrustMath(terms, 25)).toBe('+12 validated · +15 asked directly · −2 decay = +25');
   });
 
-  it('lists several labels strongest first', () => {
-    const terms = trustTerms({ validated: 0.8, referred_adult: 0.9, follow_up: 0.7 }, 23);
-    expect(terms.map((t) => t.key)).toEqual(['referred_adult', 'validated', 'follow_up', 'decay']);
-    expect(formatTrustMath(terms, 23)).toBe('+8 referred adult · +12 validated · +5 follow up · −2 decay = +23');
+  it('shows negative and engine terms (diminishing, secrecy broken)', () => {
+    const terms = trustTerms({ dismissed: -20, secrecy_broken: -10, decay: -2 });
+    expect(formatTrustMath(terms, -32)).toBe('−20 dismissed · −10 secrecy broken · −2 decay = −32');
   });
 
-  it('puts any unexplained difference into "other" so the equation always adds up', () => {
-    // e.g. a guarded persona's multiplier or the 0–100 cap changed the real delta
-    const terms = trustTerms({ asked_directly: 0.95 }, 8.5);
-    expect(terms).toEqual([
-      { key: 'asked_directly', value: 15 },
-      { key: 'other', value: -6.5 },
-    ]);
-    const sum = terms.reduce((s, t) => s + t.value, 0);
-    expect(sum).toBeCloseTo(8.5);
+  it('keeps one decimal for fractional terms (e.g. the guarded multiplier)', () => {
+    const terms = trustTerms({ validated: 8.4, diminishing: -1.5, decay: -2 });
+    expect(formatTrustMath(terms, 4.9)).toBe('+8.4 validated · −1.5 diminishing · −2 decay = +4.9');
   });
 
-  it('shows negative labels as negative terms', () => {
-    const terms = trustTerms({ dismissed: 0.9 }, -22);
-    expect(formatTrustMath(terms, -22)).toBe('−20 dismissed · −2 decay = −22');
+  it('skips zero terms', () => {
+    expect(trustTerms({ validated: 12, decay: 0 })).toEqual([{ key: 'validated', value: 12 }]);
   });
 
-  it('handles messages with no events and no change', () => {
-    expect(trustTerms(null, 0)).toEqual([]);
+  it('shows just the total when the breakdown is empty or missing (never guesses a split)', () => {
+    expect(trustTerms({})).toEqual([]);
+    expect(trustTerms(undefined)).toEqual([]);
+    expect(formatTrustMath([], 10)).toBe('+10');
+    expect(formatTrustMath([], -22)).toBe('−22');
     expect(formatTrustMath([], 0)).toBe('0');
   });
 
   it('uses translated names when given', () => {
-    const terms = trustTerms({ validated: 0.9 }, 10);
+    const terms = trustTerms({ validated: 12, decay: -2 });
     expect(formatTrustMath(terms, 10, (k) => ({ validated: 'validó', decay: 'desgaste' })[k] ?? k)).toBe('+12 validó · −2 desgaste = +10');
   });
 });

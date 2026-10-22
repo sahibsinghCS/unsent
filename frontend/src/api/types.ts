@@ -356,6 +356,8 @@ export interface components {
             rewrite_gain?: number | null;
             /** Rewrite Source */
             rewrite_source?: ("exemplar" | "llm") | null;
+            /** Rewrite Skill */
+            rewrite_skill?: string | null;
         };
         /**
          * Node
@@ -471,6 +473,10 @@ export interface components {
              * @default 0
              */
             last_delta: number;
+            /** Last Breakdown */
+            last_breakdown?: {
+                [key: string]: number;
+            };
         };
         /** TreeView */
         TreeView: {

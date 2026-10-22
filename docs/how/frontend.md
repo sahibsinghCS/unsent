@@ -44,7 +44,7 @@ test/        vitest tests
 5. The trust graph adds a point (`state_after.trust`), colored by the strongest skill detected. The ladder and the skill chips update.
 6. If the Guardian said **crisis**, a resources card pops up that **can't be closed** until you tick "I've seen these resources." Then the app rewinds to just before that message so you can keep practicing. If it said **block**, a teaching card explains why the message wasn't sent.
 
-**The trust math in X-ray mode.** The server tells us the real total change (`last_delta`) and which skills were detected, but not the engine's breakdown. So we show each detected skill's published weight (from `engine/config.yaml`), and any leftover (the per-turn decay, the guarded-friend multiplier, the 0–100 cap) as one last term. The equation always adds up to the engine's real number. We never invent a total.
+**The trust math in X-ray mode.** The engine sends its own breakdown of every trust change (`state_after.last_breakdown`): one term per detected skill plus engine terms such as `decay`, `diminishing` or `secrecy_broken`, and these add up to the real change (`last_delta`). X-ray shows exactly those numbers: `+12 validated · +15 asked directly · −2 decay = +25`. If an engine doesn't send a breakdown (the stub doesn't), X-ray shows only the total. We never guess how a change splits.
 
 **Word highlights.** The critic sends character positions (`start`, `end`) for the words that pushed each skill's score up. `lib/highlight.ts` cuts the message into plain and highlighted pieces: green for helping skills, red for `dismissed`, `advice_dump` and `promised_secrecy`. It's tested so that overlapping or out-of-range spans never drop or duplicate a letter.
 
@@ -71,11 +71,10 @@ test/        vitest tests
 ## Limitations
 
 - In stub mode the critic never writes rewrites, so the rewrite screenshot (`13-feedback-rewrite`) adds one to the real stub response inside the Playwright script. The UI is real; that one piece of data is a test fixture. With the ML lane's critic on, rewrites come from the server.
-- The rewrite badge shows the gain ("+0.41") but can't name the skill until the API adds `rewrite_skill` (requested). The code already reads it if present.
-- The per-label trust weights in X-ray mode mirror `engine/config.yaml`. If the engine lane changes them, the "other" term absorbs the difference, so the total stays correct, but `lib/trustMath.ts` should be updated (or the API could send the breakdown, also requested).
+- The rewrite badge names the skill it improves (`rewrite_skill`, e.g. "+0.41 Ask directly") once the ML lane fills it. Until then it shows only the gain.
+- In stub mode the engine sends no trust breakdown, so X-ray shows only the total change. The full equation appears once the engine lane fills `last_breakdown`.
 - Feedback rewrites are labeled by source (`rewrite_source`): "Suggested by AI, verified by our model" or "From our exemplar bank".
 - Spanish UI text was drafted by an agent and needs a native speaker's review (`es.json` → `_meta.needs_native_review`).
-- Refreshing a deep link (`/chat/…`) on the FastAPI server works through a `404.html` copy of the app. It loads fine, but the HTTP status is 404 until the server adds a proper SPA fallback (requested).
 
 ## Questions a judge might ask (with answers)
 
@@ -83,7 +82,8 @@ test/        vitest tests
 2. **"What happens if a student types something that suggests *they're* not okay?"** The Guardian checks every message before anything else runs. If it detects risk, the practice pauses and a card shows 988 and "talk to a trusted adult." It can't be closed until the student confirms they've seen the resources. On the Transparency page you can watch "kms" get caught while "are you thinking about killing yourself?" (the *right* question to ask a friend) is allowed.
 3. **"Does it work for someone in a real crisis if your server is down?"** Yes. Real mode's text and helplines are bundled into the app at build time. If the server doesn't answer, it shows that saved copy and says so. The 988 call and text buttons are plain phone links.
 4. **"How do you know the trust graph isn't faked?"** Every point is the engine's real `trust` value after that message, straight from the API. The X-ray equation always adds up to the engine's real change, and any part we can't attribute to a skill is labeled "other" instead of being hidden.
-5. **"Is it accessible?"** Every button is reachable by keyboard, with a visible focus ring. Dialogs trap focus and return it when closed. New messages are announced to screen readers (`aria-live="polite"`). Charts have text descriptions. Colors pass WCAG AA in light and dark mode. Animations turn off when the device asks for reduced motion. The layout works from a 360 px phone to a desktop, in English and Spanish.
+5. **"What happens to what I type?"** It lives only in the server's memory and is deleted after 60 minutes of inactivity. There are no accounts and no database. When the AI voice is on, recent practice messages go to OpenAI only to word the friend's reply, and on the live site nothing from a conversation is written to disk. With the AI off, nothing leaves our server. The Privacy page lists the exact facts.
+6. **"Is it accessible?"** Every button is reachable by keyboard, with a visible focus ring. Dialogs trap focus and return it when closed. New messages are announced to screen readers (`aria-live="polite"`). Charts have text descriptions. Colors pass WCAG AA in light and dark mode. Animations turn off when the device asks for reduced motion. The layout works from a 360 px phone to a desktop, in English and Spanish.
 
 ## How to run
 

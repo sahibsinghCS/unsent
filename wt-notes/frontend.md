@@ -8,7 +8,7 @@
 - Accessibility: keyboard everywhere, focus rings, focus-trapping dialogs, `aria-live="polite"` message list, chart text alternatives, WCAG AA token contrast (checked), reduced motion respected.
 - Tests: 47 vitest tests (typingDelay, highlights, trust math, API errors, Real-mode fallback, i18n parity, crisis card, check-in, shell, tree/graph helpers).
 - `scripts/screenshots.mjs`: full journey in Chromium (mobile 390×844 + desktop 1440×900) against `make dev-stub` → 50 screenshots in `frontend/screenshots/`. Fails on any broken step, a skippable crisis card, console errors or horizontal overflow.
-- `dist/404.html` = copy of `index.html`, so deep links load when FastAPI serves the build (StaticFiles html mode serves 404.html).
+- **Contracts 1.2** (integrator d4e2b2b, merged): X-ray trust math uses the engine's real `State.last_breakdown` and shows only the total when it's empty. The rewrite badge shows `rewrite_skill` when present. The Privacy page (EN/ES) states the integrator's exact facts; the OpenAI-policy sentence is flagged for verification in `privacy._meta.verify`. The 404.html workaround was removed now that `main.py` serves the SPA (deep links → 200, unknown /api → 404).
 
 - **v3 / contracts 1.1** (integrator update): merged `claude/amazing-carson-31tzo3`, regenerated types. X-ray shows who wrote each friend reply (`voice`: AI verified ✓ / Reviewed line / Fallback). Transparency has "The AI is only the voice" plus live LLM status from `/api/health`. Feedback labels rewrites by `rewrite_source`. The typing indicator stays on for the whole request (AI replies take 1–3 s). Privacy, does/doesn't and pipeline copy now say OpenAI words the friend's replies (EN + ES).
 
@@ -19,18 +19,17 @@
 - The chat renders exactly the server's root → head path. Rewind, reload and crisis all reuse the same code path.
 - Crisis acknowledgement rewinds to the parent of the crisis message, because a `paused_crisis` head returns 409 on the next message.
 - "Rewind to here" on a helper message rewinds to the friend message *before* it and pre-fills the input with the old text, so the user tries a different reply.
-- Trust math = published label weights + an "other"/"decay" remainder, so the shown equation always equals the engine's real `last_delta`.
+- Trust math shows only the engine's own breakdown (`last_breakdown`) and never estimates one.
 - Real mode renders the bundled copy immediately, then upgrades from the API (instant, and works offline).
 - Country "other" maps to the backend's `*` (international directory + "your local emergency number").
 - The rewrite screenshot injects a rewrite into the real stub `/finish` response inside the Playwright script only (the stub critic never makes rewrites). Documented in `docs/how/frontend.md`.
 
 ## Requests
-1. **API (integrator):** proper SPA fallback in `main.py` (serve `index.html` with 200 for non-`/api` paths). Today deep links work through `dist/404.html` but return HTTP 404.
-2. **Contracts (integrator + ml):** optional `MessageScore.rewrite_skill: str | None` (the rubric skill the rewrite improves) so the badge can say "+0.41 ask directly". The frontend already reads it if present.
-3. **Contracts (integrator + engine):** optional `State.trust_terms: dict[str, float] | None` (per-label contributions + decay) so X-ray mode can show the engine's exact breakdown instead of mirroring `engine/config.yaml` weights.
-4. **Deploy lane:** build the frontend with `cd frontend && npm ci && npm run build`. The `prebuild` step copies `content/*.json` into `src/content/` if present (committed copies are used otherwise).
-
-5. **Integrator (privacy):** `llm.py` caches LLM responses on disk (`.cache/llm/`), keyed on inputs that include practice messages. The privacy copy no longer says "never written to disk", but please confirm what is kept and for how long, so the Privacy page can state it exactly.
+- Resolved by the integrator (d4e2b2b): SPA deep links, `rewrite_skill`, `last_breakdown`, and the privacy facts.
+- **Engine lane:** fill `State.last_breakdown` so the X-ray equation appears (until then it shows the total only).
+- **ML lane:** fill `MessageScore.rewrite_skill` and `rewrite_source`.
+- **Sahib:** verify the OpenAI data-policy sentence on the Privacy page (`privacy._meta.verify` in `src/i18n/en.json`) before release.
+- **Deploy lane:** build with `cd frontend && npm ci && npm run build`. The `prebuild` step copies `content/*.json` into `src/content/` if present; otherwise the committed copies are used.
 
 ## Known issues
 - Spanish strings need native review.

@@ -6,7 +6,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../api/client';
-import type { CriticReport, MessageScore, Node } from '../api/models';
+import type { CriticReport, Node } from '../api/models';
 import { HighlightedText } from '../components/HighlightedText';
 import { Icon } from '../components/Icon';
 import { CheckInModal } from '../components/Safety';
@@ -18,9 +18,6 @@ import { trustPoints } from '../lib/conversation';
 import { LABEL_COLOR, activeLabels, isNegative } from '../lib/labels';
 import { scenarioById } from '../lib/scenarios';
 import { signed } from '../lib/trustMath';
-
-/** Optional field requested from the ML lane (see wt-notes/frontend.md): which skill the rewrite fixes. */
-type ScoreWithSkill = MessageScore & { rewrite_skill?: string | null };
 
 function checkInKey(id: string) {
   return `fr.checkin.${id}`;
@@ -187,7 +184,7 @@ export function Feedback() {
         </div>
         {report.per_message.length === 0 && <p className="mt-4 text-muted">{t('feedback.no_messages')}</p>}
         <ol className="mt-4 space-y-4">
-          {report.per_message.map((score: ScoreWithSkill, i) => {
+          {report.per_message.map((score, i) => {
             const node = byId.get(score.node_id);
             if (!node) return null;
             const isTurning = score.node_id === turning?.node_id;

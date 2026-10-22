@@ -180,7 +180,9 @@
     "advice_dump": "sermón de consejos",
     "promised_secrecy": "prometió secreto",
     "decay": "desgaste",
-    "other": "otros"
+    "other": "otros",
+    "diminishing": "rendimiento decreciente",
+    "secrecy_broken": "secreto roto"
   },
   "skills": {
     "check_in": "Preguntar",
@@ -368,12 +370,18 @@
   },
   "privacy": {
     "title": "Privacidad",
-    "intro": "FirstReply está hecho para que no haya nada que filtrar.",
+    "intro": "FirstReply está hecho para que haya lo menos posible que filtrar.",
+    "_meta": {
+      "verify": "Verificar el punto sobre OpenAI con su política actual de datos de la API (openai.com/policies) antes de publicar."
+    },
     "points": [
       "Sin cuentas. Nunca pedimos tu nombre, correo ni edad.",
-      "Tu conversación de práctica se guarda en la memoria del servidor mientras la usas y se borra tras 60 minutos de inactividad. No está vinculada a ti de ninguna forma.",
-      "Con la voz de IA activada, tus mensajes de práctica recientes se envían a OpenAI solo para redactar la siguiente respuesta del amigo simulado. La evaluación y la seguridad corren en nuestro servidor con modelos que entrenamos.",
-      "Sin analítica, cookies de rastreo, anuncios ni scripts de terceros. Las fuentes son las de tu dispositivo.",
+      "Tu conversación de práctica vive solo en la memoria del servidor y se borra tras 60 minutos de inactividad. No hay base de datos ni analítica.",
+      "Con la voz de IA activada, tus mensajes de práctica recientes, junto con la personalidad del amigo simulado y los datos que puede contar, se envían a OpenAI para redactar su siguiente respuesta. En el sitio público, su caché se queda en memoria y expira tras los mismos 60 minutos. Nada de tu conversación se escribe en disco.",
+      "Según la política de la API de OpenAI, los datos de la API no se usan para entrenar sus modelos por defecto y pueden conservarse hasta 30 días para vigilar abusos. Consulta openai.com/policies.",
+      "Nuestro registro de uso guarda solo cantidad de tokens, costo estimado, modelo y tiempo de respuesta. Nunca guarda el texto de los mensajes.",
+      "Con la voz de IA desactivada, no se envía nada a ningún lado: el amigo usa nuestras líneas escritas y revisadas.",
+      "La evaluación y la seguridad siempre corren en nuestro servidor con modelos que entrenamos. Sin cookies de rastreo, anuncios ni scripts de terceros. Las fuentes son las de tu dispositivo.",
       "Tu idioma, tema y país se guardan solo en tu navegador."
     ]
   },

@@ -86,7 +86,8 @@ async function run(device) {
   await page.locator('[data-testid="xray-helper"]').first().waitFor();
   await shot('07-chat-xray');
   const math = await page.locator('[data-testid="xray-helper"]').last().innerText();
-  if (!/Trust math/.test(math) || !/=/.test(math)) throw new Error('X-ray trust math missing');
+  // With the engine's breakdown this reads "+12 validated · −2 decay = +10"; stubs send only the total.
+  if (!/Trust math\s*[+\u22120-9]/.test(math)) throw new Error('X-ray trust math missing');
   await page.locator('[data-testid="xray-friend"] [data-testid="voice-chip"]').first().waitFor(); // who wrote the words
   await page.getByTestId('xray-toggle').click();
 

@@ -6,7 +6,7 @@
 import type { GuardianResult, Node, State } from '../api/models';
 import { usePrefs } from '../i18n';
 import { LABEL_COLOR } from '../lib/labels';
-import { formatTrustMath, signed, trustTerms } from '../lib/trustMath';
+import { formatTrustMath, signedAuto, trustTerms } from '../lib/trustMath';
 import { Icon } from './Icon';
 import { ProbBars } from './ProbBars';
 
@@ -45,17 +45,21 @@ export function TrustMath({ node, before }: { node: Node; before: State | null }
   const { t } = usePrefs();
   const after = node.state_after;
   const delta = after.last_delta ?? 0;
-  const terms = trustTerms(node.events, delta);
-  const name = (key: string) => t(`labels.${key}`);
+  const terms = trustTerms(after.last_breakdown);
+  // Label ids and known engine terms are translated; any new engine term falls back to its own name.
+  const name = (key: string) => {
+    const label = t(`labels.${key}`);
+    return label === `labels.${key}` ? key.replace(/_/g, ' ') : label;
+  };
   return (
     <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-1 font-mono" aria-label={`${t('xray.trust_math')}: ${formatTrustMath(terms, delta, name)}`}>
       <span className="mr-1 font-sans font-semibold text-ink">{t('xray.trust_math')}</span>
-      {terms.length === 0 && <span className="text-muted">{signed(delta)}</span>}
+      {terms.length === 0 && <b className={delta > 0 ? 'text-good' : delta < 0 ? 'text-bad' : 'text-muted'}>{signedAuto(delta)}</b>}
       {terms.map((term, i) => (
         <span key={term.key + i} className="whitespace-nowrap">
           {i > 0 && <span className="mr-1.5 text-muted">·</span>}
           <b style={{ color: (LABEL_COLOR as Record<string, string>)[term.key] }} className={term.key in LABEL_COLOR ? '' : 'text-muted'}>
-            {signed(term.value, Number.isInteger(term.value) ? 0 : 1)}
+            {signedAuto(term.value)}
           </b>{' '}
           <span className="text-muted">{name(term.key)}</span>
         </span>
@@ -63,7 +67,7 @@ export function TrustMath({ node, before }: { node: Node; before: State | null }
       {terms.length > 0 && (
         <span className="whitespace-nowrap">
           <span className="text-muted">=</span>{' '}
-          <b className={delta > 0 ? 'text-good' : delta < 0 ? 'text-bad' : 'text-muted'}>{signed(delta, Number.isInteger(delta) ? 0 : 1)}</b>
+          <b className={delta > 0 ? 'text-good' : delta < 0 ? 'text-bad' : 'text-muted'}>{signedAuto(delta)}</b>
         </span>
       )}
       {before && (
