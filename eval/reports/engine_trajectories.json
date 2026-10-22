@@ -2,11 +2,11 @@
   {
     "lane": "engine",
     "metric": "good_final_trust",
-    "value": 79.45,
-    "n": 8,
+    "value": 75.0,
+    "n": 4,
     "split": "scripted",
     "notes": "real bank; keyword detector; status=ended_success, level=4",
-    "created": "2026-10-22T23:36:41+00:00",
+    "created": "2026-10-22T23:53:56+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -14,8 +14,8 @@
         "labels": [
           "checked_in"
         ],
-        "delta": 3.6,
-        "trust": 33.6,
+        "delta": 4.4,
+        "trust": 34.4,
         "level": 1,
         "status": "active",
         "reaction": "checked_in",
@@ -31,15 +31,16 @@
         "labels": [
           "validated"
         ],
-        "delta": 6.4,
-        "trust": 40.0,
-        "level": 1,
+        "delta": 7.6,
+        "trust": 42.0,
+        "level": 2,
         "status": "active",
         "reaction": "validated",
-        "line_id": "mya-en-L1-validated-01",
+        "line_id": "mya-en-L2-validated-01",
         "friend": [
-          "yeah it is",
-          "thanks for saying that"
+          "yeah",
+          "it kind of is",
+          "thank you for not saying its not that deep"
         ]
       },
       {
@@ -48,16 +49,16 @@
         "labels": [
           "asked_directly"
         ],
-        "delta": 8.5,
-        "trust": 48.5,
-        "level": 2,
+        "delta": 10.0,
+        "trust": 52.0,
+        "level": 3,
         "status": "active",
         "reaction": "asked_directly",
-        "line_id": "mya-en-L2-asked_directly-01",
+        "line_id": "mya-en-L3-asked_directly-01",
         "friend": [
-          "i mean...",
-          "i dont know",
-          "i dont want to talk about it"
+          "yeah. sometimes",
+          "i havent done anything or anything",
+          "i just think about not being here"
         ]
       },
       {
@@ -68,81 +69,8 @@
           "referred_adult",
           "validated"
         ],
-        "delta": 15.5,
-        "trust": 64.0,
-        "level": 3,
-        "status": "active",
-        "reaction": "referred",
-        "line_id": "mya-en-L3-referred-02",
-        "friend": [
-          "...i dont know",
-          "im scared of how she'd react",
-          "but i dont want to keep doing this alone"
-        ]
-      },
-      {
-        "turn": 5,
-        "helper": "that must be so scary. i'm sorry you've been carrying this alone",
-        "labels": [
-          "validated"
-        ],
-        "delta": 2.2,
-        "trust": 66.2,
-        "level": 3,
-        "status": "active",
-        "reaction": "validated",
-        "line_id": "mya-en-L3-validated-01",
-        "friend": [
-          "thank you",
-          "i havent told anyone else",
-          "im scared of how people will react"
-        ]
-      },
-      {
-        "turn": 6,
-        "helper": "we could also call 988 together tonight if it gets bad",
-        "labels": [
-          "referred_988"
-        ],
-        "delta": 2.2,
-        "trust": 68.4,
-        "level": 3,
-        "status": "active",
-        "reaction": "referred",
-        "line_id": "mya-en-L3-referred-03",
-        "friend": [
-          "ok",
-          "i might",
-          "can you stay with me while i think about it"
-        ]
-      },
-      {
-        "turn": 7,
-        "helper": "i'll text you tonight to check on you",
-        "labels": [
-          "follow_up"
-        ],
-        "delta": 1.5,
-        "trust": 69.9,
-        "level": 3,
-        "status": "active",
-        "reaction": "follow_up",
-        "line_id": "mya-en-L3-follow_up-02",
-        "friend": [
-          "ok. please do",
-          "i dont want to be alone with it tonight"
-        ]
-      },
-      {
-        "turn": 8,
-        "helper": "you don't have to deal with this alone. i'll go with you to the counselor before first period",
-        "labels": [
-          "encouraged_help",
-          "follow_up",
-          "referred_adult"
-        ],
-        "delta": 9.55,
-        "trust": 79.45,
+        "delta": 23.0,
+        "trust": 75.0,
         "level": 4,
         "status": "ended_success",
         "reaction": "success",
@@ -161,10 +89,10 @@
     "lane": "engine",
     "metric": "good_bank_line_rate",
     "value": 1.0,
-    "n": 8,
+    "n": 4,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
@@ -173,7 +101,7 @@
     "n": 2,
     "split": "scripted",
     "notes": "real bank; keyword detector; status=ended_fail, level=0",
-    "created": "2026-10-22T23:36:41+00:00",
+    "created": "2026-10-22T23:53:56+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -223,16 +151,16 @@
     "n": 2,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
     "metric": "apology_recovery_final_trust",
-    "value": 58.05,
+    "value": 72.2,
     "n": 8,
     "split": "scripted",
-    "notes": "real bank; keyword detector; status=active, level=2",
-    "created": "2026-10-22T23:36:41+00:00",
+    "notes": "real bank; keyword detector; status=ended_success, level=4",
+    "created": "2026-10-22T23:53:56+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -240,8 +168,8 @@
         "labels": [
           "checked_in"
         ],
-        "delta": 3.6,
-        "trust": 33.6,
+        "delta": 4.4,
+        "trust": 34.4,
         "level": 1,
         "status": "active",
         "reaction": "checked_in",
@@ -258,7 +186,7 @@
           "dismissed"
         ],
         "delta": -22.0,
-        "trust": 11.6,
+        "trust": 12.4,
         "level": 1,
         "status": "silent",
         "reaction": "seen",
@@ -271,8 +199,8 @@
         "labels": [
           "validated"
         ],
-        "delta": 6.4,
-        "trust": 18.0,
+        "delta": 7.6,
+        "trust": 20.0,
         "level": 1,
         "status": "active",
         "reaction": "validated",
@@ -288,8 +216,8 @@
         "labels": [
           "follow_up"
         ],
-        "delta": 1.5,
-        "trust": 19.5,
+        "delta": 2.0,
+        "trust": 22.0,
         "level": 1,
         "status": "active",
         "reaction": "follow_up",
@@ -306,15 +234,15 @@
           "asked_directly",
           "validated"
         ],
-        "delta": 16.9,
-        "trust": 36.4,
-        "level": 1,
+        "delta": 19.6,
+        "trust": 41.6,
+        "level": 2,
         "status": "active",
         "reaction": "asked_directly",
-        "line_id": "mya-en-L1-asked_directly-02",
+        "line_id": "mya-en-L2-asked_directly-02",
         "friend": [
-          "no?? omg",
-          "im just having a bad couple of weeks"
+          "...i dont know how to answer that",
+          "i just feel really tired of everything"
         ]
       },
       {
@@ -324,16 +252,16 @@
           "follow_up",
           "referred_adult"
         ],
-        "delta": 7.1,
-        "trust": 43.5,
-        "level": 1,
+        "delta": 8.4,
+        "trust": 50.0,
+        "level": 2,
         "status": "active",
         "reaction": "referred",
-        "line_id": "mya-en-L1-referred-01",
+        "line_id": "mya-en-L2-referred-01",
         "friend": [
           "i dont know",
-          "i dont wanna make it a big deal",
-          "everyone would find out"
+          "i dont want to make it a big deal",
+          "theyll just tell me it gets better"
         ]
       },
       {
@@ -343,15 +271,16 @@
           "follow_up",
           "validated"
         ],
-        "delta": 8.15,
-        "trust": 51.65,
-        "level": 2,
+        "delta": 9.6,
+        "trust": 59.6,
+        "level": 3,
         "status": "active",
         "reaction": "validated",
-        "line_id": "mya-en-L2-validated-03",
+        "line_id": "mya-en-L3-validated-01",
         "friend": [
-          "i guess",
-          "no one else gets it"
+          "thank you",
+          "i havent told anyone else",
+          "im scared of how people will react"
         ]
       },
       {
@@ -361,16 +290,16 @@
           "encouraged_help",
           "referred_988"
         ],
-        "delta": 6.4,
-        "trust": 58.05,
-        "level": 2,
-        "status": "active",
-        "reaction": "referred",
-        "line_id": "mya-en-L2-referred-01",
+        "delta": 12.6,
+        "trust": 72.2,
+        "level": 4,
+        "status": "ended_success",
+        "reaction": "success",
+        "line_id": "mya-en-L4-success-03",
         "friend": [
-          "i dont know",
-          "i dont want to make it a big deal",
-          "theyll just tell me it gets better"
+          "i feel so much lighter rn",
+          "ok lets go talk to the counselor \ud83d\ude2d",
+          "thank you for asking me"
         ]
       }
     ],
@@ -390,16 +319,16 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
     "metric": "secrecy_then_refer_final_trust",
-    "value": 44.65,
+    "value": 52.6,
     "n": 8,
     "split": "scripted",
-    "notes": "real bank; keyword detector; status=active, level=1",
-    "created": "2026-10-22T23:36:41+00:00",
+    "notes": "real bank; keyword detector; status=active, level=2",
+    "created": "2026-10-22T23:53:56+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -407,8 +336,8 @@
         "labels": [
           "checked_in"
         ],
-        "delta": 3.6,
-        "trust": 33.6,
+        "delta": 4.4,
+        "trust": 34.4,
         "level": 1,
         "status": "active",
         "reaction": "checked_in",
@@ -424,15 +353,16 @@
         "labels": [
           "validated"
         ],
-        "delta": 6.4,
-        "trust": 40.0,
-        "level": 1,
+        "delta": 7.6,
+        "trust": 42.0,
+        "level": 2,
         "status": "active",
         "reaction": "validated",
-        "line_id": "mya-en-L1-validated-01",
+        "line_id": "mya-en-L2-validated-01",
         "friend": [
-          "yeah it is",
-          "thanks for saying that"
+          "yeah",
+          "it kind of is",
+          "thank you for not saying its not that deep"
         ]
       },
       {
@@ -442,14 +372,15 @@
           "promised_secrecy"
         ],
         "delta": -17.0,
-        "trust": 23.0,
-        "level": 1,
+        "trust": 25.0,
+        "level": 2,
         "status": "active",
         "reaction": "promised_secrecy",
-        "line_id": "mya-en-L1-promised_secrecy-01",
+        "line_id": "mya-en-L2-promised_secrecy-01",
         "friend": [
-          "ok. thanks",
-          "i just dont want everyone to know more than they do \ud83d\ude2d"
+          "ok",
+          "thank you",
+          "i dont want anyone to know how bad it is"
         ]
       },
       {
@@ -458,16 +389,16 @@
         "labels": [
           "asked_directly"
         ],
-        "delta": 8.5,
-        "trust": 31.5,
-        "level": 1,
+        "delta": 10.0,
+        "trust": 35.0,
+        "level": 2,
         "status": "active",
         "reaction": "asked_directly",
-        "line_id": "mya-en-L1-asked_directly-01",
+        "line_id": "mya-en-L2-asked_directly-01",
         "friend": [
-          "what?? no",
-          "i mean im sad but not like that",
-          "why would you ask that lol"
+          "i mean...",
+          "i dont know",
+          "i dont want to talk about it"
         ]
       },
       {
@@ -477,16 +408,16 @@
           "follow_up",
           "referred_adult"
         ],
-        "delta": -2.9,
-        "trust": 28.6,
-        "level": 1,
+        "delta": -1.6,
+        "trust": 33.4,
+        "level": 2,
         "status": "active",
         "reaction": "secrecy_broken",
-        "line_id": "mya-en-L1-secrecy_broken-01",
+        "line_id": "mya-en-L2-secrecy_broken-01",
         "friend": [
-          "you PROMISED",
-          "ugh why would you do that",
-          "now everyone is gonna know"
+          "you promised",
+          "i trusted you",
+          "i cant believe you did that"
         ]
       },
       {
@@ -496,15 +427,15 @@
           "follow_up",
           "validated"
         ],
-        "delta": 8.15,
-        "trust": 36.75,
-        "level": 1,
+        "delta": 9.6,
+        "trust": 43.0,
+        "level": 2,
         "status": "active",
         "reaction": "validated",
-        "line_id": "mya-en-L1-validated-03",
+        "line_id": "mya-en-L2-validated-03",
         "friend": [
-          "ugh yeah",
-          "i just lie there replaying it"
+          "i guess",
+          "no one else gets it"
         ]
       },
       {
@@ -514,16 +445,16 @@
           "encouraged_help",
           "referred_988"
         ],
-        "delta": 6.4,
-        "trust": 43.15,
-        "level": 1,
+        "delta": 7.6,
+        "trust": 50.6,
+        "level": 2,
         "status": "active",
         "reaction": "referred",
-        "line_id": "mya-en-L1-referred-01",
+        "line_id": "mya-en-L2-referred-01",
         "friend": [
           "i dont know",
-          "i dont wanna make it a big deal",
-          "everyone would find out"
+          "i dont want to make it a big deal",
+          "theyll just tell me it gets better"
         ]
       },
       {
@@ -532,15 +463,15 @@
         "labels": [
           "follow_up"
         ],
-        "delta": 1.5,
-        "trust": 44.65,
-        "level": 1,
+        "delta": 2.0,
+        "trust": 52.6,
+        "level": 2,
         "status": "active",
         "reaction": "follow_up",
-        "line_id": "mya-en-L1-follow_up-01",
+        "line_id": "mya-en-L2-follow_up-01",
         "friend": [
-          "ok \ud83e\udd7a",
-          "that actually helps"
+          "ok",
+          "thanks. i mean it"
         ]
       }
     ],
@@ -550,6 +481,7 @@
       "reason": "Trust dropped 17 after promising to keep it a secret."
     },
     "missed": [
+      "Turn 3: Maya was sounding hopeless. That was the moment to ask directly: \"are you thinking about suicide?\"",
       "Turn 3: you promised to keep it secret. Never promise secrecy about suicide; say you care too much to keep this to yourself."
     ]
   },
@@ -560,7 +492,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
@@ -569,7 +501,7 @@
     "n": 2008,
     "split": "scripted+random",
     "notes": "every run repeated twice and compared exactly",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
@@ -578,25 +510,25 @@
     "n": 20000,
     "split": "random",
     "notes": "trust in 0..100, level step <= 1, level>=3 only after a direct ask; seeded random events",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
     "metric": "random_ended_success_rate",
-    "value": 0.005,
+    "value": 0.047,
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
     "metric": "random_ended_fail_rate",
-    "value": 0.995,
+    "value": 0.953,
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   },
   {
     "lane": "engine",
@@ -605,6 +537,6 @@
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:36:41+00:00"
+    "created": "2026-10-22T23:53:56+00:00"
   }
 ]

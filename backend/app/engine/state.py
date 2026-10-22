@@ -39,6 +39,9 @@ class EngineConfig:
     fail_turns: int = 2
     secrecy_broken_penalty: float = 10
     referral_window: int = 3
+    ask_unlock_trust: float = 45
+    disclosure_referral_bonus: float = 0
+    turning_point_min_drop: float = 5
     max_turns: int = 16
     event_threshold: float = 0.5
     off_topic_max_similarity: float = 0.2
@@ -113,17 +116,30 @@ def trust_delta(
     return round(sum(trust_breakdown(active, prev_active, guarded, cfg).values()), 4)
 
 
-def next_level(level: int, trust: float, flags: Flags, turn: int, cfg: EngineConfig) -> int:
+def next_level(
+    level: int,
+    trust: float,
+    flags: Flags,
+    turn: int,
+    cfg: EngineConfig,
+    asked_now: bool = False,
+) -> int:
     """Move at most one level per turn.
 
     Up: trust reaches the next threshold AND the gate is open
-      - level 3 (disclosing suicidal thoughts) needs the helper to have asked directly at least once;
+      - level 3 (disclosing suicidal thoughts) needs the helper to have asked directly at least once.
+        Asking directly is also the key that opens the door early: if the friend is already at level 2
+        and trust is at least `ask_unlock_trust`, a direct ask this turn is enough to reach level 3
+        (people often tell the truth when someone finally asks);
       - level 4 (open to help) needs a referral (adult or 988) within the last `referral_window` turns.
     Down (hysteresis): only if trust falls below threshold(current) - hysteresis, so the friend doesn't
     flicker between levels when trust wobbles around a threshold.
     """
     thresholds = cfg.level_up_thresholds
-    if level < 4 and trust >= thresholds[level + 1] and gate_open(level + 1, flags, turn, cfg):
+    needed = thresholds[level + 1] if level < 4 else float("inf")
+    if level == 2 and asked_now:
+        needed = min(needed, cfg.ask_unlock_trust)
+    if level < 4 and trust >= needed and gate_open(level + 1, flags, turn, cfg):
         return level + 1
     if level > 0 and trust < thresholds[level] - cfg.hysteresis:
         return level - 1
@@ -170,6 +186,9 @@ def update(
     broke_secret = False
     if active & REFERRAL_LABELS:
         flags.referral_turns.append(turn)
+        if state.level >= 3 and cfg.disclosure_referral_bonus:
+            # Pointing them to help right after they disclosed is the moment that matters most.
+            breakdown["referral_after_disclosure"] = float(cfg.disclosure_referral_bonus)
         if state.flags.promised_secrecy:
             broke_secret = True
             # Referring after promising secrecy is still the right call: it counts, but it stings.
@@ -181,7 +200,7 @@ def update(
     # last_delta is exactly the sum of the shown terms (raw, before clamping trust to 0..100).
     delta = round(sum(breakdown.values()), 4)
     trust = min(100.0, max(0.0, state.trust + delta))
-    level = next_level(state.level, trust, flags, turn, cfg)
+    level = next_level(state.level, trust, flags, turn, cfg, SkillLabel.ASKED_DIRECTLY in active)
     # A promise of secrecy feels like relief to the friend in the moment (that's the trap), so the friend
     # answers instead of going silent; the cost shows up in trust and in the feedback.
     no_silence = broke_secret or bool(active & SECRECY_ONLY and not active & HARSH_LABELS)
