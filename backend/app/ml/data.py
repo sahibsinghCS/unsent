@@ -12,7 +12,11 @@ from backend.app.ml.model import LABELS
 
 SPLITS = ("train", "val", "test")
 # Extra held-out test sets the data lane may add (evaluated separately, never trained on).
-EXTRA_TEST_SETS = {"survey_real": "survey_real.jsonl", "cross_model": "test_cross_model.jsonl"}
+EXTRA_TEST_SETS = {
+    "test_freeform": "test_freeform.jsonl",
+    "survey_real": "survey_real.jsonl",
+    "cross_model": "test_cross_model.jsonl",
+}
 
 
 def _bucket(row_id: str) -> str:

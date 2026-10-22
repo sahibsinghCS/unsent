@@ -22,7 +22,11 @@
   artifact + `eval/reports/ml_skills.json` committed.
 
 ## In progress
-- Nothing. Waiting on human labels / survey set / exemplars / counselor labels (see Requests).
+- Blocked: merging the integration branch (contracts 1.2: `rewrite_skill`, `rewrite_source`, `llm.py`) was refused by
+  this session's permission check; needs Sahib's approval in the ml session. Then: fill `rewrite_skill`/`rewrite_source`,
+  optional LLM rewrite fallback verified by our detector + Guardian (fakes in tests), push.
+- Waiting (per integrator, don't retrain yet): new splits with `splits/test_freeform.jsonl`. The eval already reports
+  `test_freeform` separately (with the keyword baseline); retrain once when it lands.
 
 ## Decisions
 - Stacker = LR on (logit pA, logit pB) fitted on val = stacking and Platt calibration in one step; falls

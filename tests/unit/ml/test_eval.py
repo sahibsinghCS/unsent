@@ -9,7 +9,9 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
 
     data_dir = tmp_path / "data"
     shutil.copytree(seed_data_dir, data_dir)
-    shutil.copy(SEED, data_dir / "survey_real.jsonl")  # an extra test set is evaluated separately
+    shutil.copy(SEED, data_dir / "survey_real.jsonl")  # extra test sets are evaluated separately
+    (data_dir / "splits").mkdir()
+    shutil.copy(SEED, data_dir / "splits" / "test_freeform.jsonl")
     report = tmp_path / "ml_skills.json"
     figures = tmp_path / "fig"
     args = ["--data-dir", str(data_dir), "--models-dir", str(trained_dir)]
@@ -17,7 +19,7 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
 
     records = json.loads(report.read_text())
     splits = {r["split"] for r in records}
-    assert splits == {"test", "survey_real"}
+    assert splits == {"test", "test_freeform", "survey_real"}
     metrics = {r["metric"] for r in records if r["split"] == "test"}
     assert {
         "macro_f1_keyword_baseline",
