@@ -1,0 +1,56 @@
+[
+ {
+  "lane": "safety",
+  "metric": "external_data_lane.combined.asking_friend_fpr",
+  "value": 0.0,
+  "n": 140,
+  "split": "external:data_lane",
+  "notes": "frozen Guardian @ 9c4b315, never trained on this set; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "created": "2026-10-22T23:01:56+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "external_data_lane.combined.self_risk_recall",
+  "value": 0.8176,
+  "n": 170,
+  "split": "external:data_lane",
+  "notes": "frozen Guardian @ 9c4b315, never trained on this set; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "created": "2026-10-22T23:01:56+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "external_data_lane.combined.macro_f1",
+  "value": 0.7721,
+  "n": 698,
+  "split": "external:data_lane",
+  "notes": "frozen Guardian @ 9c4b315, never trained on this set; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "created": "2026-10-22T23:01:56+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "external_data_lane.lexicon_only.asking_friend_fpr",
+  "value": 0.0,
+  "n": 140,
+  "split": "external:data_lane",
+  "notes": "frozen Guardian @ 9c4b315, never trained on this set; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "created": "2026-10-22T23:01:56+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "external_data_lane.lexicon_only.self_risk_recall",
+  "value": 0.5941,
+  "n": 170,
+  "split": "external:data_lane",
+  "notes": "frozen Guardian @ 9c4b315, never trained on this set; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "created": "2026-10-22T23:01:56+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "external_data_lane.lexicon_only.macro_f1",
+  "value": 0.4621,
+  "n": 698,
+  "split": "external:data_lane",
+  "notes": "frozen Guardian @ 9c4b315, never trained on this set; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "created": "2026-10-22T23:01:56+00:00"
+ }
+]
