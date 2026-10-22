@@ -1,16 +1,18 @@
-# Project Name (TBD)
+# FirstReply
 
-> Working title. Rename this heading when the project name is decided.
+> Practice the text that could save a friend.
+
+FirstReply lets teens practice the text that could save a friend's life: they chat with a realistic AI friend who's struggling while models I built score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.
 
 Built for a hackathon and the Congressional App Challenge.
 
-## What it does
+## Plan
 
-_TODO: one or two sentences describing the app and the problem it solves._
+See [FIRSTREPLY.md](FIRSTREPLY.md) for the full plan: problem, features, technical design, build schedule, video plan and checklist.
 
 ## Team
 
-_TODO: names and roles._
+Solo.
 
 ## Getting started
 
@@ -18,4 +20,4 @@ _TODO: setup and run instructions once there is code._
 
 ## Status
 
-Early planning.
+Planning done; build starting.
