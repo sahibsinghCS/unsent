@@ -1,4 +1,4 @@
-import { formatTrustMath, signed, trustTerms } from '../lib/trustMath';
+import { clampNote, formatTrustMath, signed, trustTerms } from '../lib/trustMath';
 
 describe('signed', () => {
   it('uses a plus sign, a real minus sign and plain zero', () => {
@@ -41,5 +41,24 @@ describe('trust math (engine breakdown, State.last_breakdown)', () => {
   it('uses translated names when given', () => {
     const terms = trustTerms({ validated: 12, decay: -2 });
     expect(formatTrustMath(terms, 10, (k) => ({ validated: 'validó', decay: 'desgaste' })[k] ?? k)).toBe('+12 validó · −2 desgaste = +10');
+  });
+});
+
+describe('engine breakdown example and clamping', () => {
+  it('renders the engine example with one decimal', () => {
+    const terms = trustTerms({ validated: 8.4, diminishing: -4.2, decay: -2 });
+    expect(formatTrustMath(terms, 2.2, (k) => ({ diminishing: 'repeated', decay: 'time' })[k] ?? k)).toBe('+8.4 validated · −4.2 repeated · −2 time = +2.2');
+  });
+
+  it('flags when trust was clamped at 0 (fixture: 5 → 0 with a raw change of −22)', () => {
+    const fixture = { before: 5, after: 0, breakdown: { dismissed: -20, decay: -2 }, last_delta: -22 };
+    expect(formatTrustMath(trustTerms(fixture.breakdown), fixture.last_delta)).toBe('−20 dismissed · −2 decay = −22');
+    expect(clampNote(fixture.before, fixture.after, fixture.last_delta)).toEqual({ bound: 0, actual: -5 });
+  });
+
+  it('flags clamping at 100 and stays quiet when nothing was clamped', () => {
+    expect(clampNote(95, 100, 23)).toEqual({ bound: 100, actual: 5 });
+    expect(clampNote(37, 60, 23)).toBeNull();
+    expect(clampNote(30, 32.2, 2.2)).toBeNull();
   });
 });

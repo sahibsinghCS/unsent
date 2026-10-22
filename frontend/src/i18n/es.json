@@ -166,7 +166,9 @@
       "llm": "IA, verificado ✓",
       "bank": "Línea revisada",
       "fallback": "Respaldo"
-    }
+    },
+    "clamp_low": "(la confianza no baja de 0, cambio real {change})",
+    "clamp_high": "(la confianza no sube de 100, cambio real {change})"
   },
   "labels": {
     "checked_in": "preguntó cómo está",
@@ -179,9 +181,9 @@
     "dismissed": "le restó importancia",
     "advice_dump": "sermón de consejos",
     "promised_secrecy": "prometió secreto",
-    "decay": "desgaste",
+    "decay": "tiempo",
     "other": "otros",
-    "diminishing": "rendimiento decreciente",
+    "diminishing": "repetido",
     "secrecy_broken": "secreto roto"
   },
   "skills": {

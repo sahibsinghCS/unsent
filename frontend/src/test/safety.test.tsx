@@ -62,3 +62,14 @@ describe('X-ray voice chip (contracts 1.1)', () => {
     expect(screen.queryByTestId('voice-chip')).not.toBeInTheDocument();
   });
 });
+
+describe('X-ray clamp note', () => {
+  it('explains a change clamped at 0', async () => {
+    const { TrustMath } = await import('../components/Xray');
+    const state = (trust: number, last_delta: number, last_breakdown: Record<string, number> = {}) => ({ trust, level: 0, turn: 1, status: 'active' as const, last_delta, last_breakdown, flags: { asked_directly_ever: false, promised_secrecy: false, referral_turns: [] } });
+    const node = { id: 'u', parent_id: 'f', role: 'user' as const, bubbles: ['lol'], seen_no_reply: false, events: { dismissed: 0.9 }, state_after: state(0, -22, { dismissed: -20, decay: -2 }) };
+    renderApp(<TrustMath node={node} before={state(5, 0)} />);
+    expect(screen.getByTestId('clamp-note')).toHaveTextContent("(trust can't go below 0, actual change −5)");
+    expect(screen.getByText('time')).toBeInTheDocument();
+  });
+});

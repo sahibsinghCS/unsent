@@ -162,7 +162,9 @@
       "llm": "AI, verified ✓",
       "bank": "Reviewed line",
       "fallback": "Fallback"
-    }
+    },
+    "clamp_low": "(trust can't go below 0, actual change {change})",
+    "clamp_high": "(trust can't go above 100, actual change {change})"
   },
   "labels": {
     "checked_in": "checked in",
@@ -175,9 +177,9 @@
     "dismissed": "dismissed",
     "advice_dump": "advice dump",
     "promised_secrecy": "promised secrecy",
-    "decay": "decay",
+    "decay": "time",
     "other": "other",
-    "diminishing": "diminishing",
+    "diminishing": "repeated",
     "secrecy_broken": "secrecy broken"
   },
   "skills": {

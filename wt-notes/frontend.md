@@ -6,9 +6,9 @@
 - App shell: sticky top bar, an always-visible **"I need help now"** button → `/real`, safety footer, EN/ES toggle (`src/i18n/*.json`, ES marked `needs_native_review`), dark mode (saved, no flash), design tokens in `src/index.css`.
 - Screens: Landing, Scenario picker + content warning, Chat (typing delays, staggered bubbles, Seen, crisis card, blocked card, success/fail endings, trust graph, disclosure ladder, skill chips, rewind, branch tree drawer), **X-ray mode** (Guardian level/action/latency/evidence, probability bars, trust math; friend reaction/line id/level), Feedback (radar, summary, turning point, missed opportunities, highlights, uncertain tags, verified rewrite, Try again from here, What if?), What-if (side-by-side paths, mini chats, mini curves, overlay chart, Simulated label, "Try this in the chat"), Real mode (country picker, tel:/sms: buttons, emergency number, **offline fallback** from bundled `content/` copies), Transparency (inline SVG pipeline, live component status, metrics table with empty state, does/doesn't, privacy, **Try the Guardian** with presets), after-session check-in, Privacy, 404.
 - Accessibility: keyboard everywhere, focus rings, focus-trapping dialogs, `aria-live="polite"` message list, chart text alternatives, WCAG AA token contrast (checked), reduced motion respected.
-- Tests: 47 vitest tests (typingDelay, highlights, trust math, API errors, Real-mode fallback, i18n parity, crisis card, check-in, shell, tree/graph helpers).
+- Tests: 51 vitest tests (typingDelay, highlights, trust math, API errors, Real-mode fallback, i18n parity, crisis card, check-in, shell, tree/graph helpers).
 - `scripts/screenshots.mjs`: full journey in Chromium (mobile 390×844 + desktop 1440×900) against `make dev-stub` → 50 screenshots in `frontend/screenshots/`. Fails on any broken step, a skippable crisis card, console errors or horizontal overflow.
-- **Contracts 1.2** (integrator d4e2b2b, merged): X-ray trust math uses the engine's real `State.last_breakdown` and shows only the total when it's empty. The rewrite badge shows `rewrite_skill` when present. The Privacy page (EN/ES) states the integrator's exact facts; the OpenAI-policy sentence is flagged for verification in `privacy._meta.verify`. The 404.html workaround was removed now that `main.py` serves the SPA (deep links → 200, unknown /api → 404).
+- **Contracts 1.2** (integrator d4e2b2b, merged): X-ray trust math uses the engine's real `State.last_breakdown` and shows only the total when it's empty. The rewrite badge shows `rewrite_skill` when present. The Privacy page (EN/ES) states the integrator's exact facts; the OpenAI-policy sentence is flagged for verification in `privacy._meta.verify`. Breakdown terms are shown to one decimal with friendly names (diminishing → "repeated", decay → "time"), plus a clamp note when trust hit 0 or 100 ("trust can't go below 0, actual change −5"). The 404.html workaround was removed now that `main.py` serves the SPA (deep links → 200, unknown /api → 404).
 
 - **v3 / contracts 1.1** (integrator update): merged `claude/amazing-carson-31tzo3`, regenerated types. X-ray shows who wrote each friend reply (`voice`: AI verified ✓ / Reviewed line / Fallback). Transparency has "The AI is only the voice" plus live LLM status from `/api/health`. Feedback labels rewrites by `rewrite_source`. The typing indicator stays on for the whole request (AI replies take 1–3 s). Privacy, does/doesn't and pipeline copy now say OpenAI words the friend's replies (EN + ES).
 
@@ -36,7 +36,7 @@
 - With every component stubbed, the summary text is the stub's placeholder and metrics are empty (the page shows a friendly empty state).
 
 ## Numbers
-- vitest: 47/47 passing (8 files).
+- vitest: 51/51 passing (8 files).
 - E2E journey: passes on mobile + desktop; 50 screenshots.
 - Bundle: app 264 KB (86 KB gzip), charts 179 KB (63 KB gzip, separate chunk), CSS 36 KB (7 KB gzip).
 - Lowest AA contrast pair: 4.98 (white on coral button, light mode).

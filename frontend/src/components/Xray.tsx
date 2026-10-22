@@ -6,7 +6,7 @@
 import type { GuardianResult, Node, State } from '../api/models';
 import { usePrefs } from '../i18n';
 import { LABEL_COLOR } from '../lib/labels';
-import { formatTrustMath, signedAuto, trustTerms } from '../lib/trustMath';
+import { clampNote, formatTrustMath, signedAuto, trustTerms } from '../lib/trustMath';
 import { Icon } from './Icon';
 import { ProbBars } from './ProbBars';
 
@@ -46,6 +46,7 @@ export function TrustMath({ node, before }: { node: Node; before: State | null }
   const after = node.state_after;
   const delta = after.last_delta ?? 0;
   const terms = trustTerms(after.last_breakdown);
+  const clamped = before ? clampNote(before.trust, after.trust, delta) : null;
   // Label ids and known engine terms are translated; any new engine term falls back to its own name.
   const name = (key: string) => {
     const label = t(`labels.${key}`);
@@ -68,6 +69,11 @@ export function TrustMath({ node, before }: { node: Node; before: State | null }
         <span className="whitespace-nowrap">
           <span className="text-muted">=</span>{' '}
           <b className={delta > 0 ? 'text-good' : delta < 0 ? 'text-bad' : 'text-muted'}>{signedAuto(delta)}</b>
+        </span>
+      )}
+      {clamped && (
+        <span className="w-full font-sans text-muted" data-testid="clamp-note">
+          {t(clamped.bound === 0 ? 'xray.clamp_low' : 'xray.clamp_high', { change: signedAuto(clamped.actual) })}
         </span>
       )}
       {before && (

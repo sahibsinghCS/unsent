@@ -32,6 +32,16 @@ export function trustTerms(breakdown: Record<string, number> | null | undefined)
 }
 
 /**
+ * last_delta is the engine's raw change before trust is clamped to 0–100. When clamping changed the
+ * real result, return the actual change and which limit was hit, so X-ray can say so.
+ */
+export function clampNote(before: number, after: number, delta: number): { bound: 0 | 100; actual: number } | null {
+  const actual = Math.round((after - before) * 10) / 10;
+  if (Math.abs(actual - delta) < 0.05) return null;
+  return { bound: after <= 0 ? 0 : 100, actual };
+}
+
+/**
  * Format the equation. `name` turns a term key into words (translated label names).
  *   formatTrustMath([{validated, 12}, {decay, -2}], 10) → "+12 validated · −2 decay = +10"
  */
