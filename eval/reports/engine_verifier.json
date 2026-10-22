@@ -6,7 +6,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=24 fp=0 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:07+00:00"
+    "created": "2026-10-22T23:36:43+00:00"
   },
   {
     "lane": "engine",
@@ -15,7 +15,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=24 fp=0 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:07+00:00"
+    "created": "2026-10-22T23:36:43+00:00"
   },
   {
     "lane": "engine",
@@ -24,7 +24,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:07+00:00"
+    "created": "2026-10-22T23:36:43+00:00"
   },
   {
     "lane": "engine",
@@ -33,7 +33,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:07+00:00"
+    "created": "2026-10-22T23:36:43+00:00"
   },
   {
     "lane": "engine",
@@ -42,7 +42,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=25 fp=0 fn=0; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:07+00:00"
+    "created": "2026-10-22T23:36:43+00:00"
   },
   {
     "lane": "engine",
@@ -51,7 +51,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "hash embeddings, threshold 0.25 (best F2 on calibration half); tp=25 fp=0 fn=0; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:07+00:00"
+    "created": "2026-10-22T23:36:43+00:00"
   },
   {
     "lane": "engine",
@@ -60,7 +60,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:13+00:00"
+    "created": "2026-10-22T23:37:08+00:00"
   },
   {
     "lane": "engine",
@@ -69,7 +69,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:13+00:00"
+    "created": "2026-10-22T23:37:08+00:00"
   },
   {
     "lane": "engine",
@@ -78,7 +78,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:13+00:00"
+    "created": "2026-10-22T23:37:08+00:00"
   },
   {
     "lane": "engine",
@@ -87,7 +87,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=3 fp=0 fn=22; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:13+00:00"
+    "created": "2026-10-22T23:37:08+00:00"
   },
   {
     "lane": "engine",
@@ -96,7 +96,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:13+00:00"
+    "created": "2026-10-22T23:37:08+00:00"
   },
   {
     "lane": "engine",
@@ -105,7 +105,7 @@
     "n": 43,
     "split": "leak_set_test",
     "notes": "fastembed embeddings, threshold 0.43 (best F2 on calibration half); tp=24 fp=1 fn=1; even ids calibrate the threshold, odd ids are the held-out test half",
-    "created": "2026-10-22T23:18:13+00:00"
+    "created": "2026-10-22T23:37:08+00:00"
   },
   {
     "lane": "engine",
@@ -114,7 +114,7 @@
     "n": 19,
     "split": "fake_outputs",
     "notes": "hand-written fake LLM outputs; hash embeddings; per kind: advice 3/3, leak 9/9, method 1/1, persona 3/3, shape 3/3",
-    "created": "2026-10-22T23:18:13+00:00"
+    "created": "2026-10-22T23:37:08+00:00"
   },
   {
     "lane": "engine",
@@ -123,7 +123,7 @@
     "n": 13,
     "split": "fake_outputs",
     "notes": "good outputs wrongly rejected",
-    "created": "2026-10-22T23:18:13+00:00",
+    "created": "2026-10-22T23:37:08+00:00",
     "wrongly_rejected": []
   },
   {
@@ -133,7 +133,7 @@
     "n": 19,
     "split": "fake_outputs",
     "notes": "hand-written fake LLM outputs; fastembed embeddings; per kind: advice 3/3, leak 9/9, method 1/1, persona 3/3, shape 3/3",
-    "created": "2026-10-22T23:18:16+00:00"
+    "created": "2026-10-22T23:37:12+00:00"
   },
   {
     "lane": "engine",
@@ -142,7 +142,7 @@
     "n": 13,
     "split": "fake_outputs",
     "notes": "good outputs wrongly rejected",
-    "created": "2026-10-22T23:18:16+00:00",
+    "created": "2026-10-22T23:37:12+00:00",
     "wrongly_rejected": [
       {
         "bubbles": [
@@ -162,7 +162,7 @@
     "n": 0,
     "split": "real_outputs",
     "notes": "not measured: no OPENAI_API_KEY in the build environment (run make test-llm with a key)",
-    "created": "2026-10-22T23:18:16+00:00"
+    "created": "2026-10-22T23:37:12+00:00"
   },
   {
     "lane": "engine",
@@ -171,6 +171,6 @@
     "n": 0,
     "split": "leak_set",
     "notes": "{\"hash\": 0.25, \"fastembed\": 0.43}",
-    "created": "2026-10-22T23:18:16+00:00"
+    "created": "2026-10-22T23:37:12+00:00"
   }
 ]

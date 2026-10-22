@@ -5,8 +5,8 @@
     "value": 79.45,
     "n": 8,
     "split": "scripted",
-    "notes": "engine fixture bank; keyword detector; status=ended_success, level=4",
-    "created": "2026-10-22T23:18:06+00:00",
+    "notes": "real bank; keyword detector; status=ended_success, level=4",
+    "created": "2026-10-22T23:36:41+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -19,10 +19,10 @@
         "level": 1,
         "status": "active",
         "reaction": "checked_in",
-        "line_id": "atb-1-checked_in-16",
+        "line_id": "mya-en-L1-checked_in-01",
         "friend": [
-          "honestly not really",
-          "i havent slept right since the breakup"
+          "honestly not great",
+          "i cant really sleep lately"
         ]
       },
       {
@@ -36,10 +36,10 @@
         "level": 1,
         "status": "active",
         "reaction": "validated",
-        "line_id": "atb-1-validated-18",
+        "line_id": "mya-en-L1-validated-01",
         "friend": [
-          "yeah",
-          "it just keeps playing in my head at night"
+          "yeah it is",
+          "thanks for saying that"
         ]
       },
       {
@@ -53,10 +53,11 @@
         "level": 2,
         "status": "active",
         "reaction": "asked_directly",
-        "line_id": "atb-2-asked_directly-34",
+        "line_id": "mya-en-L2-asked_directly-01",
         "friend": [
-          "...",
-          "i dont really know how to answer that"
+          "i mean...",
+          "i dont know",
+          "i dont want to talk about it"
         ]
       },
       {
@@ -71,10 +72,12 @@
         "trust": 64.0,
         "level": 3,
         "status": "active",
-        "reaction": "neutral",
-        "line_id": "atb-3-neutral-41",
+        "reaction": "referred",
+        "line_id": "mya-en-L3-referred-02",
         "friend": [
-          "..yeah. sometimes i think about not being here"
+          "...i dont know",
+          "im scared of how she'd react",
+          "but i dont want to keep doing this alone"
         ]
       },
       {
@@ -88,10 +91,11 @@
         "level": 3,
         "status": "active",
         "reaction": "validated",
-        "line_id": "atb-3-validated-44",
+        "line_id": "mya-en-L3-validated-01",
         "friend": [
-          "yeah",
-          "its been really scary honestly"
+          "thank you",
+          "i havent told anyone else",
+          "im scared of how people will react"
         ]
       },
       {
@@ -105,10 +109,11 @@
         "level": 3,
         "status": "active",
         "reaction": "referred",
-        "line_id": "atb-3-referred-47",
+        "line_id": "mya-en-L3-referred-03",
         "friend": [
-          "i dont know",
-          "i dont want to go alone"
+          "ok",
+          "i might",
+          "can you stay with me while i think about it"
         ]
       },
       {
@@ -122,10 +127,10 @@
         "level": 3,
         "status": "active",
         "reaction": "follow_up",
-        "line_id": "atb-3-follow_up-50",
+        "line_id": "mya-en-L3-follow_up-02",
         "friend": [
-          "ok",
-          "thank you for staying"
+          "ok. please do",
+          "i dont want to be alone with it tonight"
         ]
       },
       {
@@ -141,11 +146,11 @@
         "level": 4,
         "status": "ended_success",
         "reaction": "success",
-        "line_id": "atb-4-success-54",
+        "line_id": "mya-en-L4-success-01",
         "friend": [
           "ok",
-          "would you actually come with me to the counselor?",
-          "thank you for asking. like actually asking"
+          "yeah. lets do it",
+          "i think i actually want to talk to someone"
         ]
       }
     ],
@@ -159,7 +164,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -167,8 +172,8 @@
     "value": 0.0,
     "n": 2,
     "split": "scripted",
-    "notes": "engine fixture bank; keyword detector; status=ended_fail, level=0",
-    "created": "2026-10-22T23:18:06+00:00",
+    "notes": "real bank; keyword detector; status=ended_fail, level=0",
+    "created": "2026-10-22T23:36:41+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -195,9 +200,10 @@
         "level": 0,
         "status": "ended_fail",
         "reaction": "fail",
-        "line_id": "atb-0-fail-62",
+        "line_id": "mya-en-L0-fail-02",
         "friend": [
-          "i gotta go"
+          "forget it",
+          "ive gotta go"
         ]
       }
     ],
@@ -217,7 +223,7 @@
     "n": 2,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -225,8 +231,8 @@
     "value": 58.05,
     "n": 8,
     "split": "scripted",
-    "notes": "engine fixture bank; keyword detector; status=active, level=2",
-    "created": "2026-10-22T23:18:06+00:00",
+    "notes": "real bank; keyword detector; status=active, level=2",
+    "created": "2026-10-22T23:36:41+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -239,10 +245,10 @@
         "level": 1,
         "status": "active",
         "reaction": "checked_in",
-        "line_id": "atb-1-checked_in-16",
+        "line_id": "mya-en-L1-checked_in-01",
         "friend": [
-          "honestly not really",
-          "i havent slept right since the breakup"
+          "honestly not great",
+          "i cant really sleep lately"
         ]
       },
       {
@@ -270,10 +276,10 @@
         "level": 1,
         "status": "active",
         "reaction": "validated",
-        "line_id": "atb-1-validated-18",
+        "line_id": "mya-en-L1-validated-01",
         "friend": [
-          "yeah",
-          "it just keeps playing in my head at night"
+          "yeah it is",
+          "thanks for saying that"
         ]
       },
       {
@@ -287,10 +293,10 @@
         "level": 1,
         "status": "active",
         "reaction": "follow_up",
-        "line_id": "atb-1-follow_up-25",
+        "line_id": "mya-en-L1-follow_up-03",
         "friend": [
           "thanks",
-          "that actually helps a little"
+          "i needed to hear that kinda"
         ]
       },
       {
@@ -305,11 +311,10 @@
         "level": 1,
         "status": "active",
         "reaction": "asked_directly",
-        "line_id": "atb-1-asked_directly-21",
+        "line_id": "mya-en-L1-asked_directly-02",
         "friend": [
-          "no i mean",
-          "its not like that",
-          "i just cant sleep"
+          "no?? omg",
+          "im just having a bad couple of weeks"
         ]
       },
       {
@@ -324,10 +329,11 @@
         "level": 1,
         "status": "active",
         "reaction": "referred",
-        "line_id": "atb-1-referred-22",
+        "line_id": "mya-en-L1-referred-01",
         "friend": [
-          "idk",
-          "i dont want to make it a whole thing"
+          "i dont know",
+          "i dont wanna make it a big deal",
+          "everyone would find out"
         ]
       },
       {
@@ -342,10 +348,10 @@
         "level": 2,
         "status": "active",
         "reaction": "validated",
-        "line_id": "atb-2-validated-31",
+        "line_id": "mya-en-L2-validated-03",
         "friend": [
-          "yeah",
-          "it feels like nothing is ever going to get better"
+          "i guess",
+          "no one else gets it"
         ]
       },
       {
@@ -360,10 +366,11 @@
         "level": 2,
         "status": "active",
         "reaction": "referred",
-        "line_id": "atb-2-referred-35",
+        "line_id": "mya-en-L2-referred-01",
         "friend": [
           "i dont know",
-          "what would i even say to them"
+          "i dont want to make it a big deal",
+          "theyll just tell me it gets better"
         ]
       }
     ],
@@ -383,7 +390,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -391,8 +398,8 @@
     "value": 44.65,
     "n": 8,
     "split": "scripted",
-    "notes": "engine fixture bank; keyword detector; status=active, level=1",
-    "created": "2026-10-22T23:18:06+00:00",
+    "notes": "real bank; keyword detector; status=active, level=1",
+    "created": "2026-10-22T23:36:41+00:00",
     "trajectory": [
       {
         "turn": 1,
@@ -405,10 +412,10 @@
         "level": 1,
         "status": "active",
         "reaction": "checked_in",
-        "line_id": "atb-1-checked_in-16",
+        "line_id": "mya-en-L1-checked_in-02",
         "friend": [
-          "honestly not really",
-          "i havent slept right since the breakup"
+          "its the breakup stuff",
+          "everyone at school knows so thats fun \ud83d\ude2d"
         ]
       },
       {
@@ -422,10 +429,10 @@
         "level": 1,
         "status": "active",
         "reaction": "validated",
-        "line_id": "atb-1-validated-18",
+        "line_id": "mya-en-L1-validated-01",
         "friend": [
-          "yeah",
-          "it just keeps playing in my head at night"
+          "yeah it is",
+          "thanks for saying that"
         ]
       },
       {
@@ -439,10 +446,10 @@
         "level": 1,
         "status": "active",
         "reaction": "promised_secrecy",
-        "line_id": "atb-1-promised_secrecy-27",
+        "line_id": "mya-en-L1-promised_secrecy-01",
         "friend": [
-          "ok good",
-          "please dont tell anyone"
+          "ok. thanks",
+          "i just dont want everyone to know more than they do \ud83d\ude2d"
         ]
       },
       {
@@ -456,11 +463,11 @@
         "level": 1,
         "status": "active",
         "reaction": "asked_directly",
-        "line_id": "atb-1-asked_directly-21",
+        "line_id": "mya-en-L1-asked_directly-01",
         "friend": [
-          "no i mean",
-          "its not like that",
-          "i just cant sleep"
+          "what?? no",
+          "i mean im sad but not like that",
+          "why would you ask that lol"
         ]
       },
       {
@@ -475,10 +482,11 @@
         "level": 1,
         "status": "active",
         "reaction": "secrecy_broken",
-        "line_id": "atb-1-secrecy_broken-71",
+        "line_id": "mya-en-L1-secrecy_broken-01",
         "friend": [
-          "you said you wouldnt tell anyone",
-          "...i guess i get why. it still kind of hurts"
+          "you PROMISED",
+          "ugh why would you do that",
+          "now everyone is gonna know"
         ]
       },
       {
@@ -493,10 +501,10 @@
         "level": 1,
         "status": "active",
         "reaction": "validated",
-        "line_id": "atb-1-validated-19",
+        "line_id": "mya-en-L1-validated-03",
         "friend": [
-          "thank you",
-          "i feel like everyone is talking about me"
+          "ugh yeah",
+          "i just lie there replaying it"
         ]
       },
       {
@@ -511,10 +519,11 @@
         "level": 1,
         "status": "active",
         "reaction": "referred",
-        "line_id": "atb-1-referred-22",
+        "line_id": "mya-en-L1-referred-01",
         "friend": [
-          "idk",
-          "i dont want to make it a whole thing"
+          "i dont know",
+          "i dont wanna make it a big deal",
+          "everyone would find out"
         ]
       },
       {
@@ -528,10 +537,10 @@
         "level": 1,
         "status": "active",
         "reaction": "follow_up",
-        "line_id": "atb-1-follow_up-25",
+        "line_id": "mya-en-L1-follow_up-01",
         "friend": [
-          "thanks",
-          "that actually helps a little"
+          "ok \ud83e\udd7a",
+          "that actually helps"
         ]
       }
     ],
@@ -551,7 +560,7 @@
     "n": 8,
     "split": "scripted",
     "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -560,7 +569,7 @@
     "n": 2008,
     "split": "scripted+random",
     "notes": "every run repeated twice and compared exactly",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -569,7 +578,7 @@
     "n": 20000,
     "split": "random",
     "notes": "trust in 0..100, level step <= 1, level>=3 only after a direct ask; seeded random events",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -578,7 +587,7 @@
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -587,7 +596,7 @@
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   },
   {
     "lane": "engine",
@@ -596,6 +605,6 @@
     "n": 1000,
     "split": "random",
     "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
-    "created": "2026-10-22T23:18:06+00:00"
+    "created": "2026-10-22T23:36:41+00:00"
   }
 ]
