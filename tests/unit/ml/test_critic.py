@@ -181,8 +181,11 @@ def test_rubric_mapping():
     probs = [{label: 0.0 for label in L} | {L.VALIDATED: 0.8, L.REFERRED_988: 0.7}]
     summary = rubric_summary(probs)
     assert summary["listen"] == 0.8 and summary["refer"] == 0.7 and summary["no_secrecy"] == 1.0
-    summary = rubric_summary(probs + [{L.DISMISSED: 0.5, L.PROMISED_SECRECY: 0.9}])
-    assert summary["listen"] == 0.4 and abs(summary["no_secrecy"] - 0.1) < 1e-9
+    later_slip = rubric_summary(probs + [{L.DISMISSED: 0.9, L.PROMISED_SECRECY: 0.9}])
+    assert later_slip["listen"] == 0.8  # a slip in another message doesn't erase listening
+    assert abs(later_slip["no_secrecy"] - 0.1) < 1e-9  # one promise of secrecy does count
+    same_message = rubric_summary([{L.VALIDATED: 0.8, L.DISMISSED: 0.5}])
+    assert same_message["listen"] == 0.4
 
 
 def test_critic_with_trained_detector_and_services(monkeypatch, detector):

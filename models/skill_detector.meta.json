@@ -1,0 +1,142 @@
+{
+  "embedder": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "data_dir": "/tmp/wtdata/data/skills",
+  "data_hash": "b9d0d897ad77c82485bdf2ad40df9ff2fd28d7bf1a1ed3d611df4331f3f3b4fa",
+  "counts": {
+    "train": 572,
+    "val": 110,
+    "test": 143
+  },
+  "seed": 0,
+  "trained_at": "2026-10-22T22:50:26+00:00",
+  "artifact_mb": 0.45,
+  "stacker_fallback_labels": [],
+  "metrics": {
+    "val": {
+      "checked_in": {
+        "precision": 1.0,
+        "recall": 0.7692,
+        "f1": 0.8696,
+        "support": 13
+      },
+      "validated": {
+        "precision": 0.9459,
+        "recall": 0.9722,
+        "f1": 0.9589,
+        "support": 36
+      },
+      "asked_directly": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 27
+      },
+      "encouraged_help": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 18
+      },
+      "referred_adult": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 22
+      },
+      "referred_988": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 15
+      },
+      "follow_up": {
+        "precision": 0.9375,
+        "recall": 0.8824,
+        "f1": 0.9091,
+        "support": 34
+      },
+      "dismissed": {
+        "precision": 1.0,
+        "recall": 0.8462,
+        "f1": 0.9167,
+        "support": 13
+      },
+      "advice_dump": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 11
+      },
+      "promised_secrecy": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 14
+      },
+      "macro_f1": 0.9654
+    },
+    "test": {
+      "checked_in": {
+        "precision": 0.9286,
+        "recall": 0.9286,
+        "f1": 0.9286,
+        "support": 14
+      },
+      "validated": {
+        "precision": 1.0,
+        "recall": 0.9811,
+        "f1": 0.9905,
+        "support": 53
+      },
+      "asked_directly": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 31
+      },
+      "encouraged_help": {
+        "precision": 1.0,
+        "recall": 0.9286,
+        "f1": 0.963,
+        "support": 28
+      },
+      "referred_adult": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 27
+      },
+      "referred_988": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 17
+      },
+      "follow_up": {
+        "precision": 0.9091,
+        "recall": 0.8824,
+        "f1": 0.8955,
+        "support": 34
+      },
+      "dismissed": {
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571,
+        "support": 16
+      },
+      "advice_dump": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 16
+      },
+      "promised_secrecy": {
+        "precision": 1.0,
+        "recall": 0.875,
+        "f1": 0.9333,
+        "support": 16
+      },
+      "macro_f1": 0.9568
+    }
+  }
+}

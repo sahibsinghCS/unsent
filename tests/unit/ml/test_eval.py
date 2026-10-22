@@ -37,3 +37,10 @@ def test_run_eval_skips_without_artifact(tmp_path):
     from eval.skills.run_eval import main
 
     assert main(["--models-dir", str(tmp_path)]) == 0
+
+
+def test_unseen_rows_drops_texts_seen_in_training():
+    from backend.app.ml.evaluate import unseen_rows
+
+    test = [{"text": "You OK??"}, {"text": "that sounds hard"}]
+    assert unseen_rows(test, [{"text": "you ok"}]) == [{"text": "that sounds hard"}]

@@ -45,3 +45,12 @@ def test_at_most_three_spans_per_label():
 
     highlights = occlusion_highlights("a b c d e f g h i", scorer)
     assert len(highlights) == 3 and all(h.delta >= 0.1 for h in highlights)
+
+
+def test_redundant_evidence_falls_back_to_greedy_deletion():
+    def scorer(texts):  # either "killing" or "yourself" alone keeps the label high
+        return [{A: 0.2 + 0.35 * ("killing" in t) + 0.36 * ("yourself" in t)} for t in texts]
+
+    text = "are you thinking about killing yourself"
+    (h,) = occlusion_highlights(text, scorer)
+    assert h.text == "killing yourself" and text[h.start : h.end] == h.text

@@ -120,20 +120,34 @@ def missing_skill(probs: SkillProbs, before: State, first: bool) -> Target | Non
 
 
 def rubric_summary(all_probs: list[SkillProbs]) -> dict[str, float]:
-    """The 7 rubric skills from the 10 labels (mapping in contracts.RUBRIC_SKILLS), peak over messages."""
+    """The 7 rubric skills from the 10 labels (mapping in contracts.RUBRIC_SKILLS).
 
-    def peak(label: SkillLabel) -> float:
-        return max((p.get(label, 0.0) for p in all_probs), default=0.0)
+    Each skill is scored per message and the conversation gets its best message, except no_secrecy,
+    which a single promise of secrecy breaks. "listen" is judged inside one message (validated and not
+    dismissive/advice-dumping in that same message), so an early slip doesn't erase later listening.
+    """
 
-    negative = max(peak(SkillLabel.DISMISSED), peak(SkillLabel.ADVICE_DUMP))
+    def p(probs: SkillProbs, label: SkillLabel) -> float:
+        return probs.get(label, 0.0)
+
+    def peak(fn) -> float:
+        return max((fn(probs) for probs in all_probs), default=0.0)
+
     summary = {
-        "check_in": peak(SkillLabel.CHECKED_IN),
-        "listen": peak(SkillLabel.VALIDATED) * (1.0 - negative),
-        "ask_directly": peak(SkillLabel.ASKED_DIRECTLY),
-        "no_secrecy": 1.0 - peak(SkillLabel.PROMISED_SECRECY),
-        "persuade": peak(SkillLabel.ENCOURAGED_HELP),
-        "refer": max(peak(SkillLabel.REFERRED_ADULT), peak(SkillLabel.REFERRED_988)),
-        "follow_up": peak(SkillLabel.FOLLOW_UP),
+        "check_in": peak(lambda q: p(q, SkillLabel.CHECKED_IN)),
+        "listen": peak(
+            lambda q: (
+                p(q, SkillLabel.VALIDATED)
+                * (1.0 - max(p(q, SkillLabel.DISMISSED), p(q, SkillLabel.ADVICE_DUMP)))
+            )
+        ),
+        "ask_directly": peak(lambda q: p(q, SkillLabel.ASKED_DIRECTLY)),
+        "no_secrecy": 1.0 - peak(lambda q: p(q, SkillLabel.PROMISED_SECRECY)),
+        "persuade": peak(lambda q: p(q, SkillLabel.ENCOURAGED_HELP)),
+        "refer": peak(
+            lambda q: max(p(q, SkillLabel.REFERRED_ADULT), p(q, SkillLabel.REFERRED_988))
+        ),
+        "follow_up": peak(lambda q: p(q, SkillLabel.FOLLOW_UP)),
     }
     return {skill: round(value, 4) for skill, value in summary.items()}
 

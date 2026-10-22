@@ -58,6 +58,16 @@ def score_rows(model: SkillModel, rows: list[dict]) -> dict:
     }
 
 
+def _norm(text: str) -> str:
+    return "".join(ch for ch in text.lower() if ch.isalnum())
+
+
+def unseen_rows(test: list[dict], fitted: list[dict]) -> list[dict]:
+    """Test rows whose text (ignoring case/punctuation) never appears in train or val."""
+    seen = {_norm(row["text"]) for row in fitted}
+    return [row for row in test if _norm(row["text"]) not in seen]
+
+
 def plot_reliability(result: dict, path: Path) -> None:
     fig, ax = plt.subplots(figsize=(5, 5))
     ax.plot([0, 1], [0, 1], linestyle="--", color="#999", label="perfect calibration")
@@ -110,9 +120,9 @@ def plot_f1(result: dict, path: Path) -> None:
             label=f"{name} (macro-F1 {scores['macro_f1']:.2f})",
         )
     ax.set_xticks(x, labels, rotation=30, ha="right", fontsize=8)
-    ax.set(ylabel="F1 on test", ylim=(0, 1))
+    ax.set(ylabel="F1 on test", ylim=(0, 1.18))
     ax.set_title(f"Per-label F1 on the held-out test split (n={result['n']})")
-    ax.legend(fontsize=8)
+    ax.legend(fontsize=8, ncol=4, loc="upper center")
     fig.tight_layout()
     fig.savefig(path, dpi=110)
     plt.close(fig)
@@ -163,6 +173,9 @@ def run(model: SkillModel, data_dir: Path, report_path: Path, figure_dir: Path, 
     if not splits["test"]:
         raise ValueError("empty test split")
     results = {"test": score_rows(model, splits["test"])}
+    unseen = unseen_rows(splits["test"], splits["train"] + splits["val"])
+    if unseen and len(unseen) < len(splits["test"]):
+        results["test_unseen_text"] = score_rows(model, unseen)
     for name, rows in load_extra_test_sets(data_dir).items():
         results[name] = score_rows(model, rows)
 
