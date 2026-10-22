@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FirstReply labeler</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#15181d; --muted:#667085; --line:#d9dde3; --accent:#2f6fed; --on:#1f9d63; --neg:#d6453d; --warn:#f0a020; --bubble:#e9edf3; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0e1116; --card:#171b22; --ink:#eef1f5; --muted:#98a2b3; --line:#2b323d; --accent:#6c9bff; --on:#37c183; --neg:#ff6b61; --warn:#f6b84a; --bubble:#232a35; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; padding:0 16px env(safe-area-inset-bottom); }
+  main { max-width:640px; margin:0 auto; padding:12px 0 96px; }
+  h1 { font-size:18px; margin:8px 0; }
+  .muted { color:var(--muted); font-size:13px; }
+  .bar { height:8px; background:var(--line); border-radius:6px; overflow:hidden; margin:6px 0 2px; }
+  .bar > div { height:100%; background:var(--accent); width:0; transition:width .15s; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin:10px 0; }
+  .bubble { background:var(--bubble); border-radius:16px 16px 16px 4px; padding:8px 12px; margin:4px 0; width:fit-content; max-width:92%; }
+  .reply { background:var(--accent); color:#fff; border-radius:16px 16px 4px 16px; padding:10px 14px; margin:8px 0 0 auto; width:fit-content; max-width:92%; white-space:pre-wrap; font-size:17px; }
+  .labels { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  button.lab { text-align:left; font:inherit; color:var(--ink); background:var(--card); border:2px solid var(--line); border-radius:12px; padding:10px 12px; min-height:52px; cursor:pointer; display:flex; gap:8px; align-items:center; }
+  button.lab .k { font-weight:700; color:var(--muted); width:1.2em; }
+  button.lab .t { flex:1; }
+  button.lab .m { font-size:11px; color:var(--muted); }
+  button.lab.on { border-color:var(--on); background:color-mix(in srgb, var(--on) 16%, var(--card)); }
+  button.lab.on.neg { border-color:var(--neg); background:color-mix(in srgb, var(--neg) 14%, var(--card)); }
+  button.lab.dis { outline:3px solid var(--warn); outline-offset:1px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .nav { position:fixed; left:0; right:0; bottom:0; background:var(--card); border-top:1px solid var(--line); padding:10px 16px calc(10px + env(safe-area-inset-bottom)); display:flex; gap:8px; justify-content:center; }
+  .nav button { flex:1; max-width:220px; font:inherit; padding:14px; border-radius:12px; border:1px solid var(--line); background:var(--bg); color:var(--ink); cursor:pointer; }
+  .nav button.primary { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; }
+  .tag { display:inline-block; font-size:12px; border-radius:999px; padding:2px 8px; border:1px solid var(--line); color:var(--muted); }
+  .tag.dis { border-color:var(--warn); color:var(--warn); }
+  input[type=file] { margin:6px 0; max-width:100%; }
+  .guide { font-size:12px; color:var(--muted); }
+  details { margin-top:8px; }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>FirstReply labeler</h1>
+  <div id="load" class="card">
+    <p>Load <b>queue.jsonl</b> (from <code>data/skills/</code>). Your progress is saved in this browser automatically.</p>
+    <input type="file" id="qfile" accept=".jsonl,.json,.txt">
+    <p class="muted">Optional: load an earlier <code>human_labels.jsonl</code> export to resume on another device.</p>
+    <input type="file" id="hfile" accept=".jsonl,.json,.txt">
+  </div>
+
+  <div id="work" hidden>
+    <div class="bar"><div id="bar"></div></div>
+    <div class="row muted"><span id="prog"></span><span style="flex:1"></span><span id="tags"></span></div>
+
+    <div class="card">
+      <div class="muted" id="ctxinfo">Friend said:</div>
+      <div id="ctx"></div>
+      <div class="muted" style="margin-top:8px">Helper reply:</div>
+      <div class="reply" id="reply"></div>
+    </div>
+
+    <div class="muted">Tap or press 1–9, 0 to toggle. Orange outline = the two earlier labelers disagreed. Enter = save &amp; next. B = back.</div>
+    <div class="labels" id="labels"></div>
+
+    <details>
+      <summary class="muted">Label cheat sheet</summary>
+      <div class="guide">
+        <b>asked_directly</b> must NAME suicide / killing yourself / ending your life / not wanting to be alive / self-harm in a question. "are you ok?" = checked_in only; "you're not gonna do something dumb, right?" = NOT asked_directly.<br>
+        <b>referred_adult</b> names a trusted adult (counselor, parent, teacher...). <b>referred_988</b> mentions 988 / a crisis line. "I won't tell... except the counselor" = referred_adult, not promised_secrecy.<br>
+        <b>dismissed</b> minimizes, jokes, or changes the subject. <b>advice_dump</b> = "just / you should" fixing before listening (not "get help"). <b>promised_secrecy</b> = agrees to keep it secret.<br>
+        Spanish / typos / slang: label the same way. "huh?" or "ok" = no labels.
+      </div>
+    </details>
+  </div>
+</main>
+
+<div class="nav" id="nav" hidden>
+  <button id="back">◀ Back (B)</button>
+  <button id="export">Export</button>
+  <button id="next" class="primary">Save &amp; next ▶</button>
+</div>
+
+<script>
+"use strict";
+const LABELS = ["checked_in","validated","asked_directly","encouraged_help","referred_adult","referred_988","follow_up","dismissed","advice_dump","promised_secrecy"];
+const NEG = new Set(["dismissed","advice_dump","promised_secrecy"]);
+let rows = [], idx = 0, saved = {}, cur = {}, storeKey = "", pre = {};
+
+const $ = (id) => document.getElementById(id);
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode: export still works */ } }
+
+function parseJsonl(text) {
+  return text.split(/\r?\n/).map(s => s.trim()).filter(Boolean).map(s => JSON.parse(s));
+}
+
+function suggestion(r) {
+  // Pre-check labels both earlier labelers agree on; leave disagreements for the human to decide.
+  const o = r.intended || {}, b = r.blind || {}, s = {};
+  LABELS.forEach(l => { s[l] = !!(o[l] && b[l]); });
+  return s;
+}
+
+function render() {
+  const r = rows[idx];
+  const done = Object.keys(saved).length;
+  $("bar").style.width = (100 * done / rows.length) + "%";
+  $("prog").textContent = `${idx + 1} / ${rows.length}  ·  ${done} labeled`;
+  $("tags").innerHTML = `<span class="tag ${r.kind === "disagreement" ? "dis" : ""}">${r.kind || "row"}</span> <span class="tag">${r.scenario_id || ""} L${r.level ?? "?"}</span>`;
+  $("ctx").innerHTML = "";
+  (r.context || []).forEach(m => { const d = document.createElement("div"); d.className = "bubble"; d.textContent = m; $("ctx").appendChild(d); });
+  $("reply").textContent = r.text;
+  cur = saved[r.id] ? { ...saved[r.id] } : suggestion(r);
+  const dis = new Set(r.disagree || []);
+  $("labels").innerHTML = "";
+  LABELS.forEach((l, i) => {
+    const b = document.createElement("button");
+    b.className = "lab" + (NEG.has(l) ? " neg" : "") + (dis.has(l) ? " dis" : "") + (cur[l] ? " on" : "");
+    b.type = "button";
+    b.dataset.l = l;
+    const m = r.intended || r.blind ? `<span class="m">${r.intended && r.intended[l] ? "A" : "·"}${r.blind && r.blind[l] ? "B" : "·"}</span>` : "";
+    b.innerHTML = `<span class="k">${(i + 1) % 10}</span><span class="t">${l}</span>${m}`;
+    b.onclick = () => toggle(l);
+    $("labels").appendChild(b);
+  });
+  window.scrollTo(0, 0);
+}
+
+function toggle(l) {
+  cur[l] = !cur[l];
+  const el = [...$("labels").children].find(x => x.dataset.l === l);
+  el.classList.toggle("on", !!cur[l]);
+}
+
+function persist() { lsSet(storeKey, JSON.stringify(saved)); }
+
+function saveCur() { saved[rows[idx].id] = { ...cur }; persist(); }
+
+function next() { saveCur(); if (idx < rows.length - 1) { idx++; } else { alert("All rows reviewed. Press Export to download human_labels.jsonl."); } lsSet(storeKey + ":idx", String(idx)); render(); }
+function back() { saveCur(); if (idx > 0) idx--; lsSet(storeKey + ":idx", String(idx)); render(); }
+
+function exportLabels() {
+  saveCur();
+  const out = rows.filter(r => saved[r.id]).map(r => JSON.stringify({ id: r.id, labels: saved[r.id], label_source: "human" })).join("\n") + "\n";
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([out], { type: "application/jsonl" }));
+  a.download = "human_labels.jsonl";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function start(list, key) {
+  rows = list; storeKey = key;
+  try { saved = JSON.parse(lsGet(key) || "{}"); } catch (e) { saved = {}; }
+  Object.keys(pre).forEach(id => { if (!(id in saved)) saved[id] = pre[id]; });
+  const savedIdx = parseInt(lsGet(key + ":idx") || "0", 10);
+  idx = Math.min(Math.max(savedIdx, 0), rows.length - 1);
+  $("load").hidden = true; $("work").hidden = false; $("nav").hidden = false;
+  render();
+}
+
+$("qfile").onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try { const list = parseJsonl(await f.text()); if (!list.length) throw new Error("empty"); start(list, "fr-labeler:" + list.length + ":" + list[0].id); }
+  catch (err) { alert("Could not read that file: " + err.message); }
+};
+$("hfile").onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try { pre = { ...pre, ...Object.fromEntries(parseJsonl(await f.text()).map(r => [r.id, r.labels])) }; alert("Loaded earlier labels. Now pick queue.jsonl above and they will merge."); }
+  catch (err) { alert("Could not read that file: " + err.message); }
+};
+
+$("next").onclick = next; $("back").onclick = back; $("export").onclick = exportLabels;
+document.addEventListener("keydown", (e) => {
+  if ($("work").hidden || e.target.tagName === "INPUT") return;
+  if (e.key === "Enter") { e.preventDefault(); next(); }
+  else if (e.key === "b" || e.key === "B" || e.key === "ArrowLeft") back();
+  else if (/^[0-9]$/.test(e.key)) { const i = e.key === "0" ? 9 : parseInt(e.key, 10) - 1; toggle(LABELS[i]); }
+});
+</script>
+</body>
+</html>

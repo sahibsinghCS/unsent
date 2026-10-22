@@ -1,0 +1,200 @@
+[
+ {
+  "lane": "data",
+  "metric": "agreement_checked_in",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_checked_in",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_validated",
+  "value": 0.9939,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.986",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_validated",
+  "value": 0.9855,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_asked_directly",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_asked_directly",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_encouraged_help",
+  "value": 0.9976,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.991",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_encouraged_help",
+  "value": 0.991,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_referred_adult",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_referred_adult",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_referred_988",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_referred_988",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_follow_up",
+  "value": 0.9903,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.974",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_follow_up",
+  "value": 0.9737,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_dismissed",
+  "value": 0.9903,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.958",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_dismissed",
+  "value": 0.9577,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_advice_dump",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_advice_dump",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_promised_secrecy",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_promised_secrecy",
+  "value": 1.0,
+  "n": 825,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "exact_match_rate",
+  "value": 0.9721,
+  "n": 825,
+  "split": "all",
+  "notes": "all 10 labels identical",
+  "created": "2026-10-22T23:01:41+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "mean_kappa",
+  "value": 0.9908,
+  "n": 825,
+  "split": "all",
+  "notes": "mean over 10 labels",
+  "created": "2026-10-22T23:01:41+00:00"
+ }
+]
