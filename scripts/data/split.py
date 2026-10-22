@@ -1,7 +1,9 @@
 """Seeded 70/15/15 split of data/skills/final.jsonl, grouped by context_id, stratified by scenario.
 
-Every reply of a context lands in the same split (no leakage of the friend context).
-data/skills/survey_real.jsonl (real anonymous replies) always goes to test.
+Composed replies: every reply of a context lands in the same split (no leakage of the friend context).
+Free-form replies: the freeform replies of composed-val contexts go to val; those of composed-test contexts
+plus a seeded half of the composed-train contexts become test_freeform.jsonl (never trained on); the rest go
+to train. data/skills/survey_real.jsonl (real anonymous replies) always goes to test.
 """
 
 from __future__ import annotations
@@ -17,6 +19,7 @@ COUNTS = [(10, 2, 3), (11, 2, 2)]
 
 
 def split_contexts(rows: list[dict], seed: int = 42) -> dict[str, str]:
+    """Assign each context to train/val/test using the composed rows' contexts (all contexts appear there)."""
     rng = random.Random(seed)
     by_sc: dict[str, list[str]] = {}
     for r in rows:
@@ -37,10 +40,23 @@ def split_contexts(rows: list[dict], seed: int = 42) -> dict[str, str]:
 
 def main() -> None:
     rows = read_jsonl(SK / "final.jsonl")
-    assign = split_contexts(rows)
-    out: dict[str, list[dict]] = {"train": [], "val": [], "test": []}
-    for r in rows:
+    composed = [r for r in rows if r.get("source", "composed") == "composed"]
+    freeform = [r for r in rows if r.get("source") == "freeform"]
+    assign = split_contexts(composed)
+    rng = random.Random(42)
+    train_ctx = sorted(c for c, s in assign.items() if s == "train")
+    rng.shuffle(train_ctx)
+    ff_test_ctx = set(train_ctx[: len(train_ctx) // 2]) | {
+        c for c, s in assign.items() if s == "test"
+    }
+    out: dict[str, list[dict]] = {"train": [], "val": [], "test": [], "test_freeform": []}
+    for r in composed:
         out[assign[r["context_id"]]].append(r)
+    for r in freeform:
+        if r["context_id"] in ff_test_ctx:
+            out["test_freeform"].append(r)
+        else:
+            out[assign[r["context_id"]]].append(r)
     out["test"] += read_jsonl(SK / "survey_real.jsonl")
     for name, rs in out.items():
         write_jsonl(SK / "splits" / f"{name}.jsonl", rs)

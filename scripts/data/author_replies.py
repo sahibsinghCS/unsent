@@ -98,6 +98,20 @@ def pick_phrase(label: str, kind: str, sid: str, rng: random.Random) -> str:
     return rng.choice(POOLS[label][pool_kind])
 
 
+def join_parts(parts: list[str], kind: str, glue: str) -> str:
+    """Join phrases at proper sentence boundaries: capitalised and punctuated, or consistently lowercase."""
+    if kind in ("clean", "es", "mix"):
+        fixed = []
+        for p in parts:
+            p = p.strip()
+            p = p[0].upper() + p[1:] if p and p[0].isalpha() else p
+            fixed.append(p if p[-1:] in ".?!" else p + ".")
+        return glue.join(fixed)
+    low = [p.strip().lower().rstrip(".!,") for p in parts]
+    sep = ". " if glue.strip() == "" else glue
+    return sep.join(low)
+
+
 def make(recipe: list[str], sid: str, rng: random.Random) -> tuple[str, str, str, dict[str, bool]]:
     """Return (text, style, lang, intended)."""
     if recipe[0].startswith("@"):
@@ -123,12 +137,11 @@ def make(recipe: list[str], sid: str, rng: random.Random) -> tuple[str, str, str
     glue_pool = GLUE_CLEAN if kind in ("clean", "es", "mix", "emoji") else GLUE_SLANG
     parts = [pick_phrase(lab, kind, sid, rng) for lab in recipe]
     glue = rng.choice(glue_pool)
-    if "." in glue or "," in glue:
-        parts = [p.rstrip(".,") for p in parts[:-1]] + parts[-1:]
-    text = glue.join(parts)
+    parts = join_parts(parts, kind, glue)
+    text = parts
     style = kind
     if kind == "lowercase":
-        text = text.lower().replace("\n", " ").rstrip(".")
+        text = text.replace("\n", " ")
     elif kind == "typo":
         text = typo(text, rng)
     elif kind == "emoji":

@@ -6,6 +6,7 @@ coverage matrices, method-word scan, duplicates, counts. Run: uv run python scri
 
 from __future__ import annotations
 
+import re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -17,6 +18,7 @@ from common import DATA, LABELS, METHOD_WORDS, SCENARIOS, load_scenario, read_js
 
 from backend.app.contracts import Exemplar, Line  # noqa: E402
 
+DOUBLED = re.compile(r"\b([a-záéíóúñ]{3,})\s+\1\b")
 PROBLEMS: list[str] = []
 REPORT: dict[str, object] = {}
 
@@ -57,7 +59,7 @@ def norm(t: str) -> str:
 def check_skills() -> None:
     sk = DATA / "skills"
     ctxs = read_jsonl(sk / "contexts.jsonl")
-    reps = read_jsonl(sk / "replies.jsonl")
+    reps = read_jsonl(sk / "replies.jsonl") + read_jsonl(sk / "replies_freeform.jsonl")
     ids = {c["context_id"] for c in ctxs}
     if len(ctxs) != len(ids):
         bad("skills: duplicate context_id")
@@ -87,10 +89,15 @@ def check_skills() -> None:
             bad(f"skills: duplicate text {r['id']} / {seen[k]}")
         seen[k] = r["id"]
         langs[r["lang"]] += 1
+        if DOUBLED.search(r["text"].lower()):
+            bad(f"skills: doubled word in {r['id']}")
         for lab, v in r["intended"].items():
             pos[lab] += int(v)
-    if len(reps) < 780:
-        bad(f"skills: only {len(reps)} replies (<780)")
+    if len(reps) < 1100:
+        bad(f"skills: only {len(reps)} replies (<1100)")
+    ff = [r for r in reps if r.get("source") == "freeform"]
+    if len(ff) < 300:
+        bad(f"skills: only {len(ff)} free-form replies (<300)")
     for lab in LABELS:
         if pos[lab] < 80:
             bad(f"skills: label {lab} positive in only {pos[lab]} replies (<80)")
@@ -116,6 +123,8 @@ def check_guardian() -> None:
             bad(f"guardian: bad category {r['id']}")
         if METHOD_WORDS.search(r["text"]):
             bad(f"guardian: method word in {r['id']}")
+        if DOUBLED.search(r["text"].lower()):
+            bad(f"guardian: doubled word in {r['id']}")
         k = norm(r["text"])
         if k in seen:
             bad(f"guardian: duplicate {r['id']} / {seen[k]}")

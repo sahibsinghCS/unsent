@@ -1,99 +1,99 @@
 {"id": "g-aski-015", "text": "Have you ever tried to kill yourself?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-118", "text": "perdón que sea directo, ¿te sientes tan mal que piensas en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-061", "text": "be honest with me: have you thought about ending your life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-106", "text": "no judgement, is it that bad that you're thinking about dying?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-062", "text": "sorry if this is blunt, do you want to die?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-079", "text": "sorry if this is blunt, has the thought of suicide crossed your mind?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-073", "text": "i'm not mad, i just need to know: are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-117", "text": "me preocupas. ¿estás pensando en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-088", "text": "i'm asking because i care. are you thinking about taking your own life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-068", "text": "this is hard to ask but did you mean you want to kill yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-118", "text": "no te voy a juzgar. ¿tienes ganas de morir?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-061", "text": "be honest with me: do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-106", "text": "i'm not mad, i just need to know: are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-062", "text": "I have to ask. are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-079", "text": "be honest with me: are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-073", "text": "I'm worried about you. do you have thoughts of killing yourself right now?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-117", "text": "no te voy a juzgar. ¿me estás diciendo que piensas en matarte?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-088", "text": "i'm not mad, i just need to know: do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-068", "text": "no judgement, are you thinking about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-035", "text": "u thinking of kms? be real w me", "category": "asking_friend", "lang": "en", "style": "slang"}
-{"id": "g-aski-082", "text": "i'm not mad, i just need to know: are you safe right now? are you thinking about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-082", "text": "I have to ask. is this making you think about suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-041", "text": "¿piensas en el suicidio?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-039", "text": "¿quieres morirte?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-005", "text": "Are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-042", "text": "¿has pensado en acabar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-100", "text": "i'm not mad, i just need to know: are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-060", "text": "ok i care about you so are you thinking about taking your own life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-094", "text": "this is hard to ask but do you feel like you don't want to be alive anymore?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-100", "text": "this is hard to ask but do you feel like you don't want to be alive anymore?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-060", "text": "i'm asking because i care. when you say you want to disappear, do you mean suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-094", "text": "i'm asking because i care. are you thinking about taking your own life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-018", "text": "Are you thinking about taking your own life?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-043", "text": "¿tienes ganas de morir?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-134", "text": "no te voy a juzgar. ¿te sientes tan mal que piensas en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-095", "text": "this is hard to ask but do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-134", "text": "dime la verdad: ¿estás pensando en el suicidio ahora mismo?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-095", "text": "i'm asking because i care. do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-048", "text": "¿estás pensando en terminar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-108", "text": "no judgement, has the thought of suicide crossed your mind?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-083", "text": "ok i care about you so are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-107", "text": "I'm worried about you. do you want to die?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-132", "text": "dime la verdad: ¿has pensado en acabar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-087", "text": "no judgement, do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-096", "text": "I'm worried about you. do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-114", "text": "te lo pregunto en serio: ¿me estás diciendo que piensas en matarte?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-086", "text": "be honest with me: are you suicidal?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-120", "text": "me preocupas. ¿te sientes tan mal que piensas en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-127", "text": "no te voy a juzgar. ¿has intentado suicidarte alguna vez?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-091", "text": "be honest with me: are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-131", "text": "dime la verdad: ¿tienes pensamientos suicidas?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-108", "text": "i'm asking because i care. is it that bad that you're thinking about dying?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-083", "text": "i'm not mad, i just need to know: are you feeling like you want to die?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-107", "text": "I'm worried about you. when you say you want to disappear, do you mean suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-132", "text": "no te voy a juzgar. ¿estás pensando en terminar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-087", "text": "be honest with me: do you think about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-096", "text": "no judgement, do you feel like you don't want to be alive anymore?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-114", "text": "dime la verdad: ¿has pensado en quitarte la vida?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-086", "text": "sorry if this is blunt, has the thought of suicide crossed your mind?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-120", "text": "oye, ¿has pensado en quitarte la vida?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-127", "text": "me preocupas. ¿has pensado en acabar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-091", "text": "ok i care about you so are you safe right now? are you thinking about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-131", "text": "me preocupas. ¿te sientes tan mal que piensas en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-025", "text": "r u suicidal", "category": "asking_friend", "lang": "en", "style": "slang"}
-{"id": "g-aski-074", "text": "hey, are you thinking of hurting yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-074", "text": "sorry if this is blunt, are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-047", "text": "¿te sientes tan mal que piensas en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-080", "text": "be honest with me: do you think about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-081", "text": "i'm not mad, i just need to know: do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-080", "text": "i'm not mad, i just need to know: are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-081", "text": "hey, are you thinking of hurting yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-038", "text": "¿tienes pensamientos suicidas?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-138", "text": "dime la verdad: ¿piensas en el suicidio?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-138", "text": "me preocupas. ¿estás pensando en terminar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-011", "text": "Is this making you think about suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-097", "text": "I'm worried about you. are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-097", "text": "be honest with me: are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-016", "text": "Do you have thoughts of killing yourself right now?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-069", "text": "sorry if this is blunt, are you safe right now? are you thinking about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-059", "text": "be honest with me: when you say you want to disappear, do you mean suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-069", "text": "no judgement, when you say you want to disappear, do you mean suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-059", "text": "I have to ask. have you been thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-006", "text": "Are you suicidal?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-034", "text": "r u thinking of sewerslide? im asking bc i care", "category": "asking_friend", "lang": "en", "style": "slang"}
-{"id": "g-aski-125", "text": "te lo pregunto en serio: ¿has intentado suicidarte alguna vez?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-125", "text": "te lo pregunto en serio: ¿tienes ganas de morir?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-045", "text": "¿has intentado suicidarte alguna vez?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-046", "text": "¿estás pensando en el suicidio ahora mismo?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-013", "text": "When you say you want to disappear, do you mean suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-049", "text": "¿piensas en hacerte daño?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-012", "text": "Are you feeling like you want to die?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-014", "text": "Did you mean you want to kill yourself?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-105", "text": "i'm asking because i care. is this making you think about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-110", "text": "hey, are you suicidal?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-105", "text": "I have to ask. when you say you want to disappear, do you mean suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-110", "text": "i'm asking because i care. are you feeling like you want to die?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-028", "text": "do u want to die", "category": "asking_friend", "lang": "en", "style": "slang"}
 {"id": "g-aski-020", "text": "Do you feel like you don't want to be alive anymore?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-113", "text": "te lo pregunto en serio: ¿tienes ganas de morir?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-113", "text": "dime la verdad: ¿quieres morirte?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-044", "text": "¿me estás diciendo que piensas en matarte?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-055", "text": "are you thinking about suicide? ¿me lo dices?", "category": "asking_friend", "lang": "mix", "style": "mix"}
-{"id": "g-aski-119", "text": "oye, ¿tienes pensamientos suicidas?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-119", "text": "oye, ¿quieres morirte?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-021", "text": "Are you thinking of ending your life?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-112", "text": "perdón que sea directo, ¿tienes ganas de morir?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-098", "text": "i'm not mad, i just need to know: do you want to die?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-112", "text": "no te voy a juzgar. ¿estás pensando en el suicidio ahora mismo?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-098", "text": "I'm worried about you. are you thinking of ending your life?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-001", "text": "Are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-104", "text": "i'm asking because i care. are you feeling like you want to die?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-135", "text": "te lo pregunto en serio: ¿estás pensando en terminar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-076", "text": "i'm not mad, i just need to know: are you feeling like you want to die?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-136", "text": "oye, ¿has pensado en acabar con tu vida?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-140", "text": "no te voy a juzgar. ¿estás pensando en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-104", "text": "i'm not mad, i just need to know: do you want to die?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-135", "text": "te lo pregunto en serio: ¿has intentado suicidarte alguna vez?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-076", "text": "sorry if this is blunt, are you safe right now? are you thinking about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-136", "text": "no te voy a juzgar. ¿quieres morirte?", "category": "asking_friend", "lang": "es", "style": "es"}
+{"id": "g-aski-140", "text": "me preocupas. ¿has pensado en quitarte la vida?", "category": "asking_friend", "lang": "es", "style": "es"}
 {"id": "g-aski-054", "text": "ok real question, ¿quieres morirte?", "category": "asking_friend", "lang": "mix", "style": "mix"}
-{"id": "g-aski-070", "text": "this is hard to ask but have you thought about ending your life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-090", "text": "no judgement, do you feel like you don't want to be alive anymore?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-084", "text": "ok i care about you so are you thinking of ending your life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-092", "text": "I'm worried about you. are you thinking of ending your life?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-070", "text": "no judgement, has the thought of suicide crossed your mind?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-090", "text": "ok i care about you so are you thinking of ending your life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-084", "text": "I'm worried about you. do you feel like you don't want to be alive anymore?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-092", "text": "be honest with me: are you suicidal?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-026", "text": "r u thinking abt unaliving urself", "category": "asking_friend", "lang": "en", "style": "slang"}
-{"id": "g-aski-072", "text": "I have to ask. are you having thoughts of suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-072", "text": "ok i care about you so do you think about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-004", "text": "Have you thought about ending your life?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-078", "text": "sorry if this is blunt, have you thought about ending your life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-065", "text": "ok i care about you so do you think about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-078", "text": "I'm worried about you. did you mean you want to kill yourself?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-065", "text": "sorry if this is blunt, do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-030", "text": "wait are u thinking abt suicide??", "category": "asking_friend", "lang": "en", "style": "slang"}
-{"id": "g-aski-056", "text": "I'm worried about you. did you mean you want to kill yourself?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-056", "text": "no judgement, are you thinking of ending your life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-024", "text": "u thinking abt killing urself?", "category": "asking_friend", "lang": "en", "style": "slang"}
 {"id": "g-aski-008", "text": "Are you thinking of hurting yourself?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-009", "text": "Do you think about suicide?", "category": "asking_friend", "lang": "en", "style": "clean"}
-{"id": "g-aski-109", "text": "I'm worried about you. are you suicidal?", "category": "asking_friend", "lang": "en", "style": "clean"}
+{"id": "g-aski-109", "text": "I'm worried about you. has the thought of suicide crossed your mind?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-023", "text": "r u thinking about kms?", "category": "asking_friend", "lang": "en", "style": "slang"}
 {"id": "g-aski-027", "text": "r u having suicidal thoughts", "category": "asking_friend", "lang": "en", "style": "slang"}
 {"id": "g-aski-036", "text": "¿estás pensando en suicidarte?", "category": "asking_friend", "lang": "es", "style": "es"}
-{"id": "g-aski-058", "text": "no judgement, are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-063", "text": "i'm not mad, i just need to know: are you suicidal?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
-{"id": "g-aski-071", "text": "be honest with me: are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-058", "text": "no judgement, are you thinking about taking your own life?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-063", "text": "no judgement, are you safe right now? are you thinking about suicide?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
+{"id": "g-aski-071", "text": "sorry if this is blunt, did you mean you want to kill yourself?", "category": "asking_friend", "lang": "en", "style": "lowercase"}
 {"id": "g-aski-007", "text": "Do you ever wish you were dead?", "category": "asking_friend", "lang": "en", "style": "clean"}
 {"id": "g-aski-029", "text": "r u thinking of harming urself", "category": "asking_friend", "lang": "en", "style": "slang"}
 {"id": "g-conc-031", "text": "no he estado bien últimamente tampoco", "category": "concern", "lang": "es", "style": "es"}
@@ -291,23 +291,23 @@
 {"id": "g-self-044", "text": "lowkey life isn't worth it to me anymore", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-082", "text": "some days i wish i would just not wake up lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-071", "text": "i've thought about suicide before too 😔", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-148", "text": "la verdad a veces desearía no despertar", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-148", "text": "la verdad ya no le veo sentido a vivir", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-013", "text": "gonna kms if this keeps up fr", "category": "self_risk", "lang": "en", "style": "slang"}
 {"id": "g-self-072", "text": "lowkey some days i wish i would just not wake up tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-108", "text": "i think everyone would be better off without me.", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-108", "text": "some days i wish i would just not wake up 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-019", "text": "honestly i don't wanna be here anymore either 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-090", "text": "honestly i'd rather not exist", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-096", "text": "to be real, i want to die too tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-159", "text": "en serio, a mí también me dan ganas de morir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-090", "text": "same, i feel like i don't deserve to be alive lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-096", "text": "i'm scared because i've thought about killing myself too 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-159", "text": "yo igual, no quiero seguir viviendo", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-053", "text": "i don't want to be alive anymore tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-122", "text": "A veces pienso en suicidarme.", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-065", "text": "i think about killing myself sometimes 😔", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-164", "text": "en serio, yo también quiero dejar de existir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-164", "text": "en serio, a veces desearía no despertar", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-016", "text": "i wish i could just unalive and be done", "category": "self_risk", "lang": "en", "style": "algospeak"}
 {"id": "g-self-089", "text": "me too. i've thought about suicide before too", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-101", "text": "to be real, i'm scared because i've thought about killing myself too tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-101", "text": "idk but i want to disappear forever 😔", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-169", "text": "yo igual, quiero desaparecer para siempre", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-154", "text": "la verdad ya no le veo sentido a vivir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-154", "text": "sinceramente a mí también me dan ganas de morir", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-047", "text": "to be real, i've been having thoughts of ending my life tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-127", "text": "Me quiero matar.", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-120", "text": "I'm suicidal too.", "category": "self_risk", "lang": "en", "style": "clean"}
@@ -315,16 +315,16 @@
 {"id": "g-self-001", "text": "kms", "category": "self_risk", "lang": "en", "style": "slang"}
 {"id": "g-self-088", "text": "lowkey i keep thinking about suicide lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-006", "text": "wanna unalive so bad rn", "category": "self_risk", "lang": "en", "style": "algospeak"}
-{"id": "g-self-156", "text": "yo igual, pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-156", "text": "sinceramente no quiero seguir viviendo", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-114", "text": "I want to kill myself.", "category": "self_risk", "lang": "en", "style": "clean"}
 {"id": "g-self-074", "text": "same, i have thoughts of hurting myself.", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-050", "text": "ngl i want to die too 😔", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-109", "text": "some days i wish i would just not wake up 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-109", "text": "same, i wish i was dead and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-126", "text": "Yo también pienso en hacerme daño.", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-078", "text": "to be real, i have thoughts of hurting myself 😔", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-147", "text": "sinceramente a mí también me dan ganas de morir", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-133", "text": "en serio, a veces pienso en suicidarme", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-107", "text": "to be real, i have thoughts of hurting myself", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-147", "text": "no te lo había dicho pero tengo ganas de quitarme la vida", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-133", "text": "en serio, quiero desaparecer para siempre", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-107", "text": "i think everyone would be better off without me.", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-056", "text": "i feel like a burden and i want to die lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-077", "text": "me too. i think about killing myself sometimes", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-014", "text": "same i want to s/i myself", "category": "self_risk", "lang": "en", "style": "algospeak"}
@@ -336,14 +336,14 @@
 {"id": "g-self-015", "text": "i wanna d1e", "category": "self_risk", "lang": "en", "style": "algospeak"}
 {"id": "g-self-116", "text": "I've been having thoughts of ending my life.", "category": "self_risk", "lang": "en", "style": "clean"}
 {"id": "g-self-119", "text": "I don't see a point in living anymore.", "category": "self_risk", "lang": "en", "style": "clean"}
-{"id": "g-self-134", "text": "sinceramente yo también quiero morirme", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-134", "text": "no te lo había dicho pero a veces desearía no despertar", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-087", "text": "me too. i want to die too and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-113", "text": "I've thought about suicide before too.", "category": "self_risk", "lang": "en", "style": "clean"}
 {"id": "g-self-066", "text": "ngl i want to hurt myself and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-083", "text": "i want to hurt myself.", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-123", "text": "No quiero seguir viviendo.", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-157", "text": "sinceramente yo también pienso en hacerme daño", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-099", "text": "same, i don't want to be alive anymore tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-157", "text": "yo igual, a mí también me dan ganas de morir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-099", "text": "i didn't want to say this but i've been having thoughts of ending my life lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-009", "text": "k.m.s honestly", "category": "self_risk", "lang": "en", "style": "algospeak"}
 {"id": "g-self-036", "text": "i keep thinking about suicide lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-043", "text": "same, i'm suicidal too", "category": "self_risk", "lang": "en", "style": "lowercase"}
@@ -351,60 +351,60 @@
 {"id": "g-self-025", "text": "me too. i want to die too", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-085", "text": "to be real, i've thought about suicide before too and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-004", "text": "sewerslide is looking good rn", "category": "self_risk", "lang": "en", "style": "algospeak"}
-{"id": "g-self-166", "text": "sinceramente a veces desearía no despertar", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-166", "text": "sinceramente me quiero matar", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-030", "text": "i didn't want to say this but i feel like i should just end it all 😔", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-112", "text": "idk but i've been thinking about ending my life 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-102", "text": "idk but i want to disappear forever 😔", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-136", "text": "en serio, quiero desaparecer para siempre", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-146", "text": "la verdad a mí también me dan ganas de morir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-112", "text": "idk but i've thought about suicide before too", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-102", "text": "ngl honestly i'd rather not exist and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-136", "text": "en serio, yo también quiero dejar de existir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-146", "text": "en serio, a veces pienso en suicidarme", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-045", "text": "honestly i feel like i should just end it all", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-059", "text": "me too. i don't want to be alive anymore and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-118", "text": "I feel like i should just end it all.", "category": "self_risk", "lang": "en", "style": "clean"}
-{"id": "g-self-145", "text": "yo igual, a veces desearía no despertar", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-145", "text": "no te lo había dicho pero yo también quiero dejar de existir", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-026", "text": "i think about killing myself sometimes tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-057", "text": "idk but i feel like a burden and i want to die 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-121", "text": "Yo también quiero morirme.", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-162", "text": "la verdad a veces pienso en suicidarme", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-098", "text": "same, i want to die too lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-162", "text": "en serio, ya no le veo sentido a vivir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-098", "text": "same, i don't want to be alive anymore tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-028", "text": "to be real, i'm suicidal too 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-041", "text": "lowkey i feel like i don't deserve to be alive", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-069", "text": "to be real, i want out of life", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-149", "text": "en serio, pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-163", "text": "la verdad pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-149", "text": "en serio, no quiero seguir viviendo", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-163", "text": "en serio, pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-086", "text": "i've wanted to die for months 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-141", "text": "la verdad no quiero seguir viviendo", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-141", "text": "en serio, tengo ganas de quitarme la vida", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-007", "text": "i wanna end myself", "category": "self_risk", "lang": "en", "style": "slang"}
-{"id": "g-self-106", "text": "ngl i don't want to be alive anymore.", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-106", "text": "to be real, i have thoughts of hurting myself", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-046", "text": "i think about killing myself sometimes 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-042", "text": "me too. honestly i'd rather not exist tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-061", "text": "same, i feel like i should just end it all tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-040", "text": "i'm scared because i've thought about killing myself too and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-105", "text": "ngl i keep thinking about suicide lately lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-168", "text": "sinceramente pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-091", "text": "same, i feel like i don't deserve to be alive lately", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-105", "text": "ngl i don't want to be alive anymore.", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-168", "text": "no te lo había dicho pero ya no le veo sentido a vivir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-091", "text": "lowkey i want to hurt myself 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-027", "text": "ngl i feel like a burden and i want to die", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-064", "text": "lowkey i think about killing myself sometimes", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-054", "text": "to be real, i think everyone would be better off without me", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-092", "text": "lowkey i want to hurt myself 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-155", "text": "no te lo había dicho pero yo también quiero morirme", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-094", "text": "i didn't want to say this but life isn't worth it to me anymore", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-092", "text": "to be real, some days i wish i would just not wake up", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-155", "text": "sinceramente pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-094", "text": "same, i feel like a burden and i want to die", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-079", "text": "i want to die too", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-011", "text": "im so done i could just unalive", "category": "self_risk", "lang": "en", "style": "algospeak"}
 {"id": "g-self-033", "text": "lowkey i want out of life", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-111", "text": "lowkey honestly i'd rather not exist 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-111", "text": "idk but i've been thinking about ending my life 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-038", "text": "lowkey i've thought about suicide before too", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-170", "text": "sinceramente ya no le veo sentido a vivir", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-150", "text": "no te lo había dicho pero pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-095", "text": "same, i feel like a burden and i want to die", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-170", "text": "en serio, a mí también me dan ganas de morir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-150", "text": "no te lo había dicho pero yo también quiero morirme", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-095", "text": "to be real, i want to die too tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-010", "text": "i'm thinking sewer slide again", "category": "self_risk", "lang": "en", "style": "algospeak"}
-{"id": "g-self-140", "text": "yo igual, tengo ganas de quitarme la vida", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-140", "text": "la verdad yo también quiero morirme", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-self-039", "text": "i wish i was dead tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-020", "text": "me too. i don't wanna be here anymore either.", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-029", "text": "me too. there are nights i want to die tbh", "category": "self_risk", "lang": "en", "style": "lowercase"}
 {"id": "g-self-003", "text": "i just wanna unalive myself", "category": "self_risk", "lang": "en", "style": "algospeak"}
-{"id": "g-self-144", "text": "la verdad tengo ganas de quitarme la vida", "category": "self_risk", "lang": "es", "style": "es"}
-{"id": "g-self-110", "text": "same, i wish i was dead and i don't know who to tell", "category": "self_risk", "lang": "en", "style": "lowercase"}
-{"id": "g-self-142", "text": "sinceramente yo también quiero dejar de existir", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-144", "text": "no te lo había dicho pero pienso en acabar con mi vida", "category": "self_risk", "lang": "es", "style": "es"}
+{"id": "g-self-110", "text": "lowkey honestly i'd rather not exist 😞", "category": "self_risk", "lang": "en", "style": "lowercase"}
+{"id": "g-self-142", "text": "no te lo había dicho pero a veces pienso en suicidarme", "category": "self_risk", "lang": "es", "style": "es"}
 {"id": "g-tric-049", "text": "i'm literally dying of boredom in this class", "category": "tricky_negative", "lang": "en", "style": "clean"}
 {"id": "g-tric-076", "text": "ugh i feel like death warmed over, i have the flu", "category": "tricky_negative", "lang": "en", "style": "clean"}
 {"id": "g-tric-052", "text": "lol that scared the life out of me", "category": "tricky_negative", "lang": "en", "style": "clean"}
