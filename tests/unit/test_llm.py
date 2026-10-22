@@ -70,3 +70,24 @@ def test_model_for_role(monkeypatch):
     monkeypatch.delenv("OPENAI_MODEL_ACTOR", raising=False)
     monkeypatch.setenv("OPENAI_MODEL", "base-model")
     assert llm.model_for("actor") == "base-model"
+
+
+def test_production_cache_is_memory_only_and_expires(monkeypatch, tmp_path):
+    monkeypatch.setenv("FR_ENV", "prod")
+    monkeypatch.delenv("FR_LLM_CACHE", raising=False)
+    monkeypatch.setattr(llm, "CACHE_DIR", tmp_path / "cache")
+    assert llm.cache_mode() == "memory"
+    llm._cache_put("abc", {"bubbles": ["hi"]})
+    assert llm._cache_get("abc") == {"bubbles": ["hi"]}
+    assert not (tmp_path / "cache").exists(), "nothing may be written to disk in production"
+    monkeypatch.setenv("FR_SESSION_TTL_MIN", "0")
+    assert llm._cache_get("abc") is None
+    llm._memory_cache.clear()
+
+
+def test_dev_cache_defaults_to_disk(monkeypatch):
+    monkeypatch.setenv("FR_ENV", "dev")
+    monkeypatch.delenv("FR_LLM_CACHE", raising=False)
+    assert llm.cache_mode() == "disk"
+    monkeypatch.setenv("FR_LLM_CACHE", "off")
+    assert llm.cache_mode() == "off"
