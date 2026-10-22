@@ -6,7 +6,7 @@ Read `docs/LANES.md` first (mission, architecture, lanes, quality bar), then `ba
 1. **Stay in your lane.** Only edit the paths your lane owns (`ownership.yaml`). Check with `uv run python scripts/check_ownership.py --lane <lane>`. If you need something outside your lane (contracts, dependencies, Makefile, another lane's file), write it under `## Requests` in `wt-notes/<lane>.md`, work around it locally, and continue.
 2. **Contracts are frozen.** Implement `backend/app/contracts.py`; never edit it.
 3. **Tests first.** Turn each acceptance criterion into a test, then implement it. `make check` must pass before you say you're done.
-4. **Offline and free.** No network in tests (`FR_EMBED=hash`). **No paid APIs and no LLM SDKs anywhere.** Text data is written into files.
+4. **Offline tests, cheap LLM.** No network in unit tests (`FR_EMBED=hash`; LLM fakes via `backend.app.llm.register_fake`). Every LLM call goes through `backend/app/llm.py` (OpenAI: cached, budgeted, raises `LLMUnavailable` → fall back). **Never use an LLM API to generate datasets**; text data is written into files. The app must still work with `FR_LLM=0`. Real-API tests are marked `@pytest.mark.llm`.
 5. **No new Python dependencies.** Everything needed is installed (`pyproject.toml`). The frontend lane manages `frontend/package.json` itself.
 6. **Safety is non-negotiable.** Follow `docs/SAFE_MESSAGING.md`. Asking the friend directly about suicide must never be flagged. The Guardian runs first.
 7. **Deterministic:** seed everything; the same input gives the same output.

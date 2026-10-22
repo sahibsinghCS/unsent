@@ -136,6 +136,7 @@ def _friend_reply(
             state_after=state,
             line_id=output.line_id,
             reaction=output.reaction,
+            voice=output.source,
         )
 
     fallback = scenario.fallback_lines.get(state.level) or scenario.fallback_lines.get(0) or ["..."]
@@ -146,4 +147,5 @@ def _friend_reply(
         bubbles=[fallback[state.turn % len(fallback)]],
         state_after=state,
         reaction=Reaction.NEUTRAL,
+        voice="fallback",
     )

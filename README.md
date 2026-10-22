@@ -6,7 +6,7 @@ FirstReply lets teens practice the text that could save a friend's life: they ch
 
 Built for the 2026 Congressional App Challenge.
 
-**Runs 100% locally and free:** no paid AI services and no API keys. Every word the practice friend can say comes from a pre-written, safety-checked line bank, chosen by our own state engine and trained models.
+**The AI is only the voice.** OpenAI writes the practice friend's wording. Our own deterministic engine decides what the friend may reveal, our verifier and Guardian check every reply, and our trained models score the helper. With no API key, the friend falls back to a reviewed line bank and everything still works.
 
 > FirstReply is a practice tool, not a crisis service. If someone is in immediate danger, call 911. In the US, call or text **988**.
 

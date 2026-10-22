@@ -1,6 +1,6 @@
 # FirstReply: shared context for every lane (authoritative)
 
-*Last updated Thu Oct 22, 2026 (night). If `PLAN_WORKTREES.md` or `FIRSTREPLY.md` conflicts with this file, **this file wins**.*
+*Last updated Thu Oct 22, 2026 (late night, v3: OpenAI writes the friend's wording; our engine and models make every decision). If `PLAN_WORKTREES.md` conflicts with this file, **this file wins**. Product overview: `FIRSTREPLY.md`.*
 
 ## 1. Mission
 **FirstReply** is a web app for the **2026 Congressional App Challenge** (district IL-11, Rep. Bill Foster).
@@ -13,7 +13,13 @@
 - **Why it can win:** mental health keeps winning, but past winners help the person who is struggling. **No CAC winner trains the friend.** CDC YRBS 2023 found that 20.4% of US high schoolers seriously considered suicide, and teens usually tell a peer first.
 
 ## 2. Non-negotiable constraints
-1. **$0 to run. No paid APIs, no API keys, no LLM calls in the app, tests or scripts.** No OpenAI, Anthropic, Gemini or Grok SDKs. All text data (friend lines, practice replies, safety examples) is **written into files in the repo** by agents or humans. All models are trained locally (scikit-learn on local embeddings).
+1. **The LLM is only the voice, and it's cheap.**
+   - OpenAI (via `backend/app/llm.py` only) writes the friend's wording, plus optional rewrite suggestions, a free moderation signal and red-team bots.
+   - **Our code decides everything else:** what the friend may reveal (state engine), whether a reply is safe and allowed (verifier + Guardian), and how the helper is scored (our trained models).
+   - Every LLM call is cached, budgeted (`LLM_DAILY_BUDGET_USD`) and falls back to the reviewed **line bank** when the key is missing, the budget is reached or the API fails. The app must fully work with `FR_LLM=0`.
+   - **Never use an LLM API to generate datasets.** All text data (friend lines, practice replies, safety examples) is **written into files** by agents or humans.
+   - Unit tests never call the API (fakes via `llm.register_fake`). Real-API tests are marked `@pytest.mark.llm`.
+   - No other AI SDKs.
 2. **Safety first.**
    - The friend never describes or hints at suicide methods, means or plans, never encourages harm, and never claims to be a real person in crisis.
    - "Real mode" is fixed text with no AI.
@@ -35,16 +41,18 @@ Helper message
                                 → probabilities for 10 labels (contracts.SkillLabel)
   → STATE ENGINE (engine lane)  deterministic rules: trust 0–100, disclosure level 0–4, gates, hysteresis,
                                 silence ("Seen"), secrecy flag, endings
-  → FRIEND VOICE (engine lane)  picks a line from the reviewed LINE BANK (data/lines, written by the data lane)
-                                by (level, reaction) + semantic similarity to the helper's message
-                                + anti-repetition; only facts unlocked at the current level may appear
-  → VERIFIER (engine lane)      fact gating, Guardian.check_friend, no repeats → else scenario fallback line
+  → FRIEND VOICE (engine lane)  OpenAI writes the reply in the persona's voice, given ONLY the facts unlocked
+                                at the current level + the reaction the engine chose + few-shot examples
+                                from the reviewed LINE BANK (data/lines, written by the data lane)
+  → VERIFIER (engine lane)      fact-leak check (embedding similarity to LOCKED facts), Guardian.check_friend,
+                                persona-break/advice detection, length → regenerate once → else the best
+                                reviewed bank line (level, reaction, similarity) → else scenario fallback line
   → Phone UI + live trust graph + X-ray mode (frontend lane)
 End of chat → CRITIC (ml lane)  per-message calibrated scores + word highlights (occlusion) + "uncertain" flags
                                 + verified rewrites (exemplar bank) + 7-skill summary + turning point
 "What if"  → ROLLOUTS (whatif lane, Wave B)  exemplar-bank candidates simulated through the real engine + line bank
 ```
-**Why a line bank and not a live chatbot:** every word the friend can say is written in advance, checked by code (100% of lines pass the Guardian) and reviewable by a school counselor. There's no live AI improvising in a suicide-prevention context. It's also free, instant and works offline. "Not an AI wrapper": the intelligence is **our** trained models, rules and algorithms.
+**Why this design ("not an AI wrapper"):** the LLM makes the friend sound real, but it can't decide anything. Our deterministic engine decides what the friend may reveal and when. Our verifier blocks any reply that leaks a locked fact, breaks character or fails the Guardian. Our trained models score the helper. The reviewed line bank is both the style guide and a safety net, so the app keeps working, safely, with no API at all. Every LLM call is cached, budgeted and logged.
 
 ## 4. Repo map (integrator-owned unless a lane is named)
 | Path | What |
@@ -55,6 +63,7 @@ End of chat → CRITIC (ml lane)  per-message calibrated scores + word highlight
 | `backend/app/session.py` | Conversation tree (rewind/branches), in-memory store with a 60-min TTL |
 | `backend/app/content.py` | Loaders for scenarios, line bank, exemplars, real mode, crisis lines, metrics |
 | `backend/app/embed.py` | Local embeddings: `fastembed` multilingual model (`paraphrase-multilingual-MiniLM-L12-v2`, 384-d) or `HashEmbedder` for tests |
+| `backend/app/llm.py` | **The only LLM gateway** (OpenAI): `chat_json(prompt_name, messages, schema, role)`, `moderate(text)`, fakes for tests, cache, daily budget, usage log; raises `LLMUnavailable` → fall back |
 | `backend/app/api/routes.py`, `main.py` | FastAPI under `/api`; serves `frontend/dist` at `/` |
 | `backend/app/stubs/` | Working placeholders. **The app is playable now:** `make dev-stub`. Example payloads are in `stubs/fixtures/` |
 | `data/scenarios/*.json` | 5 scenario drafts (Sahib edits the voices) |
@@ -98,7 +107,7 @@ End of chat → CRITIC (ml lane)  per-message calibrated scores + word highlight
 ## 5. Lanes
 | Lane | Branch | Model | Wave | Builds |
 |---|---|---|---|---|
-| **engine** | `wt/engine` | Opus 5.5 | A (now) | State machine, line-bank actor, verifier and bank validator, turning points |
+| **engine** | `wt/engine` | Opus 5.5 | A (now) | State machine, **LLM voice + line-bank fallback**, verifier and bank validator, turning points |
 | **safety** | `wt/safety` | Opus 5.5 | A (now) | Guardian: normalizer, lexicon, speaker-aware rules, trained classifier, evaluation |
 | **data** | `wt/data` | Sonnet 5.5 | A (now) | All text datasets (practice replies, Guardian examples, ~1,000 friend lines, exemplars, attacks) plus the labeling tool and dataset tooling |
 | **ml** | `wt/ml` | Opus 5.5 | A (now) | Skill detector (2-model ensemble, calibration), explanations, critic, rewrites, kappa |
