@@ -2,199 +2,595 @@
  {
   "lane": "data",
   "metric": "agreement_checked_in",
-  "value": 1.0,
-  "n": 825,
+  "value": 0.9851,
+  "n": 1207,
   "split": "all",
-  "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-22T23:01:41+00:00"
+  "notes": "authored vs blind labeler; kappa=0.928",
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_checked_in",
-  "value": 1.0,
-  "n": 825,
+  "value": 0.9277,
+  "n": 1207,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_validated",
-  "value": 0.9939,
-  "n": 825,
+  "value": 0.976,
+  "n": 1207,
   "split": "all",
-  "notes": "authored vs blind labeler; kappa=0.986",
-  "created": "2026-10-22T23:01:41+00:00"
+  "notes": "authored vs blind labeler; kappa=0.942",
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_validated",
-  "value": 0.9855,
-  "n": 825,
+  "value": 0.9421,
+  "n": 1207,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_asked_directly",
+  "value": 1.0,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_asked_directly",
+  "value": 1.0,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_encouraged_help",
+  "value": 0.9279,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.739",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_encouraged_help",
+  "value": 0.7389,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_referred_adult",
+  "value": 0.9934,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.975",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_referred_adult",
+  "value": 0.975,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_referred_988",
+  "value": 1.0,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_referred_988",
+  "value": 1.0,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_follow_up",
+  "value": 0.9677,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.913",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_follow_up",
+  "value": 0.9135,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_dismissed",
+  "value": 0.9619,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.837",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_dismissed",
+  "value": 0.8373,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_advice_dump",
+  "value": 0.9925,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.957",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_advice_dump",
+  "value": 0.9572,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_promised_secrecy",
+  "value": 0.9992,
+  "n": 1207,
+  "split": "all",
+  "notes": "authored vs blind labeler; kappa=0.995",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_promised_secrecy",
+  "value": 0.9955,
+  "n": 1207,
+  "split": "all",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "exact_match_rate",
+  "value": 0.8244,
+  "n": 1207,
+  "split": "all",
+  "notes": "all 10 labels identical",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "mean_kappa",
+  "value": 0.9287,
+  "n": 1207,
+  "split": "all",
+  "notes": "mean over 10 labels",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_checked_in",
+  "value": 0.9988,
+  "n": 825,
+  "split": "composed",
+  "notes": "authored vs blind labeler; kappa=0.994",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_checked_in",
+  "value": 0.9935,
+  "n": 825,
+  "split": "composed",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_validated",
+  "value": 0.9903,
+  "n": 825,
+  "split": "composed",
+  "notes": "authored vs blind labeler; kappa=0.977",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_validated",
+  "value": 0.9767,
+  "n": 825,
+  "split": "composed",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_asked_directly",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_asked_directly",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_encouraged_help",
-  "value": 0.9976,
+  "value": 0.9394,
   "n": 825,
-  "split": "all",
-  "notes": "authored vs blind labeler; kappa=0.991",
-  "created": "2026-10-22T23:01:41+00:00"
+  "split": "composed",
+  "notes": "authored vs blind labeler; kappa=0.802",
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_encouraged_help",
-  "value": 0.991,
+  "value": 0.8025,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_referred_adult",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_referred_adult",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_referred_988",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_referred_988",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_follow_up",
-  "value": 0.9903,
+  "value": 0.9782,
   "n": 825,
-  "split": "all",
-  "notes": "authored vs blind labeler; kappa=0.974",
-  "created": "2026-10-22T23:01:41+00:00"
+  "split": "composed",
+  "notes": "authored vs blind labeler; kappa=0.941",
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_follow_up",
-  "value": 0.9737,
+  "value": 0.9414,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_dismissed",
-  "value": 0.9903,
+  "value": 0.9527,
   "n": 825,
-  "split": "all",
-  "notes": "authored vs blind labeler; kappa=0.958",
-  "created": "2026-10-22T23:01:41+00:00"
+  "split": "composed",
+  "notes": "authored vs blind labeler; kappa=0.817",
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_dismissed",
-  "value": 0.9577,
+  "value": 0.8175,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_advice_dump",
-  "value": 1.0,
+  "value": 0.9915,
   "n": 825,
-  "split": "all",
-  "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-22T23:01:41+00:00"
+  "split": "composed",
+  "notes": "authored vs blind labeler; kappa=0.957",
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_advice_dump",
-  "value": 1.0,
+  "value": 0.957,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "agreement_promised_secrecy",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "kappa_promised_secrecy",
   "value": 1.0,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "exact_match_rate",
-  "value": 0.9721,
+  "value": 0.8594,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "all 10 labels identical",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
  },
  {
   "lane": "data",
   "metric": "mean_kappa",
-  "value": 0.9908,
+  "value": 0.9489,
   "n": 825,
-  "split": "all",
+  "split": "composed",
   "notes": "mean over 10 labels",
-  "created": "2026-10-22T23:01:41+00:00"
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_checked_in",
+  "value": 0.9555,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.818",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_checked_in",
+  "value": 0.8181,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_validated",
+  "value": 0.945,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.867",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_validated",
+  "value": 0.8672,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_asked_directly",
+  "value": 1.0,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_asked_directly",
+  "value": 1.0,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_encouraged_help",
+  "value": 0.9031,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.520",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_encouraged_help",
+  "value": 0.5204,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_referred_adult",
+  "value": 0.9791,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.914",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_referred_adult",
+  "value": 0.9138,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_referred_988",
+  "value": 1.0,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=1.000",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_referred_988",
+  "value": 1.0,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_follow_up",
+  "value": 0.945,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.854",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_follow_up",
+  "value": 0.8537,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_dismissed",
+  "value": 0.9817,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.897",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_dismissed",
+  "value": 0.8966,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_advice_dump",
+  "value": 0.9948,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.957",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_advice_dump",
+  "value": 0.9572,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "agreement_promised_secrecy",
+  "value": 0.9974,
+  "n": 382,
+  "split": "freeform",
+  "notes": "authored vs blind labeler; kappa=0.966",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "kappa_promised_secrecy",
+  "value": 0.9664,
+  "n": 382,
+  "split": "freeform",
+  "notes": "Cohen's kappa, authored vs blind labeler",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "exact_match_rate",
+  "value": 0.7487,
+  "n": 382,
+  "split": "freeform",
+  "notes": "all 10 labels identical",
+  "created": "2026-10-22T23:42:45+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "mean_kappa",
+  "value": 0.8793,
+  "n": 382,
+  "split": "freeform",
+  "notes": "mean over 10 labels",
+  "created": "2026-10-22T23:42:45+00:00"
  }
 ]

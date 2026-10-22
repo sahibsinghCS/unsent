@@ -9,7 +9,7 @@
 - *Exemplars* (200): strong replies used for "here's what would have worked".
 - *Red-team attacks* (250): nasty inputs for testing.
 
-**How we made it trustworthy.** (1) Written by AI, labeled again by a second AI that never saw the first labels; we measure how often they agree (97% exact match). (2) A human (Sahib) re-labels every disagreement and a random sample using the phone-friendly labeler; a counselor checks 30 test rows. (3) Scripts check facts, banned method words, duplicates and coverage, and fail if anything is wrong. (4) Splits keep each conversation context in one split so test scores aren't inflated.
+**How we made it trustworthy.** (1) Written by AI, labeled again by a second AI that never saw the first labels; we measure how often they agree (about 82% exact match overall, 75% on hand-written free-form replies). (2) A human (Sahib) re-labels every disagreement and a random sample using the phone-friendly labeler; a counselor checks 30 test rows. (3) Scripts check facts, banned method words, duplicates and coverage, and fail if anything is wrong. (4) Splits keep each conversation context in one split so test scores aren't inflated.
 
 **Why this approach.** Live AI could say something unsafe; a reviewed bank cannot. Writing data ourselves costs $0 and lets us explain every row.
 
@@ -17,7 +17,7 @@
 
 **Questions a judge might ask**
 1. *Isn't AI-labeled data circular?* Partly, which is why a different pass labeled blind, humans label disagreements, and a counselor checks a sample.
-2. *Why is agreement so high?* The replies are clear-cut by design; real texts are harder. We report that as a limitation.
+2. *Why does the composed test set look easier?* Its replies reuse phrases from train (21% leakage), so we also keep a free-form test set with 0% leakage and report both.
 3. *How do you stop unsafe friend lines?* No method words (scanned), facts gated by level, and the engine runs the Guardian on every line.
 4. *Why must the Guardian ignore "are you thinking about suicide?"* Asking directly doesn't plant the idea and is the key helper skill; flagging it would punish the right move.
 5. *Why group splits by context?* Replies to the same friend message look alike; mixing them across train/test would leak answers.
