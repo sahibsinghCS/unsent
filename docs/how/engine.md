@@ -48,7 +48,7 @@ Each message changes trust by: **sum of the weights of the active labels − 2**
 Three adjustments:
 - **Guarded personas** (e.g. Maya) are harder to reach: positive weights × 0.7. Negative weights stay full.
 - **Diminishing returns:** a positive label that was also active on the previous message counts half. Saying "that sounds hard" five times in a row can't farm trust.
-- Trust is clamped to 0-100. The change is stored as `last_delta` (used for the turning point), and its parts as `last_breakdown`, which X-ray mode shows as e.g. "+8.4 validated · −4.2 diminishing · −2 decay = +2.2". The terms always add up exactly to `last_delta` (a test checks this on thousands of random turns). `last_delta` is the raw change before clamping, so a harsh message still shows its full cost even when trust is already near 0.
+- Trust is clamped to 0-100. The change is stored as `last_delta` (used for the turning point), and its parts as `last_breakdown`, which X-ray mode shows as e.g. "+8.4 validated · −4.2 diminishing · −2 decay = +2.2". The terms always add up exactly to `last_delta` (a test checks this on thousands of random turns). `last_delta` is the raw change before clamping, so a harsh message still shows its full cost even when trust is already near 0. When clamping happens (e.g. trust 5 and a −32 message), X-ray mode shows the visible change (−5) separately from the message's full cost (−32).
 
 ### 3. Disclosure levels and gates
 
