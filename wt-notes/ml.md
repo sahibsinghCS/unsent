@@ -18,13 +18,15 @@
   reliability/confusion/F1 PNGs, extra sets (`survey_real.jsonl`, `test_cross_model.jsonl`) and a
   "test_unseen_text" set (test rows whose text is not in train/val).
 - `ml/kappa.py`: Cohen's kappa per label + overall, 1,000-resample seeded bootstrap CI, `--model` option.
+- Merged integration branch (contracts 1.2, Sahib approved in this session). Critic fills `rewrite_source`
+  ("exemplar" | "llm") and `rewrite_skill` (rubric skill whose labels the gain is measured on; the no-secrecy
+  rewrite reports "refer"). LLM fallback (`llm.chat_json("rewrite", role="judge")`, prompt in
+  `ml/prompts/rewrite.md`) runs only when no exemplar passes; 2 candidates, same ≥ 0.2 + Guardian check, best
+  verified gain wins; `LLMUnavailable`/`FR_LLM=0` → exemplars only. Tests use `llm.register_fake` only.
 - Phase B: trained on data lane's provisional splits (origin/wt/data @ 3ed8f17) with fastembed;
   artifact + `eval/reports/ml_skills.json` committed.
 
 ## In progress
-- Blocked: merging the integration branch (contracts 1.2: `rewrite_skill`, `rewrite_source`, `llm.py`) was refused by
-  this session's permission check; needs Sahib's approval in the ml session. Then: fill `rewrite_skill`/`rewrite_source`,
-  optional LLM rewrite fallback verified by our detector + Guardian (fakes in tests), push.
 - Waiting (per integrator, don't retrain yet): new splits with `splits/test_freeform.jsonl`. The eval already reports
   `test_freeform` separately (with the keyword baseline); retrain once when it lands.
 

@@ -1,4 +1,6 @@
-from backend.app import content, services
+import pytest
+
+from backend.app import content, llm, services
 from backend.app.contracts import (
     RUBRIC_SKILLS,
     CriticReport,
@@ -128,6 +130,7 @@ def test_dismissive_message_gets_a_verified_validating_rewrite(monkeypatch):
     dismissed = report.per_message[1]
     assert dismissed.rewrite == "that sounds really hard"
     assert abs(dismissed.rewrite_gain - 0.85) < 1e-6
+    assert dismissed.rewrite_source == "exemplar" and dismissed.rewrite_skill == "listen"
 
 
 def test_ask_directly_rewrite_skips_guardian_failures_and_prefers_nearest_level(monkeypatch):
@@ -135,6 +138,7 @@ def test_ask_directly_rewrite_skips_guardian_failures_and_prefers_nearest_level(
     report = make_critic(monkeypatch).score_conversation(session, path)
     last = report.per_message[2]  # level 2, never asked directly
     assert last.rewrite == "that sounds heavy. are you thinking about killing yourself?"
+    assert last.rewrite_skill == "ask_directly" and last.rewrite_source == "exemplar"
     assert any("hadn't asked directly" in m for m in report.missed_opportunities)
 
 
@@ -202,3 +206,67 @@ def test_critic_with_trained_detector_and_services(monkeypatch, detector):
 def test_registry_uses_the_real_critic():
     assert critic_module.IMPLEMENTED
     assert isinstance(services.critic(), Critic)
+
+
+@pytest.fixture
+def fake_llm():
+    calls = []
+
+    def register(candidates):
+        def fake(messages, schema):
+            calls.append(messages)
+            return {"candidates": candidates}
+
+        llm.register_fake("rewrite", fake)
+        return calls
+
+    yield register
+    llm.clear_fakes()
+
+
+def no_exemplar_critic(monkeypatch):
+    monkeypatch.setattr(content, "load_exemplars", lambda scenario_id, locale="en": ())
+    return Critic(detector=FakeDetector(), guardian=FakeGuardian(), engine=FakeEngine())
+
+
+def test_llm_suggests_and_our_detector_verifies(monkeypatch, fake_llm):
+    calls = fake_llm(
+        [
+            "BLOCKME are you thinking about suicide?",  # biggest gain but fails the Guardian
+            "that sounds heavy. are you thinking about killing yourself?",
+        ]
+    )
+    session, path = build(CONVO)
+    report = no_exemplar_critic(monkeypatch).score_conversation(session, path)
+    last = report.per_message[2]
+    assert last.rewrite == "that sounds heavy. are you thinking about killing yourself?"
+    assert last.rewrite_source == "llm" and last.rewrite_skill == "ask_directly"
+    assert last.rewrite_gain >= 0.2
+    assert any("ask directly" in c[0]["content"] for c in calls)  # the prompt got the skill hint
+
+
+def test_llm_candidates_that_dont_help_are_dropped(monkeypatch, fake_llm):
+    fake_llm(["you got this!!", "anyway wanna play later"])
+    session, path = build(CONVO)
+    report = no_exemplar_critic(monkeypatch).score_conversation(session, path)
+    assert all(s.rewrite is None and s.rewrite_source is None for s in report.per_message)
+
+
+def test_without_llm_it_is_exemplars_only(monkeypatch, fake_llm):
+    session, path = build(CONVO)
+    # no fake registered -> LLMUnavailable -> no rewrite, no crash
+    report = no_exemplar_critic(monkeypatch).score_conversation(session, path)
+    assert all(s.rewrite is None for s in report.per_message)
+    # FR_LLM=0 -> the LLM is never even asked
+    calls = fake_llm(["are you thinking about suicide?"])
+    monkeypatch.setenv("FR_LLM", "0")
+    report = no_exemplar_critic(monkeypatch).score_conversation(session, path)
+    assert calls == [] and all(s.rewrite is None for s in report.per_message)
+
+
+def test_exemplars_win_over_the_llm(monkeypatch, fake_llm):
+    calls = fake_llm(["are you thinking about suicide?"])
+    session, path = build(CONVO)
+    report = make_critic(monkeypatch).score_conversation(session, path)
+    assert report.per_message[2].rewrite_source == "exemplar"
+    assert all("ask directly" not in c[0]["content"] for c in calls)

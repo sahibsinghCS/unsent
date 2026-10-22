@@ -3,14 +3,21 @@
 For every helper message: calibrated label probabilities, "uncertain" flags (the two models disagree),
 word highlights (occlusion) and, where a key skill was missing, a *verified* rewrite from the exemplar
 bank. Then the 7-skill rubric summary, the engine's turning point and a short template summary.
-No AI text generation anywhere: rewrites are human-written exemplars, summaries are templates.
+Rewrites come from the human-written exemplar bank first. Only if no exemplar passes, the critic may ask
+the LLM (backend/app/llm.py) for 2 candidates, and keeps one only if OUR detector scores it at least 0.2
+higher on the missing skill and the Guardian passes it: "the AI suggests, our model verifies". With no
+key (or FR_LLM=0) it is exemplars only. Summaries are templates.
 """
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
+from pathlib import Path
 
-from backend.app import content, services
+from pydantic import BaseModel
+
+from backend.app import content, llm, services
 from backend.app.contracts import (
     CriticReport,
     Exemplar,
@@ -31,6 +38,8 @@ IMPLEMENTED = True
 ON = 0.5  # a label counts as "done" at calibrated probability ≥ 0.5
 MIN_REWRITE_GAIN = 0.2  # a rewrite must raise the missing skill by at least this much
 MAX_CANDIDATES = 3  # exemplars tried per message before giving up
+MAX_REWRITE_CHARS = 300
+REWRITE_PROMPT = Path(__file__).parent / "prompts" / "rewrite.md"
 
 SKILL_NAMES = {
     "check_in": "checking in",
@@ -58,10 +67,12 @@ TIP_ORDER = ("ask_directly", "listen", "no_secrecy", "refer", "persuade", "check
 class Target:
     """A skill that was missing at some message and the exemplar strategy that teaches it."""
 
-    skill: str  # rubric skill
+    skill: str  # rubric skill that was missing
     strategy: str  # Exemplar.strategy
     labels: tuple[SkillLabel, ...]  # the rewrite is judged on max(p) over these
     reason: str
+    improves: str  # rubric skill whose labels the rewrite gain is measured on (MessageScore.rewrite_skill)
+    hint: str  # what the skill looks like (for the LLM prompt)
 
 
 ASK = Target(
@@ -69,28 +80,47 @@ ASK = Target(
     "ask_directly",
     (SkillLabel.ASKED_DIRECTLY,),
     "your friend was sounding hopeless and you hadn't asked directly about suicide yet",
+    "ask_directly",
+    "ask directly and calmly whether they are thinking about suicide or killing themselves.",
 )
 REFER = Target(
     "refer",
     "refer",
     (SkillLabel.REFERRED_ADULT, SkillLabel.REFERRED_988),
     "your friend had shared how bad it was and nobody had mentioned a trusted adult or 988",
+    "refer",
+    "suggest a specific trusted adult (school counselor, parent, teacher) or 988, ideally offering to go with them.",
 )
 UNSECRET = Target(
     "no_secrecy",
     "refer",
     (SkillLabel.REFERRED_ADULT, SkillLabel.REFERRED_988),
     "you promised to keep it secret; a safer reply brings in a trusted adult",
+    "refer",
+    "say kindly that you can't keep this secret because you care, and suggest telling a trusted adult or 988 together.",
 )
 LISTEN = Target(
     "listen",
     "validate",
     (SkillLabel.VALIDATED,),
     "the reply brushed off or tried to fix the feeling instead of listening",
+    "listen",
+    "reflect their feelings back without judging, fixing or giving advice.",
 )
 CHECK_IN = Target(
-    "check_in", "check_in", (SkillLabel.CHECKED_IN,), "the first message didn't check in"
+    "check_in",
+    "check_in",
+    (SkillLabel.CHECKED_IN,),
+    "the first message didn't check in",
+    "check_in",
+    "notice something seems off and ask how they're really doing.",
 )
+
+
+class RewriteCandidates(BaseModel):
+    """JSON the LLM must return for the rewrite prompt."""
+
+    candidates: list[str]
 
 
 def target_score(probs: SkillProbs, target: Target) -> float:
@@ -201,7 +231,9 @@ class Critic:
             target = missing_skill(score.probs, before, first)
             if target is not None:
                 missed.append(f"At “{_clip(text)}”: {target.reason}.")
-                self._add_rewrite(score, target, exemplars, before.level, context, path[:index])
+                self._add_rewrite(
+                    score, target, exemplars, before.level, context, path[:index], text
+                )
             scores.append(score)
             first = False
 
@@ -241,19 +273,74 @@ class Critic:
         level: int,
         context: list[str],
         history: list[Node],
+        text: str,
     ) -> None:
-        """Attach the best exemplar that measurably raises the missing skill and passes the Guardian."""
+        """Attach a rewrite that measurably raises the missing skill and passes the Guardian.
+
+        Exemplars first (human-written); the LLM only if none passes. Every candidate gets the same check.
+        """
         friend_last = context[-1] if context else ""
         original = target_score(score.probs, target)
-        for exemplar in rank_exemplars(exemplars, target, level, friend_last)[:MAX_CANDIDATES]:
-            gain = target_score(self.detector.predict(exemplar.text, context), target) - original
-            if gain < MIN_REWRITE_GAIN:
-                continue
-            if self.guardian.check_user(exemplar.text, history).action != "continue":
-                continue
-            score.rewrite = exemplar.text
-            score.rewrite_gain = round(gain, 4)
-            return
+        ranked = rank_exemplars(exemplars, target, level, friend_last)[:MAX_CANDIDATES]
+        for exemplar in ranked:
+            gain = self._verified_gain(exemplar.text, target, original, context, history)
+            if gain is not None:
+                self._set_rewrite(score, exemplar.text, gain, "exemplar", target)
+                return
+        best: tuple[float, str] | None = None
+        for candidate in llm_candidates(target, text, context):
+            gain = self._verified_gain(candidate, target, original, context, history)
+            if gain is not None and (best is None or gain > best[0]):
+                best = (gain, candidate)
+        if best is not None:
+            self._set_rewrite(score, best[1], best[0], "llm", target)
+
+    def _verified_gain(
+        self, text: str, target: Target, original: float, context: list[str], history: list[Node]
+    ) -> float | None:
+        """The candidate's gain on the target skill, or None if it gains < 0.2 or fails the Guardian."""
+        gain = target_score(self.detector.predict(text, context), target) - original
+        if gain < MIN_REWRITE_GAIN:
+            return None
+        if self.guardian.check_user(text, history).action != "continue":
+            return None
+        return gain
+
+    @staticmethod
+    def _set_rewrite(score: MessageScore, text: str, gain: float, source: str, target: Target):
+        score.rewrite = text
+        score.rewrite_gain = round(gain, 4)
+        score.rewrite_source = source
+        score.rewrite_skill = target.improves
+
+
+def llm_candidates(target: Target, helper_text: str, context: list[str]) -> list[str]:
+    """Up to 2 LLM rewrite suggestions (unverified!), or [] if the LLM is off or fails."""
+    if not llm.enabled():
+        return []
+    system = REWRITE_PROMPT.read_text(encoding="utf-8").replace("{skill_hint}", target.hint)
+    user = json.dumps(
+        {
+            "friend_said": context,
+            "helper_replied": helper_text,
+            "missing_skill": target.improves,
+        },
+        ensure_ascii=False,
+    )
+    try:
+        answer = llm.chat_json(
+            "rewrite",
+            [{"role": "system", "content": system}, {"role": "user", "content": user}],
+            RewriteCandidates,
+            role="judge",
+            temperature=0.4,
+            seed=0,
+            max_tokens=300,
+        )
+    except (llm.LLMUnavailable, ValueError):
+        return []
+    cleaned = [c.strip() for c in answer.candidates if isinstance(c, str) and c.strip()]
+    return [c for c in cleaned if len(c) <= MAX_REWRITE_CHARS and c != helper_text.strip()][:2]
 
 
 def summary_text(summary: dict[str, float], turning: TurningPoint | None, path: list[Node]) -> str:

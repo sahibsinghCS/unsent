@@ -16,8 +16,10 @@ At the end of the chat the **critic** turns them into the feedback report:
 - a **7-skill summary** (the radar chart), the **turning point** (where trust dropped most) and a
   2–3 sentence summary.
 
-No AI writes any text here. Better replies come from an exemplar bank that people wrote. The summary
-is fill-in-the-blank templates.
+Our models are 100% local: no AI service decides any score. Better replies come first from an exemplar
+bank that people wrote. Only if none of those passes may the critic ask an AI (OpenAI, through
+`backend/app/llm.py`) for two suggestions, and our own detector then checks them: **the AI suggests,
+our model verifies.** The summary is fill-in-the-blank templates.
 
 ## How it works
 **Two different models, then a referee.**
@@ -51,7 +53,12 @@ what the friend just said. It shows the exemplar **only if**:
    helper wrote, and
 2. the **Guardian** passes it.
 
-Otherwise it tries the next exemplar (up to 3) or shows nothing. We never suggest a reply we can't
+Otherwise it tries the next exemplar (up to 3). If no exemplar passes, it may ask the AI for 2 suggested
+replies (prompt in `backend/app/ml/prompts/rewrite.md`). Each one goes through **the same two checks**, and
+we keep the one with the biggest verified gain. The report records where the rewrite came from
+(`rewrite_source`: "exemplar" or "llm") and which skill it improves (`rewrite_skill`, e.g. "ask_directly").
+The frontend uses these to show "Try instead: … (+0.4 ask directly)". With no API key, or with
+`FR_LLM=0`, it uses exemplars only and everything else works the same. We never suggest a reply we can't
 show is better or safe.
 
 **7-skill summary.** The 10 labels map to the rubric (`contracts.RUBRIC_SKILLS`). Each skill gets the
@@ -128,13 +135,16 @@ Full records are in `eval/reports/ml_skills.json`. Charts: `eval/skills/f1_compa
 - The model learns quirks of its data. Example: "you seemed really off **at lunch**" also gets
   `follow_up` (0.87), because "lunch" mostly appeared in meet-up plans. More varied data fixes this.
 - `dismissed` has the lowest recall (0.75). Subtle brush-offs ("anyway…") are the hardest.
-- Rewrites need the exemplar bank (data lane). Without exemplars the report has no rewrites, and
-  everything else still works.
+- Rewrites need the exemplar bank (data lane) or the optional AI fallback. With neither, the report
+  has no rewrites, and everything else still works.
+- Our detector judges AI suggestions, so a suggestion that games our model's quirks could pass. The
+  Guardian check and the human-written exemplars-first order limit this.
 
 ## Questions a judge might ask (with answers)
-1. **"Isn't this just ChatGPT?"** No. No LLM runs anywhere. The detector is two logistic-regression
+1. **"Isn't this just ChatGPT?"** No. Every score comes from our own models: two logistic-regression
    models we trained on about 800 labeled replies, plus a small local embedding model that runs
-   offline. You can open `backend/app/ml/model.py` and see every step.
+   offline. You can open `backend/app/ml/model.py` and see every step. The only AI use in this lane is
+   optional rewrite *suggestions*, and our detector decides whether to show them.
 2. **"Your F1 is 0.96. Isn't that too good?"** On this provisional, synthetic test set, yes, and we
    say so. We checked for leaks: conversations are never split across train and test, and removing
    exact duplicates gives the same score. Real teen messages will score lower. That's why we measure
@@ -142,9 +152,10 @@ Full records are in `eval/reports/ml_skills.json`. Charts: `eval/skills/f1_compa
 3. **"How do you know which words mattered?"** Occlusion. We delete words and watch the probability
    fall, so the highlight is an actual measurement of the model, not a guess. The tests check that
    every highlight's offsets point at exactly those characters.
-4. **"What if your suggested reply is worse?"** We don't show it. A rewrite must raise the missing
-   skill's probability by at least 0.2 according to our own detector, and the Guardian must pass it.
-   If no exemplar passes both checks, we show none.
+4. **"What if your suggested reply is worse, or the AI writes something bad?"** We don't show it.
+   Every rewrite, from the exemplar bank or the AI, must raise the missing skill's probability by at
+   least 0.2 according to our own detector, and the Guardian must pass it. If nothing passes both
+   checks, we show none.
 5. **"Why trust the probabilities?"** They're calibrated on data the base models never saw. The
    reliability diagram shows that predicted and observed rates line up (error 0.013 on test). When
    our two models disagree, we say "uncertain" instead of pretending.
