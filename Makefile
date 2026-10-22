@@ -2,7 +2,7 @@
 UV ?= uv
 export PYTHONPATH := $(CURDIR)
 
-.PHONY: help install dev dev-stub lint format test check smoke ownership fixtures schema eval report docs train guardian-train label docker
+.PHONY: help install dev dev-stub lint format test test-llm check smoke ownership fixtures schema eval report docs train guardian-train label docker spike models
 
 help: ## list targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' Makefile | awk 'BEGIN{FS=":.*?## "}{printf "  %-15s %s\n", $$1, $$2}'
@@ -26,6 +26,9 @@ format: ## auto-format Python
 
 test: ## all Python tests (offline, hash embeddings)
 	FR_EMBED=hash $(UV) run pytest -q
+
+test-llm: ## tests that call the real OpenAI API (needs OPENAI_API_KEY; costs cents)
+	FR_FAKE_LLM=0 FR_EMBED=hash $(UV) run pytest -q -m llm
 
 check: lint test ## lint + tests (must pass before every merge)
 
@@ -61,3 +64,9 @@ label: ## open the labeling tool (DATA lane)
 
 docker: ## build the container (DEPLOY lane)
 	@if [ -f Dockerfile ]; then docker build -t firstreply .; else echo "docker: not implemented yet (lane: deploy)"; fi
+
+spike: ## refusal/quality test of the OpenAI friend voice (needs OPENAI_API_KEY)
+	$(UV) run python scripts/spike_actor.py
+
+models: ## list OpenAI models your key can use
+	$(UV) run python scripts/list_models.py

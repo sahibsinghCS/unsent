@@ -1,10 +1,10 @@
 {
-  "session_id": "s_23f2307bb2c7",
-  "root_id": "n_090a7027e287",
-  "head_id": "n_b08ecc70cfa1",
+  "session_id": "s_5e3e753fdaba",
+  "root_id": "n_0c54a50934ae",
+  "head_id": "n_87e6bfdee6b2",
   "nodes": [
     {
-      "id": "n_090a7027e287",
+      "id": "n_0c54a50934ae",
       "parent_id": null,
       "role": "friend",
       "bubbles": [
@@ -28,11 +28,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": "opening",
-      "created_at": 1792708556.0142882
+      "voice": null,
+      "created_at": 1792710541.5905497
     },
     {
-      "id": "n_704a82a4b55c",
-      "parent_id": "n_090a7027e287",
+      "id": "n_028d8c0abcc6",
+      "parent_id": "n_0c54a50934ae",
       "role": "user",
       "bubbles": [
         "hey are you ok? you seemed really off at lunch"
@@ -56,7 +57,7 @@
         "evidence": [],
         "score": 0.0,
         "sources": [],
-        "latency_ms": 0.9362839999766948
+        "latency_ms": 1.0135279999872182
       },
       "state_after": {
         "trust": 36.0,
@@ -73,11 +74,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": null,
-      "created_at": 1792708556.0233414
+      "voice": null,
+      "created_at": 1792710541.5999484
     },
     {
-      "id": "n_a89cda18cd91",
-      "parent_id": "n_704a82a4b55c",
+      "id": "n_bd73118a98ac",
+      "parent_id": "n_028d8c0abcc6",
       "role": "friend",
       "bubbles": [
         "its whatever"
@@ -99,11 +101,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": "checked_in",
-      "created_at": 1792708556.0239432
+      "voice": "fallback",
+      "created_at": 1792710541.6006193
     },
     {
-      "id": "n_2310914c5470",
-      "parent_id": "n_a89cda18cd91",
+      "id": "n_60be44b6b61a",
+      "parent_id": "n_bd73118a98ac",
       "role": "user",
       "bubbles": [
         "lol you'll be fine"
@@ -127,7 +130,7 @@
         "evidence": [],
         "score": 0.0,
         "sources": [],
-        "latency_ms": 0.027626000019154162
+        "latency_ms": 0.08062999995672726
       },
       "state_after": {
         "trust": 14.0,
@@ -144,11 +147,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": null,
-      "created_at": 1792708556.0303621
+      "voice": null,
+      "created_at": 1792710541.6077461
     },
     {
-      "id": "n_6c09c731f06e",
-      "parent_id": "n_2310914c5470",
+      "id": "n_d76fbbec43f4",
+      "parent_id": "n_60be44b6b61a",
       "role": "friend",
       "bubbles": [],
       "events": null,
@@ -168,11 +172,12 @@
       "seen_no_reply": true,
       "line_id": null,
       "reaction": "dismissed",
-      "created_at": 1792708556.030517
+      "voice": null,
+      "created_at": 1792710541.607852
     },
     {
-      "id": "n_7fbae38629b6",
-      "parent_id": "n_6c09c731f06e",
+      "id": "n_87a8dd4aa485",
+      "parent_id": "n_d76fbbec43f4",
       "role": "user",
       "bubbles": [
         "sorry, that was a dumb thing to say. that sounds really hard"
@@ -196,7 +201,7 @@
         "evidence": [],
         "score": 0.0,
         "sources": [],
-        "latency_ms": 0.03405600000405684
+        "latency_ms": 0.0648810000143385
       },
       "state_after": {
         "trust": 24.0,
@@ -213,11 +218,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": null,
-      "created_at": 1792708556.035912
+      "voice": null,
+      "created_at": 1792710541.6142335
     },
     {
-      "id": "n_661ee086c3fc",
-      "parent_id": "n_7fbae38629b6",
+      "id": "n_93907bc04182",
+      "parent_id": "n_87a8dd4aa485",
       "role": "friend",
       "bubbles": [
         "i just cant sleep"
@@ -239,11 +245,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": "validated",
-      "created_at": 1792708556.0360336
+      "voice": "fallback",
+      "created_at": 1792710541.6143708
     },
     {
-      "id": "n_b60fdcbd0247",
-      "parent_id": "n_661ee086c3fc",
+      "id": "n_d50ad01fce45",
+      "parent_id": "n_93907bc04182",
       "role": "user",
       "bubbles": [
         "are you thinking about killing yourself?"
@@ -267,7 +274,7 @@
         "evidence": [],
         "score": 0.0,
         "sources": [],
-        "latency_ms": 0.04438600001321902
+        "latency_ms": 0.03842600000325547
       },
       "state_after": {
         "trust": 37.0,
@@ -284,11 +291,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": null,
-      "created_at": 1792708556.040936
+      "voice": null,
+      "created_at": 1792710541.6208944
     },
     {
-      "id": "n_9aab823562e0",
-      "parent_id": "n_b60fdcbd0247",
+      "id": "n_e044a56d0eec",
+      "parent_id": "n_d50ad01fce45",
       "role": "friend",
       "bubbles": [
         "its whatever"
@@ -310,11 +318,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": "asked_directly",
-      "created_at": 1792708556.0410924
+      "voice": "fallback",
+      "created_at": 1792710541.6210628
     },
     {
-      "id": "n_1d91191d1df9",
-      "parent_id": "n_9aab823562e0",
+      "id": "n_633170cee5ce",
+      "parent_id": "n_e044a56d0eec",
       "role": "user",
       "bubbles": [
         "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you"
@@ -338,7 +347,7 @@
         "evidence": [],
         "score": 0.0,
         "sources": [],
-        "latency_ms": 0.08003300001746538
+        "latency_ms": 0.0383660000125019
       },
       "state_after": {
         "trust": 60.0,
@@ -357,11 +366,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": null,
-      "created_at": 1792708556.0465634
+      "voice": null,
+      "created_at": 1792710541.6261766
     },
     {
-      "id": "n_185a060028fd",
-      "parent_id": "n_1d91191d1df9",
+      "id": "n_c6ef47cd52c6",
+      "parent_id": "n_633170cee5ce",
       "role": "friend",
       "bubbles": [
         "whats even the point"
@@ -385,11 +395,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": "referred",
-      "created_at": 1792708556.046726
+      "voice": "fallback",
+      "created_at": 1792710541.6263332
     },
     {
-      "id": "n_4d1afc7a4cad",
-      "parent_id": "n_185a060028fd",
+      "id": "n_b2223989155e",
+      "parent_id": "n_c6ef47cd52c6",
       "role": "user",
       "bubbles": [
         "i'll text you tonight to check on you"
@@ -413,7 +424,7 @@
         "evidence": [],
         "score": 0.0,
         "sources": [],
-        "latency_ms": 0.03183199999057251
+        "latency_ms": 0.03152300001829644
       },
       "state_after": {
         "trust": 63.0,
@@ -432,11 +443,12 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": null,
-      "created_at": 1792708556.0517695
+      "voice": null,
+      "created_at": 1792710541.6315005
     },
     {
-      "id": "n_b08ecc70cfa1",
-      "parent_id": "n_4d1afc7a4cad",
+      "id": "n_87e6bfdee6b2",
+      "parent_id": "n_b2223989155e",
       "role": "friend",
       "bubbles": [
         "..yeah. sometimes i think about not being here"
@@ -460,7 +472,8 @@
       "seen_no_reply": false,
       "line_id": null,
       "reaction": "follow_up",
-      "created_at": 1792708556.0518873
+      "voice": "fallback",
+      "created_at": 1792710541.6316812
     }
   ]
 }

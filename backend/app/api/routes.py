@@ -7,7 +7,7 @@ import time
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from backend.app import services
+from backend.app import llm, services
 from backend.app.config import max_message_chars
 from backend.app.content import (
     crisis_lines_for,
@@ -111,6 +111,7 @@ def health() -> dict:
         "ok": True,
         "contracts_version": CONTRACTS_VERSION,
         "components": services.status(),
+        "llm": llm.status(),
         "uptime_s": round(time.time() - STARTED_AT),
     }
 

@@ -1,7 +1,7 @@
 {
   "user_node": {
-    "id": "n_75eb84a93fa1",
-    "parent_id": "n_70f4db897fcf",
+    "id": "n_d4ce45bb5b29",
+    "parent_id": "n_33400bc9881e",
     "role": "user",
     "bubbles": [
       "honestly i want to die too"
@@ -20,7 +20,7 @@
       "sources": [
         "lexicon"
       ],
-      "latency_ms": 0.01435100000435341
+      "latency_ms": 0.015289999964807066
     },
     "state_after": {
       "trust": 30.0,
@@ -37,12 +37,13 @@
     "seen_no_reply": false,
     "line_id": null,
     "reaction": null,
-    "created_at": 1792708556.0668838
+    "voice": null,
+    "created_at": 1792710541.6454
   },
   "friend_node": null,
   "system_node": {
-    "id": "n_ae25a8cfb22a",
-    "parent_id": "n_75eb84a93fa1",
+    "id": "n_958baa98adc1",
+    "parent_id": "n_d4ce45bb5b29",
     "role": "system",
     "bubbles": [
       "Let's pause the practice for a moment. It sounds like you might be going through something hard yourself, and that matters. You can call or text 988 any time (in the US), or talk to a trusted adult today. When you're ready, you can come back."
@@ -64,7 +65,8 @@
     "seen_no_reply": false,
     "line_id": null,
     "reaction": null,
-    "created_at": 1792708556.066939
+    "voice": null,
+    "created_at": 1792710541.6454356
   },
   "state_before": {
     "trust": 30.0,
