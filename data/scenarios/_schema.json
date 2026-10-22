@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "Fact": {
+      "description": "Something the friend can reveal once the conversation reaches the fact's level.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "text"
+      ],
+      "title": "Fact",
+      "type": "object"
+    },
+    "LevelSpec": {
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "facts": {
+          "items": {
+            "$ref": "#/$defs/Fact"
+          },
+          "title": "Facts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "facts"
+      ],
+      "title": "LevelSpec",
+      "type": "object"
+    },
+    "Persona": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "age": {
+          "title": "Age",
+          "type": "integer"
+        },
+        "style": {
+          "title": "Style",
+          "type": "string"
+        },
+        "guardedness": {
+          "enum": [
+            "open",
+            "guarded"
+          ],
+          "title": "Guardedness",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "age",
+        "style",
+        "guardedness"
+      ],
+      "title": "Persona",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "persona": {
+      "$ref": "#/$defs/Persona"
+    },
+    "situation": {
+      "title": "Situation",
+      "type": "string"
+    },
+    "opening": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Opening",
+      "type": "array"
+    },
+    "levels": {
+      "additionalProperties": {
+        "$ref": "#/$defs/LevelSpec"
+      },
+      "title": "Levels",
+      "type": "object"
+    },
+    "fallback_lines": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Fallback Lines",
+      "type": "object"
+    },
+    "content_warning": {
+      "title": "Content Warning",
+      "type": "string"
+    },
+    "review_status": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "reviewed"
+      ],
+      "title": "Review Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "persona",
+    "situation",
+    "opening",
+    "levels",
+    "fallback_lines",
+    "content_warning"
+  ],
+  "title": "Scenario",
+  "type": "object"
+}

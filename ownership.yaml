@@ -1,0 +1,70 @@
+# Which paths each lane may change. Enforced by scripts/check_ownership.py (and CI on pull requests).
+# Lane branches are named wt/<lane>. Everything not listed belongs to the integrator.
+integration_branch: claude/amazing-carson-31tzo3
+
+lanes:
+  engine:
+    - backend/app/engine/**
+    - tests/unit/engine/**
+    - eval/engine/**
+    - eval/reports/engine_*
+    - docs/how/engine.md
+    - wt-notes/engine.md
+  safety:
+    - backend/app/safety/**
+    - data/guardian_extra/**
+    - tests/unit/safety/**
+    - eval/guardian/**
+    - eval/reports/safety_*
+    - docs/how/safety.md
+    - wt-notes/safety.md
+  data:
+    - data/skills/**
+    - data/guardian/**
+    - data/lines/**
+    - data/exemplars/**
+    - data/redteam/**
+    - scripts/data/**
+    - tools/labeler/**
+    - tests/unit/data/**
+    - eval/reports/data_*
+    - docs/DATASET.md
+    - docs/CHATGPT_TESTSET_PROMPT.md
+    - docs/how/data.md
+    - wt-notes/data.md
+  ml:
+    - backend/app/ml/**
+    - models/**
+    - tests/unit/ml/**
+    - eval/skills/**
+    - eval/reports/ml_*
+    - docs/how/ml.md
+    - wt-notes/ml.md
+  frontend:
+    - frontend/**
+    - docs/how/frontend.md
+    - wt-notes/frontend.md
+  whatif:
+    - backend/app/whatif/**
+    - tests/unit/whatif/**
+    - eval/reports/whatif_*
+    - docs/how/whatif.md
+    - wt-notes/whatif.md
+  redteam:
+    - eval/redteam/**
+    - tests/safety/**
+    - .github/workflows/**
+    - scripts/report.py
+    - eval/reports/redteam_*
+    - docs/how/redteam.md
+    - wt-notes/redteam.md
+  deploy:
+    - Dockerfile
+    - .dockerignore
+    - deploy/**
+    - backend/app/ops/**
+    - tests/unit/ops/**
+    - eval/reports/deploy_*
+    - docs/DEPLOY.md
+    - docs/how/deploy.md
+    - wt-notes/deploy.md

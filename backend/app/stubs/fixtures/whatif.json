@@ -1,0 +1,438 @@
+{
+  "from_node_id": "n_2310914c5470",
+  "paths": [
+    {
+      "candidate_text": "that sounds really heavy. are you thinking about killing yourself?",
+      "strategy": "ask_directly",
+      "critic_score": 0.9,
+      "nodes": [
+        {
+          "id": "w_0fee69778f7d",
+          "parent_id": "n_a89cda18cd91",
+          "role": "user",
+          "bubbles": [
+            "that sounds really heavy. are you thinking about killing yourself?"
+          ],
+          "events": {
+            "checked_in": 0.05,
+            "validated": 0.9,
+            "asked_directly": 0.9,
+            "encouraged_help": 0.05,
+            "referred_adult": 0.05,
+            "referred_988": 0.05,
+            "follow_up": 0.05,
+            "dismissed": 0.05,
+            "advice_dump": 0.05,
+            "promised_secrecy": 0.05
+          },
+          "guardian": null,
+          "state_after": {
+            "trust": 61.0,
+            "level": 2,
+            "turn": 2,
+            "flags": {
+              "asked_directly_ever": true,
+              "promised_secrecy": false,
+              "referral_turns": []
+            },
+            "status": "active",
+            "last_delta": 25.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": null,
+          "created_at": 1792708556.0826316
+        },
+        {
+          "id": "w_1468512c4deb",
+          "parent_id": "w_0fee69778f7d",
+          "role": "friend",
+          "bubbles": [
+            "whats even the point"
+          ],
+          "events": null,
+          "guardian": null,
+          "state_after": {
+            "trust": 61.0,
+            "level": 2,
+            "turn": 2,
+            "flags": {
+              "asked_directly_ever": true,
+              "promised_secrecy": false,
+              "referral_turns": []
+            },
+            "status": "active",
+            "last_delta": 25.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": "asked_directly",
+          "created_at": 1792708556.0826843
+        },
+        {
+          "id": "w_c00efeccaffc",
+          "parent_id": "w_1468512c4deb",
+          "role": "user",
+          "bubbles": [
+            "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you"
+          ],
+          "events": {
+            "checked_in": 0.05,
+            "validated": 0.9,
+            "asked_directly": 0.05,
+            "encouraged_help": 0.05,
+            "referred_adult": 0.9,
+            "referred_988": 0.05,
+            "follow_up": 0.9,
+            "dismissed": 0.05,
+            "advice_dump": 0.05,
+            "promised_secrecy": 0.05
+          },
+          "guardian": null,
+          "state_after": {
+            "trust": 84.0,
+            "level": 3,
+            "turn": 3,
+            "flags": {
+              "asked_directly_ever": true,
+              "promised_secrecy": false,
+              "referral_turns": [
+                3
+              ]
+            },
+            "status": "active",
+            "last_delta": 23.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": null,
+          "created_at": 1792708556.0827465
+        },
+        {
+          "id": "w_1f807b4807c6",
+          "parent_id": "w_c00efeccaffc",
+          "role": "friend",
+          "bubbles": [
+            "..yeah. sometimes i think about not being here"
+          ],
+          "events": null,
+          "guardian": null,
+          "state_after": {
+            "trust": 84.0,
+            "level": 3,
+            "turn": 3,
+            "flags": {
+              "asked_directly_ever": true,
+              "promised_secrecy": false,
+              "referral_turns": [
+                3
+              ]
+            },
+            "status": "active",
+            "last_delta": 23.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": "referred",
+          "created_at": 1792708556.0827622
+        }
+      ],
+      "trust_series": [
+        36.0,
+        61.0,
+        84.0
+      ],
+      "value": 104.0
+    },
+    {
+      "candidate_text": "that sounds really hard, i'm sorry. i'm here",
+      "strategy": "validate",
+      "critic_score": 0.05,
+      "nodes": [
+        {
+          "id": "w_62a2138a0e7c",
+          "parent_id": "n_a89cda18cd91",
+          "role": "user",
+          "bubbles": [
+            "that sounds really hard, i'm sorry. i'm here"
+          ],
+          "events": {
+            "checked_in": 0.05,
+            "validated": 0.9,
+            "asked_directly": 0.05,
+            "encouraged_help": 0.05,
+            "referred_adult": 0.05,
+            "referred_988": 0.05,
+            "follow_up": 0.9,
+            "dismissed": 0.05,
+            "advice_dump": 0.05,
+            "promised_secrecy": 0.05
+          },
+          "guardian": null,
+          "state_after": {
+            "trust": 51.0,
+            "level": 2,
+            "turn": 2,
+            "flags": {
+              "asked_directly_ever": false,
+              "promised_secrecy": false,
+              "referral_turns": []
+            },
+            "status": "active",
+            "last_delta": 15.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": null,
+          "created_at": 1792708556.082813
+        },
+        {
+          "id": "w_932d0c2a2de9",
+          "parent_id": "w_62a2138a0e7c",
+          "role": "friend",
+          "bubbles": [
+            "whats even the point"
+          ],
+          "events": null,
+          "guardian": null,
+          "state_after": {
+            "trust": 51.0,
+            "level": 2,
+            "turn": 2,
+            "flags": {
+              "asked_directly_ever": false,
+              "promised_secrecy": false,
+              "referral_turns": []
+            },
+            "status": "active",
+            "last_delta": 15.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": "validated",
+          "created_at": 1792708556.0828257
+        },
+        {
+          "id": "w_e571d5a03a34",
+          "parent_id": "w_932d0c2a2de9",
+          "role": "user",
+          "bubbles": [
+            "are you thinking about suicide? you can tell me"
+          ],
+          "events": {
+            "checked_in": 0.05,
+            "validated": 0.05,
+            "asked_directly": 0.9,
+            "encouraged_help": 0.05,
+            "referred_adult": 0.05,
+            "referred_988": 0.05,
+            "follow_up": 0.05,
+            "dismissed": 0.05,
+            "advice_dump": 0.05,
+            "promised_secrecy": 0.05
+          },
+          "guardian": null,
+          "state_after": {
+            "trust": 64.0,
+            "level": 3,
+            "turn": 3,
+            "flags": {
+              "asked_directly_ever": true,
+              "promised_secrecy": false,
+              "referral_turns": []
+            },
+            "status": "active",
+            "last_delta": 13.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": null,
+          "created_at": 1792708556.0828605
+        },
+        {
+          "id": "w_7624bb33a6ed",
+          "parent_id": "w_e571d5a03a34",
+          "role": "friend",
+          "bubbles": [
+            "..yeah. sometimes i think about not being here"
+          ],
+          "events": null,
+          "guardian": null,
+          "state_after": {
+            "trust": 64.0,
+            "level": 3,
+            "turn": 3,
+            "flags": {
+              "asked_directly_ever": true,
+              "promised_secrecy": false,
+              "referral_turns": []
+            },
+            "status": "active",
+            "last_delta": 13.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": "asked_directly",
+          "created_at": 1792708556.0828722
+        }
+      ],
+      "trust_series": [
+        36.0,
+        51.0,
+        64.0
+      ],
+      "value": 84.0
+    },
+    {
+      "candidate_text": "i care about you. can we talk to a trusted adult together?",
+      "strategy": "refer",
+      "critic_score": 0.05,
+      "nodes": [
+        {
+          "id": "w_d55cf549ec0a",
+          "parent_id": "n_a89cda18cd91",
+          "role": "user",
+          "bubbles": [
+            "i care about you. can we talk to a trusted adult together?"
+          ],
+          "events": {
+            "checked_in": 0.05,
+            "validated": 0.05,
+            "asked_directly": 0.05,
+            "encouraged_help": 0.05,
+            "referred_adult": 0.9,
+            "referred_988": 0.05,
+            "follow_up": 0.05,
+            "dismissed": 0.05,
+            "advice_dump": 0.05,
+            "promised_secrecy": 0.05
+          },
+          "guardian": null,
+          "state_after": {
+            "trust": 42.0,
+            "level": 1,
+            "turn": 2,
+            "flags": {
+              "asked_directly_ever": false,
+              "promised_secrecy": false,
+              "referral_turns": [
+                2
+              ]
+            },
+            "status": "active",
+            "last_delta": 6.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": null,
+          "created_at": 1792708556.082915
+        },
+        {
+          "id": "w_177d23e0f13f",
+          "parent_id": "w_d55cf549ec0a",
+          "role": "friend",
+          "bubbles": [
+            "everyone knows about it which is great 😭"
+          ],
+          "events": null,
+          "guardian": null,
+          "state_after": {
+            "trust": 42.0,
+            "level": 1,
+            "turn": 2,
+            "flags": {
+              "asked_directly_ever": false,
+              "promised_secrecy": false,
+              "referral_turns": [
+                2
+              ]
+            },
+            "status": "active",
+            "last_delta": 6.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": "referred",
+          "created_at": 1792708556.082926
+        },
+        {
+          "id": "w_30ef1ad0b66f",
+          "parent_id": "w_177d23e0f13f",
+          "role": "user",
+          "bubbles": [
+            "you can also call or text 988 anytime, i'll stay with you"
+          ],
+          "events": {
+            "checked_in": 0.05,
+            "validated": 0.05,
+            "asked_directly": 0.05,
+            "encouraged_help": 0.05,
+            "referred_adult": 0.05,
+            "referred_988": 0.9,
+            "follow_up": 0.9,
+            "dismissed": 0.05,
+            "advice_dump": 0.05,
+            "promised_secrecy": 0.05
+          },
+          "guardian": null,
+          "state_after": {
+            "trust": 51.0,
+            "level": 2,
+            "turn": 3,
+            "flags": {
+              "asked_directly_ever": false,
+              "promised_secrecy": false,
+              "referral_turns": [
+                2,
+                3
+              ]
+            },
+            "status": "active",
+            "last_delta": 9.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": null,
+          "created_at": 1792708556.082962
+        },
+        {
+          "id": "w_90bb2e0bdd8c",
+          "parent_id": "w_30ef1ad0b66f",
+          "role": "friend",
+          "bubbles": [
+            "idk it just feels like it wont get better"
+          ],
+          "events": null,
+          "guardian": null,
+          "state_after": {
+            "trust": 51.0,
+            "level": 2,
+            "turn": 3,
+            "flags": {
+              "asked_directly_ever": false,
+              "promised_secrecy": false,
+              "referral_turns": [
+                2,
+                3
+              ]
+            },
+            "status": "active",
+            "last_delta": 9.0
+          },
+          "seen_no_reply": false,
+          "line_id": null,
+          "reaction": "referred",
+          "created_at": 1792708556.0829732
+        }
+      ],
+      "trust_series": [
+        36.0,
+        42.0,
+        51.0
+      ],
+      "value": 61.0
+    }
+  ],
+  "best_index": 0,
+  "simulated": true
+}

@@ -35,3 +35,13 @@ local.properties
 *.aab
 Pods/
 DerivedData/
+
+# Python tooling
+.pytest_cache/
+.ruff_cache/
+.cache/
+*.egg-info/
+
+# FirstReply
+eval/logs/
+frontend/dist/

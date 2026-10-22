@@ -1,0 +1,47 @@
+{
+  "session_id": "s_23f2307bb2c7",
+  "scenario_id": "after-the-breakup",
+  "head_id": "n_090a7027e287",
+  "root_id": "n_090a7027e287",
+  "state": {
+    "trust": 30.0,
+    "level": 0,
+    "turn": 0,
+    "flags": {
+      "asked_directly_ever": false,
+      "promised_secrecy": false,
+      "referral_turns": []
+    },
+    "status": "active",
+    "last_delta": 0.0
+  },
+  "nodes": [
+    {
+      "id": "n_090a7027e287",
+      "parent_id": null,
+      "role": "friend",
+      "bubbles": [
+        "hey",
+        "sorry ive been weird lately lol"
+      ],
+      "events": null,
+      "guardian": null,
+      "state_after": {
+        "trust": 30.0,
+        "level": 0,
+        "turn": 0,
+        "flags": {
+          "asked_directly_ever": false,
+          "promised_secrecy": false,
+          "referral_turns": []
+        },
+        "status": "active",
+        "last_delta": 0.0
+      },
+      "seen_no_reply": false,
+      "line_id": null,
+      "reaction": "opening",
+      "created_at": 1792708556.0142882
+    }
+  ]
+}

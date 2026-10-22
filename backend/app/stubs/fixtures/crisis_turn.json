@@ -1,0 +1,95 @@
+{
+  "user_node": {
+    "id": "n_75eb84a93fa1",
+    "parent_id": "n_70f4db897fcf",
+    "role": "user",
+    "bubbles": [
+      "honestly i want to die too"
+    ],
+    "events": null,
+    "guardian": {
+      "level": "crisis",
+      "action": "pause_roleplay",
+      "categories": [
+        "self_risk"
+      ],
+      "evidence": [
+        "i want to die"
+      ],
+      "score": 0.99,
+      "sources": [
+        "lexicon"
+      ],
+      "latency_ms": 0.01435100000435341
+    },
+    "state_after": {
+      "trust": 30.0,
+      "level": 0,
+      "turn": 0,
+      "flags": {
+        "asked_directly_ever": false,
+        "promised_secrecy": false,
+        "referral_turns": []
+      },
+      "status": "paused_crisis",
+      "last_delta": 0.0
+    },
+    "seen_no_reply": false,
+    "line_id": null,
+    "reaction": null,
+    "created_at": 1792708556.0668838
+  },
+  "friend_node": null,
+  "system_node": {
+    "id": "n_ae25a8cfb22a",
+    "parent_id": "n_75eb84a93fa1",
+    "role": "system",
+    "bubbles": [
+      "Let's pause the practice for a moment. It sounds like you might be going through something hard yourself, and that matters. You can call or text 988 any time (in the US), or talk to a trusted adult today. When you're ready, you can come back."
+    ],
+    "events": null,
+    "guardian": null,
+    "state_after": {
+      "trust": 30.0,
+      "level": 0,
+      "turn": 0,
+      "flags": {
+        "asked_directly_ever": false,
+        "promised_secrecy": false,
+        "referral_turns": []
+      },
+      "status": "paused_crisis",
+      "last_delta": 0.0
+    },
+    "seen_no_reply": false,
+    "line_id": null,
+    "reaction": null,
+    "created_at": 1792708556.066939
+  },
+  "state_before": {
+    "trust": 30.0,
+    "level": 0,
+    "turn": 0,
+    "flags": {
+      "asked_directly_ever": false,
+      "promised_secrecy": false,
+      "referral_turns": []
+    },
+    "status": "active",
+    "last_delta": 0.0
+  },
+  "state_after": {
+    "trust": 30.0,
+    "level": 0,
+    "turn": 0,
+    "flags": {
+      "asked_directly_ever": false,
+      "promised_secrecy": false,
+      "referral_turns": []
+    },
+    "status": "paused_crisis",
+    "last_delta": 0.0
+  },
+  "crisis": true,
+  "blocked": false
+}

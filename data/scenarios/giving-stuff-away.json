@@ -1,0 +1,111 @@
+{
+  "id": "giving-stuff-away",
+  "title": "Giving stuff away",
+  "persona": {
+    "name": "Sam",
+    "age": 16,
+    "style": "calm, a little too upbeat, says 'all good' a lot, deflects with jokes, opens up when asked directly",
+    "guardedness": "open"
+  },
+  "situation": "Sam says everything is fine, but this week they gave away their favorite hoodie and their gaming setup, and posted 'thanks for everything guys'.",
+  "opening": [
+    "yo",
+    "did u like the hoodie lol"
+  ],
+  "levels": {
+    "0": {
+      "label": "surface",
+      "facts": [
+        {
+          "id": "f0a",
+          "text": "says they're 'all good'"
+        },
+        {
+          "id": "f0b",
+          "text": "says they just didn't need the stuff"
+        }
+      ]
+    },
+    "1": {
+      "label": "stress",
+      "facts": [
+        {
+          "id": "f1a",
+          "text": "things at home have been really tense"
+        },
+        {
+          "id": "f1b",
+          "text": "has felt numb for a few weeks"
+        }
+      ]
+    },
+    "2": {
+      "label": "hopeless",
+      "facts": [
+        {
+          "id": "f2a",
+          "text": "feels like everyone would be better off without them"
+        },
+        {
+          "id": "f2b",
+          "text": "doesn't see things changing"
+        }
+      ]
+    },
+    "3": {
+      "label": "suicidal thoughts",
+      "facts": [
+        {
+          "id": "f3a",
+          "text": "has been having thoughts of suicide"
+        },
+        {
+          "id": "f3b",
+          "text": "gave things away because they didn't think they'd need them"
+        }
+      ]
+    },
+    "4": {
+      "label": "open to help",
+      "facts": [
+        {
+          "id": "f4a",
+          "text": "would go to the counselor today if you went too"
+        },
+        {
+          "id": "f4b",
+          "text": "agrees to call or text 988 with you"
+        }
+      ]
+    }
+  },
+  "fallback_lines": {
+    "0": [
+      "all good lol",
+      "i just didnt need it",
+      "its whatever"
+    ],
+    "1": [
+      "home has been kinda a lot",
+      "i just feel kinda numb",
+      "its fine"
+    ],
+    "2": [
+      "honestly everyone would be better off",
+      "i dont really see it changing",
+      "idk"
+    ],
+    "3": [
+      "...yeah. i have",
+      "thats why i gave stuff away i guess",
+      "i didnt think anyone would notice"
+    ],
+    "4": [
+      "ok. yeah",
+      "will you go with me?",
+      "thank you for noticing"
+    ]
+  },
+  "content_warning": "Warning signs (giving things away), family stress, hopelessness, thoughts of suicide (no details).",
+  "review_status": "draft"
+}

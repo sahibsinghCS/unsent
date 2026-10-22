@@ -1,0 +1,66 @@
+{
+  "verified": false,
+  "verified_on": null,
+  "note": "Check every entry on its official website before release, then set verified=true and verified_on.",
+  "lines": [
+    {
+      "country": "US",
+      "name": "988 Suicide & Crisis Lifeline",
+      "call": "988",
+      "text": "988",
+      "url": "https://988lifeline.org",
+      "languages": [
+        "en",
+        "es"
+      ]
+    },
+    {
+      "country": "CA",
+      "name": "9-8-8 Suicide Crisis Helpline",
+      "call": "988",
+      "text": "988",
+      "url": "https://988.ca",
+      "languages": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "country": "GB",
+      "name": "Samaritans",
+      "call": "116 123",
+      "text": null,
+      "url": "https://www.samaritans.org",
+      "languages": [
+        "en"
+      ]
+    },
+    {
+      "country": "AU",
+      "name": "Lifeline Australia",
+      "call": "13 11 14",
+      "text": "0477 13 11 14",
+      "url": "https://www.lifeline.org.au",
+      "languages": [
+        "en"
+      ]
+    },
+    {
+      "country": "*",
+      "name": "Find A Helpline (international directory)",
+      "call": null,
+      "text": null,
+      "url": "https://findahelpline.com",
+      "languages": [
+        "*"
+      ]
+    }
+  ],
+  "emergency": {
+    "US": "911",
+    "CA": "911",
+    "GB": "999",
+    "AU": "000",
+    "*": "your local emergency number"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "components": {
+    "guardian": "stub",
+    "skills": "stub",
+    "engine": "stub",
+    "critic": "stub",
+    "whatif": "stub"
+  },
+  "records": []
+}

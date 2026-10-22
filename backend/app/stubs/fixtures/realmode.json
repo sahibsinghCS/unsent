@@ -1,0 +1,72 @@
+{
+  "lang": "en",
+  "title": "If this is real right now",
+  "intro": "You don't need perfect words. Being there matters. Here's what to do.",
+  "steps": [
+    {
+      "id": "stay",
+      "title": "Stay with them",
+      "body": "Keep talking or texting. Let them know you're glad they told you."
+    },
+    {
+      "id": "ask",
+      "title": "Ask directly",
+      "body": "It's okay to ask: \"Are you thinking about killing yourself?\" Asking does not put the idea in their head. It shows you care and opens the door."
+    },
+    {
+      "id": "listen",
+      "title": "Listen without judging",
+      "body": "Let them talk. Don't argue, lecture, or promise everything will be fine."
+    },
+    {
+      "id": "no_secret",
+      "title": "Don't keep it a secret",
+      "body": "Never promise to keep thoughts of suicide a secret. Their safety matters more than a promise."
+    },
+    {
+      "id": "adult",
+      "title": "Tell a trusted adult today",
+      "body": "A parent, school counselor, teacher, coach, or another adult you trust. Offer to go with them."
+    },
+    {
+      "id": "988",
+      "title": "Call or text 988",
+      "body": "In the US, call or text 988 (Suicide & Crisis Lifeline). It's free and open 24/7, and you can call about a friend too."
+    },
+    {
+      "id": "911",
+      "title": "If they're in immediate danger, call 911",
+      "body": "If they might act on it right now or have already hurt themselves, call 911 and stay with them if it's safe."
+    }
+  ],
+  "for_you": "Supporting a friend is heavy. Talk to someone you trust about how you're feeling too.",
+  "disclaimer": "FirstReply is a practice tool, not a crisis service or therapy.",
+  "crisis": {
+    "country": "US",
+    "lines": [
+      {
+        "country": "US",
+        "name": "988 Suicide & Crisis Lifeline",
+        "call": "988",
+        "text": "988",
+        "url": "https://988lifeline.org",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      {
+        "country": "*",
+        "name": "Find A Helpline (international directory)",
+        "call": null,
+        "text": null,
+        "url": "https://findahelpline.com",
+        "languages": [
+          "*"
+        ]
+      }
+    ],
+    "emergency": "911",
+    "verified_on": null
+  }
+}

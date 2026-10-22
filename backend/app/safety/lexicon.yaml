@@ -1,0 +1,9 @@
+# Human-reviewable safety lexicon (SAFETY lane owns this file). Patterns match normalised text.
+self_risk: []
+concern: []
+harm_to_other: []
+method_seeking: []
+prompt_injection: []
+asking_friend: []      # helper asking the friend directly: ALWAYS allowed, never flagged
+tricky_negative: []    # "this test is killing me", "i'm dead lol": never flagged
+unsafe_friend_line: []

@@ -1,0 +1,111 @@
+{
+  "id": "after-the-breakup",
+  "title": "After the breakup",
+  "persona": {
+    "name": "Maya",
+    "age": 16,
+    "style": "lowercase, short texts, some 'lol' and 😭 to cover feelings, sarcastic when guarded, warmer once she trusts you",
+    "guardedness": "guarded"
+  },
+  "situation": "Maya's two-year relationship ended two weeks ago. She's stopped sitting with your group at lunch and hasn't posted in days.",
+  "opening": [
+    "hey",
+    "sorry ive been weird lately lol"
+  ],
+  "levels": {
+    "0": {
+      "label": "surface",
+      "facts": [
+        {
+          "id": "f0a",
+          "text": "says she's just tired"
+        },
+        {
+          "id": "f0b",
+          "text": "says she's been busy with homework"
+        }
+      ]
+    },
+    "1": {
+      "label": "stress",
+      "facts": [
+        {
+          "id": "f1a",
+          "text": "can't sleep and keeps replaying the breakup"
+        },
+        {
+          "id": "f1b",
+          "text": "feels embarrassed that everyone at school knows"
+        }
+      ]
+    },
+    "2": {
+      "label": "hopeless",
+      "facts": [
+        {
+          "id": "f2a",
+          "text": "feels like nothing is going to get better"
+        },
+        {
+          "id": "f2b",
+          "text": "feels like she's a burden on her friends"
+        }
+      ]
+    },
+    "3": {
+      "label": "suicidal thoughts",
+      "facts": [
+        {
+          "id": "f3a",
+          "text": "has had thoughts of not wanting to be alive"
+        },
+        {
+          "id": "f3b",
+          "text": "hasn't told anyone and is scared of how people will react"
+        }
+      ]
+    },
+    "4": {
+      "label": "open to help",
+      "facts": [
+        {
+          "id": "f4a",
+          "text": "would talk to the school counselor if someone went with her"
+        },
+        {
+          "id": "f4b",
+          "text": "is relieved that someone finally asked"
+        }
+      ]
+    }
+  },
+  "fallback_lines": {
+    "0": [
+      "idk",
+      "its fine honestly",
+      "just tired lol"
+    ],
+    "1": [
+      "i just cant sleep",
+      "its whatever",
+      "everyone knows about it which is great 😭"
+    ],
+    "2": [
+      "idk it just feels like it wont get better",
+      "i feel like im just annoying everyone",
+      "whats even the point"
+    ],
+    "3": [
+      "..yeah. sometimes i think about not being here",
+      "i havent told anyone that",
+      "please dont freak out"
+    ],
+    "4": [
+      "ok",
+      "would you actually come with me?",
+      "thanks for asking. like actually asking"
+    ]
+  },
+  "content_warning": "Breakup, loneliness, hopelessness, thoughts of suicide (no details).",
+  "review_status": "draft"
+}

@@ -1,0 +1,24 @@
+# State-engine weights and thresholds (ENGINE lane owns this file).
+weights:
+  checked_in: 8
+  validated: 12
+  asked_directly: 15
+  encouraged_help: 6
+  referred_adult: 8
+  referred_988: 6
+  follow_up: 5
+  dismissed: -20
+  advice_dump: -10
+  promised_secrecy: -15
+decay_per_turn: 2
+guarded_positive_multiplier: 0.7
+initial_trust: 30
+level_up_thresholds: [0, 25, 45, 60, 75]
+hysteresis: 15
+silence_drop: 15
+silence_floor: 20
+fail_floor: 10
+fail_turns: 2
+secrecy_broken_penalty: 10
+max_turns: 16
+event_threshold: 0.5

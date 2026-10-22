@@ -1,0 +1,199 @@
+{
+  "per_message": [
+    {
+      "node_id": "n_704a82a4b55c",
+      "probs": {
+        "checked_in": 0.9,
+        "validated": 0.05,
+        "asked_directly": 0.05,
+        "encouraged_help": 0.05,
+        "referred_adult": 0.05,
+        "referred_988": 0.05,
+        "follow_up": 0.05,
+        "dismissed": 0.05,
+        "advice_dump": 0.05,
+        "promised_secrecy": 0.05
+      },
+      "uncertain": [],
+      "highlights": [
+        {
+          "start": 4,
+          "end": 14,
+          "text": "are you ok",
+          "label": "checked_in",
+          "delta": 0.85
+        }
+      ],
+      "rewrite": null,
+      "rewrite_gain": null
+    },
+    {
+      "node_id": "n_2310914c5470",
+      "probs": {
+        "checked_in": 0.05,
+        "validated": 0.05,
+        "asked_directly": 0.05,
+        "encouraged_help": 0.05,
+        "referred_adult": 0.05,
+        "referred_988": 0.05,
+        "follow_up": 0.05,
+        "dismissed": 0.9,
+        "advice_dump": 0.05,
+        "promised_secrecy": 0.05
+      },
+      "uncertain": [],
+      "highlights": [
+        {
+          "start": 4,
+          "end": 18,
+          "text": "you'll be fine",
+          "label": "dismissed",
+          "delta": 0.85
+        }
+      ],
+      "rewrite": null,
+      "rewrite_gain": null
+    },
+    {
+      "node_id": "n_7fbae38629b6",
+      "probs": {
+        "checked_in": 0.05,
+        "validated": 0.9,
+        "asked_directly": 0.05,
+        "encouraged_help": 0.05,
+        "referred_adult": 0.05,
+        "referred_988": 0.05,
+        "follow_up": 0.05,
+        "dismissed": 0.05,
+        "advice_dump": 0.05,
+        "promised_secrecy": 0.05
+      },
+      "uncertain": [],
+      "highlights": [
+        {
+          "start": 37,
+          "end": 48,
+          "text": "that sounds",
+          "label": "validated",
+          "delta": 0.85
+        }
+      ],
+      "rewrite": null,
+      "rewrite_gain": null
+    },
+    {
+      "node_id": "n_b60fdcbd0247",
+      "probs": {
+        "checked_in": 0.05,
+        "validated": 0.05,
+        "asked_directly": 0.9,
+        "encouraged_help": 0.05,
+        "referred_adult": 0.05,
+        "referred_988": 0.05,
+        "follow_up": 0.05,
+        "dismissed": 0.05,
+        "advice_dump": 0.05,
+        "promised_secrecy": 0.05
+      },
+      "uncertain": [],
+      "highlights": [
+        {
+          "start": 23,
+          "end": 39,
+          "text": "killing yourself",
+          "label": "asked_directly",
+          "delta": 0.85
+        }
+      ],
+      "rewrite": null,
+      "rewrite_gain": null
+    },
+    {
+      "node_id": "n_1d91191d1df9",
+      "probs": {
+        "checked_in": 0.05,
+        "validated": 0.9,
+        "asked_directly": 0.05,
+        "encouraged_help": 0.05,
+        "referred_adult": 0.9,
+        "referred_988": 0.05,
+        "follow_up": 0.9,
+        "dismissed": 0.05,
+        "advice_dump": 0.05,
+        "promised_secrecy": 0.05
+      },
+      "uncertain": [],
+      "highlights": [
+        {
+          "start": 11,
+          "end": 27,
+          "text": "glad you told me",
+          "label": "validated",
+          "delta": 0.85
+        },
+        {
+          "start": 48,
+          "end": 57,
+          "text": "counselor",
+          "label": "referred_adult",
+          "delta": 0.85
+        },
+        {
+          "start": 68,
+          "end": 84,
+          "text": "i'll go with you",
+          "label": "follow_up",
+          "delta": 0.85
+        }
+      ],
+      "rewrite": null,
+      "rewrite_gain": null
+    },
+    {
+      "node_id": "n_4d1afc7a4cad",
+      "probs": {
+        "checked_in": 0.05,
+        "validated": 0.05,
+        "asked_directly": 0.05,
+        "encouraged_help": 0.05,
+        "referred_adult": 0.05,
+        "referred_988": 0.05,
+        "follow_up": 0.9,
+        "dismissed": 0.05,
+        "advice_dump": 0.05,
+        "promised_secrecy": 0.05
+      },
+      "uncertain": [],
+      "highlights": [
+        {
+          "start": 25,
+          "end": 37,
+          "text": "check on you",
+          "label": "follow_up",
+          "delta": 0.85
+        }
+      ],
+      "rewrite": null,
+      "rewrite_gain": null
+    }
+  ],
+  "skill_summary": {
+    "check_in": 0.9,
+    "listen": 0.08999999999999998,
+    "ask_directly": 0.9,
+    "no_secrecy": 0.95,
+    "persuade": 0.05,
+    "refer": 0.9,
+    "follow_up": 0.9
+  },
+  "turning_point": {
+    "node_id": "n_2310914c5470",
+    "trust_drop": 22.0,
+    "reason": "Trust dropped the most after this message."
+  },
+  "missed_opportunities": [
+    "You never got to 'listen'.",
+    "You never got to 'persuade'."
+  ],
+  "summary_text": "Stub feedback: the trained critic will replace this summary."
+}

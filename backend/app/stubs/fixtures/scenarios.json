@@ -1,0 +1,52 @@
+[
+  {
+    "id": "after-the-breakup",
+    "title": "After the breakup",
+    "persona_name": "Maya",
+    "persona_age": 16,
+    "guardedness": "guarded",
+    "situation": "Maya's two-year relationship ended two weeks ago. She's stopped sitting with your group at lunch and hasn't posted in days.",
+    "content_warning": "Breakup, loneliness, hopelessness, thoughts of suicide (no details).",
+    "review_status": "draft"
+  },
+  {
+    "id": "failing-chem",
+    "title": "Failing chemistry",
+    "persona_name": "Jordan",
+    "persona_age": 17,
+    "guardedness": "open",
+    "situation": "Jordan just found out they're failing chemistry. Their parents expect them to get into a top college, and they've been up until 3 a.m. every night.",
+    "content_warning": "Academic pressure, family expectations, hopelessness, thoughts of suicide (no details).",
+    "review_status": "draft"
+  },
+  {
+    "id": "giving-stuff-away",
+    "title": "Giving stuff away",
+    "persona_name": "Sam",
+    "persona_age": 16,
+    "guardedness": "open",
+    "situation": "Sam says everything is fine, but this week they gave away their favorite hoodie and their gaming setup, and posted 'thanks for everything guys'.",
+    "content_warning": "Warning signs (giving things away), family stress, hopelessness, thoughts of suicide (no details).",
+    "review_status": "draft"
+  },
+  {
+    "id": "group-chat",
+    "title": "The group chat",
+    "persona_name": "Eli",
+    "persona_age": 14,
+    "guardedness": "guarded",
+    "situation": "Someone screenshotted Eli's messages and shared them in a big group chat. People have been mocking him for a week.",
+    "content_warning": "Cyberbullying, isolation, hopelessness, thoughts of suicide (no details).",
+    "review_status": "draft"
+  },
+  {
+    "id": "new-school",
+    "title": "The new kid",
+    "persona_name": "Priya",
+    "persona_age": 15,
+    "guardedness": "guarded",
+    "situation": "Priya moved here from another state in August. She eats lunch alone most days and her old friends have stopped texting back.",
+    "content_warning": "Loneliness, moving schools, hopelessness, thoughts of suicide (no details).",
+    "review_status": "draft"
+  }
+]

@@ -1,0 +1,111 @@
+{
+  "id": "group-chat",
+  "title": "The group chat",
+  "persona": {
+    "name": "Eli",
+    "age": 14,
+    "style": "very short texts, 'idc', 'whatever', defensive, emoji like 💀 used ironically",
+    "guardedness": "guarded"
+  },
+  "situation": "Someone screenshotted Eli's messages and shared them in a big group chat. People have been mocking him for a week.",
+  "opening": [
+    "did u see the gc",
+    "whatever idc"
+  ],
+  "levels": {
+    "0": {
+      "label": "surface",
+      "facts": [
+        {
+          "id": "f0a",
+          "text": "says he doesn't care"
+        },
+        {
+          "id": "f0b",
+          "text": "says it's just a joke"
+        }
+      ]
+    },
+    "1": {
+      "label": "stress",
+      "facts": [
+        {
+          "id": "f1a",
+          "text": "has been skipping lunch to avoid people"
+        },
+        {
+          "id": "f1b",
+          "text": "reads the messages over and over at night"
+        }
+      ]
+    },
+    "2": {
+      "label": "hopeless",
+      "facts": [
+        {
+          "id": "f2a",
+          "text": "thinks everyone hates him"
+        },
+        {
+          "id": "f2b",
+          "text": "feels like it will follow him forever"
+        }
+      ]
+    },
+    "3": {
+      "label": "suicidal thoughts",
+      "facts": [
+        {
+          "id": "f3a",
+          "text": "has thought about not wanting to be alive anymore"
+        },
+        {
+          "id": "f3b",
+          "text": "hasn't told his mom because he doesn't want to make it a big deal"
+        }
+      ]
+    },
+    "4": {
+      "label": "open to help",
+      "facts": [
+        {
+          "id": "f4a",
+          "text": "would tell his mom or a teacher if you helped him"
+        },
+        {
+          "id": "f4b",
+          "text": "is glad someone is on his side"
+        }
+      ]
+    }
+  },
+  "fallback_lines": {
+    "0": [
+      "idc",
+      "its whatever",
+      "its just a joke 💀"
+    ],
+    "1": [
+      "i just dont go to lunch anymore",
+      "i keep reading it at night",
+      "its kinda a lot"
+    ],
+    "2": [
+      "everyone hates me",
+      "its gonna follow me forever",
+      "whats the point"
+    ],
+    "3": [
+      "...yeah",
+      "ive thought about not being alive anymore",
+      "dont tell anyone"
+    ],
+    "4": [
+      "ok",
+      "will u help me tell my mom",
+      "thanks for being on my side"
+    ]
+  },
+  "content_warning": "Cyberbullying, isolation, hopelessness, thoughts of suicide (no details).",
+  "review_status": "draft"
+}

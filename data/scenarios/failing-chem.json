@@ -1,0 +1,111 @@
+{
+  "id": "failing-chem",
+  "title": "Failing chemistry",
+  "persona": {
+    "name": "Jordan",
+    "age": 17,
+    "style": "full sentences but tired, self-deprecating jokes, occasional all-caps when stressed, opens up fairly fast",
+    "guardedness": "open"
+  },
+  "situation": "Jordan just found out they're failing chemistry. Their parents expect them to get into a top college, and they've been up until 3 a.m. every night.",
+  "opening": [
+    "just got my chem grade back",
+    "so thats cool"
+  ],
+  "levels": {
+    "0": {
+      "label": "surface",
+      "facts": [
+        {
+          "id": "f0a",
+          "text": "jokes that they're 'thriving'"
+        },
+        {
+          "id": "f0b",
+          "text": "says it's just one class"
+        }
+      ]
+    },
+    "1": {
+      "label": "stress",
+      "facts": [
+        {
+          "id": "f1a",
+          "text": "is scared to tell their parents"
+        },
+        {
+          "id": "f1b",
+          "text": "has been sleeping about four hours a night"
+        }
+      ]
+    },
+    "2": {
+      "label": "hopeless",
+      "facts": [
+        {
+          "id": "f2a",
+          "text": "feels like a failure no matter how hard they try"
+        },
+        {
+          "id": "f2b",
+          "text": "thinks their future is already ruined"
+        }
+      ]
+    },
+    "3": {
+      "label": "suicidal thoughts",
+      "facts": [
+        {
+          "id": "f3a",
+          "text": "has had thoughts of suicide when the pressure gets bad"
+        },
+        {
+          "id": "f3b",
+          "text": "feels like disappearing would be easier than letting everyone down"
+        }
+      ]
+    },
+    "4": {
+      "label": "open to help",
+      "facts": [
+        {
+          "id": "f4a",
+          "text": "would be willing to talk to a teacher or counselor about the grade and the stress"
+        },
+        {
+          "id": "f4b",
+          "text": "feels lighter after saying it out loud"
+        }
+      ]
+    }
+  },
+  "fallback_lines": {
+    "0": [
+      "its fine im thriving clearly",
+      "its literally one class",
+      "lol yeah"
+    ],
+    "1": [
+      "i cant tell my parents",
+      "ive been sleeping like 4 hours",
+      "im so tired man"
+    ],
+    "2": [
+      "i feel like i fail at everything",
+      "my future is kind of over",
+      "no matter what i do its not enough"
+    ],
+    "3": [
+      "honestly yeah. ive thought about it",
+      "sometimes it feels easier to just not be here",
+      "i dont really know how to say this"
+    ],
+    "4": [
+      "ok yeah maybe",
+      "would you help me figure out what to say?",
+      "thanks for not being weird about it"
+    ]
+  },
+  "content_warning": "Academic pressure, family expectations, hopelessness, thoughts of suicide (no details).",
+  "review_status": "draft"
+}

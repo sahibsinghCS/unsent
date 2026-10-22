@@ -1,5 +1,8 @@
 # FirstReply: master plan
 
+> **⚠️ Update, Oct 22 night:** the build now runs as **cloud agents** with a **zero-cost architecture**: no OpenAI or other paid API, and the friend speaks from a reviewed line bank. Where this file conflicts with [`docs/LANES.md`](docs/LANES.md), **docs/LANES.md wins**.
+
+
 *Everything decided so far, in one place. Last updated Thu Oct 22, 2026. Deadline: **Mon Oct 26, 11:00 am CT** (12:00 pm ET). Plan to submit by 9 am CT.*
 
 ---

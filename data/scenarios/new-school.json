@@ -1,0 +1,111 @@
+{
+  "id": "new-school",
+  "title": "The new kid",
+  "persona": {
+    "name": "Priya",
+    "age": 15,
+    "style": "polite, short answers, lots of 'haha', avoids talking about herself, guarded at first",
+    "guardedness": "guarded"
+  },
+  "situation": "Priya moved here from another state in August. She eats lunch alone most days and her old friends have stopped texting back.",
+  "opening": [
+    "hi haha",
+    "thanks for texting me"
+  ],
+  "levels": {
+    "0": {
+      "label": "surface",
+      "facts": [
+        {
+          "id": "f0a",
+          "text": "says she's adjusting fine"
+        },
+        {
+          "id": "f0b",
+          "text": "says she likes the school"
+        }
+      ]
+    },
+    "1": {
+      "label": "stress",
+      "facts": [
+        {
+          "id": "f1a",
+          "text": "eats lunch alone most days"
+        },
+        {
+          "id": "f1b",
+          "text": "her old friends stopped texting back"
+        }
+      ]
+    },
+    "2": {
+      "label": "hopeless",
+      "facts": [
+        {
+          "id": "f2a",
+          "text": "feels invisible and like no one would notice if she was gone"
+        },
+        {
+          "id": "f2b",
+          "text": "feels like it will never get better here"
+        }
+      ]
+    },
+    "3": {
+      "label": "suicidal thoughts",
+      "facts": [
+        {
+          "id": "f3a",
+          "text": "has been having thoughts of suicide at night"
+        },
+        {
+          "id": "f3b",
+          "text": "doesn't want to worry her parents, who are stressed about the move"
+        }
+      ]
+    },
+    "4": {
+      "label": "open to help",
+      "facts": [
+        {
+          "id": "f4a",
+          "text": "would talk to the counselor if a friend came along"
+        },
+        {
+          "id": "f4b",
+          "text": "would like to sit with someone at lunch"
+        }
+      ]
+    }
+  },
+  "fallback_lines": {
+    "0": [
+      "its fine haha",
+      "im adjusting",
+      "school is nice"
+    ],
+    "1": [
+      "i mostly eat lunch by myself",
+      "my old friends kind of stopped texting",
+      "its been kind of lonely haha"
+    ],
+    "2": [
+      "sometimes i feel invisible",
+      "i dont think anyone would notice if i wasnt here",
+      "it doesnt feel like its going to get better"
+    ],
+    "3": [
+      "...yeah. at night mostly",
+      "ive had thoughts like that",
+      "i dont want my parents to worry"
+    ],
+    "4": [
+      "ok",
+      "would you come with me?",
+      "thank you. really"
+    ]
+  },
+  "content_warning": "Loneliness, moving schools, hopelessness, thoughts of suicide (no details).",
+  "review_status": "draft"
+}

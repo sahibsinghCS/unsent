@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "SkillLabel": {
+      "description": "The 10 behaviours the skill detector predicts for each helper (user) message.",
+      "enum": [
+        "checked_in",
+        "validated",
+        "asked_directly",
+        "encouraged_help",
+        "referred_adult",
+        "referred_988",
+        "follow_up",
+        "dismissed",
+        "advice_dump",
+        "promised_secrecy"
+      ],
+      "title": "SkillLabel",
+      "type": "string"
+    }
+  },
+  "description": "A strong (or deliberately weak) example helper reply (data/exemplars/<scenario_id>.<locale>.jsonl).\n\nUsed for rewrite suggestions in the feedback report and as candidates in \"what if\" rollouts.",
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "scenario_id": {
+      "title": "Scenario Id",
+      "type": "string"
+    },
+    "locale": {
+      "default": "en",
+      "title": "Locale",
+      "type": "string"
+    },
+    "level": {
+      "title": "Level",
+      "type": "integer"
+    },
+    "strategy": {
+      "enum": [
+        "check_in",
+        "validate",
+        "ask_directly",
+        "refer",
+        "follow_up",
+        "combo"
+      ],
+      "title": "Strategy",
+      "type": "string"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "labels": {
+      "items": {
+        "$ref": "#/$defs/SkillLabel"
+      },
+      "title": "Labels",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "scenario_id",
+    "level",
+    "strategy",
+    "text"
+  ],
+  "title": "Exemplar",
+  "type": "object"
+}

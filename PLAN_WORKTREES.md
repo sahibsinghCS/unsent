@@ -1,5 +1,8 @@
 # FirstReply: parallel build plan (worktrees + AI agents)
 
+> **⚠️ Update, Oct 22 night:** the build now runs as **cloud agents** with a **zero-cost architecture**: no OpenAI or other paid API, and the friend speaks from a reviewed line bank. Where this file conflicts with [`docs/LANES.md`](docs/LANES.md), **docs/LANES.md wins**.
+
+
 *Written Thu Oct 22, 2026. Read with `FIRSTREPLY.md` (what we're building). This file covers **how** to build it fast with parallel worktrees, which tool runs which lane, what each lane builds, and how everything merges.*
 
 **Tools:** Claude Code Max, Cursor Pro, ChatGPT Plus (includes Codex), OpenAI API key. **Grok is not used anywhere.**
