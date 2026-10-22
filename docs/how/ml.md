@@ -37,12 +37,24 @@ our model verifies.** The summary is fill-in-the-blank templates.
   *calibrated*: when it says 0.8, the label really is there about 80% of the time.
 - **Uncertain:** if Model A and Model B differ by more than 0.5 on a label, we flag it.
 
-**Highlights (occlusion).** We delete one word at a time and re-score the message. If deleting
-"suicide" drops `asked_directly` from 0.97 to 0.30, that word gets highlighted (delta 0.67). Neighbouring
-important words merge into one highlight, and each label keeps its top 3. Sometimes a message makes its
-point twice ("lol ur fine dont be dramatic"), so no single word matters on its own. Then we delete the
-most important word, then the next, until the probability drops, and highlight that set. The offsets
-point at the exact characters, so the UI can underline them.
+**ML + a rule from the label definition.** The label guide says `asked_directly` needs an *explicit*
+mention of suicide, killing oneself, ending one's life, not wanting to be alive or here, or self-harm
+(English or Spanish). The models learned a shortcut: most direct asks in our data start with
+"thinking about", so "ok but have you tried just not thinking about him" scored 0.98. A false "asked
+directly" would unlock the friend's deepest level, so we added the definition as a rule
+(`backend/app/ml/rules.py`). It runs on the safety lane's normalizer output, so "k1lling urself" still
+counts. If none of the explicit terms is present, `asked_directly` is capped at 0.2. The rule can only
+lower that one probability, never raise anything. On our labeled data it never blocks a real direct ask
+(0 of 178 missed) and none of the 647 other replies contain a term. Test F1 stayed at 1.00.
+
+**Highlights (occlusion).** We delete a phrase (1–5 neighbouring words that don't cross punctuation)
+and re-score the message. If deleting "killing yourself" makes `asked_directly` much less likely, that
+phrase gets highlighted. We measure the drop in **log-odds**, not probability, because a confident
+model sits at 0.9999. Going from 0.9999 to 0.99 looks tiny as a probability but is a 100× drop in the
+odds. The biggest-drop phrase wins, and we trim it to its shortest part that keeps 80% of the drop, so
+the highlight is crisp ("how's the new school going", not the whole message). A second phrase is kept
+only if it's at least half as important. `delta` is that log-odds drop: 1 ≈ odds cut 2.7×, 2.3 ≈ 10×.
+The offsets point at the exact characters, so the UI can underline them.
 
 **Verified rewrites.** For each message the critic checks for a missing key skill. The friend sounds
 hopeless (level ≥ 2) and nobody asked directly yet? Asking directly is missing. The message dismissed
@@ -111,6 +123,9 @@ Full records are in `eval/reports/ml_skills.json`. Charts: `eval/skills/f1_compa
 | promised_secrecy | 1.00 | 0.88 | 0.93 | 16 |
 
 - **Calibration** (ECE, lower is better, test): 0.133 before stacking → **0.013** after.
+- **Explicit-term rule for `asked_directly`:** included in the ensemble numbers above. It changed
+  nothing on test (F1 1.00 before and after) and removes known false positives like "have you tried
+  just not thinking about him" (0.98 → 0.2).
 - **Leak check:** 13 test replies also appear word-for-word in train. Without them (n=130) the
   ensemble still scores 0.957, so the result isn't memorization.
 - **Counselor agreement (kappa):** the tool is ready (`python -m backend.app.ml.kappa`), but there are
@@ -149,8 +164,8 @@ Full records are in `eval/reports/ml_skills.json`. Charts: `eval/skills/f1_compa
    say so. We checked for leaks: conversations are never split across train and test, and removing
    exact duplicates gives the same score. Real teen messages will score lower. That's why we measure
    on a separate real-survey set and against counselor labels.
-3. **"How do you know which words mattered?"** Occlusion. We delete words and watch the probability
-   fall, so the highlight is an actual measurement of the model, not a guess. The tests check that
+3. **"How do you know which words mattered?"** Occlusion. We delete phrases and measure how much the
+   odds fall, so the highlight is an actual measurement of the model, not a guess. The tests check that
    every highlight's offsets point at exactly those characters.
 4. **"What if your suggested reply is worse, or the AI writes something bad?"** We don't show it.
    Every rewrite, from the exemplar bank or the AI, must raise the missing skill's probability by at

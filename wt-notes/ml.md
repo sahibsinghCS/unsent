@@ -23,6 +23,12 @@
   rewrite reports "refer"). LLM fallback (`llm.chat_json("rewrite", role="judge")`, prompt in
   `ml/prompts/rewrite.md`) runs only when no exemplar passes; 2 candidates, same ≥ 0.2 + Guardian check, best
   verified gain wins; `LLMUnavailable`/`FR_LLM=0` → exemplars only. Tests use `llm.register_fake` only.
+- Integrator fixes (Oct 22 night): (1) `ml/rules.py` caps asked_directly at 0.2 without an explicit
+  term from the label definition (EN+ES, on the safety normalizer's output); 0/178 positives missed, 0/647
+  negatives matched, test F1 unchanged. (3) Highlights are now phrase occlusion in log-odds: 1–5 words within
+  punctuation, crisp core (≥ 80% of the drop), ≤ 2 spans per label, neighbours merged; `Highlight.delta` is the
+  log-odds drop. (4) summary_text says "You never lost their trust…" when there's no turning point or it
+  rounds to 0. Fix (2) (follow_up "at lunch") waits for the data lane's hard negatives + retrain.
 - Phase B: trained on data lane's provisional splits (origin/wt/data @ 3ed8f17) with fastembed;
   artifact + `eval/reports/ml_skills.json` committed.
 
@@ -31,6 +37,8 @@
   `test_freeform` separately (with the keyword baseline); retrain once when it lands.
 
 ## Decisions
+- `Highlight.delta` is a log-odds drop (not a probability drop): calibrated probs saturate near 1, so a
+  probability delta of 0.0005 would hide a 100× change in odds. Frontend should treat it as relative strength.
 - Stacker = LR on (logit pA, logit pB) fitted on val = stacking and Platt calibration in one step; falls
   back to the average when val has < 2 positives or negatives for a label.
 - Rubric "listen" is computed per message (validated × (1 − max(dismissed, advice_dump)) in the same

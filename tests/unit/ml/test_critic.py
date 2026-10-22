@@ -270,3 +270,24 @@ def test_exemplars_win_over_the_llm(monkeypatch, fake_llm):
     report = make_critic(monkeypatch).score_conversation(session, path)
     assert report.per_message[2].rewrite_source == "exemplar"
     assert all("ask directly" not in c[0]["content"] for c in calls)
+
+
+def test_summary_without_a_turning_point_is_positive(monkeypatch):
+    class Calm(FakeEngine):
+        def turning_point(self, path):
+            return None
+
+    session, path = build(CONVO)
+    critic = make_critic(monkeypatch)
+    critic._engine = Calm()
+    report = critic.score_conversation(session, path)
+    assert report.turning_point is None
+    assert "never lost their trust" in report.summary_text and "−" not in report.summary_text
+
+
+def test_summary_never_says_trust_minus_zero():
+    from backend.app.ml.critic import summary_text
+
+    tiny = TurningPoint(node_id="n1", trust_drop=0.3, reason="r")
+    text = summary_text({"check_in": 0.9}, tiny, [])
+    assert "−0" not in text and "never lost their trust" in text

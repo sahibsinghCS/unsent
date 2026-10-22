@@ -354,7 +354,9 @@ def summary_text(summary: dict[str, float], turning: TurningPoint | None, path: 
         sentences.append(f"Your strongest skill was {SKILL_NAMES[best]}.")
     else:
         sentences.append("You stayed in the conversation, and that is where helping starts.")
-    if turning is not None:
+    if turning is None or round(turning.trust_drop) < 1:
+        sentences.append("You never lost their trust: they kept opening up the whole time.")
+    else:
         said = next((" ".join(n.bubbles) for n in path if n.id == turning.node_id), "")
         where = f" after you said “{_clip(said)}”" if said else ""
         sentences.append(
