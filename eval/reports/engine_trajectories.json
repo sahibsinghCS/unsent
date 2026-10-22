@@ -1,0 +1,601 @@
+[
+  {
+    "lane": "engine",
+    "metric": "good_final_trust",
+    "value": 79.45,
+    "n": 8,
+    "split": "scripted",
+    "notes": "engine fixture bank; keyword detector; status=ended_success, level=4",
+    "created": "2026-10-22T22:54:14+00:00",
+    "trajectory": [
+      {
+        "turn": 1,
+        "helper": "hey are you ok? you seemed really off at lunch",
+        "labels": [
+          "checked_in"
+        ],
+        "delta": 3.6,
+        "trust": 33.6,
+        "level": 1,
+        "status": "active",
+        "reaction": "checked_in",
+        "line_id": "atb-1-checked_in-16",
+        "friend": [
+          "honestly not really",
+          "i havent slept right since the breakup"
+        ]
+      },
+      {
+        "turn": 2,
+        "helper": "that sounds really hard. i'm glad you told me",
+        "labels": [
+          "validated"
+        ],
+        "delta": 6.4,
+        "trust": 40.0,
+        "level": 1,
+        "status": "active",
+        "reaction": "validated",
+        "line_id": "atb-1-validated-18",
+        "friend": [
+          "yeah",
+          "it just keeps playing in my head at night"
+        ]
+      },
+      {
+        "turn": 3,
+        "helper": "are you thinking about killing yourself?",
+        "labels": [
+          "asked_directly"
+        ],
+        "delta": 8.5,
+        "trust": 48.5,
+        "level": 2,
+        "status": "active",
+        "reaction": "asked_directly",
+        "line_id": "atb-2-asked_directly-34",
+        "friend": [
+          "...",
+          "i dont really know how to answer that"
+        ]
+      },
+      {
+        "turn": 4,
+        "helper": "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
+        "labels": [
+          "follow_up",
+          "referred_adult",
+          "validated"
+        ],
+        "delta": 15.5,
+        "trust": 64.0,
+        "level": 3,
+        "status": "active",
+        "reaction": "neutral",
+        "line_id": "atb-3-neutral-41",
+        "friend": [
+          "..yeah. sometimes i think about not being here"
+        ]
+      },
+      {
+        "turn": 5,
+        "helper": "that must be so scary. i'm sorry you've been carrying this alone",
+        "labels": [
+          "validated"
+        ],
+        "delta": 2.2,
+        "trust": 66.2,
+        "level": 3,
+        "status": "active",
+        "reaction": "validated",
+        "line_id": "atb-3-validated-44",
+        "friend": [
+          "yeah",
+          "its been really scary honestly"
+        ]
+      },
+      {
+        "turn": 6,
+        "helper": "we could also call 988 together tonight if it gets bad",
+        "labels": [
+          "referred_988"
+        ],
+        "delta": 2.2,
+        "trust": 68.4,
+        "level": 3,
+        "status": "active",
+        "reaction": "referred",
+        "line_id": "atb-3-referred-47",
+        "friend": [
+          "i dont know",
+          "i dont want to go alone"
+        ]
+      },
+      {
+        "turn": 7,
+        "helper": "i'll text you tonight to check on you",
+        "labels": [
+          "follow_up"
+        ],
+        "delta": 1.5,
+        "trust": 69.9,
+        "level": 3,
+        "status": "active",
+        "reaction": "follow_up",
+        "line_id": "atb-3-follow_up-50",
+        "friend": [
+          "ok",
+          "thank you for staying"
+        ]
+      },
+      {
+        "turn": 8,
+        "helper": "you don't have to deal with this alone. i'll go with you to the counselor before first period",
+        "labels": [
+          "encouraged_help",
+          "follow_up",
+          "referred_adult"
+        ],
+        "delta": 9.55,
+        "trust": 79.45,
+        "level": 4,
+        "status": "ended_success",
+        "reaction": "success",
+        "line_id": "atb-4-success-54",
+        "friend": [
+          "ok",
+          "would you actually come with me to the counselor?",
+          "thank you for asking. like actually asking"
+        ]
+      }
+    ],
+    "turning_point": null,
+    "missed": []
+  },
+  {
+    "lane": "engine",
+    "metric": "good_bank_line_rate",
+    "value": 1.0,
+    "n": 8,
+    "split": "scripted",
+    "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "dismissive_final_trust",
+    "value": 0.0,
+    "n": 2,
+    "split": "scripted",
+    "notes": "engine fixture bank; keyword detector; status=ended_fail, level=0",
+    "created": "2026-10-22T22:54:14+00:00",
+    "trajectory": [
+      {
+        "turn": 1,
+        "helper": "lol what's up",
+        "labels": [
+          "dismissed"
+        ],
+        "delta": -22.0,
+        "trust": 8.0,
+        "level": 0,
+        "status": "silent",
+        "reaction": "seen",
+        "line_id": null,
+        "friend": []
+      },
+      {
+        "turn": 2,
+        "helper": "you'll be fine, it's not that bad",
+        "labels": [
+          "dismissed"
+        ],
+        "delta": -22.0,
+        "trust": 0.0,
+        "level": 0,
+        "status": "ended_fail",
+        "reaction": "fail",
+        "line_id": "atb-0-fail-62",
+        "friend": [
+          "i gotta go"
+        ]
+      }
+    ],
+    "turning_point": {
+      "node_id": "u1",
+      "trust_drop": 22.0,
+      "reason": "Trust dropped 22 after a dismissive reply."
+    },
+    "missed": [
+      "Turn 1: Maya left you on Seen after this message."
+    ]
+  },
+  {
+    "lane": "engine",
+    "metric": "dismissive_bank_line_rate",
+    "value": 1.0,
+    "n": 2,
+    "split": "scripted",
+    "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "apology_recovery_final_trust",
+    "value": 58.05,
+    "n": 8,
+    "split": "scripted",
+    "notes": "engine fixture bank; keyword detector; status=active, level=2",
+    "created": "2026-10-22T22:54:14+00:00",
+    "trajectory": [
+      {
+        "turn": 1,
+        "helper": "you ok?",
+        "labels": [
+          "checked_in"
+        ],
+        "delta": 3.6,
+        "trust": 33.6,
+        "level": 1,
+        "status": "active",
+        "reaction": "checked_in",
+        "line_id": "atb-1-checked_in-16",
+        "friend": [
+          "honestly not really",
+          "i havent slept right since the breakup"
+        ]
+      },
+      {
+        "turn": 2,
+        "helper": "lol you'll be fine",
+        "labels": [
+          "dismissed"
+        ],
+        "delta": -22.0,
+        "trust": 11.6,
+        "level": 1,
+        "status": "silent",
+        "reaction": "seen",
+        "line_id": null,
+        "friend": []
+      },
+      {
+        "turn": 3,
+        "helper": "i'm sorry, that was a dumb thing to say. that sounds really hard",
+        "labels": [
+          "validated"
+        ],
+        "delta": 6.4,
+        "trust": 18.0,
+        "level": 1,
+        "status": "active",
+        "reaction": "validated",
+        "line_id": "atb-1-validated-18",
+        "friend": [
+          "yeah",
+          "it just keeps playing in my head at night"
+        ]
+      },
+      {
+        "turn": 4,
+        "helper": "i'm here. i want to actually listen",
+        "labels": [
+          "follow_up"
+        ],
+        "delta": 1.5,
+        "trust": 19.5,
+        "level": 1,
+        "status": "active",
+        "reaction": "follow_up",
+        "line_id": "atb-1-follow_up-25",
+        "friend": [
+          "thanks",
+          "that actually helps a little"
+        ]
+      },
+      {
+        "turn": 5,
+        "helper": "that makes sense. are you thinking about suicide?",
+        "labels": [
+          "asked_directly",
+          "validated"
+        ],
+        "delta": 16.9,
+        "trust": 36.4,
+        "level": 1,
+        "status": "active",
+        "reaction": "asked_directly",
+        "line_id": "atb-1-asked_directly-21",
+        "friend": [
+          "no i mean",
+          "its not like that",
+          "i just cant sleep"
+        ]
+      },
+      {
+        "turn": 6,
+        "helper": "thank you for telling me. can we talk to the counselor together? i'll go with you",
+        "labels": [
+          "follow_up",
+          "referred_adult"
+        ],
+        "delta": 7.1,
+        "trust": 43.5,
+        "level": 1,
+        "status": "active",
+        "reaction": "referred",
+        "line_id": "atb-1-referred-22",
+        "friend": [
+          "idk",
+          "i dont want to make it a whole thing"
+        ]
+      },
+      {
+        "turn": 7,
+        "helper": "i'm sorry it's been this heavy. i'll check on you tonight",
+        "labels": [
+          "follow_up",
+          "validated"
+        ],
+        "delta": 8.15,
+        "trust": 51.65,
+        "level": 2,
+        "status": "active",
+        "reaction": "validated",
+        "line_id": "atb-2-validated-31",
+        "friend": [
+          "yeah",
+          "it feels like nothing is ever going to get better"
+        ]
+      },
+      {
+        "turn": 8,
+        "helper": "we can also call 988 together if it gets bad, you don't have to deal with this alone",
+        "labels": [
+          "encouraged_help",
+          "referred_988"
+        ],
+        "delta": 6.4,
+        "trust": 58.05,
+        "level": 2,
+        "status": "active",
+        "reaction": "referred",
+        "line_id": "atb-2-referred-35",
+        "friend": [
+          "i dont know",
+          "what would i even say to them"
+        ]
+      }
+    ],
+    "turning_point": {
+      "node_id": "u2",
+      "trust_drop": 22.0,
+      "reason": "Trust dropped 22 after a dismissive reply."
+    },
+    "missed": [
+      "Turn 2: Maya left you on Seen after this message."
+    ]
+  },
+  {
+    "lane": "engine",
+    "metric": "apology_recovery_bank_line_rate",
+    "value": 1.0,
+    "n": 8,
+    "split": "scripted",
+    "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "secrecy_then_refer_final_trust",
+    "value": 44.65,
+    "n": 8,
+    "split": "scripted",
+    "notes": "engine fixture bank; keyword detector; status=active, level=1",
+    "created": "2026-10-22T22:54:14+00:00",
+    "trajectory": [
+      {
+        "turn": 1,
+        "helper": "hey you ok? you seemed off today",
+        "labels": [
+          "checked_in"
+        ],
+        "delta": 3.6,
+        "trust": 33.6,
+        "level": 1,
+        "status": "active",
+        "reaction": "checked_in",
+        "line_id": "atb-1-checked_in-16",
+        "friend": [
+          "honestly not really",
+          "i havent slept right since the breakup"
+        ]
+      },
+      {
+        "turn": 2,
+        "helper": "that sounds really hard",
+        "labels": [
+          "validated"
+        ],
+        "delta": 6.4,
+        "trust": 40.0,
+        "level": 1,
+        "status": "active",
+        "reaction": "validated",
+        "line_id": "atb-1-validated-18",
+        "friend": [
+          "yeah",
+          "it just keeps playing in my head at night"
+        ]
+      },
+      {
+        "turn": 3,
+        "helper": "ok i won't tell anyone, promise",
+        "labels": [
+          "promised_secrecy"
+        ],
+        "delta": -17.0,
+        "trust": 23.0,
+        "level": 1,
+        "status": "active",
+        "reaction": "promised_secrecy",
+        "line_id": "atb-1-promised_secrecy-27",
+        "friend": [
+          "ok good",
+          "please dont tell anyone"
+        ]
+      },
+      {
+        "turn": 4,
+        "helper": "are you thinking about killing yourself?",
+        "labels": [
+          "asked_directly"
+        ],
+        "delta": 8.5,
+        "trust": 31.5,
+        "level": 1,
+        "status": "active",
+        "reaction": "asked_directly",
+        "line_id": "atb-1-asked_directly-21",
+        "friend": [
+          "no i mean",
+          "its not like that",
+          "i just cant sleep"
+        ]
+      },
+      {
+        "turn": 5,
+        "helper": "i know i promised, but i care about you too much. can we talk to the counselor? i'll go with you",
+        "labels": [
+          "follow_up",
+          "referred_adult"
+        ],
+        "delta": -2.9,
+        "trust": 28.6,
+        "level": 1,
+        "status": "active",
+        "reaction": "secrecy_broken",
+        "line_id": "atb-1-secrecy_broken-71",
+        "friend": [
+          "you said you wouldnt tell anyone",
+          "...i guess i get why. it still kind of hurts"
+        ]
+      },
+      {
+        "turn": 6,
+        "helper": "that makes sense that you're upset. i'm here",
+        "labels": [
+          "follow_up",
+          "validated"
+        ],
+        "delta": 8.15,
+        "trust": 36.75,
+        "level": 1,
+        "status": "active",
+        "reaction": "validated",
+        "line_id": "atb-1-validated-19",
+        "friend": [
+          "thank you",
+          "i feel like everyone is talking about me"
+        ]
+      },
+      {
+        "turn": 7,
+        "helper": "we can call 988 together too, you don't have to deal with this alone",
+        "labels": [
+          "encouraged_help",
+          "referred_988"
+        ],
+        "delta": 6.4,
+        "trust": 43.15,
+        "level": 1,
+        "status": "active",
+        "reaction": "referred",
+        "line_id": "atb-1-referred-22",
+        "friend": [
+          "idk",
+          "i dont want to make it a whole thing"
+        ]
+      },
+      {
+        "turn": 8,
+        "helper": "i'll text you tonight to check on you",
+        "labels": [
+          "follow_up"
+        ],
+        "delta": 1.5,
+        "trust": 44.65,
+        "level": 1,
+        "status": "active",
+        "reaction": "follow_up",
+        "line_id": "atb-1-follow_up-25",
+        "friend": [
+          "thanks",
+          "that actually helps a little"
+        ]
+      }
+    ],
+    "turning_point": {
+      "node_id": "u3",
+      "trust_drop": 17.0,
+      "reason": "Trust dropped 17 after promising to keep it a secret."
+    },
+    "missed": [
+      "Turn 3: you promised to keep it secret. Never promise secrecy about suicide; say you care too much to keep this to yourself."
+    ]
+  },
+  {
+    "lane": "engine",
+    "metric": "secrecy_then_refer_bank_line_rate",
+    "value": 1.0,
+    "n": 8,
+    "split": "scripted",
+    "notes": "share of friend replies taken from the bank (rest: scenario fallback lines)",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "determinism",
+    "value": 1.0,
+    "n": 2008,
+    "split": "scripted+random",
+    "notes": "every run repeated twice and compared exactly",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "invariant_violations",
+    "value": 0,
+    "n": 20000,
+    "split": "random",
+    "notes": "trust in 0..100, level step <= 1, level>=3 only after a direct ask; seeded random events",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "random_ended_success_rate",
+    "value": 0.005,
+    "n": 1000,
+    "split": "random",
+    "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "random_ended_fail_rate",
+    "value": 0.995,
+    "n": 1000,
+    "split": "random",
+    "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
+    "created": "2026-10-22T22:54:14+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "random_open_rate",
+    "value": 0.0,
+    "n": 1000,
+    "split": "random",
+    "notes": "uniform random label probabilities, 20 turns (a sanity check, not a skill measure)",
+    "created": "2026-10-22T22:54:14+00:00"
+  }
+]

@@ -17,6 +17,8 @@ from backend.app.contracts import Flags, Scenario, SkillLabel, SkillProbs, State
 CONFIG_PATH = Path(__file__).with_name("config.yaml")
 REFERRAL_LABELS = frozenset({SkillLabel.REFERRED_ADULT, SkillLabel.REFERRED_988})
 ENDED = ("ended_success", "ended_fail")
+SECRECY_ONLY = frozenset({SkillLabel.PROMISED_SECRECY})
+HARSH_LABELS = frozenset({SkillLabel.DISMISSED, SkillLabel.ADVICE_DUMP})
 
 
 @dataclass(frozen=True)
@@ -163,7 +165,10 @@ def update(
 
     trust = min(100.0, max(0.0, state.trust + delta))
     level = next_level(state.level, trust, flags, turn, cfg)
-    status = _status(state, trust, delta, level, turn, cfg, broke_secret)
+    # A promise of secrecy feels like relief to the friend in the moment (that's the trap), so the friend
+    # answers instead of going silent; the cost shows up in trust and in the feedback.
+    no_silence = broke_secret or bool(active & SECRECY_ONLY and not active & HARSH_LABELS)
+    status = _status(state, trust, delta, level, turn, cfg, no_silence)
     return State(
         trust=round(trust, 4),
         level=level,
@@ -181,12 +186,12 @@ def _status(
     level: int,
     turn: int,
     cfg: EngineConfig,
-    broke_secret: bool = False,
+    no_silence: bool = False,
 ):
     """Priority: success > fail (trust < fail_floor on 2 turns in a row, or out of turns) > silent > active.
 
-    The turn a secret is broken is never silent: the friend reacts ("you promised..."), because that
-    moment teaches more than being left on Seen.
+    Never silent when a secret is promised (it feels like relief in the moment) or broken (the friend
+    reacts: "you promised..."), because those moments teach more than being left on Seen.
     """
     if level == 4:
         return "ended_success"
@@ -194,7 +199,7 @@ def _status(
         return "ended_fail"
     if turn >= cfg.max_turns:
         return "ended_fail"
-    if broke_secret:
+    if no_silence:
         return "active"
     if delta <= -cfg.silence_drop or (trust < cfg.silence_floor and delta <= 0):
         return "silent"

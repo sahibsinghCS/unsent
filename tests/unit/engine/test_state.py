@@ -143,6 +143,13 @@ def test_doing_right_after_secrecy_can_still_succeed(open_scenario, cfg):
     assert new.status == "ended_success"
 
 
+def test_secrecy_promise_is_answered_not_silent(open_scenario, cfg):
+    new = update(at(40, level=1), probs(L.PROMISED_SECRECY), open_scenario, cfg)
+    assert new.last_delta == -17 and new.status == "active"
+    both = update(at(40, level=1), probs(L.PROMISED_SECRECY, L.DISMISSED), open_scenario, cfg)
+    assert both.status == "silent"
+
+
 def test_big_drop_goes_silent(open_scenario, cfg):
     assert update(at(60, level=2), probs(L.DISMISSED), open_scenario, cfg).status == "silent"
 

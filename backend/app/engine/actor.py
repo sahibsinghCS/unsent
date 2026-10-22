@@ -52,6 +52,19 @@ LABEL_PRIORITY: tuple[tuple[SkillLabel, Reaction], ...] = (
     (SkillLabel.FOLLOW_UP, Reaction.FOLLOW_UP),
 )
 
+# Supportive moves after which a friend who just opened up a level says what's newly on their mind.
+DISCLOSING_REACTIONS = frozenset(
+    {
+        Reaction.NEUTRAL,
+        Reaction.CHECKED_IN,
+        Reaction.VALIDATED,
+        Reaction.ASKED_DIRECTLY,
+        Reaction.REFERRED,
+        Reaction.ENCOURAGED_HELP,
+        Reaction.FOLLOW_UP,
+    }
+)
+
 BANK_DIR_ENV = "FR_ENGINE_BANK_DIR"  # optional override (eval / believability runs on another bank)
 
 
@@ -165,11 +178,15 @@ def candidates(
     reaction: Reaction,
     bank: Sequence[Line],
     cfg: EngineConfig,
+    leveled_up: bool = False,
 ) -> list[Candidate]:
     """Every acceptable reply, best first. The service walks this list until one verifies.
 
     Order: unused lines with the reaction (current level, then lower levels), unused NEUTRAL lines,
     then already-used lines least recently used first, then the scenario's fallback lines.
+    On a turn where the friend just moved UP a level (and the helper's move was a supportive one), lines
+    that actually disclose something new from that level go first: opening up is the point of the
+    level change, so it shouldn't be skipped because the reaction's lines at that level are fact-free.
     """
     facts = fact_levels(scenario)
     last_used = {node.line_id: i for i, node in enumerate(history) if node.line_id}
@@ -180,6 +197,21 @@ def candidates(
         return line.level <= level and all(facts.get(f, 99) <= level for f in line.fact_ids)
 
     tiers: list[tuple[Reaction, list[Line]]] = []
+    if leveled_up and reaction in DISCLOSING_REACTIONS:
+        new_facts = {f for f, lvl in facts.items() if lvl == level} - revealed
+        # A direct question gets a direct answer, so it is never swapped for a NEUTRAL disclosure.
+        subs = [reaction] if reaction == Reaction.ASKED_DIRECTLY else [reaction, Reaction.NEUTRAL]
+        for want in dict.fromkeys(subs):
+            tier = [
+                ln
+                for ln in bank
+                if ln.reaction == want
+                and ln.level == level
+                and eligible(ln)
+                and set(ln.fact_ids) & new_facts
+            ]
+            if tier:
+                tiers.append((want, tier))
     wanted = [reaction] if reaction == Reaction.NEUTRAL else [reaction, Reaction.NEUTRAL]
     for want in wanted:
         for lvl in range(level, -1, -1):
@@ -191,9 +223,11 @@ def candidates(
 
     out: list[Candidate] = []
     used_lines: list[tuple[Reaction, Line]] = []
+    seen: set[str] = set()
     for want, tier in tiers:
-        fresh = [ln for ln in tier if ln.id not in last_used]
-        used_lines += [(want, ln) for ln in tier if ln.id in last_used]
+        fresh = [ln for ln in tier if ln.id not in last_used and ln.id not in seen]
+        used_lines += [(want, ln) for ln in tier if ln.id in last_used and ln.id not in seen]
+        seen.update(ln.id for ln in tier)
         for ln in rank_lines(fresh, user_text, level, len(history), cfg, revealed):
             out.append(Candidate(want, tuple(ln.bubbles), ln))
     used_lines.sort(key=lambda item: last_used[item[1].id])  # least recently used first
@@ -259,5 +293,7 @@ def ranked_candidates(
     bank = load_bank(scenario.id, locale) if bank is None else bank
     active = active_labels(events, cfg.event_threshold)
     reaction = choose_reaction(state, active, user_text, history, cfg, state_before(history))
-    found = candidates(scenario, state, history, user_text, reaction, bank, cfg)
+    before = state_before(history)
+    leveled_up = before is not None and state.level > before.level
+    found = candidates(scenario, state, history, user_text, reaction, bank, cfg, leveled_up)
     return found or [Candidate(reaction, ("...",), None)]

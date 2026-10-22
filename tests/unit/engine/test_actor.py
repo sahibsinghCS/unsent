@@ -207,3 +207,19 @@ def test_load_bank_locale_fallback_and_env(monkeypatch):
     monkeypatch.setenv(actor.BANK_DIR_ENV, str(FIXTURES))
     assert len(load_bank("after-the-breakup")) >= 50
     assert load_bank("no-such-scenario") == ()
+
+
+def test_level_up_turn_discloses_new_fact(scenario, cfg):
+    bank = [
+        line("ref", 3, R.REFERRED, cue="talk to the counselor"),
+        line("tell", 3, R.NEUTRAL, facts=["f3a"]),
+    ]
+    before, after = st(level=2), st(level=3, asked_directly_ever=True)
+    path = hist(before)
+    path[-1].state_after = after
+    text = "talk to the counselor"
+    out = generate(scenario, after, path, text, probs(L.REFERRED_ADULT), bank=bank, cfg=cfg)
+    assert out.line_id == "tell" and out.reaction == R.NEUTRAL
+    steady = hist(after)
+    out = generate(scenario, after, steady, text, probs(L.REFERRED_ADULT), bank=bank, cfg=cfg)
+    assert out.line_id == "ref"
