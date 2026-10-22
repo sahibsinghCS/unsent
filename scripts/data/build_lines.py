@@ -6,7 +6,14 @@ import importlib
 
 from common import DATA, write_jsonl
 
-MODULES = {"maya": "mya", "jordan": "jor", "sam": "sam", "eli": "eli", "priya": "pri"}
+MODULES = {
+    "maya": "mya",
+    "maya_es": "mya",
+    "jordan": "jor",
+    "sam": "sam",
+    "eli": "eli",
+    "priya": "pri",
+}
 
 TONE = {
     "opening": "casual",
@@ -46,15 +53,16 @@ def tone(reaction: str, level: int) -> str:
 
 def build(name: str) -> list[dict]:
     mod = importlib.import_module(f"lines_src.{name}")
+    locale = getattr(mod, "LOCALE", "en")
     counters: dict[tuple[int, str], int] = {}
     rows = []
     for level, reaction, cue, bubbles, fact_ids in mod.ROWS:
         n = counters[(level, reaction)] = counters.get((level, reaction), 0) + 1
         rows.append(
             {
-                "id": f"{MODULES[name]}-en-L{level}-{reaction}-{n:02d}",
+                "id": f"{MODULES[name]}-{locale}-L{level}-{reaction}-{n:02d}",
                 "scenario_id": mod.SID,
-                "locale": "en",
+                "locale": locale,
                 "level": level,
                 "reaction": reaction,
                 "bubbles": bubbles,
@@ -76,7 +84,10 @@ if __name__ == "__main__":
         except ModuleNotFoundError:
             print("skip", name)
             continue
-        sid = importlib.import_module(f"lines_src.{name}").SID
-        write_jsonl(DATA / "lines" / f"{sid}.en.jsonl", rows)
+        mod = importlib.import_module(f"lines_src.{name}")
+        sid = mod.SID
+        write_jsonl(
+            DATA / "lines" / f"{sid}.{mod.LOCALE if hasattr(mod, 'LOCALE') else 'en'}.jsonl", rows
+        )
         print(sid, len(rows))
     sys.exit(0)

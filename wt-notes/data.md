@@ -8,7 +8,7 @@
 - Docs: `docs/DATASET.md`, `docs/how/data.md`, `docs/CHATGPT_TESTSET_PROMPT.md`.
 
 ## In progress
-- Stretch: Spanish line bank `data/lines/after-the-breakup.es.jsonl` (see Known issues).
+- Nothing. Stretch done: Spanish line bank `data/lines/after-the-breakup.es.jsonl` (201 lines, all cells).
 
 ## Decisions
 - Disagreements are dropped from `final.jsonl` until Sahib labels them (human > agreed); `--provisional` keeps intended labels for early training.

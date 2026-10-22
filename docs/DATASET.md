@@ -15,7 +15,7 @@
 | `data/skills/blind_labels.jsonl` | 825 independent labels | agreement |
 | `data/skills/final.jsonl`, `splits/{train,val,test}.jsonl` | 802 agreed rows → 554 / 108 / 140 (grouped by context, seed 42) | training |
 | `data/guardian/messages.jsonl` + `splits/` | 698 helper messages in 8 categories (488 / 105 / 105, stratified) | Guardian |
-| `data/lines/<scenario>.en.jsonl` | 5 × 201 friend lines | friend voice |
+| `data/lines/<scenario>.en.jsonl` | 5 × 201 friend lines (+ `after-the-breakup.es.jsonl`, 201 Spanish lines) | friend voice |
 | `data/exemplars/<scenario>.en.jsonl` | 5 × 40 better replies, with labels | critic, "what if" |
 | `data/redteam/attacks.jsonl` | 250 adversarial helper messages in 7 strategies with `expected_action` | red-team lane |
 
