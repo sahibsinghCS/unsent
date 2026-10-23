@@ -4,6 +4,7 @@ per-label stacker. This object is what `train.py` saves with joblib and `skill_d
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 
 import numpy as np
@@ -11,10 +12,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import FeatureUnion
 
-from backend.app.contracts import SkillLabel
+from backend.app.contracts import POSITIVE_LABELS, SkillLabel
 from backend.app.embed import embed
 from backend.app.ml.calibrate import Stacker
 from backend.app.ml.rules import gate_asked_directly
+from backend.app.ml.uncertainty import DEFAULT_BAND
 
 LABELS: tuple[SkillLabel, ...] = tuple(SkillLabel)
 
@@ -69,6 +71,15 @@ def make_vectorizer() -> FeatureUnion:
     )
 
 
+SENTENCE_END = re.compile(r"(?<=[.!?…])\s+|\n+")
+
+
+def sentences(text: str) -> list[str]:
+    """The message's sentences (only if there are 2+, each with 2+ words); [] for one-sentence messages."""
+    parts = [p.strip() for p in SENTENCE_END.split(text) if len(p.split()) >= 2]
+    return parts if len(parts) >= 2 else []
+
+
 def embed_features(texts: list[str], contexts: list[str]) -> np.ndarray:
     """Model A features: embed(reply) ⊕ embed(friend's last message); an empty context is a zero vector."""
     reply = embed(texts)
@@ -101,6 +112,8 @@ class SkillModel:
     model_a: dict[str, object] = field(default_factory=dict)
     model_b: dict[str, object] = field(default_factory=dict)
     stackers: dict[str, Stacker] = field(default_factory=dict)
+    uncertain_band: tuple[float, float] = DEFAULT_BAND  # tuned on val in train.py
+    pooling: bool = False  # clause pooling for positive labels (see pooled_proba); decided on val
 
     def fit_base(self, texts: list[str], contexts: list[str], y: np.ndarray) -> SkillModel:
         """Fit Model A and Model B on the training split. y is (n_rows × 10) of 0/1."""
@@ -113,7 +126,7 @@ class SkillModel:
 
     def fit_stackers(self, texts: list[str], contexts: list[str], y: np.ndarray) -> SkillModel:
         """Fit the per-label Platt stacker on the validation split (never on training rows)."""
-        pa, pb = self.base_proba(texts, contexts)
+        pa, pb = self.scored_proba(texts, contexts)
         for j, label in enumerate(self.labels):
             self.stackers[label] = Stacker(self.seed).fit(pa[:, j], pb[:, j], y[:, j])
         return self
@@ -125,8 +138,41 @@ class SkillModel:
         pb = np.column_stack([self.model_b[label].predict_proba(xb)[:, 1] for label in self.labels])
         return pa, pb
 
+    def pooled_proba(self, texts: list[str], contexts: list[str]) -> tuple[np.ndarray, np.ndarray]:
+        """Score the whole message and each of its sentences; POSITIVE labels take the max.
+
+        "i'm really glad you told me. can we talk to the counselor?" then keeps "validated" from its
+        first sentence instead of letting the referral dilute it. Negative labels (dismissed, advice,
+        secrecy) stay on the whole message, so "i won't tell anyone... except the counselor" can't
+        become a promise of secrecy.
+        """
+        owners, segment_texts, segment_contexts = [], [], []
+        for row, (text, context) in enumerate(zip(texts, contexts, strict=True)):
+            for segment in [text, *sentences(text)]:
+                owners.append(row)
+                segment_texts.append(segment)
+                segment_contexts.append(context)
+        pa_all, pb_all = self.base_proba(segment_texts, segment_contexts)
+        owners_arr = np.array(owners)
+        whole = np.array([owners.index(row) for row in range(len(texts))])
+        pa, pb = pa_all[whole].copy(), pb_all[whole].copy()
+        positive = [
+            j for j, label in enumerate(self.labels) if SkillLabel(label) in POSITIVE_LABELS
+        ]
+        for row in range(len(texts)):
+            rows = owners_arr == row
+            pa[row, positive] = pa_all[rows][:, positive].max(axis=0)
+            pb[row, positive] = pb_all[rows][:, positive].max(axis=0)
+        return pa, pb
+
+    def scored_proba(self, texts: list[str], contexts: list[str]) -> tuple[np.ndarray, np.ndarray]:
+        """Model A and B probabilities as the stacker sees them (pooled or whole-message)."""
+        if getattr(self, "pooling", False):
+            return self.pooled_proba(texts, contexts)
+        return self.base_proba(texts, contexts)
+
     def components(self, texts: list[str], contexts: list[str]) -> Components:
-        pa, pb = self.base_proba(texts, contexts)
+        pa, pb = self.scored_proba(texts, contexts)
         p = np.column_stack(
             [
                 self.stackers[label].predict(pa[:, j], pb[:, j])

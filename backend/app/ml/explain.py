@@ -27,6 +27,7 @@ SECOND_SPAN_SHARE = 0.5  # a 2nd phrase must be at least half as important as th
 CORE_SHARE = 0.8  # trim a phrase to its shortest part keeping 80% of its drop
 MAX_SPAN_WORDS = 5
 TOP_SPANS = 2
+MAX_EXTEND = 2  # words a phrase may grow on each side to reach its clause edge
 EPS = 1e-9
 
 # Scores a batch of texts -> one {label: probability} dict per text.
@@ -67,6 +68,34 @@ def _core(window: tuple[int, int], drops: dict[tuple[int, int], float]) -> tuple
     return min(inside, key=lambda w: (w[1] - w[0], -drops[w], w[0]))
 
 
+def clause_bounds(text: str, spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """For each word: (first, last) word index of its clause (punctuation or the message edge)."""
+    starts = [0]
+    for i in range(1, len(spans)):
+        if BOUNDARY.search(text[spans[i - 1][1] : spans[i][0]]):
+            starts.append(i)
+    ends = [s - 1 for s in starts[1:]] + [len(spans) - 1]
+    out = []
+    for first, last in zip(starts, ends, strict=True):
+        out.extend([(first, last)] * (last - first + 1))
+    return out
+
+
+def extend_to_clause(
+    window: tuple[int, int], others: list[tuple[int, int]], bounds: list[tuple[int, int]]
+) -> tuple[int, int]:
+    """Grow a phrase to its clause edges when each side needs ≤ MAX_EXTEND words and hits no other span."""
+    a, b = window
+    first, last = bounds[a][0], bounds[b][1]
+    new_a = first if 0 < a - first <= MAX_EXTEND else a
+    new_b = last if 0 < last - b <= MAX_EXTEND else b
+    if any(c[1] >= new_a and c[1] < a for c in others):
+        new_a = a
+    if any(c[0] <= new_b and c[0] > b for c in others):
+        new_b = b
+    return new_a, new_b
+
+
 def occlusion_highlights(text: str, score: BatchScorer) -> list[Highlight]:
     """Up to 2 crisp phrase highlights for every label with p ≥ 0.5."""
     spans = words(text)
@@ -80,12 +109,10 @@ def occlusion_highlights(text: str, score: BatchScorer) -> list[Highlight]:
     windows = phrases(text, spans, max_words)
     occluded = score([occlude(text, spans[a][0], spans[b][1]) for a, b in windows])
 
-    highlights: list[Highlight] = []
+    by_window = dict(zip(windows, occluded, strict=True))
+    chosen_by_label: dict[SkillLabel, list[tuple[int, int]]] = {}
     for label in targets:
-        drops = {
-            w: log_odds(base[label]) - log_odds(p[label])
-            for w, p in zip(windows, occluded, strict=True)
-        }
+        drops = {w: log_odds(base[label]) - log_odds(p[label]) for w, p in by_window.items()}
         chosen: list[tuple[int, int]] = []
         for window in sorted(drops, key=lambda w: (-drops[w], w[1] - w[0], w[0])):
             if len(chosen) == TOP_SPANS or drops[window] < MIN_LOGIT_DROP:
@@ -102,15 +129,28 @@ def occlusion_highlights(text: str, score: BatchScorer) -> list[Highlight]:
                 chosen = [c for c in chosen if c not in touching] + [merged]
             else:
                 chosen.append(core)
-        for a, b in chosen:
+        chosen_by_label[label] = chosen
+
+    # Round each phrase out to its clause ("hey are" -> "hey are you ok") when that adds ≤ 2 words a
+    # side, so highlights read as natural phrases; the delta is re-measured for the final span.
+    bounds = clause_bounds(text, spans)
+    for label, chosen in chosen_by_label.items():
+        chosen_by_label[label] = [
+            extend_to_clause(w, [c for c in chosen if c != w], bounds) for w in chosen
+        ]
+    missing = sorted({w for ws in chosen_by_label.values() for w in ws if w not in by_window})
+    if missing:
+        rescored = score([occlude(text, spans[a][0], spans[b][1]) for a, b in missing])
+        by_window.update(zip(missing, rescored, strict=True))
+
+    highlights: list[Highlight] = []
+    for label in targets:
+        for a, b in sorted(chosen_by_label[label]):
             start, end = spans[a][0], spans[b][1]
+            drop = log_odds(base[label]) - log_odds(by_window[(a, b)][label])
             highlights.append(
                 Highlight(
-                    start=start,
-                    end=end,
-                    text=text[start:end],
-                    label=label,
-                    delta=round(drops[(a, b)], 2),
+                    start=start, end=end, text=text[start:end], label=label, delta=round(drop, 2)
                 )
             )
     return highlights

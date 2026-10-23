@@ -50,13 +50,17 @@ def test_refuses_to_load_a_mismatched_artifact(trained_dir, tmp_path):
         SkillDetector(tmp_path).predict("hi", [])
 
 
-def test_uncertain_flags_model_disagreement(detector, monkeypatch):
-    pa = np.zeros((1, 10))
-    pb = np.zeros((1, 10))
-    pa[0, 2], pb[0, 2] = 0.9, 0.2  # asked_directly: the two models disagree by 0.7
-    pa[0, 1], pb[0, 1] = 0.6, 0.3  # validated: gap 0.3, not uncertain
+def test_uncertain_needs_disagreement_and_a_middle_probability(detector, monkeypatch):
+    pa, pb, p = np.zeros((1, 10)), np.zeros((1, 10)), np.zeros((1, 10))
+    pa[0, 2], pb[0, 2], p[0, 2] = 0.9, 0.2, 0.55  # asked_directly: opposite sides, final mid-band
+    pa[0, 7], pb[0, 7], p[0, 7] = (
+        0.8,
+        0.1,
+        0.05,
+    )  # dismissed: opposite sides, but final is clearly no
+    pa[0, 1], pb[0, 1], p[0, 1] = 0.6, 0.9, 0.6  # validated: both say yes -> never uncertain
     monkeypatch.setattr(
-        detector, "components", lambda texts, context: Components(pa=pa, pb=pb, p=pa)
+        detector, "components", lambda texts, context: Components(pa=pa, pb=pb, p=p)
     )
     assert detector.uncertain("x", []) == [SkillLabel.ASKED_DIRECTLY]
 

@@ -12,7 +12,7 @@ key (or FR_LLM=0) it is exemplars only. Summaries are templates.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -60,6 +60,12 @@ NEXT_TIME = {
     "check_in": "open by noticing something is off: “you seemed really off today, you ok?”",
     "follow_up": "say when you’ll check in again, like “i’ll text you tonight.”",
 }
+# When they referred but never said why (persuade = encouraged_help is a separate rubric skill), the
+# feedback must not claim they "never got to" helping: they did connect the friend with help.
+REFERRED_NOT_PERSUADED = (
+    "You connected them with someone who can help. "
+    "Next time, also tell them why: they don't have to handle it alone."
+)
 TIP_ORDER = ("ask_directly", "listen", "no_secrecy", "refer", "persuade", "check_in", "follow_up")
 
 
@@ -103,7 +109,7 @@ LISTEN = Target(
     "listen",
     "validate",
     (SkillLabel.VALIDATED,),
-    "the reply brushed off or tried to fix the feeling instead of listening",
+    "the reply didn't listen first",
     "listen",
     "reflect their feelings back without judging, fixing or giving advice.",
 )
@@ -133,8 +139,16 @@ def missing_skill(probs: SkillProbs, before: State, first: bool) -> Target | Non
     flags: Flags = before.flags
     if p(SkillLabel.PROMISED_SECRECY) >= ON:
         return UNSECRET
-    if max(p(SkillLabel.DISMISSED), p(SkillLabel.ADVICE_DUMP)) >= ON:
-        return LISTEN
+    dismissed, advice = p(SkillLabel.DISMISSED) >= ON, p(SkillLabel.ADVICE_DUMP) >= ON
+    if dismissed or advice:
+        reason = (
+            "the reply brushed off the feeling and jumped to fixing it before listening"
+            if dismissed and advice
+            else "the reply brushed off the feeling"
+            if dismissed
+            else "the reply jumped to fixing it before listening"
+        )
+        return replace(LISTEN, reason=reason)
     if before.level >= 2 and not flags.asked_directly_ever and p(SkillLabel.ASKED_DIRECTLY) < ON:
         return ASK
     if (
@@ -241,11 +255,7 @@ class Critic:
         turning = self.engine.turning_point(path)
         for skill in TIP_ORDER:
             if summary[skill] < ON:
-                missed.append(
-                    "You promised to keep it secret."
-                    if skill == "no_secrecy"
-                    else f"You never got to {SKILL_NAMES[skill]}."
-                )
+                missed.append(missed_skill_text(skill, summary))
         return CriticReport(
             per_message=scores,
             skill_summary=summary,
@@ -363,13 +373,27 @@ def summary_text(summary: dict[str, float], turning: TurningPoint | None, path: 
             f"Your friend pulled back the most{where} (trust −{turning.trust_drop:.0f})."
         )
     tip = next((skill for skill in TIP_ORDER if summary.get(skill, 1.0) < ON), None)
-    if tip:
+    if tip == "persuade" and summary.get("refer", 0.0) >= ON:
+        sentences.append(
+            "Next time, when you suggest someone who can help, also tell them why: "
+            "they don't have to handle it alone."
+        )
+    elif tip:
         sentences.append(f"Next time, {NEXT_TIME[tip]}")
     else:
         sentences.append(
             "You covered every skill. Next time, try it with a friend who is more guarded."
         )
     return " ".join(sentences)
+
+
+def missed_skill_text(skill: str, summary: dict[str, float]) -> str:
+    """One true sentence about a rubric skill the conversation never reached."""
+    if skill == "no_secrecy":
+        return "You promised to keep it secret."
+    if skill == "persuade" and summary.get("refer", 0.0) >= ON:
+        return REFERRED_NOT_PERSUADED
+    return f"You never got to {SKILL_NAMES[skill]}."
 
 
 def _blocked(node: Node) -> bool:

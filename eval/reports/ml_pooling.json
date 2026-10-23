@@ -1,0 +1,218 @@
+[
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_macro_f1",
+    "value": 0.9209,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_ece",
+    "value": 0.0132,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_brier",
+    "value": 0.0182,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_validated_f1",
+    "value": 0.9383,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_macro_f1",
+    "value": 0.9587,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_ece",
+    "value": 0.0157,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_brier",
+    "value": 0.0094,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_validated_f1",
+    "value": 0.9895,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_macro_f1",
+    "value": 0.8183,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_ece",
+    "value": 0.019,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_brier",
+    "value": 0.0345,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_whole_validated_f1",
+    "value": 0.6923,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_macro_f1",
+    "value": 0.9158,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_ece",
+    "value": 0.0109,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_brier",
+    "value": 0.0175,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_validated_f1",
+    "value": 0.95,
+    "n": 142,
+    "split": "val_oof",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_macro_f1",
+    "value": 0.9559,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_ece",
+    "value": 0.011,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_brier",
+    "value": 0.0084,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_validated_f1",
+    "value": 1.0,
+    "n": 124,
+    "split": "test",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_macro_f1",
+    "value": 0.8024,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_ece",
+    "value": 0.0152,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_brier",
+    "value": 0.0344,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  },
+  {
+    "lane": "ml",
+    "metric": "pooling_pooled_validated_f1",
+    "value": 0.72,
+    "n": 171,
+    "split": "test_freeform",
+    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T00:19:20+00:00"
+  }
+]

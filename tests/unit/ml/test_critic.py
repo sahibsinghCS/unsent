@@ -291,3 +291,32 @@ def test_summary_never_says_trust_minus_zero():
     tiny = TurningPoint(node_id="n1", trust_drop=0.3, reason="r")
     text = summary_text({"check_in": 0.9}, tiny, [])
     assert "−0" not in text and "never lost their trust" in text
+
+
+def test_referral_without_persuasion_is_described_truthfully(monkeypatch):
+    convo = [
+        ("friend", "i dont know what to do", 3, 0, None),
+        ("user", "can we talk to the counselor tomorrow? i'll go with you", 3, 5, None),
+    ]
+    session, path = build(convo)
+    report = make_critic(monkeypatch).score_conversation(session, path)
+    assert report.skill_summary["refer"] >= 0.5 and report.skill_summary["persuade"] < 0.5
+    text = " ".join(report.missed_opportunities) + " " + report.summary_text
+    assert "never got to encouraging" not in text
+    assert any(
+        m.startswith("You connected them with someone who can help.")
+        for m in report.missed_opportunities
+    )
+
+
+def test_listen_reason_names_the_actual_mistake():
+    base = {label: 0.0 for label in L}
+    calm = State(level=1)
+    assert missing_skill(base | {L.DISMISSED: 0.9}, calm, False).reason == (
+        "the reply brushed off the feeling"
+    )
+    assert missing_skill(base | {L.ADVICE_DUMP: 0.9}, calm, False).reason == (
+        "the reply jumped to fixing it before listening"
+    )
+    both = missing_skill(base | {L.DISMISSED: 0.9, L.ADVICE_DUMP: 0.8}, calm, False)
+    assert "brushed off" in both.reason and "fixing" in both.reason

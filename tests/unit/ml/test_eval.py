@@ -19,7 +19,7 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
 
     records = json.loads(report.read_text())
     splits = {r["split"] for r in records}
-    assert splits == {"test", "test_freeform", "survey_real"}
+    assert splits == {"val", "test", "test_freeform", "survey_real"}
     metrics = {r["metric"] for r in records if r["split"] == "test"}
     assert {
         "macro_f1_keyword_baseline",
@@ -31,8 +31,13 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
         "f1_asked_directly",
     } <= metrics
     assert all(r["n"] > 0 and r["lane"] == "ml" for r in records)
+    assert {"brier_after_calibration", "uncertain_flag_rate"} <= metrics
     for name in ("reliability.png", "confusion.png", "f1_comparison.png", "results.json"):
         assert (figures / name).stat().st_size > 0
+    assert (figures / "f1_comparison_freeform.png").stat().st_size > 0
+    results = json.loads((figures / "results.json").read_text())
+    assert len(results["probes"]) >= 10 and all("ok" in p for p in results["probes"])
+    assert all(e["truth"] != (e["p"] >= 0.5) for e in results["test_freeform"]["errors"])
 
 
 def test_run_eval_skips_without_artifact(tmp_path):

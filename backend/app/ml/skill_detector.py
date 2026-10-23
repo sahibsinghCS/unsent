@@ -19,8 +19,7 @@ from backend.app.embed import HashEmbedder, get_embedder
 from backend.app.ml.explain import occlusion_highlights
 from backend.app.ml.model import Components, SkillModel
 from backend.app.ml.train import ARTIFACT, META
-
-UNCERTAIN_GAP = 0.5  # |pA - pB| above this means the two models disagree
+from backend.app.ml.uncertainty import DEFAULT_BAND, uncertain_mask
 
 
 class EmbedderMismatchError(RuntimeError):
@@ -89,12 +88,11 @@ class SkillDetector:
         return self.predict_many([text], context)[0]
 
     def uncertain(self, text: str, context: list[str]) -> list[SkillLabel]:
-        """Labels where Model A and Model B disagree by more than 0.5."""
+        """Labels where Model A and B disagree about yes/no and the final probability is mid-band."""
         comp = self.components([text], context)
-        gap = abs(comp.pa[0] - comp.pb[0])
-        return [
-            SkillLabel(label) for j, label in enumerate(self.model.labels) if gap[j] > UNCERTAIN_GAP
-        ]
+        band = getattr(self.model, "uncertain_band", DEFAULT_BAND)
+        mask = uncertain_mask(comp.pa, comp.pb, comp.p, band)[0]
+        return [SkillLabel(label) for j, label in enumerate(self.model.labels) if mask[j]]
 
     def explain(self, text: str, context: list[str]) -> list[Highlight]:
         """Word highlights from leave-one-word-out occlusion on the calibrated probability."""

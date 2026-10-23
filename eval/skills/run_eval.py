@@ -40,10 +40,16 @@ def main(argv: list[str] | None = None) -> int:
     model = SkillDetector(args.models_dir).model
     results = run(model, args.data_dir, args.report, args.figures, notes)
     for split, result in results.items():
+        if split == "probes":
+            continue
         line = ", ".join(f"{k} {v['macro_f1']:.3f}" for k, v in result["scores"].items())
         print(
             f"{split} (n={result['n']}): macro-F1 {line}; ECE {result['ece_before']} -> {result['ece_after']}"
         )
+        print(f"    uncertain: {result['uncertain']}")
+    for probe in results["probes"]:
+        status = "OK " if probe["ok"] else "BAD"
+        print(f"probe {status} {probe['label']}={probe['p']} ({probe['expect']}): {probe['text']}")
     return 0
 
 

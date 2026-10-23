@@ -27,8 +27,11 @@ EXPLICIT_TERMS = [
     r"\bend(?:ing)? it all\b",
     r"\b(?:want|wanna|wanting|wish|wished) (?:to )?(?:be )?(?:die|dead)\b",
     r"\bbetter off dead\b",
+    r"\b(?:die|dying)\b",
+    r"\bstay(?:ing)? alive\b",
+    r"\b(?:done|over|finished)\b[^.?!]{0,30}\bwith (?:life|living|it all)\b",
     r"\b(?:not|dont|no longer|never|stop) (?:\w+ ){0,3}(?:(?:be|being) (?:alive|here|around)|live|living|"
-    r"exist|existing|wake up)\b",
+    r"exist|existing|wake up|waking up)\b",
     r"\bself ?-?harm\w*",
     rf"\b(?:hurt|hurting|harm|harming|cut|cutting) {_SELF}",
     # Spanish (accents folded by the normalizer)
