@@ -33,6 +33,7 @@ def uncertainty_stats(pa, pb, p, y, band=DEFAULT_BAND) -> dict:
         "messages": int(mask.shape[0]),
         "flag_rate_per_message": round(float(mask.any(axis=1).mean()), 4) if mask.size else 0.0,
         "flagged_decisions": int(mask.sum()),
+        "unflagged_decisions": int((~mask).sum()),
         "flagged_error_rate": round(float(flagged.mean()), 4) if flagged.size else None,
         "unflagged_error_rate": round(float(unflagged.mean()), 4) if unflagged.size else None,
     }

@@ -240,6 +240,26 @@ def to_records(results: dict[str, dict], notes: str) -> list[dict]:
             f"{u['flagged_error_rate']} vs unflagged {u['unflagged_error_rate']}"
         )
         records.append(rec("uncertain_flag_rate", u["flag_rate_per_message"], n, split, detail))
+        if u["flagged_error_rate"] is not None:
+            records.append(
+                rec(
+                    "uncertain_error_rate_flagged",
+                    u["flagged_error_rate"],
+                    u["flagged_decisions"],
+                    split,
+                    f"share of flagged label decisions that were wrong; n = decisions; band {u['band']}",
+                )
+            )
+        if u["unflagged_error_rate"] is not None:
+            records.append(
+                rec(
+                    "uncertain_error_rate_unflagged",
+                    u["unflagged_error_rate"],
+                    u["unflagged_decisions"],
+                    split,
+                    "share of unflagged label decisions that were wrong; n = decisions",
+                )
+            )
     return records
 
 

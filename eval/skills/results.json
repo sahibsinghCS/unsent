@@ -268,6 +268,7 @@
       "messages": 142,
       "flag_rate_per_message": 0.0845,
       "flagged_decisions": 12,
+      "unflagged_decisions": 1408,
       "flagged_error_rate": 0.75,
       "unflagged_error_rate": 0.0163
     },
@@ -613,6 +614,7 @@
       "messages": 124,
       "flag_rate_per_message": 0.0806,
       "flagged_decisions": 11,
+      "unflagged_decisions": 1229,
       "flagged_error_rate": 0.4545,
       "unflagged_error_rate": 0.0065
     },
@@ -958,6 +960,7 @@
       "messages": 116,
       "flag_rate_per_message": 0.0862,
       "flagged_decisions": 11,
+      "unflagged_decisions": 1149,
       "flagged_error_rate": 0.4545,
       "unflagged_error_rate": 0.007
     },
@@ -1303,6 +1306,7 @@
       "messages": 171,
       "flag_rate_per_message": 0.1813,
       "flagged_decisions": 32,
+      "unflagged_decisions": 1678,
       "flagged_error_rate": 0.625,
       "unflagged_error_rate": 0.0346
     },
@@ -1420,6 +1424,34 @@
       "label": "asked_directly",
       "expect": "low",
       "p": 0.2,
+      "ok": true
+    },
+    {
+      "text": "can we talk to the counselor tomorrow? i'll go with you",
+      "label": "follow_up",
+      "expect": "low",
+      "p": 0.998,
+      "ok": false
+    },
+    {
+      "text": "lots of people feel like that, you'll be fine",
+      "label": "validated",
+      "expect": "low",
+      "p": 0.553,
+      "ok": false
+    },
+    {
+      "text": "lots of people feel like that, you'll be fine",
+      "label": "advice_dump",
+      "expect": "low",
+      "p": 0.704,
+      "ok": false
+    },
+    {
+      "text": "lots of people feel like that, you'll be fine",
+      "label": "dismissed",
+      "expect": "high",
+      "p": 0.852,
       "ok": true
     },
     {
