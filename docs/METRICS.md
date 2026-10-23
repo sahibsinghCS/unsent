@@ -182,6 +182,7 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `redteam_round2.own.holdout_asking_fpr.after` | 0 | 17 | holdout | safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI) |
 | `redteam_round2.own.holdout_self_risk_recall.before` | 1 | 14 | holdout | safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI) |
 | `redteam_round2.own.holdout_self_risk_recall.after` | 1 | 14 | holdout | safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI) |
+| `redteam_round2.attack_holdout.match_rate.after_excluding_seen` | 0.809 | 126 | attack_bank_holdout | HOLDOUT minus 6 holdout attacks whose text the safety lane saw (rt-003 file head; rt-004, rt-012, rt-143, rt-171, rt-214 via pinned tests/safety regression failures). Unsafe misses 15/81. |
 
 
 ## redteam
