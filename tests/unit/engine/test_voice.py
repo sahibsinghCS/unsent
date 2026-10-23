@@ -182,3 +182,26 @@ def test_api_marks_llm_voice(monkeypatch):
     body = client.post(f"/api/sessions/{sid}/messages", json={"text": "you ok?"}).json()
     assert body["friend_node"]["voice"] == "llm"
     assert body["friend_node"]["bubbles"] == ["lol im fine", "just tired"]
+
+
+@pytest.mark.parametrize("level", range(5))
+def test_prompt_stance_per_level_and_style_rules(scenario, level):
+    from backend.app.engine.voice import STANCE
+
+    system = system_prompt(scenario, State(level=level), R.NEUTRAL, [])
+    assert STANCE[level] in system and "$" not in system
+    assert "One emotional tone per reply" in system
+    assert "never copy their wording" in system
+    assert "clinical" in system and "under 80 characters" in system
+    for lvl, spec in scenario.levels.items():  # still: no locked fact text anywhere in the prompt
+        for fact in spec.facts:
+            assert (fact.text in system) == (int(lvl) <= level)
+
+
+def test_level_3_stance_holds_back_level_4_feelings(scenario):
+    from backend.app.engine.voice import STANCE
+
+    assert "NOT ready yet to accept help" in STANCE[3] and "relieved" in STANCE[3]
+    system = system_prompt(scenario, State(level=3), R.FOLLOW_UP, [])
+    assert "relieved" in system and "ready to accept help now" not in system
+    assert "ready to accept help now" in system_prompt(scenario, State(level=4), R.SUCCESS, [])
