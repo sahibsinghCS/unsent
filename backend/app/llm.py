@@ -181,6 +181,15 @@ def _cache_get(key: str) -> dict | None:
     return None
 
 
+def purge_expired() -> int:
+    """Drop in-memory cache entries older than the session TTL (production cache). Returns the count."""
+    cutoff = time.time() - session_ttl_seconds()
+    stale = [k for k, (ts, _) in list(_memory_cache.items()) if ts < cutoff]
+    for key in stale:
+        _memory_cache.pop(key, None)
+    return len(stale)
+
+
 def _cache_put(key: str, value: dict) -> None:
     mode = cache_mode()
     if mode == "off":
