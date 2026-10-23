@@ -360,7 +360,15 @@
     "llm_model": "model",
     "llm_spent": "spent today",
     "llm_fallback": "If the AI is off, has no key, reaches its daily budget or fails, the friend uses our reviewed line bank instead. X-ray mode shows which one wrote each reply.",
-    "llm_unknown": "Status unavailable."
+    "llm_unknown": "Status unavailable.",
+    "metrics_sub": "Real numbers from our own tests on held-out data. Each part is measured separately; n is how many examples it was tested on.",
+    "vs": "vs {value} for {label}",
+    "all_records": "All {n} measured numbers",
+    "search": "Search metrics",
+    "no_match": "No numbers match “{q}”.",
+    "better_higher": "higher is better",
+    "better_lower": "lower is better",
+    "unit_messages": "messages"
   },
   "checkin": {
     "title": "How are you feeling after that?",

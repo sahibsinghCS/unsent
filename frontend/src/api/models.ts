@@ -54,9 +54,28 @@ export interface MetricRecord {
   notes?: string | null;
   created?: string | null;
 }
+/** Localized text pair from content/headline_metrics.json. */
+export type Localized = { en: string; es?: string };
+/** One curated headline number (GET /api/metrics → headline). found=false means not measured yet. */
+export interface HeadlineMetric {
+  id: string;
+  lane: string;
+  metric: string;
+  split: string;
+  format: 'percent' | 'score' | 'messages' | 'count';
+  better: 'higher' | 'lower';
+  label: Localized;
+  explain: Localized;
+  found: boolean;
+  value: number | null;
+  n: number | null;
+  notes?: string | null;
+  baseline?: { label: Localized; value: number | null; n: number | null } | null;
+}
 export interface Metrics {
   components: Record<string, string>;
   records: MetricRecord[];
+  headline?: HeadlineMetric[];
 }
 /** /api/health `llm` block (contracts 1.1): the OpenAI "voice" gateway's live status. */
 export interface LlmStatus {

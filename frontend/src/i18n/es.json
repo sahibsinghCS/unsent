@@ -364,7 +364,15 @@
     "llm_model": "modelo",
     "llm_spent": "gastado hoy",
     "llm_fallback": "Si la IA está desactivada, no tiene clave, llega a su presupuesto diario o falla, el amigo usa nuestro banco de líneas revisadas. El modo rayos X muestra quién escribió cada respuesta.",
-    "llm_unknown": "Estado no disponible."
+    "llm_unknown": "Estado no disponible.",
+    "metrics_sub": "Números reales de nuestras propias pruebas con datos reservados. Cada parte se mide por separado; n es cuántos ejemplos se usaron.",
+    "vs": "vs {value} con {label}",
+    "all_records": "Los {n} números medidos",
+    "search": "Buscar métricas",
+    "no_match": "Ningún número coincide con “{q}”.",
+    "better_higher": "más alto es mejor",
+    "better_lower": "más bajo es mejor",
+    "unit_messages": "mensajes"
   },
   "checkin": {
     "title": "¿Cómo te sientes después de esto?",
