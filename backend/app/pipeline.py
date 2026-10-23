@@ -7,7 +7,7 @@ The Guardian always runs first. No component here calls a paid API or the networ
 from __future__ import annotations
 
 from backend.app import services
-from backend.app.content import get_scenario
+from backend.app.content import get_scenario, load_lines
 from backend.app.contracts import Node, Reaction, Scenario, Session, SkillProbs, State, TurnResponse
 from backend.app.session import add_node, new_id, path_to
 
@@ -139,13 +139,34 @@ def _friend_reply(
             voice=output.source,
         )
 
-    fallback = scenario.fallback_lines.get(state.level) or scenario.fallback_lines.get(0) or ["..."]
     return Node(
         id=new_id("n"),
         parent_id=parent_id,
         role="friend",
-        bubbles=[fallback[state.turn % len(fallback)]],
+        bubbles=_fallback_bubbles(session, scenario, state),
         state_after=state,
         reaction=Reaction.NEUTRAL,
         voice="fallback",
     )
+
+
+def _fallback_bubbles(session: Session, scenario: Scenario, state: State) -> list[str]:
+    """The last-resort friend reply, always in the chat's language. English chats use the scenario's
+    reviewed fallback lines; other languages use a calm reviewed bank line at or below the current
+    level (so it can't reveal a locked fact) that the Guardian passes."""
+    if session.locale == "en":
+        lines = (
+            scenario.fallback_lines.get(state.level) or scenario.fallback_lines.get(0) or ["..."]
+        )
+        return [lines[state.turn % len(lines)]]
+    guardian = services.guardian()
+    calm = [
+        line
+        for line in load_lines(scenario.id, session.locale)
+        if line.reaction == Reaction.NEUTRAL
+        and line.level <= state.level
+        and all(guardian.check_friend(bubble).level == "none" for bubble in line.bubbles)
+    ]
+    if not calm:
+        return ["..."]
+    return list(calm[state.turn % len(calm)].bubbles)
