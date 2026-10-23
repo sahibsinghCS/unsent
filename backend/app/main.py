@@ -50,6 +50,10 @@ def warm_up() -> None:
         embed.embed(["warm up"])
         services.guardian().check_user("warm up", [])
         services.skills().predict("warm up", [])
+        if services.status().get("whatif") == "real":
+            from backend.app.whatif import cache as whatif_cache
+
+            whatif_cache.warm_up()  # embed every exemplar once, so the first "What if" is fast
     except Exception:  # warm-up must never stop the server from starting
         logging.getLogger("firstreply").exception("warm-up failed (continuing)")
     on_startup = getattr(ops, "on_startup", None)  # DEPLOY lane hook
