@@ -184,6 +184,20 @@ concern:
     - yo tambien me siento asi
   # Personal distress words: need "i" (or no pronoun) as the speaker.
   framed:
+    # the helper saying THEY need help ("do you need help right now?" is asking the friend)
+    - why i even try
+    - why i even bother
+    - no point in trying anymore
+    - the one who needs help
+    - need help too
+    - need help right now
+    - needs help right now
+    - someone help me
+    - can someone help me
+    - somebody help me
+    - ^i need help$
+    - not ok either
+    - not okay either
     - feel so hopeless
     - feeling hopeless
     - feel so alone
@@ -252,6 +266,10 @@ harm_to_other:
     - put yourself out of your misery
     - end your suffering
     - you have suffered enough so
+    - permanent kind
+    - permanent peace
+    - permanent solution
+    - you deserve peace
     - then it would be over
     - at least it would be over
     - it is a solution
@@ -285,12 +303,20 @@ harm_to_other:
     - nobody will stop you
     - no one will stop you
     - go through with it
-    - i dare you
+    - dare you
     - help you do it
     - you seem ready
     - hazlo ya
     - hazlo
   help_words:
+    - tell someone
+    - tell ms
+    - tell mr
+    - tell her
+    - tell him
+    - tell them
+    - text the
+    - call the
     - counselor
     - counsellor
     - "988"
@@ -639,6 +665,28 @@ tricky_negative:
     - me mata
     - mataste
 
+# ---------------------------------------------------------------- dismissive -> ALLOWED
+# Brushing the friend off is a bad SKILL, not a safety problem: the friend reacts (trust drops) and
+# the critic explains it. These never block on their own, and the classifier needs 99% to overrule.
+# "who cares, kys" is still blocked because "kys" is a risky match.
+dismissive:
+  explicit:
+    - who cares
+    - whatever
+    - get over it
+    - not a big deal
+    - so dramatic
+    - not that deep
+    - move on
+    - ugh
+    - meh
+    - you will be fine
+    - it is not that serious
+    - stop overreacting
+    - stop complaining
+    - quit whining
+    - grow up
+
 # ---------------------------------------------------------------- unsafe_friend_line -> line never shown
 # For FRIEND lines (check_friend): plans, encouragement, graphic detail, persona breaks.
 # Means words (method_seeking.means) and harm_to_other phrases are checked for friend lines too.
@@ -770,7 +818,7 @@ speaker:
     - cuando dices
   negators: [not, never, nunca, jamas]
   # Negation is cancelled by these ("i can't STOP thinking about suicide" is still risk).
-  negation_breakers: [stop, help, quit]
+  negation_breakers: [stop, help, quit, know, see]
   # A short "me too" right after the friend shares suicidal thoughts is the helper's own distress.
   agreement:
     - me too

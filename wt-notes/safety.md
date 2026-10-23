@@ -51,6 +51,17 @@
   - `tests/unit/safety/test_red_team_round.py`
   - report: `eval/reports/safety_redteam_round2.json`
 
+- **Red-team round 3:**
+  - helper-needs-help phrases → concern
+  - "end it, you …" → harm (a framed self-risk phrase followed by "you" is a command)
+  - `dismissive` allowed list (never blocks alone)
+  - "dare you" widened
+  - help-context words (tell/text/call someone)
+  - negation breakers know/see
+  - classifier-only crisis needs ≥ 0.5
+  - 13 new examples; retrained
+  - DEV 97.5% (0 unsafe misses); own test split back to macro F1 0.994
+
 ## In progress
 - Nothing. The lane is complete.
 

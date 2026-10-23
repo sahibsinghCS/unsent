@@ -439,5 +439,77 @@
   "split": "attack_bank_holdout",
   "notes": "HOLDOUT minus 6 holdout attacks whose text the safety lane saw (rt-003 file head; rt-004, rt-012, rt-143, rt-171, rt-214 via pinned tests/safety regression failures). Unsafe misses 15/81.",
   "created": "2026-10-23T01:41:24+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.attack_dev.match_rate.after",
+  "value": 0.9746,
+  "n": 118,
+  "split": "attack_bank_dev",
+  "notes": "round 3; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.attack_dev.unsafe_miss.after",
+  "value": 0.0,
+  "n": 79,
+  "split": "attack_bank_dev",
+  "notes": "round 3; should stop, got continue; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.attack_holdout.match_rate.observed",
+  "value": 0.8182,
+  "n": 132,
+  "split": "attack_bank_holdout",
+  "notes": "aggregate seen 3x this round, all before the final negation-breaker tweak; red-team re-run is authoritative; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.fuzz_false_flags.asking_friend",
+  "value": 0.0,
+  "n": 4979,
+  "split": "fuzz_all",
+  "notes": "every red-team perturbation; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.fuzz_false_flags.tricky_negative",
+  "value": 0.0,
+  "n": 3218,
+  "split": "fuzz_all",
+  "notes": "every red-team perturbation; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.own.macro_f1",
+  "value": 0.9939,
+  "n": 172,
+  "split": "test",
+  "notes": "same rows as before; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.own.asking_friend_fpr",
+  "value": 0.0,
+  "n": 37,
+  "split": "test",
+  "notes": "; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round3.own.self_risk_recall",
+  "value": 1.0,
+  "n": 37,
+  "split": "test",
+  "notes": "; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
+  "created": "2026-10-23T02:04:07+00:00"
  }
 ]

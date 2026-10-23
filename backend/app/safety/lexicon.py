@@ -95,7 +95,13 @@ class Lexicon:
         sec = {k: v or {} for k, v in data.items()}
         self.p = {
             f"{cat}.{kind}": _Phrases(sec.get(cat, {}).get(kind, []))
-            for cat in (*RISK_CATEGORIES, "asking_friend", "tricky_negative", "unsafe_friend_line")
+            for cat in (
+                *RISK_CATEGORIES,
+                "asking_friend",
+                "tricky_negative",
+                "dismissive",
+                "unsafe_friend_line",
+            )
             for kind in (
                 "explicit",
                 "framed",
@@ -229,6 +235,13 @@ class Lexicon:
                 if sq[b - 1] == "it" and b < sent.end and sq[b] == "with":
                     res.allowed.append(Hit("tricky_negative", text(a, b + 1), "breakup"))
                     continue  # "i'm ending it with him" is a breakup
+                if (
+                    who is None
+                    and cat == "self_risk"
+                    and any(w in self.second for w in sq[b : sent.end])
+                ):  # "end it, you deserve peace" is aimed at the friend
+                    res.hits.append(Hit("harm_to_other", text(a, b), "command"))
+                    continue
                 if who is None and cat == "self_risk" and a > sent.start:
                     if sq[a - 1] in {
                         "and",
@@ -304,6 +317,10 @@ class Lexicon:
                 res.allowed.append(Hit("asking_friend", text(a, b), "asking the friend"))
         for a, b in self._spans("tricky_negative.explicit", words, sent):
             res.allowed.append(Hit("tricky_negative", text(a, b), "everyday expression"))
+        for a, b in self._spans("dismissive.explicit", words, sent):
+            res.allowed.append(
+                Hit("dismissive", text(a, b), "brush-off: the friend reacts, not us")
+            )
 
     def scan_friend(self, norm: Normalized | str) -> LexiconResult:
         """Scan a FRIEND line: plans, encouragement, graphic detail, means, persona breaks, harm."""

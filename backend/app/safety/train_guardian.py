@@ -83,7 +83,7 @@ def choose_thresholds(rows: list[dict], lex: list, probs: list[dict]) -> tuple[T
     """Grid-search thresholds on val: meet both targets, then maximise macro F1."""
     best, best_key = None, None
     grid = itertools.product(
-        np.arange(0.20, 0.95, 0.05),  # crisis
+        np.arange(0.50, 0.95, 0.05),  # crisis: the classifier alone needs at least even odds
         np.arange(0.40, 0.96, 0.05),  # block
         np.arange(0.50, 0.95, 0.05),  # concern: the classifier alone needs at least even odds
         (0.90, 0.95, 0.99),  # veto
