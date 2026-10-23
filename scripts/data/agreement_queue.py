@@ -11,6 +11,7 @@ import json
 import random
 from datetime import UTC, datetime
 
+from adjudicate_rules import adjudicate
 from common import DATA, LABELS, ROOT, read_jsonl, write_jsonl
 
 SK = DATA / "skills"
@@ -128,7 +129,11 @@ def run(audit: dict[str, int] | None = None, seed: int = 42) -> dict:
             "disagree": [lab for lab in LABELS if o[lab] != b[lab]],
         }
 
-    dis = [row(i, "disagreement") for i in ids if not same(i)]
+    all_dis = [row(i, "disagreement") for i in ids if not same(i)]
+    adjudicated = adjudicate(all_dis)
+    write_jsonl(SK / "adjudicated_labels.jsonl", adjudicated)
+    done = {x["id"] for x in adjudicated}
+    dis = [r for r in all_dis if r["id"] not in done]  # only judgment calls stay for the human
     rng = random.Random(seed)
     audit_rows = []
     for s, n in audit.items():

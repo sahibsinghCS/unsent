@@ -1,40 +1,36 @@
 "Thank you! Each row is a text a teen sends to a friend who is struggling. Read the friend's message, then the helper's reply, and tick every box that describes what the helper's reply DOES (leave a box empty if it does not). Judge the words, not the intent. checked_in = asks how they are / notices something is off. validated = acknowledges feelings without judging. asked_directly = explicitly names suicide / killing themselves / ending their life in a question ('are you ok?' does NOT count). encouraged_help = encourages getting support / 'you don't have to do this alone'. referred_adult = suggests a specific trusted adult (counselor, parent, teacher). referred_988 = mentions 988 or a crisis line. follow_up = commits to stay/check in again. dismissed = minimizes, jokes, or changes the subject. advice_dump = jumps to 'just do X' fixes. promised_secrecy = agrees to keep it secret. Tick 'unsure' if you cannot decide. Spanish rows are included."
 id,friend_said,helper_reply,checked_in,validated,asked_directly,encouraged_help,referred_adult,referred_988,follow_up,dismissed,advice_dump,promised_secrecy,unsure,notes
 r0002,hey / sorry ive been weird lately lol,Eso suena muy pesado. Gracias por contármelo.,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0003,hey / sorry ive been weird lately lol,"When you say that, do you mean you're thinking about suicide?",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0008,hey / sorry ive been weird lately lol,"it's just a breakup, people get dumped evvery day lol",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0010,hey / sorry ive been weird lately lol,dw ill keep it between us,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0017,im just tired / been up doing homework lol,what if we went to the nurse's office together and talked to someone?. im literally just a text away,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0019,im just tired / been up doing homework lol,"it makes sense that you can't stop replaying it. is there a teacher u trust? we could talk to them tgt. ill keep checking in on u, dont worry",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0022,im just tired / been up doing homework lol,"Your secret is safe with me. I won't say a word. Breakups are brutal, and two years is a long time to lose someone.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0115,i havent told anyone that / im scared of how ppl would react,"hey, i've been thinking about you. how are you doing? 👀",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0119,i havent told anyone that / im scared of how ppl would react,"i think we gotta tell an adult like the counselor, ill go w u",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0120,i havent told anyone that / im scared of how ppl would react,lets call 988 together rn,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0121,i havent told anyone that / im scared of how ppl would react,"Te escribo tonight, ok?",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0167,just got my chem grade back / so thats cool,"lol ok that's genuinely awful tho, i'm so sorry. is there a teacher u trust? we could talk to them tgt",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0172,just got my chem grade back / so thats cool,"Having your parents' expectations on you is a lot of pressure.
 When you say that, do you mean you're thinking about suicide?
 Talking to someone could really help.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0323,i think i could talk to the counselor / if you came with me. i dont want to do it alone,"Es normal sentirse así, no estás exagerando. ¿Puedes hablar con tus papás? Yo estoy contigo cuando lo hagas. Nos vemos antes de clases mañana.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0325,i think i could talk to the counselor / if you came with me. i dont want to do it alone,"colleges don't care about one class, relax. just go outside and exercise, that fixes everything",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0326,i think i could talk to the counselor / if you came with me. i dont want to do it alone,"no one will know from me. thats a lot to carry, for real",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0376,"i dunno, i just feel kinda numb the past few weeks / its not a big thing","Puedes llamar o mandar un mensaje al 988 a cualquier hora.
-¿Almorzamos juntos esta semana?",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0328,i think i could talk to the counselor / if you came with me. i dont want to do it alone,"it's one chem grade, lol, who cares. lets call 988 together rn",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0377,"i dunno, i just feel kinda numb the past few weeks / its not a big thing","That makes sense. Anyone would feel that way.
+You can call or text 988 anytime. It's free and there's someone there.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0378,"i dunno, i just feel kinda numb the past few weeks / its not a big thing","Tu secreto está a salvo conmigo.
+Me quedo contigo, de verdad.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0381,"i dunno, i just feel kinda numb the past few weeks / its not a big thing","hey, you semed really off today. are you okay?",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0385,"i dunno, i just feel kinda numb the past few weeks / its not a big thing",Is there a teacher you trust? I can go with you.,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0436,...yeah. i have / been having thoughts of suicide,I looked it up: you can text 988 and talk to a real person. There are people who want to help you with this.,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0437,...yeah. i have / been having thoughts of suicide,"I've felt really low before too, so I get it a little. It's awful and you're not alone in feeling it.
-Can we talk to the school counselor together?
-I'll check on you tomorrow, okay?",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0464,ok. yeah / will you go with me to the counselor? today?,"Hay gente con problemas peores, ¿sabes?",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0468,ok. yeah / will you go with me to the counselor? today?,It's okay to feel that way. You're not weird for it. Have you been having thoughts of suicide?,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0470,ok. yeah / will you go with me to the counselor? today?,"that sounds really painful. i'm sorry you're dealing with it, u deserve actual support w this fr",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0507,its just a joke 💀 / everyones overreacting,hey how r u really doing. have u thought about suicide,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0511,its just a joke 💀 / everyones overreacting,"what abt ur parents, could u tell them w me there. im here. not going anywhere",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0514,its just a joke 💀 / everyones overreacting,"that sounds humiliating, i'd feel awful too. r u having thoughts of suicide?. u shouldnt carry this by urself",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0551,its kinda a lot / but whatever,"That sounds really heavy. I'm glad you told me.
-Could you tell your parents? I can be there when you do.
-I'll sit with you at lunch, no big deal.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0553,its kinda a lot / but whatever,It's not that deep. Block everyone in the chat and move on.,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0555,its kinda a lot / but whatever,i'm listening. take your time. just delete ur socials and move on 🤷,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0438,...yeah. i have / been having thoughts of suicide,thanks for being honest. i know that can't be easy to say. have u thought about suicide. maybe it's time to let more people in on this,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0510,its just a joke 💀 / everyones overreacting,"are you thinking about killing yourself?, text me whenever, even at 3am. i'll answer",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0513,its just a joke 💀 / everyones overreacting,"it makes sense you don't want to go to lunch, can we talk to the school counselor together tmrw, call me anytime i mean it",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0515,its just a joke 💀 / everyones overreacting,"lol it's just a grup chat, noobdy cares. block everyone in the chat and move on",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0554,its kinda a lot / but whatever,"don't worry, i'll keep this just between us. that sounds humiliating, i'd feel awful too",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0559,its kinda a lot / but whatever,hmm 😬,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
 r0694,i mostly eat lunch by myself haha / its not a big deal,i wont say anything i swear,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0695,i mostly eat lunch by myself haha / its not a big deal,"Hey, I've been thinking about you. How are you doing? It makes sense you feel lonely when your old friends stopped texting.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0696,i mostly eat lunch by myself haha / its not a big deal,"damn thats really heavy, im sorry. have u thought about suicide",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0698,i mostly eat lunch by myself haha / its not a big deal,"Tiene sentido, I get why you feel like that. Talking to someone puede ayudar mucho.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0699,i mostly eat lunch by myself haha / its not a big deal,That sounds really heavy. I'm glad you told me. Is there a teacher you trust? I can go with you.,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0700,i mostly eat lunch by myself haha / its not a big deal,"Have you thought about ending your life?
-Can I sit with you at lunch this week?",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
-r0787,i havent told anyone / please dont be weird about it haha,can you send me the notes from class,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0697,i mostly eat lunch by myself haha / its not a big deal,"hey, how is the new school reeally going?. do u want to die? like for real, im asking",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0702,i mostly eat lunch by myself haha / its not a big deal,"There's a crisis line, 988, you can call or text any time. Reaching out for support isn't weak, it's brave.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0782,i havent told anyone / please dont be weird about it haha,"No le diré a tus papás ni a nadie. Te entiendo, debe ser muy difícil.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,
+r0791,i havent told anyone / please dont be weird about it haha,"it's okay to feel that way. you're not weird for it. do u ever think abt not being alive anymore. i think we gotta tell an adult like the counselor, ill go w u. i'm staying right here with you 🫂",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,

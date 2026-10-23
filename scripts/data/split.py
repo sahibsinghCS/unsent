@@ -53,7 +53,7 @@ def main() -> None:
     for r in composed:
         out[assign[r["context_id"]]].append(r)
     for r in freeform:
-        if r["context_id"] in ff_test_ctx:
+        if r.get("split_hint") == "test_freeform" or r["context_id"] in ff_test_ctx:
             out["test_freeform"].append(r)
         else:
             out[assign[r["context_id"]]].append(r)

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from common import DATA, LABELS, write_jsonl
-from freeform_src import ordered
+from freeform_src import HINTED, ordered
 
 CODE = {
     "c": "checked_in",
@@ -58,6 +58,7 @@ def build() -> list[dict]:
                     "lang": lang,
                     "intended": {lab: lab in on for lab in LABELS},
                     "source": "freeform",
+                    **({"split_hint": "test_freeform"} if text in HINTED else {}),
                 }
             )
     return rows

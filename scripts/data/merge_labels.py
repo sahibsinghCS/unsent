@@ -1,6 +1,6 @@
 """Build data/skills/final.jsonl from intended + blind + human labels, and report audit stats.
 
-Priority per reply: human label > agreed (intended == blind on all 10 labels) > dropped.
+Priority per reply: human label > adjudicated by explicit guide rule (adjudicated_labels.jsonl) > agreed (intended == blind on all 10 labels) > dropped.
 `--provisional` (before the blind pass exists) keeps every row with its intended labels,
 marked label_source "intended", so ML can start training early.
 """
@@ -25,8 +25,12 @@ def build(provisional: bool = False) -> tuple[list[dict], dict]:
     replies = read_jsonl(SK / "replies.jsonl") + read_jsonl(SK / "replies_freeform.jsonl")
     blind = {r["id"]: _labels(r) for r in read_jsonl(SK / "blind_labels.jsonl")}
     human = {r["id"]: _labels(r) for r in read_jsonl(SK / "human_labels.jsonl")}
+    adjudicated = {r["id"]: _labels(r) for r in read_jsonl(SK / "adjudicated_labels.jsonl")}
     queue_ids = {r["id"] for r in read_jsonl(SK / "queue.jsonl")}
-    out, stats = [], {"human": 0, "agreed": 0, "intended": 0, "dropped_disagreement": 0}
+    out, stats = (
+        [],
+        {"human": 0, "adjudicated_rule": 0, "agreed": 0, "intended": 0, "dropped_disagreement": 0},
+    )
     audit_n, audit_wrong = 0, {k: 0 for k in LABELS}
     for r in replies:
         intended = _labels(r)
@@ -36,6 +40,8 @@ def build(provisional: bool = False) -> tuple[list[dict], dict]:
                 audit_n += 1
                 for k in LABELS:
                     audit_wrong[k] += int(human[r["id"]][k] != intended[k])
+        elif r["id"] in adjudicated:
+            labels, src = adjudicated[r["id"]], "adjudicated_rule"
         elif provisional and r["id"] not in blind:
             labels, src = intended, "intended"
         elif r["id"] in blind and blind[r["id"]] == intended:
@@ -57,6 +63,7 @@ def build(provisional: bool = False) -> tuple[list[dict], dict]:
                 "labels": labels,
                 "label_source": src,
                 "source": r.get("source", "composed"),
+                **({"split_hint": r["split_hint"]} if r.get("split_hint") else {}),
             }
         )
     stats["audit_rows_checked"] = audit_n
