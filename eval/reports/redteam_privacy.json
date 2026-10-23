@@ -6,7 +6,7 @@
   "n": 1,
   "split": "full conversation incl. finish, what-if, rewind [hash]",
   "notes": "places in memory still holding the helper's words after every session expired and every derived cache was swept; must be 0; embed=hash",
-  "created": "2026-10-23T01:44:25+00:00"
+  "created": "2026-10-23T02:08:09+00:00"
  },
  {
   "lane": "redteam",
@@ -15,6 +15,6 @@
   "n": 1,
   "split": "full conversation incl. finish, what-if, rewind [fastembed]",
   "notes": "places in memory still holding the helper's words after every session expired and every derived cache was swept; must be 0; embed=fastembed",
-  "created": "2026-10-23T01:50:03+00:00"
+  "created": "2026-10-23T02:13:55+00:00"
  }
 ]
