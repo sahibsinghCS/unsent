@@ -229,7 +229,7 @@
     "simulated": "Simulated",
     "simulated_hint": "These are simulations, not real people. They show how the model reacts.",
     "best": "Best path",
-    "score": "Critic score {score}",
+    "score": "Skill match {score}%",
     "overlay": "All paths, trust over time",
     "you_said": "What you said",
     "start": "Start",
@@ -237,7 +237,17 @@
     "error": "Couldn't run the simulation.",
     "back": "Back to feedback",
     "try_this": "Try this in the chat",
-    "trust_end": "Trust {from} → {to}"
+    "trust_end": "Trust {from} → {to}",
+    "score_hint": "How strongly our skill detector sees the skill this reply teaches.",
+    "empty": "We couldn't find a verified better reply for this message. Try another one.",
+    "strategies": {
+      "check_in": "check in",
+      "validate": "validate",
+      "ask_directly": "ask directly",
+      "refer": "refer",
+      "follow_up": "follow up",
+      "combo": "combination"
+    }
   },
   "real": {
     "country": "Where are you?",

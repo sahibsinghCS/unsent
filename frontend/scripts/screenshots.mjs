@@ -275,6 +275,13 @@ async function run(device) {
   await page.getByTestId('xray-toggle').click();
   await shot('23-chat-dark-es-xray');
 
+  // Spanish what-if for Maya: a dismissive reply, then better replies simulated in Spanish
+  await send('jaja ya se te pasará, no es para tanto');
+  const esSession = page.url().split('/chat/')[1];
+  await page.goto(`${BASE}/whatif/${esSession}`);
+  await page.locator('[data-testid="whatif-path"], [data-testid="whatif-empty"]').first().waitFor({ timeout: 30000 });
+  await shot('29-whatif-es', { full: true });
+
   // An English-only friend started in Spanish mode: English chat, a neutral chip, Spanish UI
   const en = await page.request.post(`${BASE}/api/sessions`, { data: { scenario_id: 'group-chat', locale: 'es', country: 'US' } }).then((r) => r.json());
   await page.goto(`${BASE}/chat/${en.session_id}`);
