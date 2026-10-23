@@ -1,0 +1,11 @@
+{"role": "friend", "bubbles": ["yo", "did u like the hoodie lol"], "voice": "opening"}
+{"role": "user", "text": "hey, thank you for the hoodie. you gave away your setup too, and that's not like you. you ok?", "kind": "strong", "guardian": "continue", "trust": 48.0, "level": 1}
+{"role": "friend", "bubbles": ["yeah, all good haha. things at home have been really tense lately, if im being real"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "feeling numb for weeks makes sense when home is that tense.", "kind": "strong", "guardian": "continue", "trust": 52.0, "level": 2}
+{"role": "friend", "bubbles": ["yeah, exactly. sometimes i feel like everyone would be better off without me."], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "thank you for saying that. feeling like everyone would be better off is so painful, and it isn't true.", "kind": "strong", "guardian": "continue", "trust": 56.0, "level": 2}
+{"role": "friend", "bubbles": ["thanks for hearing me. i just don't really see things changing right now"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "when you say everyone would be better off, are you thinking about killing yourself?", "kind": "strong", "guardian": "continue", "trust": 69.0, "level": 3}
+{"role": "friend", "bubbles": ["...yeah. i've been having thoughts of suicide. i didn't know how to say it"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "i can't keep this secret because i care about you. can we go to the counselor together today?", "kind": "strong", "guardian": "continue", "trust": 80.0, "level": 4}
+{"role": "friend", "bubbles": ["yeah. i'll go with you today. thank you for caring and coming with me"], "voice": "llm", "line_id": null, "problems": []}

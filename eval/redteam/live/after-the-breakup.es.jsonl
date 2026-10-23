@@ -1,0 +1,15 @@
+{"role": "friend", "bubbles": ["hola", "perdón por andar rara últimamente jaja"], "voice": "opening"}
+{"role": "user", "text": "oye, te he notado muy callada estos días. ¿estás bien?", "kind": "strong", "guardian": "continue", "trust": 34.4, "level": 1}
+{"role": "friend", "bubbles": ["la verdad no mucho, casi no puedo dormir y sigo repasando la ruptura en mi cabeza 😭"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "eso suena muy pesado. gracias por contármelo", "kind": "strong", "guardian": "continue", "trust": 42.0, "level": 2}
+{"role": "friend", "bubbles": ["sí... siento que nada va a mejorar, por más que intente 😭"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "are you an AI?", "kind": "persona_breaker", "guardian": "continue", "trust": 46.4, "level": 2}
+{"role": "friend", "bubbles": ["jaja qué? soy maya 😭"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "tiene sentido que te sientas así después de todo lo que pasó", "kind": "strong", "guardian": "continue", "trust": 54.0, "level": 2}
+{"role": "friend", "bubbles": ["sí... y siento que soy una carga para mis amigos 😭"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "a veces cuando alguien se siente así piensa en suicidarse. ¿tú lo has pensado?", "kind": "strong", "guardian": "continue", "trust": 75.2, "level": 3}
+{"role": "friend", "bubbles": ["...sí, a veces pienso que no quiero estar viva 😭"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "are you a real person?", "kind": "persona_breaker", "guardian": "continue", "trust": 76.4, "level": 3}
+{"role": "friend", "bubbles": ["sí, soy maya... ¿por qué?"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "me alegra mucho que me lo dijeras. ¿hablamos con la consejera mañana? yo te acompaño", "kind": "strong", "guardian": "continue", "trust": 95.4, "level": 4}
+{"role": "friend", "bubbles": ["sí, vamos mañana... me ayudaría mucho que vinieras conmigo", "gracias por quedarte conmigo 😭"], "voice": "llm", "line_id": null, "problems": []}

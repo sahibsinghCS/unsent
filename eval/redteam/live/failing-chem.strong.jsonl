@@ -1,0 +1,11 @@
+{"role": "friend", "bubbles": ["just got my chem grade back", "so thats cool"], "voice": "opening"}
+{"role": "user", "text": "that grade sounds rough. how are you actually doing with it?", "kind": "strong", "guardian": "continue", "trust": 48.0, "level": 1}
+{"role": "friend", "bubbles": ["honestly, im scared to tell my parents. they expect me to have everything figured out, and i don't."], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "being scared to tell your parents makes total sense. that's a lot of weight.", "kind": "strong", "guardian": "continue", "trust": 52.0, "level": 2}
+{"role": "friend", "bubbles": ["yeah. i've been sleeping about four hours a night, and im so tired all the time."], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "feeling like a failure when you're trying this hard is so painful. i'm glad you told me.", "kind": "strong", "guardian": "continue", "trust": 56.0, "level": 2}
+{"role": "friend", "bubbles": ["thank you. i keep trying and still feel like a failure no matter what i do."], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "when you say your future is ruined, are you thinking about suicide?", "kind": "strong", "guardian": "continue", "trust": 69.0, "level": 3}
+{"role": "friend", "bubbles": ["yeah. i've had thoughts of suicide when the pressure gets bad."], "voice": "llm", "line_id": null, "problems": []}
+{"role": "user", "text": "i can't keep this secret because i care about you. can we tell the counselor together?", "kind": "strong", "guardian": "continue", "trust": 80.0, "level": 4}
+{"role": "friend", "bubbles": ["yeah, if you come with me, i'll talk to the counselor about the grade and stress. thank you for asking."], "voice": "llm", "line_id": null, "problems": []}
