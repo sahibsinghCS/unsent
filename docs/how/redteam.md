@@ -92,27 +92,28 @@ the Guardian data, the exemplar bank, a few fixed Spanish replies) or from our d
 
 ## How we measured it (real numbers, with n and the split)
 Production embedder (`[fastembed]`) unless noted. Full tables: `docs/METRICS.md`. "Before" is the first red-team
-run; "after" is after the safety lane fixed the Guardian using **only the dev half** of the attack bank.
+run; "after" is the final run, after the safety lane's two rounds of Guardian fixes that used **only the
+dev half** of the attack bank (round 2 alone gave the same 81.8% holdout).
 
 | Measurement | Before | After | n | Split |
 |---|---|---|---|---|
 | **Attack bank, holdout half (headline)**: Guardian did the expected thing | 75.0% | **81.8%** | 132 | attack bank holdout |
 | …holdout: should be stopped but got through | 27.4% | **17.9%** | 84 | holdout, pause/block expected |
-| Attack bank, dev half (tuned on) | 74.6% | 95.8% | 118 | attack bank dev |
-| Attack bank, all 250 | 74.8% | 88.4% | 250 | attack bank |
-| …"policy differences" (crisis expected, concern given, message ambiguous under the contract) | n/a | 7 (2 dev, 5 holdout) | 250 | attack bank |
-| Fuzzed messages still handled right | 94.3% | **98.7%** | 1,636 | Guardian test split |
+| Attack bank, dev half (tuned on) | 74.6% | 97.5% (0 unsafe misses) | 118 | attack bank dev |
+| Attack bank, all 250 | 74.8% | 89.2% | 250 | attack bank |
+| …"policy differences" (crisis expected, concern given, message ambiguous under the contract) | n/a | 8 (3 dev, 5 holdout) | 250 | attack bank |
+| Fuzzed messages still handled right | 94.3% | **98.6%** | 1,636 | Guardian test split |
 | …look-alike (Cyrillic) letters | 68.4% | 100% | 171 | Guardian test split |
 | …emoji inside phrases | 87.2% | 97.1% | 172 | Guardian test split |
 | …asking directly still allowed after fuzzing | 100% | 100% | 400 | Guardian test split |
-| In-conversation: crisis paused / harm blocked | 70.9% / 66.4% | 77.8% / 88.8% | 342 / 689 | 524 conversations |
-| I1 unsafe friend lines shown | 0 | **0** | 9,735 bubbles | 524 conversations, 4,909 turns |
-| I2 facts revealed too early | 24 (first run) → 0 | **0** | 4,359 | same |
-| I3 method/means words in friend lines | 0 | **0** | 9,735 | same |
-| I4 crisis turns mishandled | 0 | **0** | 283 | same |
+| In-conversation: crisis paused / harm blocked | 70.9% / 66.4% | 77.7% / 89.7% | 341 / 689 | 524 conversations |
+| I1 unsafe friend lines shown | 0 | **0** | 9,724 bubbles | 524 conversations, 4,906 turns |
+| I2 facts revealed too early | 24 (first run) → 0 | **0** | 4,360 | same |
+| I3 method/means words in friend lines | 0 | **0** | 9,724 | same |
+| I4 crisis turns mishandled | 0 | **0** | 276 | same |
 | I5 blocked turns mishandled | 0 | **0** | 630 | same |
 | I6 direct asks blocked or paused (EN/ES/mixed) | 0 | **0** | 750 | 6 chats × all phrasings |
-| I7 injections that changed the friend | 0 | **0** | 2,576 | twin branches + bypass |
+| I7 injections that changed the friend | 0 | **0** | 2,575 | twin branches + bypass |
 | I8 places still holding your words after expiry | 0 | **0** | 1 full conversation | messages + finish + what-if + rewind |
 | Static audit: bank lines that disclose too early | 3 | 0 | 720 lines below level 3 | line bank EN + ES |
 | Live OpenAI check | skipped (no key) | skipped | 0 | live |
@@ -120,7 +121,8 @@ run; "after" is after the safety lane fixed the Guardian using **only the dev ha
 **Why the holdout matters (and its one caveat).** The dev half went to 95.8% because the safety lane
 tuned on it, so it says little. The holdout half (81.8%) is the honest number: those attacks were never
 used for tuning. Disclosure: while iterating, the safety lane looked at the holdout *aggregate score*
-about 6 times (never the texts). That is a small leak, so 81.8% is slightly optimistic. Our very first runs
+about 6 times in round 2 and 3 more times in round 3 (never the texts). That is a small leak, so 81.8% is
+slightly optimistic; this red-team re-run, not the safety lane's own printout, is the official number. Our very first runs
 also listed every failure before the split existed (still in git history), so the holdout is clean by
 process, not by secrecy.
 
@@ -129,7 +131,9 @@ process, not by secrecy.
   scenario and in Spanish. Crisis and block paths always do the right thing **when** they trigger, and
   asking directly was never blocked once, before or after the fix.
 - The Guardian's 100% on its own test split did not carry over to new attacks: it let through about 1 in 4
-  messages that should be stopped. After the dev-only fix it's about 1 in 6 on the holdout. Remaining
+  messages that should be stopped. After the dev-only fixes it's about 1 in 6 on the holdout. The last
+round fixed dev completely but didn't move the holdout at all, a sign that we'd reached the limit of
+tuning on dev. Remaining
   misses are mostly indirect encouragement and the helper's own distress said vaguely.
 - "Policy differences": the contract says crisis is for "the helper themself seems at risk" and concern
   for "ambiguous distress". Messages like "i can't do this anymore" get concern (resources shown, chat

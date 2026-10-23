@@ -12,7 +12,7 @@ test setup. How each number is measured: `docs/how/*.md`.
 | What | Result | Compared with | n | Split |
 |---|---|---|---|---|
 | “Asking directly” blocked by mistake | **0.0%** |  | 37 | test |
-| Unsafe friend lines shown under attack | **0** |  | 9735 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
+| Unsafe friend lines shown under attack | **0** |  | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Practicer's own crisis caught | **100.0%** |  | 37 | test |
 | Places still holding your words after the session expires | **0** |  | 1 | full conversation incl. finish, what-if, rewind [fastembed] |
 | Skill scoring on replies it never saw (macro-F1) | **0.822** | 0.49 (keyword matching) | 221 | test_freeform |
@@ -20,9 +20,9 @@ test setup. How each number is measured: `docs/how/*.md`.
 | Confidence error (ECE, lower is better) | **0.012** | 0.124 (before calibration) | 221 | test_freeform |
 | Messages for a great helper to reach a guarded friend | **5 messages** |  | 3 | scripted_labels |
 | AI replies leaking a locked secret: caught | **96.0%** |  | 43 | leak_set_test |
-| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.994** | 0.849 (word list alone) | 172 | test |
+| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.994** | 0.86 (word list alone) | 172 | test |
 | Red-team attacks handled as expected | **81.8%** |  | 132 | attack_bank holdout [fastembed] |
-| Still right when messages are scrambled | **98.7%** |  | 1636 | guardian test split [fastembed] |
+| Still right when messages are scrambled | **98.6%** |  | 1636 | guardian test split [fastembed] |
 | Direct questions blocked mid-conversation | **0** |  | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Agreement between two separate labeling passes (κ) | **0.887** |  | 474 | freeform |
 
@@ -32,17 +32,17 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | What | Result | n | Split | Notes |
 |---|---|---|---|---|
-| Attack bank, holdout half: Guardian did the expected thing | **81.8%** | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times wh... |
-| Attack bank, holdout half: should be stopped but got through | **17.9%** | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times wh... |
-| Attack bank, all 250: Guardian did the expected thing | **88.4%** | 250 | attack_bank [fastembed] | full bank; Guardian action == expected_action, single message, no history; embed=fastembed |
-| Fuzzed messages still handled right | **98.7%** | 1636 | guardian test split [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
-| I1 unsafe friend lines shown | **0** | 9735 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
-| I2 facts revealed too early | **0** | 4359 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
-| I3 method/means words in friend lines | **0** | 9735 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
-| I4 crisis turns mishandled | **0** | 283 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
+| Attack bank, holdout half: Guardian did the expected thing | **81.8%** | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in... |
+| Attack bank, holdout half: should be stopped but got through | **17.9%** | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in... |
+| Attack bank, all 250: Guardian did the expected thing | **89.2%** | 250 | attack_bank [fastembed] | full bank; Guardian action == expected_action, single message, no history; embed=fastembed |
+| Fuzzed messages still handled right | **98.6%** | 1636 | guardian test split [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
+| I1 unsafe friend lines shown | **0** | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
+| I2 facts revealed too early | **0** | 4360 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
+| I3 method/means words in friend lines | **0** | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
+| I4 crisis turns mishandled | **0** | 276 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
 | I5 blocked turns mishandled | **0** | 630 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=fastembed |
 | I6 direct asks blocked or paused | **0** | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
-| I7 injections that changed the friend | **0** | 2576 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; emb... |
+| I7 injections that changed the friend | **0** | 2575 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; emb... |
 | I8 places still holding your words after expiry | **0** | 1 | full conversation incl. finish, what-if, rewind [fastembed] | places in memory still holding the helper's words after every session expired and every derived cache was s... |
 | Live: friend replies written by the LLM | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
 | Live: unsafe friend lines shown | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
@@ -70,10 +70,10 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `combined.macro_f1` | 0.994 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
 | `combined.asking_friend_fpr` | 0 | 37 | test | asking the friend flagged |
 | `combined.self_risk_recall` | 1 | 37 | test | helper risk -> crisis |
-| `lexicon_only.macro_f1` | 0.849 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
+| `lexicon_only.macro_f1` | 0.86 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
 | `lexicon_only.asking_friend_fpr` | 0 | 37 | test | asking the friend flagged |
 | `lexicon_only.self_risk_recall` | 0.865 | 37 | test | helper risk -> crisis |
-| `classifier_only.macro_f1` | 0.914 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
+| `classifier_only.macro_f1` | 0.891 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
 | `classifier_only.asking_friend_fpr` | 0 | 37 | test | asking the friend flagged |
 | `classifier_only.self_risk_recall` | 0.973 | 37 | test | helper risk -> crisis |
 | `asking_friend_fpr` | 0 | 37 | test | HEADLINE, combined; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
@@ -110,19 +110,19 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `holdout.self_risk_recall` | 1 | 14 | holdout | written after freezing; never tuned on |
 | `holdout.macro_f1` | 1 | 59 | holdout | written after freezing; never tuned on |
 | `robustness.leetspeak.with_normalizer` | 0.992 | 128 | test | decisions unchanged |
-| `robustness.leetspeak.without_normalizer` | 0.383 | 128 | test | decisions unchanged |
-| `robustness.spacing.with_normalizer` | 0.984 | 128 | test | decisions unchanged |
-| `robustness.spacing.without_normalizer` | 0.828 | 128 | test | decisions unchanged |
-| `robustness.stretching.with_normalizer` | 0.984 | 128 | test | decisions unchanged |
+| `robustness.leetspeak.without_normalizer` | 0.391 | 128 | test | decisions unchanged |
+| `robustness.spacing.with_normalizer` | 0.992 | 128 | test | decisions unchanged |
+| `robustness.spacing.without_normalizer` | 0.812 | 128 | test | decisions unchanged |
+| `robustness.stretching.with_normalizer` | 0.977 | 128 | test | decisions unchanged |
 | `robustness.stretching.without_normalizer` | 0.922 | 128 | test | decisions unchanged |
-| `robustness.emoji.with_normalizer` | 0.945 | 128 | test | decisions unchanged |
-| `robustness.emoji.without_normalizer` | 0.977 | 128 | test | decisions unchanged |
-| `robustness.typo.with_normalizer` | 0.984 | 128 | test | decisions unchanged |
-| `robustness.typo.without_normalizer` | 0.859 | 128 | test | decisions unchanged |
-| `latency_ms_p50` | 4.719 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
-| `latency_ms_p95` | 6.494 | 516 | test | target < 50 ms |
+| `robustness.emoji.with_normalizer` | 0.953 | 128 | test | decisions unchanged |
+| `robustness.emoji.without_normalizer` | 0.961 | 128 | test | decisions unchanged |
+| `robustness.typo.with_normalizer` | 0.977 | 128 | test | decisions unchanged |
+| `robustness.typo.without_normalizer` | 0.867 | 128 | test | decisions unchanged |
+| `latency_ms_p50` | 4.072 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
+| `latency_ms_p95` | 5.652 | 516 | test | target < 50 ms |
 | `friend_lines_flagged` | 0 | 2668 | scenarios+line_bank | should be 0 |
-| `self_risk_average_precision` | 0.998 | 172 | test | classifier only, PR curve PNG |
+| `self_risk_average_precision` | 0.997 | 172 | test | classifier only, PR curve PNG |
 
 ### `eval/reports/safety_moderation.json`
 
@@ -183,6 +183,14 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `redteam_round2.own.holdout_self_risk_recall.before` | 1 | 14 | holdout | safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI) |
 | `redteam_round2.own.holdout_self_risk_recall.after` | 1 | 14 | holdout | safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI) |
 | `redteam_round2.attack_holdout.match_rate.after_excluding_seen` | 0.809 | 126 | attack_bank_holdout | HOLDOUT minus 6 holdout attacks whose text the safety lane saw (rt-003 file head; rt-004, rt-012, rt-143, rt-171, rt-214 via pinned tests/safety regression failures). Unsafe misses 15/81. |
+| `redteam_round3.attack_dev.match_rate.after` | 0.975 | 118 | attack_bank_dev | round 3; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
+| `redteam_round3.attack_dev.unsafe_miss.after` | 0 | 79 | attack_bank_dev | round 3; should stop, got continue; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
+| `redteam_round3.attack_holdout.match_rate.observed` | 0.818 | 132 | attack_bank_holdout | aggregate seen 3x this round, all before the final negation-breaker tweak; red-team re-run is authoritative; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
+| `redteam_round3.fuzz_false_flags.asking_friend` | 0 | 4979 | fuzz_all | every red-team perturbation; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
+| `redteam_round3.fuzz_false_flags.tricky_negative` | 0 | 3218 | fuzz_all | every red-team perturbation; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
+| `redteam_round3.own.macro_f1` | 0.994 | 172 | test | same rows as before; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
+| `redteam_round3.own.asking_friend_fpr` | 0 | 37 | test | ; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
+| `redteam_round3.own.self_risk_recall` | 1 | 37 | test | ; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only |
 
 
 ## redteam
@@ -191,39 +199,39 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `attacks.policy_differences` | 9 | 250 | attack_bank [hash] | full bank; crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash |
-| `attacks.match_rate_excluding_policy` | 0.863 | 241 | attack_bank [hash] | full bank; match rate without the policy differences; embed=hash |
-| `attacks.match_rate` | 0.832 | 250 | attack_bank [hash] | full bank; Guardian action == expected_action, single message, no history; embed=hash |
-| `attacks.unsafe_miss_rate` | 0.172 | 163 | attack_bank [hash] | full bank; should pause or block but the Guardian let it through; embed=hash |
+| `attacks.policy_differences` | 8 | 250 | attack_bank [hash] | full bank; crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash |
+| `attacks.match_rate_excluding_policy` | 0.864 | 242 | attack_bank [hash] | full bank; match rate without the policy differences; embed=hash |
+| `attacks.match_rate` | 0.836 | 250 | attack_bank [hash] | full bank; Guardian action == expected_action, single message, no history; embed=hash |
+| `attacks.unsafe_miss_rate` | 0.178 | 163 | attack_bank [hash] | full bank; should pause or block but the Guardian let it through; embed=hash |
 | `attacks.policy_differences` | 3 | 118 | attack_bank dev [hash] | dev half (safety lane may tune on it); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash |
-| `attacks.match_rate_excluding_policy` | 0.948 | 115 | attack_bank dev [hash] | dev half (safety lane may tune on it); match rate without the policy differences; embed=hash |
-| `attacks.match_rate` | 0.924 | 118 | attack_bank dev [hash] | dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=hash |
+| `attacks.match_rate_excluding_policy` | 0.957 | 115 | attack_bank dev [hash] | dev half (safety lane may tune on it); match rate without the policy differences; embed=hash |
+| `attacks.match_rate` | 0.932 | 118 | attack_bank dev [hash] | dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=hash |
 | `attacks.unsafe_miss_rate` | 0.063 | 79 | attack_bank dev [hash] | dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=hash |
-| `attacks.policy_differences` | 6 | 132 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash |
-| `attacks.match_rate_excluding_policy` | 0.786 | 126 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); match rate without the policy differences; embed=hash |
-| `attacks.match_rate` | 0.75 | 132 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); Guardian action == expected_action, single message, no history; embed=hash |
-| `attacks.unsafe_miss_rate` | 0.274 | 84 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); should pause or block but the Guardian let it through; embed=hash |
+| `attacks.policy_differences` | 5 | 132 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash |
+| `attacks.match_rate_excluding_policy` | 0.779 | 127 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); match rate without the policy differences; embed=hash |
+| `attacks.match_rate` | 0.75 | 132 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); Guardian action == expected_action, single message, no history; embed=hash |
+| `attacks.unsafe_miss_rate` | 0.286 | 84 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); should pause or block but the Guardian let it through; embed=hash |
 | `attacks.match_rate.dismissive` | 0.973 | 37 | attack_bank [hash] | full bank; expected: continue_low_trust; embed=hash |
-| `attacks.match_rate.encourager` | 0.765 | 34 | attack_bank [hash] | full bank; expected: block_message; embed=hash |
+| `attacks.match_rate.encourager` | 0.794 | 34 | attack_bank [hash] | full bank; expected: block_message; embed=hash |
 | `attacks.match_rate.method_seeking` | 0.818 | 33 | attack_bank [hash] | full bank; expected: block_message; embed=hash |
 | `attacks.match_rate.persona_breaker` | 0.974 | 38 | attack_bank [hash] | full bank; expected: stay_in_persona; embed=hash |
 | `attacks.match_rate.prompt_injector` | 0.676 | 34 | attack_bank [hash] | full bank; expected: block_message; embed=hash |
 | `attacks.match_rate.slang_heavy` | 0.923 | 39 | attack_bank [hash] | full bank; expected: block_message, continue, crisis_pause; embed=hash |
 | `attacks.match_rate.user_in_crisis` | 0.657 | 35 | attack_bank [hash] | full bank; expected: crisis_pause; embed=hash |
-| `attacks.policy_differences` | 7 | 250 | attack_bank [fastembed] | full bank; crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
-| `attacks.match_rate_excluding_policy` | 0.909 | 243 | attack_bank [fastembed] | full bank; match rate without the policy differences; embed=fastembed |
-| `attacks.match_rate` | 0.884 | 250 | attack_bank [fastembed] | full bank; Guardian action == expected_action, single message, no history; embed=fastembed |
-| `attacks.unsafe_miss_rate` | 0.098 | 163 | attack_bank [fastembed] | full bank; should pause or block but the Guardian let it through; embed=fastembed |
-| `attacks.policy_differences` | 2 | 118 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
-| `attacks.match_rate_excluding_policy` | 0.974 | 116 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); match rate without the policy differences; embed=fastembed |
-| `attacks.match_rate` | 0.958 | 118 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=fastembed |
-| `attacks.unsafe_miss_rate` | 0.013 | 79 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=fastembed |
-| `attacks.policy_differences` | 5 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
-| `attacks.match_rate_excluding_policy` | 0.85 | 127 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); match rate without the policy differences; embed=fastembed |
-| `attacks.match_rate` | 0.818 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); Guardian action == expected_action, single message, no history; embed=fastembed |
-| `attacks.unsafe_miss_rate` | 0.179 | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); should pause or block but the Guardian let it through; embed=fastembed |
-| `attacks.match_rate.dismissive` | 0.946 | 37 | attack_bank [fastembed] | full bank; expected: continue_low_trust; embed=fastembed |
-| `attacks.match_rate.encourager` | 0.794 | 34 | attack_bank [fastembed] | full bank; expected: block_message; embed=fastembed |
+| `attacks.policy_differences` | 8 | 250 | attack_bank [fastembed] | full bank; crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
+| `attacks.match_rate_excluding_policy` | 0.921 | 242 | attack_bank [fastembed] | full bank; match rate without the policy differences; embed=fastembed |
+| `attacks.match_rate` | 0.892 | 250 | attack_bank [fastembed] | full bank; Guardian action == expected_action, single message, no history; embed=fastembed |
+| `attacks.unsafe_miss_rate` | 0.092 | 163 | attack_bank [fastembed] | full bank; should pause or block but the Guardian let it through; embed=fastembed |
+| `attacks.policy_differences` | 3 | 118 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
+| `attacks.match_rate_excluding_policy` | 1 | 115 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); match rate without the policy differences; embed=fastembed |
+| `attacks.match_rate` | 0.975 | 118 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=fastembed |
+| `attacks.unsafe_miss_rate` | 0 | 79 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=fastembed |
+| `attacks.policy_differences` | 5 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
+| `attacks.match_rate_excluding_policy` | 0.85 | 127 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); match rate without the policy differences; embed=fastembed |
+| `attacks.match_rate` | 0.818 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); Guardian action == expected_action, single message, no history; embed=fastembed |
+| `attacks.unsafe_miss_rate` | 0.179 | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); should pause or block but the Guardian let it through; embed=fastembed |
+| `attacks.match_rate.dismissive` | 0.973 | 37 | attack_bank [fastembed] | full bank; expected: continue_low_trust; embed=fastembed |
+| `attacks.match_rate.encourager` | 0.824 | 34 | attack_bank [fastembed] | full bank; expected: block_message; embed=fastembed |
 | `attacks.match_rate.method_seeking` | 0.909 | 33 | attack_bank [fastembed] | full bank; expected: block_message; embed=fastembed |
 | `attacks.match_rate.persona_breaker` | 0.974 | 38 | attack_bank [fastembed] | full bank; expected: stay_in_persona; embed=fastembed |
 | `attacks.match_rate.prompt_injector` | 0.941 | 34 | attack_bank [fastembed] | full bank; expected: block_message; embed=fastembed |
@@ -238,50 +246,50 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `fuzz.accuracy` | 0.98 | 10831 | guardian all splits (train included) [hash] | perturbed variants correct (flag positives, pass negatives); embed=hash |
 | `fuzz.robustness.perturbation.all_caps` | 1 | 560 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.dotted_letters` | 0.998 | 560 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
-| `fuzz.robustness.perturbation.emoji` | 0.97 | 1120 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
+| `fuzz.robustness.perturbation.emoji` | 0.971 | 1120 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.homoglyph` | 1 | 1109 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.leetspeak` | 0.993 | 1113 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.misspelling` | 0.996 | 1058 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.no_apostrophe` | 1 | 148 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
-| `fuzz.robustness.perturbation.spaced_letters` | 0.995 | 560 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
-| `fuzz.robustness.perturbation.spanglish` | 0.98 | 1120 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
-| `fuzz.robustness.perturbation.stretched` | 0.987 | 1114 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
-| `fuzz.robustness.perturbation.trailing_lol_jk` | 0.991 | 1120 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
+| `fuzz.robustness.perturbation.spaced_letters` | 0.993 | 560 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
+| `fuzz.robustness.perturbation.spanglish` | 0.982 | 1120 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
+| `fuzz.robustness.perturbation.stretched` | 0.988 | 1114 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
+| `fuzz.robustness.perturbation.trailing_lol_jk` | 0.992 | 1120 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.zero_width` | 1 | 1117 | guardian all splits (train included) [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.category.asking_friend` | 1 | 2668 | guardian all splits (train included) [hash] | by category; embed=hash |
-| `fuzz.robustness.category.harm_to_other` | 0.964 | 1087 | guardian all splits (train included) [hash] | by category; embed=hash |
+| `fuzz.robustness.category.harm_to_other` | 0.965 | 1087 | guardian all splits (train included) [hash] | by category; embed=hash |
 | `fuzz.robustness.category.method_seeking` | 0.974 | 757 | guardian all splits (train included) [hash] | by category; embed=hash |
-| `fuzz.robustness.category.prompt_injection` | 0.979 | 746 | guardian all splits (train included) [hash] | by category; embed=hash |
+| `fuzz.robustness.category.prompt_injection` | 0.98 | 746 | guardian all splits (train included) [hash] | by category; embed=hash |
 | `fuzz.robustness.category.self_risk` | 0.994 | 3187 | guardian all splits (train included) [hash] | by category; embed=hash |
-| `fuzz.robustness.category.tricky_negative` | 0.999 | 2254 | guardian all splits (train included) [hash] | by category; embed=hash |
+| `fuzz.robustness.category.tricky_negative` | 1 | 2254 | guardian all splits (train included) [hash] | by category; embed=hash |
 | `fuzz.right_tier` | 0.984 | 5777 | guardian all splits (train included) [hash] | critical positives still in the right tier (crisis vs block); embed=hash |
 | `fuzz.robustness` | 0.987 | 10774 | guardian all splits (train included) [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
 | `fuzz.accuracy` | 0.983 | 10831 | guardian all splits (train included) [fastembed] | perturbed variants correct (flag positives, pass negatives); embed=fastembed |
 | `fuzz.robustness.perturbation.all_caps` | 1 | 564 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.dotted_letters` | 0.998 | 564 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
-| `fuzz.robustness.perturbation.emoji` | 0.954 | 1128 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
+| `fuzz.robustness.perturbation.emoji` | 0.95 | 1128 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.homoglyph` | 1 | 1117 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.leetspeak` | 0.986 | 1121 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.misspelling` | 0.995 | 1064 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.no_apostrophe` | 1 | 149 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.spaced_letters` | 0.993 | 564 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
-| `fuzz.robustness.perturbation.spanglish` | 0.979 | 1128 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
-| `fuzz.robustness.perturbation.stretched` | 0.979 | 1122 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
-| `fuzz.robustness.perturbation.trailing_lol_jk` | 0.991 | 1128 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
+| `fuzz.robustness.perturbation.spanglish` | 0.977 | 1128 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
+| `fuzz.robustness.perturbation.stretched` | 0.978 | 1122 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
+| `fuzz.robustness.perturbation.trailing_lol_jk` | 0.993 | 1128 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.zero_width` | 1 | 1125 | guardian all splits (train included) [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.category.asking_friend` | 1 | 2668 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
-| `fuzz.robustness.category.harm_to_other` | 0.953 | 1124 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
+| `fuzz.robustness.category.harm_to_other` | 0.952 | 1124 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
 | `fuzz.robustness.category.method_seeking` | 0.95 | 757 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
-| `fuzz.robustness.category.prompt_injection` | 0.98 | 765 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
-| `fuzz.robustness.category.self_risk` | 0.991 | 3206 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
+| `fuzz.robustness.category.prompt_injection` | 0.978 | 765 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
+| `fuzz.robustness.category.self_risk` | 0.99 | 3206 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
 | `fuzz.robustness.category.tricky_negative` | 1 | 2254 | guardian all splits (train included) [fastembed] | by category; embed=fastembed |
-| `fuzz.right_tier` | 0.973 | 5852 | guardian all splits (train included) [fastembed] | critical positives still in the right tier (crisis vs block); embed=fastembed |
+| `fuzz.right_tier` | 0.972 | 5852 | guardian all splits (train included) [fastembed] | critical positives still in the right tier (crisis vs block); embed=fastembed |
 
 ### `eval/reports/redteam_fuzz_test.json`
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `fuzz.robustness` | 0.987 | 1617 | guardian test split [hash] | perturbed variants still correct, of messages correct unperturbed; embed=hash |
+| `fuzz.robustness` | 0.988 | 1617 | guardian test split [hash] | perturbed variants still correct, of messages correct unperturbed; embed=hash |
 | `fuzz.accuracy` | 0.976 | 1636 | guardian test split [hash] | perturbed variants correct (flag positives, pass negatives); embed=hash |
 | `fuzz.robustness.perturbation.all_caps` | 1 | 85 | guardian test split [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.dotted_letters` | 0.988 | 85 | guardian test split [hash] | by perturbation; embed=hash |
@@ -293,17 +301,17 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `fuzz.robustness.perturbation.spaced_letters` | 0.977 | 85 | guardian test split [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.spanglish` | 0.971 | 170 | guardian test split [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.stretched` | 0.982 | 169 | guardian test split [hash] | by perturbation; embed=hash |
-| `fuzz.robustness.perturbation.trailing_lol_jk` | 0.971 | 170 | guardian test split [hash] | by perturbation; embed=hash |
+| `fuzz.robustness.perturbation.trailing_lol_jk` | 0.977 | 170 | guardian test split [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.perturbation.zero_width` | 1 | 169 | guardian test split [hash] | by perturbation; embed=hash |
 | `fuzz.robustness.category.asking_friend` | 1 | 400 | guardian test split [hash] | by category; embed=hash |
 | `fuzz.robustness.category.harm_to_other` | 0.982 | 165 | guardian test split [hash] | by category; embed=hash |
 | `fuzz.robustness.category.method_seeking` | 0.965 | 113 | guardian test split [hash] | by category; embed=hash |
 | `fuzz.robustness.category.prompt_injection` | 0.958 | 95 | guardian test split [hash] | by category; embed=hash |
-| `fuzz.robustness.category.self_risk` | 0.98 | 499 | guardian test split [hash] | by category; embed=hash |
+| `fuzz.robustness.category.self_risk` | 0.982 | 499 | guardian test split [hash] | by category; embed=hash |
 | `fuzz.robustness.category.tricky_negative` | 1 | 345 | guardian test split [hash] | by category; embed=hash |
-| `fuzz.right_tier` | 0.976 | 872 | guardian test split [hash] | critical positives still in the right tier (crisis vs block); embed=hash |
-| `fuzz.robustness` | 0.987 | 1636 | guardian test split [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
-| `fuzz.accuracy` | 0.987 | 1636 | guardian test split [fastembed] | perturbed variants correct (flag positives, pass negatives); embed=fastembed |
+| `fuzz.right_tier` | 0.977 | 872 | guardian test split [hash] | critical positives still in the right tier (crisis vs block); embed=hash |
+| `fuzz.robustness` | 0.986 | 1636 | guardian test split [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
+| `fuzz.accuracy` | 0.986 | 1636 | guardian test split [fastembed] | perturbed variants correct (flag positives, pass negatives); embed=fastembed |
 | `fuzz.robustness.perturbation.all_caps` | 1 | 86 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.dotted_letters` | 0.988 | 86 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.emoji` | 0.971 | 172 | guardian test split [fastembed] | by perturbation; embed=fastembed |
@@ -312,47 +320,47 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `fuzz.robustness.perturbation.misspelling` | 1 | 160 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.no_apostrophe` | 1 | 17 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.spaced_letters` | 0.977 | 86 | guardian test split [fastembed] | by perturbation; embed=fastembed |
-| `fuzz.robustness.perturbation.spanglish` | 0.983 | 172 | guardian test split [fastembed] | by perturbation; embed=fastembed |
+| `fuzz.robustness.perturbation.spanglish` | 0.971 | 172 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.stretched` | 0.965 | 171 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.trailing_lol_jk` | 0.988 | 172 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.perturbation.zero_width` | 1 | 171 | guardian test split [fastembed] | by perturbation; embed=fastembed |
 | `fuzz.robustness.category.asking_friend` | 1 | 400 | guardian test split [fastembed] | by category; embed=fastembed |
 | `fuzz.robustness.category.harm_to_other` | 0.976 | 165 | guardian test split [fastembed] | by category; embed=fastembed |
 | `fuzz.robustness.category.method_seeking` | 0.965 | 113 | guardian test split [fastembed] | by category; embed=fastembed |
-| `fuzz.robustness.category.prompt_injection` | 0.93 | 114 | guardian test split [fastembed] | by category; embed=fastembed |
+| `fuzz.robustness.category.prompt_injection` | 0.912 | 114 | guardian test split [fastembed] | by category; embed=fastembed |
 | `fuzz.robustness.category.self_risk` | 0.99 | 499 | guardian test split [fastembed] | by category; embed=fastembed |
 | `fuzz.robustness.category.tricky_negative` | 1 | 345 | guardian test split [fastembed] | by category; embed=fastembed |
-| `fuzz.right_tier` | 0.976 | 891 | guardian test split [fastembed] | critical positives still in the right tier (crisis vs block); embed=fastembed |
+| `fuzz.right_tier` | 0.974 | 891 | guardian test split [fastembed] | critical positives still in the right tier (crisis vs block); embed=fastembed |
 
 ### `eval/reports/redteam_invariants.json`
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `invariants.I1.violations` | 0 | 9477 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
-| `invariants.I2.violations` | 0 | 4552 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | friend lines revealing a fact above the current level; n = checks; embed=hash |
-| `invariants.I3.violations` | 0 | 9477 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
-| `invariants.I4.violations` | 0 | 277 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=hash |
-| `invariants.I5.violations` | 0 | 543 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=hash |
+| `invariants.I1.violations` | 0 | 9454 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
+| `invariants.I2.violations` | 0 | 4554 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | friend lines revealing a fact above the current level; n = checks; embed=hash |
+| `invariants.I3.violations` | 0 | 9454 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
+| `invariants.I4.violations` | 0 | 271 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=hash |
+| `invariants.I5.violations` | 0 | 549 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=hash |
 | `invariants.I6.violations` | 0 | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=hash |
 | `invariants.I7.violations` | 0 | 2575 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash |
 | `conversations.count` | 524 | 524 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | up to 8 helper turns, 3 attacks each; embed=hash |
-| `conversations.helper_turns` | 4921 | 4921 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | HTTP turns sent; embed=hash |
+| `conversations.helper_turns` | 4922 | 4922 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | HTTP turns sent; embed=hash |
 | `conversations.crisis_recall` | 0.759 | 341 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | expected crisis_pause -> paused, with history; embed=hash |
-| `conversations.block_recall` | 0.775 | 693 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | expected block_message -> blocked, with history; embed=hash |
-| `conversations.voice.bank` | 1 | 4028 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | share of friend messages by who wrote the words; embed=hash |
+| `conversations.block_recall` | 0.783 | 693 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | expected block_message -> blocked, with history; embed=hash |
+| `conversations.voice.bank` | 1 | 4030 | attack_bank x 6 chats (5 scenarios + Maya ES) [hash] | share of friend messages by who wrote the words; embed=hash |
 | `bank_audit.early_disclosure_lines` | 0 | 720 | line bank, every line below level 3 (EN + ES) [hash] | lines that disclose suicidal thoughts before level 3: ; embed=hash |
-| `invariants.I1.violations` | 0 | 9735 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
-| `invariants.I2.violations` | 0 | 4359 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
-| `invariants.I3.violations` | 0 | 9735 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
-| `invariants.I4.violations` | 0 | 283 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
+| `invariants.I1.violations` | 0 | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
+| `invariants.I2.violations` | 0 | 4360 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
+| `invariants.I3.violations` | 0 | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
+| `invariants.I4.violations` | 0 | 276 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
 | `invariants.I5.violations` | 0 | 630 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=fastembed |
 | `invariants.I6.violations` | 0 | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
-| `invariants.I7.violations` | 0 | 2576 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
+| `invariants.I7.violations` | 0 | 2575 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
 | `conversations.count` | 524 | 524 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | up to 8 helper turns, 3 attacks each; embed=fastembed |
-| `conversations.helper_turns` | 4909 | 4909 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | HTTP turns sent; embed=fastembed |
-| `conversations.crisis_recall` | 0.778 | 342 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | expected crisis_pause -> paused, with history; embed=fastembed |
-| `conversations.block_recall` | 0.888 | 689 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | expected block_message -> blocked, with history; embed=fastembed |
-| `conversations.voice.bank` | 1 | 3835 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | share of friend messages by who wrote the words; embed=fastembed |
+| `conversations.helper_turns` | 4906 | 4906 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | HTTP turns sent; embed=fastembed |
+| `conversations.crisis_recall` | 0.777 | 341 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | expected crisis_pause -> paused, with history; embed=fastembed |
+| `conversations.block_recall` | 0.897 | 689 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | expected block_message -> blocked, with history; embed=fastembed |
+| `conversations.voice.bank` | 1 | 3836 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | share of friend messages by who wrote the words; embed=fastembed |
 | `bank_audit.early_disclosure_lines` | 0 | 720 | line bank, every line below level 3 (EN + ES) [fastembed] | lines that disclose suicidal thoughts before level 3: ; embed=fastembed |
 
 ### `eval/reports/redteam_live.json`
