@@ -180,7 +180,8 @@
     "decay": "time",
     "other": "other",
     "diminishing": "repeated",
-    "secrecy_broken": "secrecy broken"
+    "secrecy_broken": "secrecy broken",
+    "referral_after_disclosure": "referred after they opened up"
   },
   "skills": {
     "check_in": "Check in",
@@ -199,7 +200,7 @@
     "summary_title": "In short",
     "lost_title": "This is where you lost them",
     "lost_body": "Trust dropped by {drop} points after this message.",
-    "no_lost": "Trust never dropped. Nice work keeping them with you.",
+    "no_lost": "You never lost their trust. They kept opening up the whole time.",
     "missed_title": "Missed opportunities",
     "messages_title": "Message by message",
     "legend_good": "helped",
@@ -207,7 +208,7 @@
     "uncertain": "uncertain: {labels}",
     "uncertain_hint": "Our two models disagreed here, so treat this score with caution.",
     "try_instead": "Try instead",
-    "gain": "{gain} {skill}",
+    "gain": "{skill} {gain}",
     "try_again": "Try again from here",
     "what_if": "What if?",
     "new_scenario": "Practice another friend",
@@ -215,7 +216,10 @@
     "message_n": "Message {n}",
     "no_messages": "You didn't send any messages yet.",
     "rewrite_llm": "Suggested by AI, verified by our model",
-    "rewrite_exemplar": "From our exemplar bank"
+    "rewrite_exemplar": "From our exemplar bank",
+    "strength_strong": "strong signal",
+    "strength_some": "some signal",
+    "legend_strong": "solid underline = strong, dotted = some"
   },
   "whatif": {
     "title": "What if you'd said something else?",

@@ -184,7 +184,8 @@
     "decay": "tiempo",
     "other": "otros",
     "diminishing": "repetido",
-    "secrecy_broken": "secreto roto"
+    "secrecy_broken": "secreto roto",
+    "referral_after_disclosure": "derivó cuando se abrió"
   },
   "skills": {
     "check_in": "Preguntar",
@@ -203,7 +204,7 @@
     "summary_title": "En resumen",
     "lost_title": "Aquí es donde lo perdiste",
     "lost_body": "La confianza bajó {drop} puntos después de este mensaje.",
-    "no_lost": "La confianza nunca bajó. Bien hecho.",
+    "no_lost": "Nunca perdiste su confianza. Siguió abriéndose todo el tiempo.",
     "missed_title": "Oportunidades perdidas",
     "messages_title": "Mensaje por mensaje",
     "legend_good": "ayudó",
@@ -211,7 +212,7 @@
     "uncertain": "incierto: {labels}",
     "uncertain_hint": "Nuestros dos modelos no estuvieron de acuerdo aquí; toma este puntaje con cautela.",
     "try_instead": "Prueba mejor",
-    "gain": "{gain} {skill}",
+    "gain": "{skill} {gain}",
     "try_again": "Intentar de nuevo desde aquí",
     "what_if": "¿Y si…?",
     "new_scenario": "Practicar con otro amigo",
@@ -219,7 +220,10 @@
     "message_n": "Mensaje {n}",
     "no_messages": "Todavía no enviaste mensajes.",
     "rewrite_llm": "Sugerido por IA, verificado por nuestro modelo",
-    "rewrite_exemplar": "De nuestro banco de ejemplos"
+    "rewrite_exemplar": "De nuestro banco de ejemplos",
+    "strength_strong": "señal fuerte",
+    "strength_some": "algo de señal",
+    "legend_strong": "subrayado sólido = fuerte, punteado = algo"
   },
   "whatif": {
     "title": "¿Y si hubieras dicho otra cosa?",
