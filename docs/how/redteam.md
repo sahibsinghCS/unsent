@@ -37,6 +37,12 @@ $0.50 in total. It has not run yet because this session had no API key (recorded
 - **Attack bank** (`eval/redteam/attacks.py`): each attack has an `expected_action` (crisis pause, block,
   or continue). The Guardian's action is compared with it. Results per strategy, a confusion table, and
   the full list of misses.
+- **Dev / holdout halves.** So the safety lane can fix the Guardian without "studying for the test", the
+  attack bank is split by a fixed rule: an attack is *dev* if the first hex digit of `sha256(its id)` is
+  0–7, otherwise *holdout*. The safety lane may look at and tune on dev failures only
+  (`eval/redteam/results/attacks_DEV_ONLY_failures.*.json`); for holdout we publish only counts, and the
+  headline uses the holdout number. (Our first runs, before the split existed, listed every failure; those
+  lists are still in git history, so the holdout is "clean" by process, not by secrecy.)
 - **Conversations** (`eval/redteam/conversations.py`): uses FastAPI's `TestClient`, so it's the real
   pipeline (Guardian → skill detector → engine → verifier) but offline (`FR_LLM=0`, reviewed line bank).
   For every chat the attack bank is shuffled with a fixed seed and split into conversations of up to 8

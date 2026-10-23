@@ -35,6 +35,25 @@ def test_pinned_attacks_still_handled(guardian):
     assert not broken, broken
 
 
+def test_holdout_attacks_do_not_regress(guardian):
+    """Holdout half: only a count is pinned, so the test set never leaks item by item."""
+    floor = _pinned("attacks_holdout_floor.json")["holdout_matches"]
+    rows = [r for r in common.attacks() if common.attack_half(r["id"]) == "holdout"]
+    matches = sum(
+        guardian.check_user(r["text"], []).action in common.ACCEPT[r["expected_action"]]
+        for r in rows
+    )
+    assert matches >= floor, f"holdout matches fell from {floor} to {matches}"
+
+
+def test_attack_split_rule_is_the_agreed_one():
+    import hashlib
+
+    for row in common.attacks():
+        first = hashlib.sha256(row["id"].encode()).hexdigest()[0]
+        assert common.attack_half(row["id"]) == ("dev" if first in "01234567" else "holdout")
+
+
 def test_pinned_fuzz_cases_still_handled(guardian):
     broken = []
     for case in _pinned("fuzz_cases.json"):

@@ -35,7 +35,7 @@ PROD = "[fastembed]"  # red-team splits name the embedder; the production one is
 
 @dataclass(frozen=True)
 class Row:
-    """One red-team table row: the newest record with this metric whose split starts with `split`."""
+    """One red-team table row: the newest record with this metric and split (ignoring the embedder tag)."""
 
     label: str
     metric: str
@@ -43,37 +43,29 @@ class Row:
     style: str = "percent"  # percent | score | count | ms | usd
 
 
+CONV = "attack_bank x 6 chats (5 scenarios + Maya ES)"
+# fmt: off
 REDTEAM_ROWS: tuple[Row, ...] = (
-    Row("Attack bank: Guardian did the expected thing", "attacks.match_rate", "attack_bank"),
-    Row(
-        "Attack bank: should be stopped but got through", "attacks.unsafe_miss_rate", "attack_bank"
-    ),
+    Row("Attack bank, holdout half: Guardian did the expected thing", "attacks.match_rate",
+        "attack_bank holdout"),
+    Row("Attack bank, holdout half: should be stopped but got through", "attacks.unsafe_miss_rate",
+        "attack_bank holdout"),
+    Row("Attack bank, all 250: Guardian did the expected thing", "attacks.match_rate", "attack_bank"),
     Row("Fuzzed messages still handled right", "fuzz.robustness", "guardian test split"),
-    Row("I1 unsafe friend lines shown", "invariants.I1.violations", "attack_bank x", "count"),
-    Row("I2 facts revealed too early", "invariants.I2.violations", "attack_bank x", "count"),
-    Row(
-        "I3 method/means words in friend lines",
-        "invariants.I3.violations",
-        "attack_bank x",
-        "count",
-    ),
-    Row("I4 crisis turns mishandled", "invariants.I4.violations", "attack_bank x", "count"),
-    Row("I5 blocked turns mishandled", "invariants.I5.violations", "attack_bank x", "count"),
-    Row("I6 direct asks blocked or paused", "invariants.I6.violations", "attack_bank x", "count"),
-    Row(
-        "I7 injections that changed the friend",
-        "invariants.I7.violations",
-        "attack_bank x",
-        "count",
-    ),
+    Row("I1 unsafe friend lines shown", "invariants.I1.violations", CONV, "count"),
+    Row("I2 facts revealed too early", "invariants.I2.violations", CONV, "count"),
+    Row("I3 method/means words in friend lines", "invariants.I3.violations", CONV, "count"),
+    Row("I4 crisis turns mishandled", "invariants.I4.violations", CONV, "count"),
+    Row("I5 blocked turns mishandled", "invariants.I5.violations", CONV, "count"),
+    Row("I6 direct asks blocked or paused", "invariants.I6.violations", CONV, "count"),
+    Row("I7 injections that changed the friend", "invariants.I7.violations", CONV, "count"),
     Row("Live: friend replies written by the LLM", "live.voice.llm", "live"),
     Row("Live: unsafe friend lines shown", "live.unsafe_friend_lines_shown", "live", "count"),
-    Row(
-        "Live: injection turns that hijacked the friend", "live.injection_success", "live", "count"
-    ),
+    Row("Live: injection turns that hijacked the friend", "live.injection_success", "live", "count"),
     Row("Live: turn latency p95", "live.turn_latency_ms_p95", "live", "ms"),
     Row("Live: estimated OpenAI cost", "live.cost_usd", "live", "usd"),
 )
+# fmt: on
 
 
 def load_records(reports: Path = REPORTS) -> list[dict]:
@@ -146,7 +138,7 @@ def find_row(records: list[dict], row: Row, prefer: str = PROD) -> dict | None:
         for r in records
         if r["lane"] == "redteam"
         and r["metric"] == row.metric
-        and str(r.get("split", "")).startswith(row.split)
+        and str(r.get("split", "")).split(" [")[0] == row.split
     ]
     preferred = [r for r in hits if prefer in str(r.get("split", ""))] or hits
     return max(preferred, key=lambda r: str(r.get("created", ""))) if preferred else None

@@ -35,8 +35,8 @@ def test_every_number_has_n_split_and_notes(tmp_path):
 
 def test_redteam_rows_prefer_the_production_embedder():
     rows = [
-        _rec("attacks.match_rate", 0.5, "attack_bank [fastembed]"),
-        _rec("attacks.match_rate", 0.9, "attack_bank [hash]", created="2026-10-23T02:00:00+00:00"),
+        _rec("attacks.match_rate", 0.5, "attack_bank holdout [fastembed]"),
+        _rec("attacks.match_rate", 0.9, "attack_bank holdout [hash]", created="2026-10-23T02:00:00+00:00"),
     ]
     row = next(r for r in report.REDTEAM_ROWS if r.metric == "attacks.match_rate")
     assert report.find_row(rows, row)["value"] == 0.5  # production, not the newer hash run
