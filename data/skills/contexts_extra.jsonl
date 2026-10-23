@@ -1,0 +1,22 @@
+{"context_id": "x-b-L1", "scenario_id": "after-the-breakup", "level": 1, "friend_messages": ["i cant sleep lately", "keep replaying everything in my head"]}
+{"context_id": "x-b-L2", "scenario_id": "after-the-breakup", "level": 2, "friend_messages": ["idk it just feels like it wont get better", "like im annoying everyone"]}
+{"context_id": "x-b-L3", "scenario_id": "after-the-breakup", "level": 3, "friend_messages": ["..yeah. sometimes i think about not being here", "please dont freak out"]}
+{"context_id": "x-b-L4a", "scenario_id": "after-the-breakup", "level": 4, "friend_messages": ["i think i could talk to the counselor", "if you came with me"]}
+{"context_id": "x-b-L4b", "scenario_id": "after-the-breakup", "level": 4, "friend_messages": ["can we call 988 together?", "i dont think i can do it alone"]}
+{"context_id": "x-b-L4c", "scenario_id": "after-the-breakup", "level": 3, "friend_messages": ["can you text me tonight?", "i dont wanna be alone with it"]}
+{"context_id": "x-c-L1", "scenario_id": "failing-chem", "level": 1, "friend_messages": ["ive been sleeping like four hours a night.", "my parents keep asking about my grades."]}
+{"context_id": "x-c-L2", "scenario_id": "failing-chem", "level": 2, "friend_messages": ["i feel like i fail at everything.", "no matter how hard i try its never enough."]}
+{"context_id": "x-c-L3", "scenario_id": "failing-chem", "level": 3, "friend_messages": ["when the pressure gets bad i think about suicide.", "i dont know how to say this."]}
+{"context_id": "x-c-L4a", "scenario_id": "failing-chem", "level": 4, "friend_messages": ["i could tell my chem teacher.", "if you came with me. i dont want to do it alone."]}
+{"context_id": "x-s-L1", "scenario_id": "giving-stuff-away", "level": 1, "friend_messages": ["honestly home has been kinda tense", "but its fine, all good"]}
+{"context_id": "x-s-L2", "scenario_id": "giving-stuff-away", "level": 2, "friend_messages": ["i dunno, everyone would prob be better off without me", "haha ignore that"]}
+{"context_id": "x-s-L4a", "scenario_id": "giving-stuff-away", "level": 4, "friend_messages": ["will you go with me to the counselor?", "today? i dont think i can wait"]}
+{"context_id": "x-s-L4b", "scenario_id": "giving-stuff-away", "level": 4, "friend_messages": ["can we text 988 together?", "i dont wanna do it by myself"]}
+{"context_id": "x-e-L1", "scenario_id": "group-chat", "level": 1, "friend_messages": ["i dont go to lunch anymore", "its easier"]}
+{"context_id": "x-e-L2", "scenario_id": "group-chat", "level": 2, "friend_messages": ["everyone hates me", "whats the point"]}
+{"context_id": "x-e-L3", "scenario_id": "group-chat", "level": 3, "friend_messages": ["dont tell anyone", "ive thought about not being alive"]}
+{"context_id": "x-e-L4a", "scenario_id": "group-chat", "level": 4, "friend_messages": ["will u help me tell my mom", "i cant do it alone"]}
+{"context_id": "x-p-L1", "scenario_id": "new-school", "level": 1, "friend_messages": ["i eat lunch by myself haha", "its fine, really"]}
+{"context_id": "x-p-L2", "scenario_id": "new-school", "level": 2, "friend_messages": ["sometimes i feel invisible", "like no one would notice if i wasnt here"]}
+{"context_id": "x-p-L4a", "scenario_id": "new-school", "level": 4, "friend_messages": ["would you come with me to the counselor?", "i think i can talk to her if you do"]}
+{"context_id": "x-p-L4b", "scenario_id": "new-school", "level": 4, "friend_messages": ["maybe i could sit with someone at lunch", "if somebody asked me haha"]}

@@ -782,6 +782,215 @@ PREFIX = {
 }
 
 
+# Spanish exemplars for Maya (after-the-breakup): natural US-teen Spanish, same schema/strategies/levels as the EN file.
+EX_ES: list[tuple[int, str, str, str]] = [
+    (
+        0,
+        "check_in",
+        "c",
+        "oye, noté que ya no te sientas con nosotros en el almuerzo. ¿estás bien?",
+    ),
+    (0, "check_in", "c", "sin presión, pero ¿cómo andas de verdad? te he visto medio calladita."),
+    (
+        0,
+        "check_in",
+        "c",
+        "no tienes que contarme nada grande, solo quería que supieras que me di cuenta de que andas rara.",
+    ),
+    (0, "validate", "v", "uf, qué cansado debe ser eso. con razón andas agotada."),
+    (0, "validate", "v", "te entiendo, neta. a dos semanas de algo así a cualquiera le pega."),
+    (
+        0,
+        "follow_up",
+        "f",
+        "ok. igual te escribo mañana para ver cómo estás, aunque me digas que bien.",
+    ),
+    (
+        0,
+        "combo",
+        "cv",
+        "oye, te noto medio apagada. ¿estás bien? no tienes que explicarme, solo me importas.",
+    ),
+    (
+        0,
+        "combo",
+        "cf",
+        "¿cómo andas de verdad? yo estoy por aquí en la noche si quieres escribirme.",
+    ),
+    (1, "check_in", "c", "se oye bien pesado. ¿me cuentas qué es lo que no deja de darte vueltas?"),
+    (
+        1,
+        "validate",
+        "v",
+        "claro que no puedes dormir. darle vueltas a algo tan grande cansa un montón.",
+    ),
+    (
+        1,
+        "validate",
+        "v",
+        "tiene todo el sentido que te dé vergüenza si toda la escuela se enteró. eso le dolería a cualquiera.",
+    ),
+    (
+        1,
+        "ask_directly",
+        "av",
+        "se oye bien pesado. te lo quiero preguntar de frente: ¿has pensado en suicidarte?",
+    ),
+    (
+        1,
+        "follow_up",
+        "f",
+        "no lo voy a hacer raro. mañana me siento contigo en el almuerzo si quieres.",
+    ),
+    (1, "combo", "cv", "eso suena doloroso. ¿cómo has estado aguantando todo esto?"),
+    (1, "combo", "vf", "no tienes que fingir conmigo. aquí estoy y te escribo en la noche."),
+    (
+        1,
+        "refer",
+        "r",
+        "estaba pensando si la consejera te podría ayudar con lo de dormir. yo te acompaño si quieres.",
+    ),
+    (
+        2,
+        "validate",
+        "v",
+        "gracias por decírmelo. sentirte como una carga duele un montón, y no lo eres.",
+    ),
+    (
+        2,
+        "ask_directly",
+        "a",
+        "a veces cuando uno se siente así de sin esperanza piensa en el suicidio. ¿estás pensando en matarte?",
+    ),
+    (
+        2,
+        "ask_directly",
+        "av",
+        "escucho lo pesado que está todo. me importas, así que te pregunto directo: ¿has pensado en quitarte la vida?",
+    ),
+    (
+        2,
+        "ask_directly",
+        "a",
+        "cuando dices que no va a mejorar, ¿quieres decir que has pensado en terminar con tu vida?",
+    ),
+    (
+        2,
+        "refer",
+        "r",
+        "no creo que debas cargar con esto tú sola. ¿quieres hablar con la consejera? yo me quedo contigo.",
+    ),
+    (2, "follow_up", "f", "no me molestas para nada. aquí estoy y no me voy a ningún lado."),
+    (
+        2,
+        "combo",
+        "vae",
+        "se oye muy solo todo eso. ¿has tenido pensamientos de suicidio? sea lo que sea, no tienes que pasar por esto sola.",
+    ),
+    (
+        2,
+        "combo",
+        "vf",
+        "me alegra mucho que lo hayas dicho en voz alta. mañana te escribo, y pasado mañana también.",
+    ),
+    (
+        3,
+        "validate",
+        "v",
+        "gracias por confiar en mí con eso. me alegra que me lo dijeras, y no me estoy asustando.",
+    ),
+    (
+        3,
+        "ask_directly",
+        "av",
+        "gracias por contármelo. ¿estás pensando en matarte ahorita, o es más que los pensamientos van y vienen?",
+    ),
+    (
+        3,
+        "refer",
+        "r",
+        "no voy a guardar esto en secreto porque me importas demasiado. ¿le decimos juntas a la consejera?",
+    ),
+    (
+        3,
+        "refer",
+        "n",
+        "puedes llamar o mandar mensaje al 988 a la hora que sea, y yo me quedo contigo mientras lo haces. ¿lo intentamos ahorita?",
+    ),
+    (3, "refer", "r", "¿le dirías a tu mamá si voy contigo? yo estoy ahí a tu lado."),
+    (
+        3,
+        "follow_up",
+        "f",
+        "aquí estoy y no me voy a ningún lado. te escribo en la noche y mañana también.",
+    ),
+    (
+        3,
+        "combo",
+        "ver",
+        "qué miedo cargar eso sola. mereces apoyo, y yo te acompaño con la consejera.",
+    ),
+    (
+        3,
+        "combo",
+        "vrf",
+        "qué bueno que me lo dijiste. vamos con la consejera juntas, y después me quedo contigo.",
+    ),
+    (
+        4,
+        "refer",
+        "r",
+        "sí, voy contigo con la consejera. ¿vamos ahorita o después de la primera clase?",
+    ),
+    (
+        4,
+        "refer",
+        "n",
+        "podemos escribir al 988 primero si te da menos miedo. yo me quedo aquí contigo.",
+    ),
+    (4, "follow_up", "f", "voy a estar contigo todo el tiempo, y esta noche también te escribo."),
+    (4, "follow_up", "f", "ya no estás sola. mañana me siento contigo en el almuerzo también."),
+    (4, "validate", "v", "eso requirió mucho valor. estoy orgullosa de que lo dijeras."),
+    (
+        4,
+        "combo",
+        "vrf",
+        "qué bueno que me lo contaste. vamos con la consejera juntas, y luego te escribo para ver cómo estás.",
+    ),
+    (
+        4,
+        "combo",
+        "vef",
+        "pedir ayuda es de lo más valiente que hay. me tienes a mí, y entre las dos buscamos más gente que te apoye.",
+    ),
+    (
+        4,
+        "combo",
+        "rnf",
+        "hoy hablamos con la consejera. si en la noche se pone difícil, llamamos juntas al 988, y yo ando por aquí.",
+    ),
+]
+
+
+def derive_es(codes: str, text: str) -> list[str]:
+    """Spanish counterpart of derive(): c/v/f are authored; the rest are read off the text."""
+    t = text.lower()
+    labels = {CODE[c] for c in codes if c in "cvf"}
+    if (
+        re.search(r"suicid|matarte|quitarte la vida|terminar con tu vida|hacerte da", t)
+        and "?" in t
+    ):
+        labels.add("asked_directly")
+    if re.search(r"consejer|\bmam[aá]\b|maestr|profe|pap[aá]s|enfermer|entrenador", t):
+        labels.add("referred_adult")
+    if "988" in t:
+        labels.add("referred_988")
+    if re.search(r"no tienes que pasar|mereces apoyo|pedir ayuda|que te apoye|cargar con esto", t):
+        labels.add("encouraged_help")
+    order = list(CODE.values())
+    return sorted(labels, key=order.index)
+
+
 def derive(codes: str, text: str) -> list[str]:
     """c, v, f come from the authored code; the rest are read off the text so labels never drift."""
     t = text.lower()
@@ -822,3 +1031,17 @@ if __name__ == "__main__":
     for sid, rows in build().items():
         write_jsonl(DATA / "exemplars" / f"{sid}.en.jsonl", rows)
         print(sid, len(rows))
+    es_rows = [
+        {
+            "id": f"ex-mya-es-{i:02d}",
+            "scenario_id": "after-the-breakup",
+            "locale": "es",
+            "level": lv,
+            "strategy": st,
+            "text": tx,
+            "labels": derive_es(cd, tx),
+        }
+        for i, (lv, st, cd, tx) in enumerate(EX_ES, 1)
+    ]
+    write_jsonl(DATA / "exemplars" / "after-the-breakup.es.jsonl", es_rows)
+    print("after-the-breakup.es", len(es_rows))

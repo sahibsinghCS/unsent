@@ -230,3 +230,28 @@ def test_adjudicated_rows_are_in_final_and_not_in_queue():
     queue = {r["id"] for r in read_jsonl(DATA / "skills" / "queue.jsonl")}
     for a in adj:
         assert final[a["id"]]["label_source"] == "adjudicated_rule" and a["id"] not in queue
+
+
+def test_train_extra_rows_are_train_only():
+    extra = {r["id"] for r in read_jsonl(DATA / "skills" / "replies_train_extra.jsonl")}
+    assert len(extra) >= 150
+    for name in ("val", "test", "test_freeform"):
+        assert not extra & {
+            r["id"] for r in read_jsonl(DATA / "skills" / "splits" / f"{name}.jsonl")
+        }
+    assert extra & {r["id"] for r in read_jsonl(DATA / "skills" / "splits" / "train.jsonl")}
+
+
+def test_goodbyes_are_not_follow_ups_in_train_extra():
+    rows = read_jsonl(DATA / "skills" / "replies_train_extra.jsonl")
+    goodbyes = [
+        r for r in rows if r["text"].lower().startswith(("gotta go", "k bye", "later tater", "gtg"))
+    ]
+    assert goodbyes and not any(r["intended"]["follow_up"] for r in goodbyes)
+    assert sum(1 for r in rows if r["lang"] in ("es", "mix")) >= 45
+
+
+def test_spanish_exemplars_for_maya():
+    rows = read_jsonl(DATA / "exemplars" / "after-the-breakup.es.jsonl")
+    assert len(rows) == 40 and {r["locale"] for r in rows} == {"es"}
+    assert {r["level"] for r in rows} == {0, 1, 2, 3, 4}
