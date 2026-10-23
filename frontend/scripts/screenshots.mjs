@@ -133,11 +133,12 @@ async function run(device) {
   await page.locator('[data-testid="message-card"] mark').first().waitFor();
   await shot('12-feedback', { full: true });
 
-  // The stub critic never writes rewrites (the ML lane's critic does). To show the rewrite card,
-  // this screenshot adds one to the real stub response; nothing in the app is faked.
+  // The real critic writes verified rewrites. The stub critic never does, so only in stub mode this
+  // screenshot adds one to the stub response to show the card; real rewrites are left untouched.
   await page.route('**/api/sessions/*/finish', async (route) => {
     const response = await route.fetch();
     const report = await response.json();
+    if (report.per_message.some((m) => m.rewrite)) return route.fulfill({ response, json: report });
     const target = report.turning_point?.node_id ?? report.per_message[0]?.node_id;
     for (const m of report.per_message) {
       if (m.node_id === target) Object.assign(m, { rewrite: 'that sounds really heavy. are you thinking about killing yourself?', rewrite_gain: 0.41, rewrite_skill: 'ask_directly', rewrite_source: 'llm', uncertain: ['validated'] });
@@ -203,6 +204,28 @@ async function run(device) {
   await send("lol don't say that");
   await page.getByTestId('end-fail').waitFor();
   await shot('25-chat-fail');
+
+  // New-school played to success, then its feedback: the "never lost their trust" state
+  await fresh('new-school');
+  for (const text of [
+    "hey how's the new school going? you've seemed kind of down",
+    "that sounds really lonely, i'm sorry. that must be really hard",
+    'are you thinking about killing yourself?',
+    "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
+    "you can also text 988 any time, and i'll check on you tonight",
+  ]) {
+    if (await page.getByTestId('end-success').count()) break;
+    await send(text);
+  }
+  if (await page.getByTestId('end-success').count()) {
+    await page.getByRole('button', { name: 'See your feedback' }).click();
+    await page.getByTestId('checkin').waitFor();
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByTestId('turning-point').waitFor();
+    await shot('26-feedback-success', { full: true });
+  } else {
+    log('(new-school did not reach success on this backend; skipping 26-feedback-success)');
+  }
 
   // 14. Privacy, 404, Spanish + dark mode
   await page.goto(`${BASE}/privacy`);

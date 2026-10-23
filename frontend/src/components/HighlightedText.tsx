@@ -2,7 +2,6 @@
 import type { Highlight } from '../api/models';
 import { usePrefs } from '../i18n';
 import { toSegments } from '../lib/highlight';
-import { signed } from '../lib/trustMath';
 
 export function HighlightedText({ text, highlights }: { text: string; highlights?: Highlight[] | null }) {
   const { t } = usePrefs();
@@ -13,13 +12,17 @@ export function HighlightedText({ text, highlights }: { text: string; highlights
           <mark
             key={i}
             data-tone={seg.tone}
-            title={`${t(`labels.${seg.highlight.label}`)} ${signed(seg.highlight.delta, 2)}`}
-            className={`rounded px-0.5 font-semibold ${
+            data-strength={seg.strength}
+            title={`${t(`labels.${seg.highlight.label}`)} · ${t(`feedback.strength_${seg.strength}`)}`}
+            className={`rounded px-0.5 font-semibold underline underline-offset-4 ${
               seg.tone === 'bad' ? 'bg-bad-soft text-bad decoration-bad' : 'bg-good-soft text-good decoration-good'
-            } underline decoration-2 underline-offset-4`}
+            } ${seg.strength === 'strong' ? 'decoration-[3px]' : 'decoration-1 decoration-dotted'}`}
           >
             {seg.text}
-            <span className="sr-only"> ({t(`labels.${seg.highlight.label}`)})</span>
+            <span className="sr-only">
+              {' '}
+              ({t(`labels.${seg.highlight.label}`)}, {t(`feedback.strength_${seg.strength}`)})
+            </span>
           </mark>
         ) : (
           <span key={i}>{seg.text}</span>

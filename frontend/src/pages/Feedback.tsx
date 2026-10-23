@@ -180,6 +180,7 @@ export function Feedback() {
           <div className="flex gap-3 text-xs">
             <span className="chip border-transparent bg-good-soft text-good">{t('feedback.legend_good')}</span>
             <span className="chip border-transparent bg-bad-soft text-bad">{t('feedback.legend_bad')}</span>
+            <span className="hidden text-muted sm:inline">{t('feedback.legend_strong')}</span>
           </div>
         </div>
         {report.per_message.length === 0 && <p className="mt-4 text-muted">{t('feedback.no_messages')}</p>}
@@ -219,7 +220,8 @@ export function Feedback() {
                       {score.rewrite_gain != null && (
                         <span className="chip mono-num border-transparent bg-good text-white normal-case dark:text-[rgb(6_30_20)]">
                           {t('feedback.gain', {
-                            gain: signed(score.rewrite_gain, 2),
+                            // rewrite_gain is a probability gain on the missing skill (0..1): show percentage points.
+                            gain: `${signed(Math.round(score.rewrite_gain * 100))}%`,
                             skill: score.rewrite_skill ? t(`skills.${score.rewrite_skill}`) : '',
                           }).trim()}
                         </span>

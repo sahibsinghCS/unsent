@@ -28,8 +28,27 @@ describe('toSegments', () => {
   });
 
   it('returns the whole text when there are no highlights', () => {
-    expect(toSegments('hey', [])).toEqual([{ text: 'hey', highlight: null, tone: null }]);
+    expect(toSegments('hey', [])).toEqual([{ text: 'hey', highlight: null, tone: null, intensity: null, strength: null }]);
     expect(toSegments('hey', null)).toHaveLength(1);
+  });
+});
+
+describe('relative strength (Highlight.delta is a log-odds drop, ~1–15)', () => {
+  it('scales by the strongest span in the message and labels it strong / some', () => {
+    const segs = toSegments("i'll check on you tonight, text 988", [h(0, 25, 'follow_up', 12.36), h(27, 35, 'referred_988', 8.66), h(5, 10, 'follow_up', 1)]);
+    const marked = segs.filter((s) => s.highlight);
+    expect(marked.map((s) => s.strength)).toEqual(['strong', 'strong']);
+    expect(marked[0].intensity).toBe(1);
+    expect(marked[1].intensity).toBeCloseTo(0.7, 2);
+    const weak = toSegments('hey how are you', [h(0, 3, 'checked_in', 10), h(4, 7, 'checked_in', 2)]).filter((s) => s.highlight);
+    expect(weak.map((s) => s.strength)).toEqual(['strong', 'some']);
+  });
+
+  it('never shows the raw log-odds number', () => {
+    renderApp(<HighlightedText text="that sounds really heavy" highlights={[h(0, 24, 'validated', 4.64)]} />);
+    const mark = screen.getByTestId('highlighted').querySelector('mark')!;
+    expect(mark.title).toBe('validated · strong signal');
+    expect(screen.getByTestId('highlighted').textContent).not.toMatch(/4\.6/);
   });
 });
 
@@ -41,6 +60,6 @@ describe('<HighlightedText>', () => {
     expect(marks[0]).toHaveTextContent('are you ok');
     expect(marks[0].dataset.tone).toBe('good');
     expect(marks[1].dataset.tone).toBe('bad');
-    expect(screen.getByTestId('highlighted')).toHaveTextContent(/^hey are you ok \(checked in\)\? lol \(dismissed\)$/);
+    expect(screen.getByTestId('highlighted')).toHaveTextContent(/^hey are you ok \(checked in, strong signal\)\? lol \(dismissed, strong signal\)$/);
   });
 });
