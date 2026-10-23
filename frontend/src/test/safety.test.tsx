@@ -54,7 +54,7 @@ describe('X-ray voice chip (contracts 1.1)', () => {
         <VoiceChip voice="fallback" />
       </>,
     );
-    expect(screen.getAllByTestId('voice-chip').map((c) => c.textContent)).toEqual(['AI, verified ✓', 'Reviewed line', 'Fallback']);
+    expect(screen.getAllByTestId('voice-chip').map((c) => c.textContent)).toEqual(['AI wording · checked by our verifier', 'Reviewed line', 'Reviewed line · fallback']);
   });
   it('renders nothing for old payloads without a voice', async () => {
     const { VoiceChip } = await import('../components/Xray');

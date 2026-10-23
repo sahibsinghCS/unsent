@@ -64,7 +64,7 @@ function MetricsSection({ metrics, failed }: { metrics: Metrics | null; failed: 
               <span className={`h-2 w-2 rounded-full ${state === 'real' ? 'bg-good' : 'bg-warm'}`} aria-hidden="true" />
               <span className="font-mono">{name}</span>
               <span className="sr-only">: </span>
-              <span className="opacity-80">{state === 'real' ? t('how.real') : t('how.stub')}</span>
+              <span>{state === 'real' ? t('how.real') : t('how.stub')}</span>
             </li>
           ))}
         </ul>

@@ -50,6 +50,7 @@ export function Chat() {
   const [treeOpen, setTreeOpen] = useState(false);
 
   const animation = useRef(0); // bumping this cancels an in-progress reveal
+  const sending = useRef(false); // synchronous guard: a slow reply can never be sent twice
   const scroller = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
 
@@ -103,7 +104,8 @@ export function Chat() {
 
   async function send() {
     const text = draft.trim();
-    if (!text || busy || ended || crisisNode) return;
+    if (!text || busy || sending.current || ended || crisisNode) return;
+    sending.current = true;
     setBusy(true);
     setSendError(null);
     setSelected(null);
@@ -126,6 +128,7 @@ export function Chat() {
       setSendError(`${t('chat.error_send')} ${error.message}`);
       if (error.status === 404) setLoadError(error);
     } finally {
+      sending.current = false;
       setBusy(false);
       input.current?.focus();
     }
@@ -361,7 +364,7 @@ export function Chat() {
               <Fragment key={node.id}>{renderNode(node, idx)}</Fragment>
             ))}
             {pendingText && (
-              <div className="flex justify-end opacity-70">
+              <div className="flex justify-end" aria-busy="true">
                 <div className="max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] leading-snug text-white">{pendingText}</div>
               </div>
             )}

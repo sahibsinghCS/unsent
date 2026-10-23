@@ -12,7 +12,9 @@
     "screenshots": "node scripts/screenshots.mjs",
     "predev": "node scripts/sync-content.mjs",
     "prebuild": "node scripts/sync-content.mjs",
-    "pretest": "node scripts/sync-content.mjs"
+    "pretest": "node scripts/sync-content.mjs",
+    "test:slow": "node scripts/slow.mjs",
+    "test:a11y": "node scripts/a11y.mjs"
   },
   "dependencies": {
     "chart.js": "^4.4.6",
@@ -31,6 +33,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "axe-core": "^4.10.2",
     "jsdom": "^25.0.1",
     "openapi-typescript": "^7.4.4",
     "playwright-core": "^1.49.0",

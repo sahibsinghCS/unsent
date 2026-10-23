@@ -98,8 +98,8 @@ export function Landing() {
           <p className="shrink-0 text-6xl font-extrabold tracking-tight md:text-7xl">1&nbsp;in&nbsp;5</p>
           <div>
             <p className="text-xl font-semibold leading-snug sm:text-2xl">{t('landing.stat')}</p>
-            <p className="mt-1 text-xl leading-snug opacity-90 sm:text-2xl">{t('landing.stat_kicker')}</p>
-            <p className="mt-3 text-sm opacity-80">{t('landing.stat_source')}</p>
+            <p className="mt-1 text-xl leading-snug sm:text-2xl">{t('landing.stat_kicker')}</p>
+            <p className="mt-3 text-sm">{t('landing.stat_source')}</p>
           </div>
         </div>
       </section>
