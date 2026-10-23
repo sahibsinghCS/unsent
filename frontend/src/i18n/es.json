@@ -69,7 +69,8 @@
     "age": "{age} años",
     "start": "Escribir a {name}",
     "error": "No se pudieron cargar los escenarios.",
-    "draft": "Contenido en borrador"
+    "draft": "Contenido en borrador",
+    "only_lang": "Solo en {lang} por ahora"
   },
   "cw": {
     "title": "Antes de empezar",
@@ -138,7 +139,8 @@
       "teach": "En una conversación real, palabras así pueden alejar más a alguien. Intenta decir lo que te preocupa o pregúntale cómo se siente."
     },
     "concern": "Si algo de esto te toca de cerca, puedes llamar o escribir al 988 a cualquier hora.",
-    "empty_reply": "(sin respuesta)"
+    "empty_reply": "(sin respuesta)",
+    "practice_in": "Práctica en {lang}"
   },
   "tree": {
     "title": "Ramas de la conversación",
@@ -398,5 +400,9 @@
   },
   "errors": {
     "session_gone": "Esta sesión de práctica expiró (se borran tras 60 minutos). Puedes empezar una nueva cuando quieras."
+  },
+  "langs": {
+    "en": "inglés",
+    "es": "español"
   }
 }

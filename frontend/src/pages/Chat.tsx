@@ -33,7 +33,7 @@ export function Chat() {
   const { sessionId = '' } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = usePrefs();
+  const { t, lang } = usePrefs();
 
   const [view, setView] = useState<SessionView | null>(null);
   const [loadError, setLoadError] = useState<ApiError | null>(null);
@@ -58,7 +58,7 @@ export function Chat() {
     api.session(sessionId).then(
       (v) => {
         setView(v);
-        scenarioById(v.scenario_id).then((s) => setName(s?.persona_name ?? ''), () => undefined);
+        scenarioById(v.scenario_id, lang).then((s) => setName(s?.persona_name ?? ''), () => undefined);
       },
       (e: ApiError) => setLoadError(e),
     );
@@ -340,7 +340,16 @@ export function Chat() {
     <div className="mx-auto grid max-w-6xl gap-6 px-3 py-5 sm:px-6 lg:grid-cols-[minmax(0,26rem)_1fr] lg:items-start">
       <div className="lg:sticky lg:top-20">
         <div className="mb-3 flex items-center justify-between gap-2">
-          <h1 className="text-lg font-bold">{t('chat.with', { name: friendName })}</h1>
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <h1 className="text-lg font-bold">{t('chat.with', { name: friendName })}</h1>
+            {/* The chat's language is the session's; the UI language never changes. */}
+            {view.locale && view.locale !== lang && (
+              <span className="chip border-line bg-sunken text-muted" data-testid="chat-locale">
+                <Icon name="globe" className="h-3.5 w-3.5" />
+                {t('chat.practice_in', { lang: t(`langs.${view.locale}`) })}
+              </span>
+            )}
+          </div>
           <button type="button" className="btn-ghost px-4 py-2" onClick={() => navigate(`/feedback/${sessionId}`)} disabled={points.length < 2} data-testid="finish">
             <Icon name="flag" className="h-4 w-4" />
             {t('chat.finish')}

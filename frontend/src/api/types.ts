@@ -28,7 +28,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Scenarios */
+        /**
+         * Scenarios
+         * @description Every scenario, with its text in `lang` where that friend supports it (English otherwise).
+         */
         get: operations["scenarios_api_scenarios_get"];
         put?: never;
         post?: never;
@@ -423,6 +426,13 @@ export interface components {
             content_warning: string;
             /** Review Status */
             review_status: string;
+            /**
+             * Locales
+             * @default [
+             *       "en"
+             *     ]
+             */
+            locales: string[];
         };
         /** SessionView */
         SessionView: {
@@ -430,6 +440,11 @@ export interface components {
             session_id: string;
             /** Scenario Id */
             scenario_id: string;
+            /**
+             * Locale
+             * @default en
+             */
+            locale: string;
             /** Head Id */
             head_id: string;
             /** Root Id */
@@ -596,7 +611,9 @@ export interface operations {
     };
     scenarios_api_scenarios_get: {
         parameters: {
-            query?: never;
+            query?: {
+                lang?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -610,6 +627,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ScenarioSummary"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
