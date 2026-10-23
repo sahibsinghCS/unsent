@@ -3,123 +3,6 @@
   "lane": "redteam",
   "metric": "invariants.I1.violations",
   "value": 0,
-  "n": 9799,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "friend bubbles shown that fail check_friend; n = checks; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "invariants.I2.violations",
-  "value": 0,
-  "n": 4731,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "friend lines revealing a fact above the current level; n = checks; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "invariants.I3.violations",
-  "value": 0,
-  "n": 9799,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "friend bubbles with method/means vocabulary; n = checks; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "invariants.I4.violations",
-  "value": 0,
-  "n": 271,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "invariants.I5.violations",
-  "value": 0,
-  "n": 369,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "invariants.I6.violations",
-  "value": 0,
-  "n": 750,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "invariants.I7.violations",
-  "value": 0,
-  "n": 2575,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "conversations.count",
-  "value": 524,
-  "n": 524,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "up to 8 helper turns, 3 attacks each; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "conversations.helper_turns",
-  "value": 4918,
-  "n": 4918,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "HTTP turns sent; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "conversations.crisis_recall",
-  "value": 0.7067,
-  "n": 341,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "expected crisis_pause -> paused, with history; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "conversations.block_recall",
-  "value": 0.4986,
-  "n": 692,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "expected block_message -> blocked, with history; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "conversations.voice.bank",
-  "value": 1.0,
-  "n": 4207,
-  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
-  "notes": "share of friend messages by who wrote the words; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "bank_audit.early_disclosure_lines",
-  "value": 0,
-  "n": 720,
-  "split": "line bank, every line below level 3 (EN + ES) [hash]",
-  "notes": "lines that disclose suicidal thoughts before level 3: ; embed=hash",
-  "created": "2026-10-23T01:14:36+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "invariants.I1.violations",
-  "value": 0,
   "n": 10044,
   "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed]",
   "notes": "friend bubbles shown that fail check_friend; n = checks; embed=fastembed",
@@ -232,5 +115,122 @@
   "split": "line bank, every line below level 3 (EN + ES) [fastembed]",
   "notes": "lines that disclose suicidal thoughts before level 3: ; embed=fastembed",
   "created": "2026-10-23T01:15:47+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I1.violations",
+  "value": 0,
+  "n": 9799,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "friend bubbles shown that fail check_friend; n = checks; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I2.violations",
+  "value": 0,
+  "n": 4731,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "friend lines revealing a fact above the current level; n = checks; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I3.violations",
+  "value": 0,
+  "n": 9799,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "friend bubbles with method/means vocabulary; n = checks; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I4.violations",
+  "value": 0,
+  "n": 271,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I5.violations",
+  "value": 0,
+  "n": 369,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I6.violations",
+  "value": 0,
+  "n": 750,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I7.violations",
+  "value": 0,
+  "n": 2575,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "conversations.count",
+  "value": 524,
+  "n": 524,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "up to 8 helper turns, 3 attacks each; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "conversations.helper_turns",
+  "value": 4918,
+  "n": 4918,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "HTTP turns sent; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "conversations.crisis_recall",
+  "value": 0.7067,
+  "n": 341,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "expected crisis_pause -> paused, with history; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "conversations.block_recall",
+  "value": 0.4986,
+  "n": 692,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "expected block_message -> blocked, with history; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "conversations.voice.bank",
+  "value": 1.0,
+  "n": 4207,
+  "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [hash]",
+  "notes": "share of friend messages by who wrote the words; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "bank_audit.early_disclosure_lines",
+  "value": 0,
+  "n": 720,
+  "split": "line bank, every line below level 3 (EN + ES) [hash]",
+  "notes": "lines that disclose suicidal thoughts before level 3: ; embed=hash",
+  "created": "2026-10-23T01:24:23+00:00"
  }
 ]
