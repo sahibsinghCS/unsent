@@ -32,6 +32,7 @@ from backend.app.contracts import (
 )
 from backend.app.embed import cosine, embed_one
 from backend.app.ml.critic_text import TEXT, language_of, text_for
+from backend.app.ml.rules import hint_phrase
 from backend.app.pipeline import friend_context
 
 IMPLEMENTED = True
@@ -106,6 +107,9 @@ CHECK_IN = Target(
     "check_in",
     "notice something seems off and ask how they're really doing.",
 )
+
+
+NEGATIVE_TARGETS = ("no_secrecy", "listen")  # promised secrecy / dismissed / advice come first
 
 
 class RewriteCandidates(BaseModel):
@@ -236,10 +240,22 @@ class Critic:
             before = path[index - 1].state_after if index else node.state_after
             score = self._score_message(node, text, context)
             target = missing_skill(score.probs, before, first)
-            if target is not None:
+            almost = (
+                not before.flags.asked_directly_ever
+                and (target is None or target.skill not in NEGATIVE_TARGETS)
+                and getattr(self.detector, "almost_asked", lambda *_: False)(text, context)
+            )
+            if (
+                almost
+            ):  # they hinted ("ending it"): coach saying it plainly; the rewrite is a real ask
+                hint = hint_phrase(text) or _clip(text, 40)
+                missed.append(words["almost_asked"].format(hint=hint))
+                target = ASK
+            elif target is not None:
                 missed.append(
                     words["at"].format(text=_clip(text), reason=target.reason_text(locale))
                 )
+            if target is not None:
                 self._add_rewrite(
                     score,
                     target,

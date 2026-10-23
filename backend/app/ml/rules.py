@@ -53,6 +53,33 @@ def has_explicit_term(text: str) -> bool:
     return bool(_EXPLICIT.search(normalize(text).text))
 
 
+# Hint phrases teens use instead of the explicit words ("ending it", "disappear"); quoted in the
+# "almost asked" note. Matched on the normalizer's output.
+HINT_PHRASES = re.compile(
+    r"\b(?:end(?:ing)? it(?: all)?|disappear(?:ing)?(?: for good)?|not (?:be|being) (?:around|here)"
+    r"|do something (?:stupid|dumb|bad)|give up on (?:everything|it all)|be gone"
+    r"|acabar con todo|desaparecer|hacer(?:te)? algo|ya no estar)\b"
+)
+
+
+def almost_asked(text: str, pa: float, pb: float) -> bool:
+    """Both models read a direct ask but the explicit-term rule capped it ("are you having thoughts of
+    ending it?"). Probabilities stay capped; the critic only uses this to coach saying it plainly.
+
+    Three conditions, because the coaching note must never be false: no explicit term (else it IS a
+    direct ask), BOTH models read an ask (the stacked score alone fires on "are you thinking about
+    quitting the team?": Model B 0.97, Model A 0.47), and a recognised hint phrase such as "ending it"
+    (both models also fire on "are you thinking about moving back?"). An unknown euphemism stays silent.
+    """
+    return not has_explicit_term(text) and pa >= 0.5 and pb >= 0.5 and hint_phrase(text) is not None
+
+
+def hint_phrase(text: str) -> str | None:
+    """The euphemism the helper used, if we recognise one ("ending it")."""
+    match = HINT_PHRASES.search(normalize(text).text)
+    return match.group(0) if match else None
+
+
 def gate_asked_directly(texts: list[str], probs: list[float]) -> list[float]:
     """Cap asked_directly at 0.2 for every message without an explicit term."""
     return [

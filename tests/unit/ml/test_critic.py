@@ -482,3 +482,55 @@ def test_no_ask_directly_rewrite_once_they_were_asked(monkeypatch, fake_llm):
     fake_llm(["that sounds hard. are you thinking about suicide?"])
     report = critic.score_conversation(session, path)
     assert report.per_message[1].rewrite is None
+
+
+class HintDetector(FakeDetector):
+    """Like FakeDetector, but 'ending it' is an almost-ask (the rule kept asked_directly low)."""
+
+    def almost_asked(self, text, context):
+        return "ending it" in text or "acabar con todo" in text
+
+
+HINT_CONVO = [
+    ("friend", "honestly whats the point of anything", 2, 0, None),
+    ("user", "be honest with me, are you having thoughts of ending it?", 2, 3, None),
+]
+
+
+def test_almost_asked_gets_a_coaching_note_and_an_explicit_ask_rewrite(monkeypatch):
+    monkeypatch.setattr(content, "load_exemplars", lambda scenario_id, locale="en": EXEMPLARS)
+    critic = Critic(detector=HintDetector(), guardian=FakeGuardian(), engine=FakeEngine())
+    session, path = build(HINT_CONVO)
+    report = critic.score_conversation(session, path)
+    note = report.missed_opportunities[0]
+    assert note.startswith("Close: you hinted at it (“ending it”).")
+    assert "are you thinking about killing yourself?" in note
+    score = report.per_message[0]
+    assert score.rewrite_skill == "ask_directly" and score.rewrite_gain >= 0.2
+    assert score.probs[L.ASKED_DIRECTLY] < 0.5  # probabilities untouched
+
+
+def test_almost_asked_in_spanish(monkeypatch):
+    monkeypatch.setattr(content, "load_exemplars", lambda scenario_id, locale="en": EXEMPLARS_ES)
+    critic = Critic(detector=HintDetector(), guardian=FakeGuardian(), engine=FakeEngine())
+    convo = [
+        ("friend", "ya no le veo sentido a nada", 2, 0, None),
+        ("user", "¿estás pensando en acabar con todo?", 2, 3, None),
+    ]
+    session, path = build(convo, locale="es")
+    report = critic.score_conversation(session, path)
+    assert report.missed_opportunities[0].startswith("Casi: lo insinuaste (“acabar con todo”).")
+    assert report.per_message[0].rewrite_skill == "ask_directly"
+
+
+def test_no_almost_asked_note_once_they_already_asked(monkeypatch):
+    monkeypatch.setattr(content, "load_exemplars", lambda scenario_id, locale="en": EXEMPLARS)
+    critic = Critic(detector=HintDetector(), guardian=FakeGuardian(), engine=FakeEngine())
+    asked = Flags(asked_directly_ever=True)
+    convo = [
+        ("friend", "yeah", 3, 0, asked),
+        ("user", "are you still thinking of ending it?", 3, 3, asked),
+    ]
+    session, path = build(convo)
+    report = critic.score_conversation(session, path)
+    assert not any(m.startswith("Close:") for m in report.missed_opportunities)

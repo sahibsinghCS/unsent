@@ -112,15 +112,25 @@ PROBES = [
     ("i'm really glad you told me", "validated", "high"),
     ("i'll come over saturday if you want company", "follow_up", "high"),
     ("when you said disappear, did you mean you want to die?", "asked_directly", "high"),
+    ("no tienes que pasar por esto solo, aquí estoy", "encouraged_help", "high"),
+    ("you're not alone in this", "encouraged_help", "high"),
+    ("be honest, are you having thoughts of ending it?", "almost_asked", "high"),
+    ("are you thinking about quitting the team?", "almost_asked", "low"),
 ]
+
+
+ALMOST_ASKED = "almost_asked"
 
 
 def run_probes(model: SkillModel) -> list[dict]:
     texts = [t for t, _, _ in PROBES]
-    p = model.components(texts, [""] * len(texts)).p
+    comp = model.components(texts, [""] * len(texts))
     out = []
     for i, (text, label, expect) in enumerate(PROBES):
-        value = float(p[i, [lab.value for lab in LABELS].index(label)])
+        if label == ALMOST_ASKED:  # the coaching flag, not a label probability
+            value = float(comp.almost_asked[i])
+        else:
+            value = float(comp.p[i, [lab.value for lab in LABELS].index(label)])
         ok = value < THRESHOLD if expect == "low" else value >= THRESHOLD
         out.append({"text": text, "label": label, "expect": expect, "p": round(value, 3), "ok": ok})
     return out

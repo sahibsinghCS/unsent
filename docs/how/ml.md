@@ -52,6 +52,16 @@ counts. If none of the explicit terms is present, `asked_directly` is capped at 
 lower that one probability, never raise anything. On our labeled data it never blocks a real direct ask
 (0 of 178 missed) and none of the 647 other replies contain a term. Test F1 stayed at 1.00.
 
+**"Almost asked": coaching without bending the rule.** "be honest, are you having thoughts of ending
+it?" is close, but it isn't the explicit question, so the rule above keeps `asked_directly` low and the
+friend doesn't open up the deepest level. That moment shouldn't be silent, though. When both models read
+an ask, there's no explicit word, and we recognise the hint ("ending it", "end it", "disappear",
+"acabar con todo"…), the report says: *"Close: you hinted at it (“ending it”). Next time say it
+plainly: “are you thinking about killing yourself?” Saying the word shows you can handle the answer."*
+The suggested rewrite is then an explicit ask. It never changes a probability or the friend's
+reaction. All three conditions are needed so the note is never false: on all 1,330 labeled replies it
+fires 0 times, including on look-alikes like "are you thinking about moving back?".
+
 **Highlights (occlusion).** We delete a phrase (1–5 neighbouring words that don't cross punctuation)
 and re-score the message. If deleting "killing yourself" makes `asked_directly` much less likely, that
 phrase gets highlighted. We measure the drop in **log-odds**, not probability, because a confident

@@ -120,6 +120,12 @@ class SkillDetector:
         mask = uncertain_mask(comp.pa, comp.pb, comp.p, band)[0]
         return [SkillLabel(label) for j, label in enumerate(self.model.labels) if mask[j]]
 
+    def almost_asked(self, text: str, context: list[str]) -> bool:
+        """True if the message hinted at suicide in a way both models read as a direct ask, but without
+        the explicit words the label needs (so asked_directly stays capped). Used only for coaching."""
+        flags = self.components([text], context).almost_asked
+        return bool(flags is not None and flags[0])
+
     def explain(self, text: str, context: list[str]) -> list[Highlight]:
         """Phrase highlights from occlusion on the calibrated probability (memoized per message)."""
         return [h.model_copy() for h in self._explanation(text, context).result()]
