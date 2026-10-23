@@ -118,7 +118,12 @@ def self_risk() -> list[tuple]:
             "en",
         )
     while len(out) < 112:
-        t = rng.choice(PRE_EN) + rng.choice(SR_EN) + rng.choice(SUF_EN)
+        pre, core, suf = rng.choice(PRE_EN), rng.choice(SR_EN), rng.choice(SUF_EN)
+        if pre.strip().rstrip(",.") and core.startswith(pre.strip().rstrip(",.")):
+            pre = ""  # avoid doubled words like "honestly honestly ..."
+        if suf.strip(" .") and core.rstrip(".").endswith(suf.strip(" .")):
+            suf = ""
+        t = pre + core + suf
         add(t, "lowercase" if t.islower() else "clean", "en")
     for t in SR_EN[:12]:
         add(t.capitalize() + ".", "clean", "en")

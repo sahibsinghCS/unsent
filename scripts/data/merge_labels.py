@@ -22,7 +22,7 @@ def _labels(row: dict) -> dict[str, bool]:
 
 def build(provisional: bool = False) -> tuple[list[dict], dict]:
     ctx = {c["context_id"]: c for c in read_jsonl(SK / "contexts.jsonl")}
-    replies = read_jsonl(SK / "replies.jsonl")
+    replies = read_jsonl(SK / "replies.jsonl") + read_jsonl(SK / "replies_freeform.jsonl")
     blind = {r["id"]: _labels(r) for r in read_jsonl(SK / "blind_labels.jsonl")}
     human = {r["id"]: _labels(r) for r in read_jsonl(SK / "human_labels.jsonl")}
     queue_ids = {r["id"] for r in read_jsonl(SK / "queue.jsonl")}
@@ -56,6 +56,7 @@ def build(provisional: bool = False) -> tuple[list[dict], dict]:
                 "lang": r["lang"],
                 "labels": labels,
                 "label_source": src,
+                "source": r.get("source", "composed"),
             }
         )
     stats["audit_rows_checked"] = audit_n

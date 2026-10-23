@@ -1,0 +1,29 @@
+[
+ {
+  "lane": "data",
+  "metric": "share_all_5grams_in_train",
+  "value": 0.0775,
+  "n": 142,
+  "split": "val",
+  "notes": "share of rows whose every word 5-gram also occurs in train (lower is better)",
+  "created": "2026-10-22T23:52:13+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "share_all_5grams_in_train",
+  "value": 0.2097,
+  "n": 124,
+  "split": "test",
+  "notes": "share of rows whose every word 5-gram also occurs in train (lower is better)",
+  "created": "2026-10-22T23:52:13+00:00"
+ },
+ {
+  "lane": "data",
+  "metric": "share_all_5grams_in_train",
+  "value": 0.0,
+  "n": 171,
+  "split": "test_freeform",
+  "notes": "share of rows whose every word 5-gram also occurs in train (lower is better)",
+  "created": "2026-10-22T23:52:13+00:00"
+ }
+]

@@ -1,7 +1,8 @@
 """Compare the authored (intended) labels with the independent blind labels.
 
-Writes eval/reports/data_agreement.json (per-label agreement and Cohen's kappa) and
-data/skills/queue.jsonl = every disagreement + 100 random agreed rows (audit), for the human labeler.
+Writes eval/reports/data_agreement.json (per-label agreement and Cohen's kappa, reported separately for
+composed and free-form replies) and data/skills/queue.jsonl = every disagreement + a random audit of
+agreed rows (100 composed + 20 free-form), for the human labeler.
 """
 
 from __future__ import annotations
@@ -23,77 +24,86 @@ def kappa(a: list[bool], b: list[bool]) -> float:
     return 1.0 if pe == 1 else (po - pe) / (1 - pe)
 
 
-def run(audit_n: int = 100, seed: int = 42) -> dict:
+def run(audit: dict[str, int] | None = None, seed: int = 42) -> dict:
+    audit = audit or {"composed": 100, "freeform": 20}
     ctx = {c["context_id"]: c for c in read_jsonl(SK / "contexts.jsonl")}
     replies = {r["id"]: r for r in read_jsonl(SK / "replies.jsonl")}
+    for r in read_jsonl(SK / "replies_freeform.jsonl"):
+        replies[r["id"]] = r
     blind = {r["id"]: r for r in read_jsonl(SK / "blind_labels.jsonl")}
     ids = [i for i in replies if i in blind]
     now = datetime.now(UTC).astimezone().isoformat(timespec="seconds")
-    records, per_label = [], {}
-    for lab in LABELS:
-        a = [bool(replies[i]["intended"][lab]) for i in ids]
-        b = [bool(blind[i]["labels"].get(lab, False)) for i in ids]
-        agree = sum(x == y for x, y in zip(a, b, strict=True)) / len(ids)
-        k = kappa(a, b)
-        per_label[lab] = {
-            "agreement": round(agree, 4),
-            "kappa": round(k, 4),
-            "n_positive_authored": sum(a),
-            "n_positive_blind": sum(b),
-        }
-        records.append(
-            {
-                "lane": "data",
-                "metric": f"agreement_{lab}",
-                "value": round(agree, 4),
-                "n": len(ids),
-                "split": "all",
-                "notes": f"authored vs blind labeler; kappa={k:.3f}",
-                "created": now,
-            }
-        )
-        records.append(
-            {
-                "lane": "data",
-                "metric": f"kappa_{lab}",
-                "value": round(k, 4),
-                "n": len(ids),
-                "split": "all",
-                "notes": "Cohen's kappa, authored vs blind labeler",
-                "created": now,
-            }
-        )
-    exact = [
-        i
-        for i in ids
-        if all(
+
+    def src(i: str) -> str:
+        return replies[i].get("source", "composed")
+
+    def same(i: str) -> bool:
+        return all(
             bool(replies[i]["intended"][lab]) == bool(blind[i]["labels"].get(lab, False))
             for lab in LABELS
         )
-    ]
-    mean_k = sum(v["kappa"] for v in per_label.values()) / len(LABELS)
-    records.append(
-        {
-            "lane": "data",
-            "metric": "exact_match_rate",
-            "value": round(len(exact) / len(ids), 4),
-            "n": len(ids),
-            "split": "all",
-            "notes": "all 10 labels identical",
-            "created": now,
+
+    records, summary = [], {}
+    for subset in ("all", "composed", "freeform"):
+        sub = [i for i in ids if subset == "all" or src(i) == subset]
+        if not sub:
+            continue
+        per_label = {}
+        for lab in LABELS:
+            a = [bool(replies[i]["intended"][lab]) for i in sub]
+            b = [bool(blind[i]["labels"].get(lab, False)) for i in sub]
+            agree = sum(x == y for x, y in zip(a, b, strict=True)) / len(sub)
+            k = kappa(a, b)
+            per_label[lab] = {
+                "agreement": round(agree, 4),
+                "kappa": round(k, 4),
+                "n_positive_authored": sum(a),
+            }
+            for metric, val, note in (
+                (f"agreement_{lab}", agree, f"authored vs blind labeler; kappa={k:.3f}"),
+                (f"kappa_{lab}", k, "Cohen's kappa, authored vs blind labeler"),
+            ):
+                records.append(
+                    {
+                        "lane": "data",
+                        "metric": metric,
+                        "value": round(val, 4),
+                        "n": len(sub),
+                        "split": subset,
+                        "notes": note,
+                        "created": now,
+                    }
+                )
+        exact = sum(same(i) for i in sub) / len(sub)
+        mean_k = sum(v["kappa"] for v in per_label.values()) / len(LABELS)
+        records.append(
+            {
+                "lane": "data",
+                "metric": "exact_match_rate",
+                "value": round(exact, 4),
+                "n": len(sub),
+                "split": subset,
+                "notes": "all 10 labels identical",
+                "created": now,
+            }
+        )
+        records.append(
+            {
+                "lane": "data",
+                "metric": "mean_kappa",
+                "value": round(mean_k, 4),
+                "n": len(sub),
+                "split": subset,
+                "notes": "mean over 10 labels",
+                "created": now,
+            }
+        )
+        summary[subset] = {
+            "rows": len(sub),
+            "exact_match": round(exact, 4),
+            "mean_kappa": round(mean_k, 4),
+            "per_label": per_label,
         }
-    )
-    records.append(
-        {
-            "lane": "data",
-            "metric": "mean_kappa",
-            "value": round(mean_k, 4),
-            "n": len(ids),
-            "split": "all",
-            "notes": "mean over 10 labels",
-            "created": now,
-        }
-    )
     (ROOT / "eval" / "reports").mkdir(parents=True, exist_ok=True)
     (ROOT / "eval" / "reports" / "data_agreement.json").write_text(
         json.dumps(records, indent=1, ensure_ascii=False) + "\n", encoding="utf-8"
@@ -106,6 +116,7 @@ def run(audit_n: int = 100, seed: int = 42) -> dict:
         return {
             "id": i,
             "kind": kind,
+            "source": src(i),
             "context_id": r["context_id"],
             "scenario_id": c["scenario_id"],
             "level": c["level"],
@@ -117,22 +128,26 @@ def run(audit_n: int = 100, seed: int = 42) -> dict:
             "disagree": [lab for lab in LABELS if o[lab] != b[lab]],
         }
 
-    exact_set = set(exact)
-    dis = [row(i, "disagreement") for i in ids if i not in exact_set]
+    dis = [row(i, "disagreement") for i in ids if not same(i)]
     rng = random.Random(seed)
-    audit = [row(i, "audit") for i in rng.sample(sorted(exact_set), min(audit_n, len(exact_set)))]
-    queue = dis + audit
+    audit_rows = []
+    for s, n in audit.items():
+        pool = sorted(i for i in ids if src(i) == s and same(i))
+        audit_rows += [row(i, "audit") for i in rng.sample(pool, min(n, len(pool)))]
+    queue = dis + audit_rows
     rng.shuffle(queue)
     write_jsonl(SK / "queue.jsonl", queue)
     return {
-        "rows": len(ids),
-        "exact_match": len(exact),
+        "queue_rows": len(queue),
         "disagreements": len(dis),
-        "audit": len(audit),
-        "mean_kappa": round(mean_k, 4),
-        "per_label": per_label,
+        "audit": len(audit_rows),
+        **summary,
     }
 
 
 if __name__ == "__main__":
-    print(json.dumps(run(), indent=1))
+    out = run()
+    for k, v in out.items():
+        if isinstance(v, dict):
+            v = {kk: vv for kk, vv in v.items() if kk != "per_label"}
+        print(k, v)
