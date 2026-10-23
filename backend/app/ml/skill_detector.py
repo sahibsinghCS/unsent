@@ -9,17 +9,29 @@ from __future__ import annotations
 
 import json
 import threading
+import time
+from collections import OrderedDict
+from concurrent.futures import Future, ThreadPoolExecutor
 from pathlib import Path
 
 import joblib
 
-from backend.app.config import MODELS_DIR, embed_backend, embed_model_name
+from backend.app.config import (
+    MODELS_DIR,
+    embed_backend,
+    embed_model_name,
+    env_flag,
+    session_ttl_seconds,
+)
 from backend.app.contracts import Highlight, SkillLabel, SkillProbs
-from backend.app.embed import HashEmbedder, get_embedder
+from backend.app.embed import HashEmbedder, cached_scope, get_embedder
 from backend.app.ml.explain import occlusion_highlights
 from backend.app.ml.model import Components, SkillModel
 from backend.app.ml.train import ARTIFACT, META
 from backend.app.ml.uncertainty import DEFAULT_BAND, uncertain_mask
+from backend.app.session import register_sweeper
+
+MAX_EXPLANATIONS = 2048  # memoized message explanations (LRU)
 
 
 class EmbedderMismatchError(RuntimeError):
@@ -51,10 +63,18 @@ def _context(context: list[str]) -> str:
 
 
 class SkillDetector:
-    def __init__(self, models_dir: Path = MODELS_DIR) -> None:
+    def __init__(self, models_dir: Path = MODELS_DIR, prewarm: bool | None = None) -> None:
         self.models_dir = models_dir
         self._model: SkillModel | None = None
         self._lock = threading.Lock()
+        # Highlights are the expensive part of the feedback report. predict() runs once per helper
+        # message during the chat, so it starts that message's explanation on one background worker;
+        # explain() at /finish then reuses the result (same function, identical output) or waits for it.
+        self.prewarm = env_flag("FR_PREWARM_EXPLAIN", default=True) if prewarm is None else prewarm
+        # (text, last friend message) -> (last used, explanation). Expires after the session TTL.
+        self._explanations: OrderedDict[tuple[str, str], tuple[float, Future]] = OrderedDict()
+        self._explain_lock = threading.Lock()
+        self._worker: ThreadPoolExecutor | None = None
 
     @property
     def model(self) -> SkillModel:
@@ -73,7 +93,10 @@ class SkillDetector:
     def components(self, texts: list[str], context: list[str]) -> Components:
         """pA, pB and calibrated p for a batch of replies to the same friend context."""
         last = _context(context)
-        return self.model.components(list(texts), [last] * len(texts))
+        # cached_scope: occlusion variants and pooled sentences repeat most texts, so reuse each
+        # text's vector (the shared cache in embed.py expires with the session TTL, for privacy).
+        with cached_scope():
+            return self.model.components(list(texts), [last] * len(texts))
 
     def _to_probs(self, row) -> SkillProbs:
         return {SkillLabel(label): float(row[j]) for j, label in enumerate(self.model.labels)}
@@ -84,8 +107,11 @@ class SkillDetector:
         return [self._to_probs(row) for row in self.components(texts, context).p]
 
     def predict(self, text: str, context: list[str]) -> SkillProbs:
-        """Calibrated probability (0..1) for each of the 10 labels."""
-        return self.predict_many([text], context)[0]
+        """Calibrated probability (0..1) for each of the 10 labels (and start its explanation)."""
+        probs = self.predict_many([text], context)[0]
+        if self.prewarm:
+            self._explanation(text, context)
+        return probs
 
     def uncertain(self, text: str, context: list[str]) -> list[SkillLabel]:
         """Labels where Model A and B disagree about yes/no and the final probability is mid-band."""
@@ -95,11 +121,51 @@ class SkillDetector:
         return [SkillLabel(label) for j, label in enumerate(self.model.labels) if mask[j]]
 
     def explain(self, text: str, context: list[str]) -> list[Highlight]:
-        """Word highlights from leave-one-word-out occlusion on the calibrated probability."""
+        """Phrase highlights from occlusion on the calibrated probability (memoized per message)."""
+        return [h.model_copy() for h in self._explanation(text, context).result()]
+
+    def explain_now(self, text: str, context: list[str]) -> list[Highlight]:
+        """Compute highlights directly (no memo, no background worker)."""
         return occlusion_highlights(text, lambda texts: self.predict_many(texts, context))
+
+    def _explanation(self, text: str, context: list[str]) -> Future:
+        """The (possibly still running) explanation for this message + friend context."""
+        key = (text, _context(context))
+        now = time.time()
+        with self._explain_lock:
+            item = self._explanations.get(key)
+            if item is not None and now - item[0] < session_ttl_seconds():
+                self._explanations[key] = (now, item[1])
+                self._explanations.move_to_end(key)
+                return item[1]
+            if self._worker is None:
+                self._worker = ThreadPoolExecutor(max_workers=1, thread_name_prefix="fr-explain")
+            future = self._worker.submit(self.explain_now, text, list(context))
+            self._explanations[key] = (now, future)
+            self._explanations.move_to_end(key)
+            while len(self._explanations) > MAX_EXPLANATIONS:
+                self._explanations.popitem(last=False)
+            return future
+
+    def purge_expired(self) -> int:
+        """Forget explanations unused for longer than the session TTL (conversations are gone by then)."""
+        cutoff = time.time() - session_ttl_seconds()
+        with self._explain_lock:
+            stale = [key for key, (used, _) in self._explanations.items() if used <= cutoff]
+            for key in stale:
+                del self._explanations[key]
+        return len(stale)
 
 
 _service: SkillDetector | None = None
+
+
+def purge_expired() -> int:
+    """Session sweeper hook: expire the live detector's memoized explanations."""
+    return _service.purge_expired() if _service is not None else 0
+
+
+register_sweeper(purge_expired)
 
 
 def get_service() -> SkillDetector:
