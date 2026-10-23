@@ -20,7 +20,7 @@ test setup. How each number is measured: `docs/how/*.md`.
 | Messages for a great helper to reach a guarded friend | **5 messages** |  | 3 | scripted_labels |
 | AI replies leaking a locked secret: caught | **96.0%** |  | 43 | leak_set_test |
 | Safety filter accuracy (macro-F1, 6 kinds of message) | **0.971** | 0.827 (word list alone) | 172 | test |
-| Red-team attacks handled as expected | **74.8%** |  | 250 | attack_bank [fastembed] |
+| Red-team attacks handled as expected | **75.0%** |  | 132 | attack_bank holdout [fastembed] |
 | Still right when messages are scrambled | **94.3%** |  | 1636 | guardian test split [fastembed] |
 | Direct questions blocked mid-conversation | **0** |  | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Agreement between two separate labeling passes (κ) | **0.887** |  | 474 | freeform |
@@ -625,15 +625,34 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `three_diverse_paths` | 1 | 90 | scripted | share with 3 paths of 3 different strategies (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
 | `best_beats_actual_value` | 1 | 90 | scripted | best simulated path value > value of what was actually said, same horizon (1 + 3 helper turns) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
 | `best_beats_actual_trust` | 1 | 90 | scripted | final trust of best path > final trust actually reached, same horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
-| `mean_trust_gain` | 76.16 | 90 | scripted | mean (best path final trust - actual final trust), trust points 0-100 (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `mean_trust_gain` | 68.587 | 90 | scripted | mean (best path final trust - actual final trust), trust points 0-100 (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
 | `best_at_least_textbook` | 1 | 90 | scripted | best path value >= a hand-written textbook continuation (validate, ask, refer, follow up) replayed through the same engine from the same message (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
-| `mean_value_vs_textbook` | 57.48 | 90 | scripted | mean (best path value - textbook continuation value); value formula in docs/how/whatif.md (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `mean_value_vs_textbook` | 51.907 | 90 | scripted | mean (best path value - textbook continuation value); value formula in docs/how/whatif.md (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
 | `best_path_success` | 1 | 90 | scripted | share of best paths that end with the friend accepting help (ended_success) within the horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
-| `latency_p50_ms` | 491.913 | 90 | scripted | simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
-| `latency_p95_ms` | 583.668 | 90 | scripted | simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `latency_p50_ms` | 483.445 | 90 | scripted | simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `latency_p95_ms` | 605.699 | 90 | scripted | simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
 | `deterministic` | 1 | 90 | scripted | two runs give identical results (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
-| `unsafe_candidates` | 0 | 885 | scripted | helper messages shown in paths that Guardian.check_user would not let through (n = helper messages) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
-| `unsafe_friend_lines` | 0 | 2183 | scripted | friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `unsafe_candidates` | 0 | 897 | scripted | helper messages shown in paths that Guardian.check_user would not let through (n = helper messages) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `unsafe_friend_lines` | 0 | 2146 | scripted | friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `paths_asking_directly_twice` | 0 | 270 | scripted | paths where the helper asks directly again after the friend was already asked (counting the real chat before the replaced message; n = paths) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `shared_continuations` | 0.022 | 627 | scripted | share of later simulated helper messages that another card of the same result also uses (n = later helper messages) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `wrong_language_bubbles` | 0 | 3043 | scripted | helper + friend bubbles clearly in another language than the chat (engine/language.py word check; n = bubbles) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `cases_with_paths` | 1 | 18 | scripted_es | share of weak points where >= 1 verified candidate exists (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `three_diverse_paths` | 1 | 18 | scripted_es | share with 3 paths of 3 different strategies (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `best_beats_actual_value` | 1 | 18 | scripted_es | best simulated path value > value of what was actually said, same horizon (1 + 3 helper turns) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `best_beats_actual_trust` | 1 | 18 | scripted_es | final trust of best path > final trust actually reached, same horizon (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `mean_trust_gain` | 57.444 | 18 | scripted_es | mean (best path final trust - actual final trust), trust points 0-100 (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `best_at_least_textbook` | 1 | 18 | scripted_es | best path value >= a hand-written textbook continuation (validate, ask, refer, follow up) replayed through the same engine from the same message (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `mean_value_vs_textbook` | 53.311 | 18 | scripted_es | mean (best path value - textbook continuation value); value formula in docs/how/whatif.md (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `best_path_success` | 1 | 18 | scripted_es | share of best paths that end with the friend accepting help (ended_success) within the horizon (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `latency_p50_ms` | 556.393 | 18 | scripted_es | simulate() wall time, warm process (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `latency_p95_ms` | 672.615 | 18 | scripted_es | simulate() wall time, warm process (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `deterministic` | 1 | 18 | scripted_es | two runs give identical results (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `unsafe_candidates` | 0 | 200 | scripted_es | helper messages shown in paths that Guardian.check_user would not let through (n = helper messages) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `unsafe_friend_lines` | 0 | 520 | scripted_es | friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `paths_asking_directly_twice` | 0 | 54 | scripted_es | paths where the helper asks directly again after the friend was already asked (counting the real chat before the replaced message; n = paths) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `shared_continuations` | 0.11 | 146 | scripted_es | share of later simulated helper messages that another card of the same result also uses (n = later helper messages) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
+| `wrong_language_bubbles` | 0 | 720 | scripted_es | helper + friend bubbles clearly in another language than the chat (engine/language.py word check; n = bubbles) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup) |
 
 
 ## deploy
