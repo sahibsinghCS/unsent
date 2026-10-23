@@ -9,7 +9,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from backend.app.config import CONTENT_DIR, DATA_DIR, EVAL_REPORTS_DIR
-from backend.app.contracts import Exemplar, Line, Scenario
+from backend.app.contracts import Exemplar, Line, Scenario, ScenarioText
 
 SCENARIO_DIR = DATA_DIR / "scenarios"
 LINES_DIR = DATA_DIR / "lines"
@@ -42,6 +42,25 @@ def load_scenarios() -> dict[str, Scenario]:
 def get_scenario(scenario_id: str) -> Scenario:
     """Scenario by id; raises KeyError if unknown."""
     return load_scenarios()[scenario_id]
+
+
+def scenario_locales(scenario: Scenario) -> list[str]:
+    """Languages a scenario fully supports: English, plus every language that has both the scenario's
+    translated text (Scenario.i18n) and a friend line bank. A chat never mixes languages."""
+    extra = [loc for loc in sorted(scenario.i18n) if loc != "en" and load_lines(scenario.id, loc)]
+    return ["en", *extra]
+
+
+def scenario_text(scenario: Scenario, locale: str) -> ScenarioText:
+    """The scenario's user-facing text in `locale` (English when it isn't supported)."""
+    if locale != "en" and locale in scenario_locales(scenario):
+        return scenario.i18n[locale]
+    return ScenarioText(
+        title=scenario.title,
+        situation=scenario.situation,
+        opening=scenario.opening,
+        content_warning=scenario.content_warning,
+    )
 
 
 @lru_cache(maxsize=64)

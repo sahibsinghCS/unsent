@@ -12,9 +12,8 @@ from typing import Literal, Protocol
 
 from pydantic import BaseModel, Field
 
-CONTRACTS_VERSION = (
-    "1.2"  # 1.1: voice source, moderation source; 1.2: trust breakdown, rewrite skill
-)
+CONTRACTS_VERSION = "1.3"
+# 1.1: voice source, moderation source; 1.2: trust breakdown, rewrite skill; 1.3: scenario i18n
 
 
 class SkillLabel(StrEnum):
@@ -108,6 +107,16 @@ class Persona(BaseModel):
     guardedness: Literal["open", "guarded"]
 
 
+class ScenarioText(BaseModel):
+    """A scenario's user-facing text in another language. The friend's later lines come from that
+    language's line bank, so a scenario supports a language only when both exist."""
+
+    title: str
+    situation: str
+    opening: list[str]
+    content_warning: str
+
+
 class Scenario(BaseModel):
     id: str
     title: str
@@ -118,6 +127,8 @@ class Scenario(BaseModel):
     fallback_lines: dict[int, list[str]]  # safe generic lines per level, used if no bank line fits
     content_warning: str
     review_status: Literal["draft", "reviewed"] = "draft"
+    # translated text by language, e.g. {"es": ...}; the fields above are the English text
+    i18n: dict[str, ScenarioText] = Field(default_factory=dict)
 
 
 class Line(BaseModel):

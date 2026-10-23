@@ -107,5 +107,16 @@
     ]
   },
   "content_warning": "Breakup, loneliness, hopelessness, thoughts of suicide (no details).",
-  "review_status": "draft"
+  "review_status": "draft",
+  "i18n": {
+    "es": {
+      "title": "Después de la ruptura",
+      "situation": "La relación de dos años de Maya terminó hace dos semanas. Ya no se sienta con tu grupo en el almuerzo y lleva días sin publicar nada.",
+      "opening": [
+        "hola",
+        "perdón por andar rara últimamente jaja"
+      ],
+      "content_warning": "Ruptura, soledad, desesperanza, pensamientos suicidas (sin detalles)."
+    }
+  }
 }

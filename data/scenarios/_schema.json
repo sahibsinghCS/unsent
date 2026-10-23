@@ -71,6 +71,38 @@
       ],
       "title": "Persona",
       "type": "object"
+    },
+    "ScenarioText": {
+      "description": "A scenario's user-facing text in another language. The friend's later lines come from that\nlanguage's line bank, so a scenario supports a language only when both exist.",
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "situation": {
+          "title": "Situation",
+          "type": "string"
+        },
+        "opening": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Opening",
+          "type": "array"
+        },
+        "content_warning": {
+          "title": "Content Warning",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "situation",
+        "opening",
+        "content_warning"
+      ],
+      "title": "ScenarioText",
+      "type": "object"
     }
   },
   "properties": {
@@ -125,6 +157,13 @@
       ],
       "title": "Review Status",
       "type": "string"
+    },
+    "i18n": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ScenarioText"
+      },
+      "title": "I18N",
+      "type": "object"
     }
   },
   "required": [

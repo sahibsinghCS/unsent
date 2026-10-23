@@ -15,6 +15,8 @@ from backend.app.content import (
     load_metrics,
     load_realmode,
     load_scenarios,
+    scenario_locales,
+    scenario_text,
 )
 from backend.app.contracts import (
     CONTRACTS_VERSION,
@@ -43,6 +45,8 @@ class ScenarioSummary(BaseModel):
     situation: str
     content_warning: str
     review_status: str
+    # languages this friend can be practiced in (see content.scenario_locales)
+    locales: list[str] = ["en"]
 
 
 class CreateSessionRequest(BaseModel):
@@ -54,6 +58,8 @@ class CreateSessionRequest(BaseModel):
 class SessionView(BaseModel):
     session_id: str
     scenario_id: str
+    # the chat's language (English when the friend doesn't support the requested one)
+    locale: str = "en"
     head_id: str
     root_id: str
     state: State
@@ -98,6 +104,7 @@ def _view(session: Session) -> SessionView:
     return SessionView(
         session_id=session.id,
         scenario_id=session.scenario_id,
+        locale=session.locale,
         head_id=session.head_id,
         root_id=session.root_id,
         state=path[-1].state_after,
@@ -117,20 +124,25 @@ def health() -> dict:
 
 
 @router.get("/scenarios", response_model=list[ScenarioSummary])
-def scenarios() -> list[ScenarioSummary]:
-    return [
-        ScenarioSummary(
-            id=s.id,
-            title=s.title,
-            persona_name=s.persona.name,
-            persona_age=s.persona.age,
-            guardedness=s.persona.guardedness,
-            situation=s.situation,
-            content_warning=s.content_warning,
-            review_status=s.review_status,
+def scenarios(lang: str = "en") -> list[ScenarioSummary]:
+    """Every scenario, with its text in `lang` where that friend supports it (English otherwise)."""
+    summaries = []
+    for s in load_scenarios().values():
+        text = scenario_text(s, lang)
+        summaries.append(
+            ScenarioSummary(
+                id=s.id,
+                title=text.title,
+                persona_name=s.persona.name,
+                persona_age=s.persona.age,
+                guardedness=s.persona.guardedness,
+                situation=text.situation,
+                content_warning=text.content_warning,
+                review_status=s.review_status,
+                locales=scenario_locales(s),
+            )
         )
-        for s in load_scenarios().values()
-    ]
+    return summaries
 
 
 @router.post("/sessions", response_model=SessionView)
@@ -139,16 +151,18 @@ def start_session(request: CreateSessionRequest) -> SessionView:
         scenario = get_scenario(request.scenario_id)
     except KeyError as exc:
         raise HTTPException(404, f"Unknown scenario '{request.scenario_id}'.") from exc
+    # Never a mixed-language chat: fall back to English when this friend can't be practiced in the language.
+    locale = request.locale if request.locale in scenario_locales(scenario) else "en"
     state = services.engine().initial_state(scenario)
     opening = Node(
         id=new_id("n"),
         parent_id=None,
         role="friend",
-        bubbles=scenario.opening,
+        bubbles=scenario_text(scenario, locale).opening,
         state_after=state,
         reaction=Reaction.OPENING,
     )
-    session = create_session(scenario.id, request.locale, request.country, opening)
+    session = create_session(scenario.id, locale, request.country, opening)
     store.put(session)
     return _view(session)
 
