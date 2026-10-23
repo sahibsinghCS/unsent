@@ -65,7 +65,8 @@
     "age": "{age} years old",
     "start": "Text {name}",
     "error": "Couldn't load scenarios.",
-    "draft": "Draft content"
+    "draft": "Draft content",
+    "only_lang": "Only in {lang} for now"
   },
   "cw": {
     "title": "Before you start",
@@ -134,7 +135,8 @@
       "teach": "In a real conversation, words like that can push someone further away. Try saying what you're worried about, or ask how they're feeling."
     },
     "concern": "If any of this feels close to home, you can call or text 988 any time.",
-    "empty_reply": "(no reply)"
+    "empty_reply": "(no reply)",
+    "practice_in": "Practice in {lang}"
   },
   "tree": {
     "title": "Conversation branches",
@@ -394,5 +396,9 @@
   },
   "errors": {
     "session_gone": "This practice session has expired (sessions are deleted after 60 minutes). Start a new one any time."
+  },
+  "langs": {
+    "en": "English",
+    "es": "Spanish"
   }
 }

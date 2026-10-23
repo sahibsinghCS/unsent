@@ -50,6 +50,8 @@ test/        vitest tests
 
 **Real mode offline.** At build time a script copies the fixed crisis text into the app. Real mode shows that copy instantly, then tries the server. If the server is down, it keeps the bundled copy and says so.
 
+**One language per chat.** The scenario list is fetched in the UI language (`/api/scenarios?lang=es`), so titles, situations and content warnings are localized. Each friend lists the languages it supports (`locales`). In Spanish mode, English-only friends get a "Solo en inglés por ahora" chip, and starting one gives an English chat. The server decides the chat's language (`SessionView.locale`) and the friend never mixes languages. When the chat language differs from the UI, the chat header shows a small chip ("Práctica en inglés" / "Practice in Spanish"), but the UI language itself never changes. API text (feedback, what-if) is shown as the server sends it; the frontend never translates it.
+
 **Rewind.** The server keeps the whole conversation as a tree. "Rewind to here" moves the head back to the friend's message before yours and puts your old text in the input box so you can edit it. The branch drawer draws the tree: straight runs stay in one column, and only real forks are indented, so it stays readable on a phone.
 
 ## Why this approach (and what we considered instead)
@@ -63,8 +65,8 @@ test/        vitest tests
 
 ## How we measured it (real numbers, with n and the split)
 
-- **Unit tests:** 53 vitest tests in 8 files (`npm run test`), covering the typing delay formula and its edges, highlight span rendering, trust-math formatting, API error handling (404/422/network down/non-JSON), the Real-mode offline fallback, EN/ES key parity, the crisis card not being skippable, the check-in, the X-ray voice chip, and the tree/graph helpers.
-- **End-to-end:** `npm run screenshots` drives the whole journey in real Chromium against `make dev-stub`, on a phone (390×844) and a desktop (1440×900). It fails if any step breaks, if the crisis card can be skipped, if the X-ray trust math is missing, if there's any console error, or if the page scrolls sideways. Result: 26 screens × 2 sizes = 52 screenshots in `frontend/screenshots/`. The current set was taken against the **real** backend (`FR_EMBED=fastembed FR_LLM=0`: real Guardian, trained skill detector, tuned engine and critic; what-if still a stub). The same script also passes against `make dev-stub`.
+- **Unit tests:** 55 vitest tests in 8 files (`npm run test`), covering the typing delay formula and its edges, highlight span rendering, trust-math formatting, API error handling (404/422/network down/non-JSON), the Real-mode offline fallback, EN/ES key parity, the crisis card not being skippable, the check-in, the X-ray voice chip, and the tree/graph helpers.
+- **End-to-end:** `npm run screenshots` drives the whole journey in real Chromium against `make dev-stub`, on a phone (390×844) and a desktop (1440×900). It fails if any step breaks, if the crisis card can be skipped, if the X-ray trust math is missing, if there's any console error, or if the page scrolls sideways. Result: 27 screens × 2 sizes = 54 screenshots in `frontend/screenshots/`. The current set was taken against the **real** backend (`FR_EMBED=fastembed FR_LLM=0`: real Guardian, trained skill detector, tuned engine and critic; what-if still a stub). The same script also passes against `make dev-stub`.
 - **Accessibility:** every text/background token pair was checked against WCAG AA (4.5:1). The lowest pairs after tuning: white on the coral button 4.98, green on green-soft 5.36, white on the dark-mode bubble 5.93.
 - **Size:** about 86 KB gzipped app code + 63 KB gzipped charts (loaded as a separate cached chunk) + 7 KB CSS.
 
