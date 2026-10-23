@@ -35,7 +35,8 @@ GUIDANCE: dict[Reaction, str] = {
     Reaction.ASKED_DIRECTLY: (
         "They asked directly about suicide. Answer the question honestly AT YOUR CURRENT LEVEL: if the "
         "facts above don't include thoughts of suicide, you are not ready to say yes (deflect, hesitate, "
-        "or say it's not like that); if they do, admit it carefully, without any detail."
+        "or say it's not like that); if they do, admit it quietly, in your own indirect words, without any "
+        "detail."
     ),
     Reaction.REFERRED: (
         "They suggested a trusted adult or 988. React like a real teen: hesitant or nervous if you're "
@@ -58,6 +59,23 @@ GUIDANCE: dict[Reaction, str] = {
     Reaction.FAIL: "You shut down and leave the conversation, briefly and without drama.",
 }
 
+
+# Where the friend stands at each disclosure level (decided by the engine). Says what they are NOT
+# ready for yet, without naming any locked fact, so a warm helper message doesn't pull out early
+# relief, gratitude for being asked, or agreement to a plan.
+STANCE: dict[int, str] = {
+    0: "You keep it light and say you're fine; you don't admit anything is really wrong yet.",
+    1: "You admit you're stressed, but you're not ready to say how hopeless it feels.",
+    2: (
+        "You can say how heavy and hopeless things feel, but nothing darker than that, and you're not "
+        "ready to accept help or agree to any plan."
+    ),
+    3: (
+        "You've just shared the hardest part and you're scared. You're NOT ready yet to accept help, "
+        "agree to a plan, or say you feel relieved, lighter or glad they asked: stay hesitant."
+    ),
+    4: "You're ready to accept help now, nervous but hopeful.",
+}
 
 # Which language to write in. A chat never mixes languages; the verifier rejects the wrong one.
 LANGUAGE_RULES: dict[str, str] = {
@@ -121,6 +139,7 @@ def system_prompt(
         situation=scenario.situation,
         level=state.level,
         level_label=spec.label if spec else "",
+        stance=STANCE.get(state.level, ""),
         facts="\n".join(f"- [{fid}] {text}" for fid, text in facts) or "- (none)",
         reaction=reaction.value.upper(),
         guidance=GUIDANCE.get(reaction, ""),
