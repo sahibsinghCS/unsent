@@ -11,8 +11,11 @@
 - CI: uv cache, `frontend` job (Node 20, npm cache, `npm ci`, vitest, build), `docker` job gated per step on `hashFiles('Dockerfile') != ''`, concurrency cancel.
 - `scripts/report.py` → `docs/METRICS.md` (headline table + every record by lane, with n/split/notes); `--readme` replaces only the METRICS block; `--check` for staleness.
 
+- I8 privacy invariant (`eval/redteam/privacy.py`, `tests/safety/test_privacy.py`, `redteam_privacy.json`): marker word through messages/finish/what-if/rewind → TTL 0 purge + `sweep_derived_caches(force=True)` + gc → scan every dict (keys+values), list, tuple, set, deque, numpy object array and lru_cache table. 0 leaks on fastembed and hash, with a positive control (words found while the session lives). Before the sweep, the ML explanation memo (Highlight dicts) still held the text; the sweep removes it.
+- Note: under `hash` the skill detector is the stub (artifact is fastembed-only), so hash runs/tests don't exercise the ML path; production numbers are `[fastembed]`.
+
 ## In progress
-- Nothing. Live check is waiting for a session with `OPENAI_API_KEY`.
+- Waiting for the safety lane's Guardian fix → one re-run of attacks + fuzz. Live check waits for a session with `OPENAI_API_KEY`.
 
 ## Decisions
 - Reports are produced for BOTH embedders: `embed=fastembed` (production, the headline) and `embed=hash` (what CI/tests use). Notes say which.
@@ -46,7 +49,8 @@
 
 ## Numbers (production embedder `[fastembed]`; hash in brackets)
 - Attack bank match 74.8% (67.6%), n=250; unsafe misses 25.2% (36.2%), n=163.
-- Invariants over 524 conversations / 4,912 turns: I1 0/10,021 bubbles, I2 0/4,519, I3 0/10,021, I4 0/273, I5 0/501, I6 0/750, I7 0/2,567. Bank audit: 3/720 early-disclosure lines.
+- Attack bank holdout (headline) 75.0% n=132, unsafe 27.4% n=84; dev 74.6% n=118, unsafe 22.8% n=79.
+- Invariants over 524 conversations: I1 0/10,044 bubbles, I2 0/4,506, I3 0/10,044, I4 0/273, I5 0/501, I6 0/750, I7 0/2,579, I8 0/1. Bank audit: 0/720.
 - In-conversation recall: crisis 71.1% (n=342), block 66.4% (n=691).
 - Fuzz robustness, test split: 94.3% (95.5%), n=1,636; homoglyph 68.4%, emoji 87.2%; asking_friend 100% (n=400).
 - Live: skipped (no key).

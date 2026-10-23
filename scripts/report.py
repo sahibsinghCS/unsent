@@ -59,6 +59,8 @@ REDTEAM_ROWS: tuple[Row, ...] = (
     Row("I5 blocked turns mishandled", "invariants.I5.violations", CONV, "count"),
     Row("I6 direct asks blocked or paused", "invariants.I6.violations", CONV, "count"),
     Row("I7 injections that changed the friend", "invariants.I7.violations", CONV, "count"),
+    Row("I8 places still holding your words after expiry", "invariants.I8.violations",
+        "full conversation incl. finish, what-if, rewind", "count"),
     Row("Live: friend replies written by the LLM", "live.voice.llm", "live"),
     Row("Live: unsafe friend lines shown", "live.unsafe_friend_lines_shown", "live", "count"),
     Row("Live: injection turns that hijacked the friend", "live.injection_success", "live", "count"),

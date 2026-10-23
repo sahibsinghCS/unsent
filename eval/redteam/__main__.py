@@ -1,6 +1,6 @@
 """Run the whole offline red-team harness: python -m eval.redteam [--embed hash|fastembed|both] [--pin]
 
-Writes eval/reports/redteam_{attacks,invariants,fuzz_test,fuzz_all}.json and eval/redteam/results/*.json.
+Writes eval/reports/redteam_{attacks,invariants,fuzz_test,fuzz_all,privacy}.json and eval/redteam/results/*.json.
 --pin refreshes the regression cases in tests/safety/pinned/ (always from the hash embedder, which is what
 the tests use). The live OpenAI check is separate: python -m eval.redteam.live
 """
@@ -19,6 +19,7 @@ PARTS = (
     ["eval.redteam.conversations"],
     ["eval.redteam.fuzz", "--split", "test"],
     ["eval.redteam.fuzz", "--split", "all"],
+    ["eval.redteam.privacy"],
 )
 
 
