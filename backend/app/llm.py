@@ -9,8 +9,8 @@ What it is used for (and nothing else):
 It is never used in unit tests (fakes) and never to generate datasets (data is written into files).
 
 Every call is cached (same input -> same output), logged (token counts and estimated cost; never message
-text) and capped by a daily budget. Privacy: in production (FR_ENV=prod) the cache lives only in memory and
-expires with the session TTL (60 min), so nothing derived from a conversation is written to disk. In
+text) and capped by a daily budget. Privacy: in production (FR_ENV=prod) the cache and the usage log live
+only in memory (cache entries expire with the session TTL, 60 min), so nothing is written to disk. In
 development it is a disk cache under .cache/llm/ (gitignored) for repeatable tests and demos. If the key is missing, the budget is spent, or the API
 fails, calls raise LLMUnavailable and callers fall back to local behaviour (e.g. the reviewed line bank).
 """
@@ -101,7 +101,7 @@ def spent_today_usd() -> float:
     with _lock:
         if today not in _spent:
             total = 0.0
-            if USAGE_LOG.exists():
+            if not is_prod() and USAGE_LOG.exists():
                 for raw in USAGE_LOG.read_text(encoding="utf-8").splitlines():
                     try:
                         row = json.loads(raw)
@@ -115,10 +115,15 @@ def spent_today_usd() -> float:
 
 
 def _log_usage(entry: dict[str, Any]) -> None:
+    """Record one call's tokens and estimated cost (never message text). In production it stays in
+    memory, so nothing is written to disk; in development it is appended to eval/logs/llm_usage.jsonl."""
     today = date.today().isoformat()
     entry = {"day": today, "ts": time.time(), **entry}
+    spent_today_usd()  # load today's running total (and roll over the day) before adding to it
     with _lock:
         _spent[today] = _spent.get(today, 0.0) + float(entry.get("est_cost_usd", 0.0))
+        if is_prod():
+            return
         USAGE_LOG.parent.mkdir(parents=True, exist_ok=True)
         with USAGE_LOG.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(entry) + "\n")

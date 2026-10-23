@@ -91,3 +91,27 @@ def test_dev_cache_defaults_to_disk(monkeypatch):
     assert llm.cache_mode() == "disk"
     monkeypatch.setenv("FR_LLM_CACHE", "off")
     assert llm.cache_mode() == "off"
+
+
+def test_production_usage_log_stays_in_memory(monkeypatch, tmp_path):
+    monkeypatch.setenv("FR_ENV", "prod")
+    monkeypatch.setattr(llm, "USAGE_LOG", tmp_path / "usage.jsonl")
+    llm._spent.clear()
+    llm._log_usage({"role": "actor", "prompt": "actor", "est_cost_usd": 0.03})
+    llm._log_usage({"role": "actor", "prompt": "actor", "est_cost_usd": 0.02})
+    assert not (tmp_path / "usage.jsonl").exists(), "nothing may be written to disk in production"
+    assert abs(llm.spent_today_usd() - 0.05) < 1e-9
+    llm._spent.clear()
+
+
+def test_dev_usage_log_adds_to_todays_file_total(monkeypatch, tmp_path):
+    monkeypatch.setenv("FR_ENV", "dev")
+    log = tmp_path / "usage.jsonl"
+    monkeypatch.setattr(llm, "USAGE_LOG", log)
+    llm._spent.clear()
+    llm._log_usage({"role": "actor", "prompt": "actor", "est_cost_usd": 0.04})
+    llm._spent.clear()  # e.g. a restart: the file still holds today's spending
+    llm._log_usage({"role": "actor", "prompt": "actor", "est_cost_usd": 0.01})
+    assert log.exists() and len(log.read_text().splitlines()) == 2
+    assert abs(llm.spent_today_usd() - 0.05) < 1e-9
+    llm._spent.clear()
