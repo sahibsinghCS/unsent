@@ -104,9 +104,11 @@ jobs:
       - name: Content-Security-Policy check in headless Chrome
         if: hashFiles('Dockerfile') != ''
         run: |
-          (cd frontend && npm ci --no-audit --no-fund)
-          export CHROMIUM_PATH="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
-          echo "browser: $CHROMIUM_PATH"
+          cd frontend && npm ci --no-audit --no-fund
+          # The Chromium build that matches playwright-core (the runner's Google Chrome is newer).
+          npx playwright-core install --with-deps chromium
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright-core').chromium.executablePath())")"
+          cd .. && echo "browser: $CHROMIUM_PATH"
           node deploy/csp_check.mjs http://127.0.0.1:${APP_PORT}
       - name: Container logs
         if: always() && hashFiles('Dockerfile') != ''
