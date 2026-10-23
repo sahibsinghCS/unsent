@@ -36,7 +36,7 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
         assert (figures / name).stat().st_size > 0
     assert (figures / "f1_comparison_freeform.png").stat().st_size > 0
     results = json.loads((figures / "results.json").read_text())
-    assert len(results["probes"]) >= 9 and all("ok" in p for p in results["probes"])
+    assert len(results["probes"]) >= 10 and all("ok" in p for p in results["probes"])
     assert all(e["truth"] != (e["p"] >= 0.5) for e in results["test_freeform"]["errors"])
 
 

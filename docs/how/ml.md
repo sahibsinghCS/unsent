@@ -57,7 +57,10 @@ phrase gets highlighted. We measure the drop in **log-odds**, not probability, b
 model sits at 0.9999. Going from 0.9999 to 0.99 looks tiny as a probability but is a 100× drop in the
 odds. The biggest-drop phrase wins, and we trim it to its shortest part that keeps 80% of the drop, so
 the highlight is crisp ("how's the new school going", not the whole message). A second phrase is kept
-only if it's at least half as important. `delta` is that log-odds drop: 1 ≈ odds cut 2.7×, 2.3 ≈ 10×.
+only if it's at least half as important. Finally each phrase is rounded out to the edge of its clause
+(punctuation or the end of the message) when that adds at most 2 words on a side, so "hey are"
+becomes "hey are you ok" and "i'll go with" becomes "i'll go with you". The delta is re-measured for
+the final phrase. `delta` is that log-odds drop: 1 ≈ odds cut 2.7×, 2.3 ≈ 10×.
 The offsets point at the exact characters, so the UI can underline them.
 
 **Verified rewrites.** For each message the critic checks for a missing key skill. The friend sounds
@@ -76,6 +79,13 @@ we keep the one with the biggest verified gain. The report records where the rew
 The frontend uses these to show "Try instead: … (+0.4 ask directly)". With no API key, or with
 `FR_LLM=0`, it uses exemplars only and everything else works the same. We never suggest a reply we can't
 show is better or safe.
+
+**Feedback text is never false.** The template sentences check what actually happened. If the helper
+connected the friend with a counselor or 988 but never said why ("you don't have to handle this
+alone"), the report says "You connected them with someone who can help. Next time, also tell them why:
+they don't have to handle it alone." It does not claim they "never got to" helping. Mistakes are named
+exactly: a dismissive reply "brushed off the feeling", an advice reply "jumped to fixing it before
+listening".
 
 **7-skill summary.** The 10 labels map to the rubric (`contracts.RUBRIC_SKILLS`). Each skill gets the
 helper's best message. "Listen" counts only when that message validates *and* doesn't also dismiss or
@@ -178,6 +188,22 @@ The composed-test per-label table is in `eval/skills/results.json`. There every 
 - **Cohen's kappa:** agreement between two labelers after removing the agreement you'd get by luck.
   1 = perfect, 0 = luck. The 95% confidence interval comes from re-sampling the rows 1,000 times
   (seeded).
+
+**Experiment we tried and did not adopt: clause pooling.** Messages that do two things ("i'm really glad
+you told me. can we talk to the counselor tomorrow?") can water down the first skill. We tried scoring
+each sentence separately and taking the strongest sentence for the positive skills only. Negative
+labels stayed on the whole message, so "i won't tell anyone… except the counselor" can't turn into a
+promise of secrecy. The stacker was then refitted. We fixed the rule before running it: adopt only if
+validation macro-F1 improves without hurting calibration. Measured with 5-fold cross-validation on val
+(`eval/reports/ml_pooling.json`):
+
+| | val macro-F1 (out-of-fold) | val ECE | validated F1 (val) | free-form macro-F1 (info only) |
+|---|---|---|---|---|
+| whole message (kept) | **0.921** | 0.013 | 0.938 | **0.818** |
+| clause pooling | 0.916 | 0.011 | 0.950 | 0.802 |
+
+Pooling helped `validated` and calibration a little but lowered overall F1, so we kept the simpler
+whole-message model. We'll re-run the test after the next data update. Negative results are results.
 
 ## Limitations
 - **Real messages are harder.** Composed test 0.96 vs free-form 0.82. The free-form number is the one to

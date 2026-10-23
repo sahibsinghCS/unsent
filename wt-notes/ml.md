@@ -20,10 +20,21 @@
 - Kappa CLI (`python -m backend.app.ml.kappa`), seeded 1,000-resample bootstrap CI.
 
 ## In progress
-- Nothing. Next: eval-only re-run (no retrain) when the data lane appends the ~20 free-form referred_988
-  rows to test_freeform; kappa when counselor labels exist.
+- HOLD (integrator amendment): retrain ONCE when the adjudicated labels land (label-guide rule 10c406e:
+  referral ≠ encouraged_help ≠ follow_up), then full eval + re-run `eval/skills/pooling_experiment.py`.
+  Eval-only re-run when the ~20 free-form referred_988 rows land. Kappa when counselor labels exist.
+- Ready now (code, no new artifact): truthful critic text (refer-without-persuade sentence, label-specific
+  listen reasons), clause-rounded highlights, pooling experiment (not adopted), probe "i'm really glad you told me".
 
 ## Decisions
+- Clause pooling NOT adopted (pre-registered rule: val out-of-fold macro-F1 must improve, ECE ≤ +0.01):
+  whole 0.921 vs pooled 0.916 macro-F1; ECE 0.013 vs 0.011; validated F1 0.938 vs 0.950; freeform (info)
+  0.818 vs 0.802. `SkillModel.pooling` stays False; experiment re-runs after the next data update.
+- Highlights are rounded out to the clause edge when ≤ 2 words per side ("hey are" → "hey are you ok",
+  "i'll go with" → "i'll go with you"); checked on the probe messages, all read as natural phrases.
+- Critic: when refer ≥ 0.5 and persuade < 0.5, say "You connected them with someone who can help. Next
+  time, also tell them why…" (never "never got to encouraging"). Listen reasons: dismissed → "brushed off
+  the feeling", advice_dump → "jumped to fixing it before listening".
 - test_freeform is the honest headline number; composed test is reported but called optimistic.
 - Every tuned number (stacker, uncertain band) is fitted on val only; tests are only scored.
 - Rubric "listen" per message (validated × (1 − max(dismissed, advice)) within the message), best message.
@@ -75,5 +86,6 @@ friend's previous message; (3) implicit validation / minimizing-as-normalizing. 
   Brier: val 0.041 → 0.015 · test 0.032 → 0.009 · freeform 0.055 → 0.035.
 - Uncertain (band 0.35–0.65): flag rate per message val 8.5% / test 8.1% / freeform 18.1%; error rate of
   flagged vs unflagged decisions val 75% vs 1.6%, test 45% vs 0.7%, freeform 62.5% vs 3.5%.
-- Probes: 8/9 as expected; "talk later maybe" → follow_up 0.93 is the miss.
+- Probes: 9/10 as expected ("i'm really glad you told me" → validated 0.995); "talk later maybe" →
+  follow_up 0.93 is the miss.
 - Counselor kappa: not yet (no counselor labels).

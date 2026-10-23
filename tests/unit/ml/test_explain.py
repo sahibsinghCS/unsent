@@ -41,7 +41,7 @@ def test_highlights_are_crisp_phrases_with_exact_offsets():
     assert text[by_label[A].start : by_label[A].end] == "killing yourself"
     expected = math.log(0.9 / 0.1) - math.log(0.2 / 0.8)  # log-odds drop 0.9 -> 0.2
     assert abs(by_label[A].delta - expected) < 0.01
-    assert by_label[V].text == "heavy"
+    assert by_label[V].text == "That sounds heavy"  # rounded out to its clause (+2 words)
 
 
 def test_saturated_checkin_gives_the_two_real_phrases():
@@ -57,10 +57,9 @@ def test_saturated_checkin_gives_the_two_real_phrases():
 
     text = "hey! how's the new school going? you've seemed kinda quiet"
     found = [h.text for h in occlusion_highlights(text, scorer)]
-    assert found == ["school going", "seemed kinda quiet"] or found == [
-        "seemed kinda quiet",
-        "school going",
-    ]
+    # "school going" would need 3 more words to reach its clause start, so it stays crisp;
+    # "seemed kinda quiet" grows by one word to its clause edge.
+    assert sorted(found) == ["school going", "you've seemed kinda quiet"]
 
 
 def test_small_effects_and_empty_text_give_nothing():
@@ -91,3 +90,17 @@ def test_redundant_evidence_is_found_as_one_phrase():
     text = "are you thinking about killing yourself"
     (h,) = occlusion_highlights(text, scorer)
     assert h.text == "killing yourself" and text[h.start : h.end] == h.text
+
+
+def test_clause_bounds_and_extension():
+    from backend.app.ml.explain import clause_bounds, extend_to_clause
+
+    text = "hey are you ok? that sounds really hard"
+    spans = words(text)
+    bounds = clause_bounds(text, spans)
+    assert bounds[0] == (0, 3) and bounds[5] == (4, 7)
+    assert extend_to_clause((0, 1), [], bounds) == (0, 3)  # "hey are" -> "hey are you ok"
+    assert extend_to_clause((4, 6), [], bounds) == (4, 7)  # "...really" -> "...really hard"
+    assert extend_to_clause((6, 6), [], bounds) == (4, 7)  # left needs 2, right 1: both ok
+    assert extend_to_clause((7, 7), [], bounds) == (7, 7)  # 3 words to the left: stays crisp
+    assert extend_to_clause((2, 3), [(0, 0)], bounds) == (2, 3)  # never swallows another span

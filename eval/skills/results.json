@@ -1430,6 +1430,13 @@
       "ok": true
     },
     {
+      "text": "i'm really glad you told me",
+      "label": "validated",
+      "expect": "high",
+      "p": 0.995,
+      "ok": true
+    },
+    {
       "text": "i'll come over saturday if you want company",
       "label": "follow_up",
       "expect": "high",

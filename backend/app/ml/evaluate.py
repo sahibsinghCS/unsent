@@ -101,6 +101,7 @@ PROBES = [
     ("i keep thinking about him", "asked_directly", "low"),
     ("ok but have you tried just not thinking about him", "asked_directly", "low"),
     ("i'm not going anywhere", "follow_up", "high"),
+    ("i'm really glad you told me", "validated", "high"),
     ("i'll come over saturday if you want company", "follow_up", "high"),
     ("when you said disappear, did you mean you want to die?", "asked_directly", "high"),
 ]
