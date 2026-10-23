@@ -23,6 +23,7 @@ from backend.app.embed import get_embedder
 from backend.app.ml.data import SPLITS, data_hash, load_splits, to_xy
 from backend.app.ml.metrics import per_label_scores
 from backend.app.ml.model import SkillModel
+from backend.app.ml.uncertainty import tune_band, uncertainty_stats
 
 ARTIFACT = "skill_detector.joblib"
 META = "skill_detector.meta.json"
@@ -38,7 +39,10 @@ def train(data_dir: Path, out_dir: Path, seed: int = 0) -> dict:
         raise ValueError("train and val splits must both be non-empty")
     model = SkillModel(embedder=get_embedder().name, seed=seed)
     model.fit_base(*to_xy(splits["train"]))
-    model.fit_stackers(*to_xy(splits["val"]))
+    val_texts, val_contexts, val_y = to_xy(splits["val"])
+    model.fit_stackers(val_texts, val_contexts, val_y)
+    val = model.components(val_texts, val_contexts)
+    model.uncertain_band = tune_band(val.pa, val.pb, val.p, val_y)
 
     metrics = {}
     for name in ("val", "test"):
@@ -61,6 +65,8 @@ def train(data_dir: Path, out_dir: Path, seed: int = 0) -> dict:
         "trained_at": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
         "artifact_mb": round(size_mb, 2),
         "stacker_fallback_labels": [k for k, s in model.stackers.items() if s.fallback],
+        "uncertain_band": list(model.uncertain_band),
+        "uncertain_val": uncertainty_stats(val.pa, val.pb, val.p, val_y, model.uncertain_band),
         "metrics": metrics,
     }
     (out_dir / META).write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")

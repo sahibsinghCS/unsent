@@ -15,6 +15,7 @@ from backend.app.contracts import SkillLabel
 from backend.app.embed import embed
 from backend.app.ml.calibrate import Stacker
 from backend.app.ml.rules import gate_asked_directly
+from backend.app.ml.uncertainty import DEFAULT_BAND
 
 LABELS: tuple[SkillLabel, ...] = tuple(SkillLabel)
 
@@ -101,6 +102,7 @@ class SkillModel:
     model_a: dict[str, object] = field(default_factory=dict)
     model_b: dict[str, object] = field(default_factory=dict)
     stackers: dict[str, Stacker] = field(default_factory=dict)
+    uncertain_band: tuple[float, float] = DEFAULT_BAND  # tuned on val in train.py
 
     def fit_base(self, texts: list[str], contexts: list[str], y: np.ndarray) -> SkillModel:
         """Fit Model A and Model B on the training split. y is (n_rows × 10) of 0/1."""

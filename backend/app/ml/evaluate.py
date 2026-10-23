@@ -21,6 +21,7 @@ from backend.app.ml.calibrate import expected_calibration_error, reliability_cur
 from backend.app.ml.data import load_extra_test_sets, load_splits, to_xy  # noqa: E402
 from backend.app.ml.metrics import THRESHOLD, per_label_scores  # noqa: E402
 from backend.app.ml.model import LABELS, SkillModel  # noqa: E402
+from backend.app.ml.uncertainty import DEFAULT_BAND, uncertainty_stats  # noqa: E402
 from backend.app.stubs.skills import StubSkills  # noqa: E402
 
 SYSTEMS = ("keyword_baseline", "model_a", "model_b", "ensemble")
@@ -36,8 +37,13 @@ def baseline_proba(texts: list[str], contexts: list[str]) -> np.ndarray:
     )
 
 
-def score_rows(model: SkillModel, rows: list[dict]) -> dict:
-    """Per-label scores for every system plus calibration numbers on one set of rows."""
+def brier(probs: np.ndarray, y: np.ndarray) -> float:
+    """Mean squared gap between probability and the 0/1 truth over all row×label decisions."""
+    return float(np.mean((np.asarray(probs) - np.asarray(y)) ** 2))
+
+
+def score_rows(model: SkillModel, rows: list[dict], name: str = "test") -> dict:
+    """Per-label scores for every system plus calibration and uncertainty numbers on one set of rows."""
     texts, contexts, y = to_xy(rows)
     comp = model.components(texts, contexts)
     probs = {
@@ -47,15 +53,68 @@ def score_rows(model: SkillModel, rows: list[dict]) -> dict:
         "ensemble": comp.p,
     }
     before = (comp.pa + comp.pb) / 2
+    band = getattr(model, "uncertain_band", DEFAULT_BAND)
     return {
+        "name": name,
         "n": len(rows),
-        "scores": {name: per_label_scores(y, p) for name, p in probs.items()},
+        "scores": {system: per_label_scores(y, p) for system, p in probs.items()},
         "ece_before": round(expected_calibration_error(before, y), 4),
         "ece_after": round(expected_calibration_error(comp.p, y), 4),
+        "brier_before": round(brier(before, y), 4),
+        "brier_after": round(brier(comp.p, y), 4),
+        "uncertain": uncertainty_stats(comp.pa, comp.pb, comp.p, y, band),
+        "errors": top_errors(rows, comp.p, y),
         "_y": y,
         "_before": before,
         "_after": comp.p,
     }
+
+
+def top_errors(rows: list[dict], probs: np.ndarray, y: np.ndarray, k: int = 10) -> list[dict]:
+    """The k most confident wrong label decisions (for error analysis)."""
+    wrong = [
+        (abs(float(probs[i, j]) - y[i, j]), i, j)
+        for i in range(len(rows))
+        for j in range(len(LABELS))
+        if (probs[i, j] >= THRESHOLD) != (y[i, j] == 1)
+    ]
+    out = []
+    for _gap, i, j in sorted(wrong, key=lambda t: (-t[0], t[1], t[2]))[:k]:
+        out.append(
+            {
+                "id": rows[i]["id"],
+                "text": rows[i]["text"],
+                "label": LABELS[j].value,
+                "truth": bool(y[i, j]),
+                "p": round(float(probs[i, j]), 3),
+            }
+        )
+    return out
+
+
+# Hand-written probes from the integrator's review (not a test set: a sanity check reported as-is).
+PROBES = [
+    ("you seemed off at lunch", "follow_up", "low"),
+    ("ok i gotta go to school early tomorrow, talk later maybe", "follow_up", "low"),
+    ("are you thinking about quitting the group chat?", "asked_directly", "low"),
+    ("have you thought about quitting the team?", "asked_directly", "low"),
+    ("i keep thinking about him", "asked_directly", "low"),
+    ("ok but have you tried just not thinking about him", "asked_directly", "low"),
+    ("i'm not going anywhere", "follow_up", "high"),
+    ("i'll come over saturday if you want company", "follow_up", "high"),
+    ("when you said disappear, did you mean you want to die?", "asked_directly", "high"),
+]
+
+
+def run_probes(model: SkillModel) -> list[dict]:
+    texts = [t for t, _, _ in PROBES]
+    p = model.components(texts, [""] * len(texts)).p
+    out = []
+    for i, (text, label, expect) in enumerate(PROBES):
+        value = float(p[i, [lab.value for lab in LABELS].index(label)])
+        ok = value < THRESHOLD if expect == "low" else value >= THRESHOLD
+        out.append({"text": text, "label": label, "expect": expect, "p": round(value, 3), "ok": ok})
+    return out
 
 
 def _norm(text: str) -> str:
@@ -79,7 +138,7 @@ def plot_reliability(result: dict, path: Path) -> None:
         ece = result["ece_before" if key == "_before" else "ece_after"]
         ax.plot(x, obs, marker="o", color=color, label=f"{name}, ECE {ece:.3f}")
     ax.set(xlabel="predicted probability", ylabel="observed frequency", xlim=(0, 1), ylim=(0, 1))
-    ax.set_title(f"Reliability on test (n={result['n']} messages × 10 labels)")
+    ax.set_title(f"Reliability on {result['name']} (n={result['n']} messages × 10 labels)")
     ax.legend(loc="upper left", fontsize=8)
     fig.tight_layout()
     fig.savefig(path, dpi=120)
@@ -98,7 +157,7 @@ def plot_confusion(result: dict, path: Path) -> None:
         ax.set_xticks([0, 1], ["pred no", "pred yes"], fontsize=7)
         ax.set_yticks([0, 1], ["true no", "true yes"], fontsize=7)
         ax.set_title(label.value, fontsize=9)
-    fig.suptitle(f"Ensemble confusion matrices on test (n={result['n']})")
+    fig.suptitle(f"Ensemble confusion matrices on {result['name']} (n={result['n']})")
     fig.tight_layout()
     fig.savefig(path, dpi=110)
     plt.close(fig)
@@ -120,8 +179,8 @@ def plot_f1(result: dict, path: Path) -> None:
             label=f"{name} (macro-F1 {scores['macro_f1']:.2f})",
         )
     ax.set_xticks(x, labels, rotation=30, ha="right", fontsize=8)
-    ax.set(ylabel="F1 on test", ylim=(0, 1.18))
-    ax.set_title(f"Per-label F1 on the held-out test split (n={result['n']})")
+    ax.set(ylabel=f"F1 on {result['name']}", ylim=(0, 1.18))
+    ax.set_title(f"Per-label F1 on held-out {result['name']} (n={result['n']})")
     ax.legend(fontsize=8, ncol=4, loc="upper center")
     fig.tight_layout()
     fig.savefig(path, dpi=110)
@@ -164,6 +223,14 @@ def to_records(results: dict[str, dict], notes: str) -> list[dict]:
         records.append(
             rec("ece_after_calibration", result["ece_after"], n, split, "stacked + Platt")
         )
+        records.append(rec("brier_before_calibration", result["brier_before"], n, split))
+        records.append(rec("brier_after_calibration", result["brier_after"], n, split))
+        u = result["uncertain"]
+        detail = (
+            f"band {u['band']}; {u['flagged_decisions']} flagged decisions; error rate flagged "
+            f"{u['flagged_error_rate']} vs unflagged {u['unflagged_error_rate']}"
+        )
+        records.append(rec("uncertain_flag_rate", u["flag_rate_per_message"], n, split, detail))
     return records
 
 
@@ -172,17 +239,21 @@ def run(model: SkillModel, data_dir: Path, report_path: Path, figure_dir: Path, 
     splits = load_splits(data_dir)
     if not splits["test"]:
         raise ValueError("empty test split")
-    results = {"test": score_rows(model, splits["test"])}
+    results = {"val": score_rows(model, splits["val"], "val")} if splits["val"] else {}
+    results["test"] = score_rows(model, splits["test"], "test")
     unseen = unseen_rows(splits["test"], splits["train"] + splits["val"])
     if unseen and len(unseen) < len(splits["test"]):
-        results["test_unseen_text"] = score_rows(model, unseen)
+        results["test_unseen_text"] = score_rows(model, unseen, "test_unseen_text")
     for name, rows in load_extra_test_sets(data_dir).items():
-        results[name] = score_rows(model, rows)
+        results[name] = score_rows(model, rows, name)
 
     figure_dir.mkdir(parents=True, exist_ok=True)
-    plot_reliability(results["test"], figure_dir / "reliability.png")
-    plot_confusion(results["test"], figure_dir / "confusion.png")
-    plot_f1(results["test"], figure_dir / "f1_comparison.png")
+    for split in ("test", "test_freeform"):
+        if split in results:
+            suffix = "" if split == "test" else "_freeform"
+            plot_reliability(results[split], figure_dir / f"reliability{suffix}.png")
+            plot_confusion(results[split], figure_dir / f"confusion{suffix}.png")
+            plot_f1(results[split], figure_dir / f"f1_comparison{suffix}.png")
 
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(
@@ -191,5 +262,6 @@ def run(model: SkillModel, data_dir: Path, report_path: Path, figure_dir: Path, 
     public = {
         split: {k: v for k, v in r.items() if not k.startswith("_")} for split, r in results.items()
     }
+    public["probes"] = run_probes(model)
     (figure_dir / "results.json").write_text(json.dumps(public, indent=2) + "\n", encoding="utf-8")
     return public

@@ -44,3 +44,29 @@ def test_detector_applies_the_gate(detector):
     assert probs[SkillLabel.ASKED_DIRECTLY] <= ASKED_DIRECTLY_CAP
     comp = detector.components(["thinking about thinking about it"], [])
     assert np.all(comp.p[:, 2] <= ASKED_DIRECTLY_CAP)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "is this the kind of sad where you think about dying?",
+        "do you have thoughts about not waking up tomorrow?",
+        "okay, honest question. do you want to stay alive right now?",
+        "when you say you're done, do you mean with life?",
+        "when you said disappear, did you mean you want to die?",
+    ],
+)
+def test_more_explicit_phrasings(text):
+    assert has_explicit_term(text)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "are you thinking about quitting the group chat?",
+        "have you thought about quitting the team?",
+        "i keep thinking about him",
+    ],
+)
+def test_quitting_and_thinking_are_not_direct_asks(text):
+    assert not has_explicit_term(text)
