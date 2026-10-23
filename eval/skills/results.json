@@ -1467,6 +1467,34 @@
       "expect": "high",
       "p": 0.988,
       "ok": true
+    },
+    {
+      "text": "no tienes que pasar por esto solo, aqu\u00ed estoy",
+      "label": "encouraged_help",
+      "expect": "high",
+      "p": 0.295,
+      "ok": false
+    },
+    {
+      "text": "you're not alone in this",
+      "label": "encouraged_help",
+      "expect": "high",
+      "p": 0.195,
+      "ok": false
+    },
+    {
+      "text": "be honest, are you having thoughts of ending it?",
+      "label": "almost_asked",
+      "expect": "high",
+      "p": 1.0,
+      "ok": true
+    },
+    {
+      "text": "are you thinking about quitting the team?",
+      "label": "almost_asked",
+      "expect": "low",
+      "p": 0.0,
+      "ok": true
     }
   ]
 }

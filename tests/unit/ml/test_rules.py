@@ -70,3 +70,40 @@ def test_more_explicit_phrasings(text):
 )
 def test_quitting_and_thinking_are_not_direct_asks(text):
     assert not has_explicit_term(text)
+
+
+def test_almost_asked_needs_both_models_and_no_explicit_term():
+    from backend.app.ml.rules import almost_asked, hint_phrase
+
+    hinted = "be honest with me, are you having thoughts of ending it?"
+    assert almost_asked(hinted, 0.78, 0.96)  # both base models say "ask"
+    assert not almost_asked(
+        "are you thinking about quitting the team?", 0.47, 0.97
+    )  # one isn't enough
+    assert not almost_asked("are you thinking about suicide?", 0.9, 0.9)  # explicit: a real ask
+    assert not almost_asked("are you thinking about moving back?", 0.9, 0.9)  # no hint phrase
+    assert almost_asked("do you want to end it?", 0.67, 0.69)
+    assert hint_phrase(hinted) == "ending it"
+    assert hint_phrase("¿quieres desaparecer?") == "desaparecer"
+    assert hint_phrase("are you ok?") is None
+
+
+def test_components_flag_almost_asked_without_changing_probabilities(detector, monkeypatch):
+    from backend.app.ml import model as model_module
+
+    model = detector.model
+    text = "do you want to end it?"
+    plain = model.components([text], [""])
+    assert plain.almost_asked is not None and plain.almost_asked.shape == (1,)
+    # force the base models to read it as an ask: the flag fires and p stays capped
+    real = model.scored_proba
+
+    def fake(texts, contexts):
+        pa, pb = real(texts, contexts)
+        pa[:, 2] = pb[:, 2] = 0.95
+        return pa, pb
+
+    monkeypatch.setattr(model, "scored_proba", fake)
+    forced = model.components([text], [""])
+    assert forced.almost_asked[0] and forced.p[0, 2] <= ASKED_DIRECTLY_CAP
+    assert model_module.Components is type(forced)

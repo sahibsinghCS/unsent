@@ -39,6 +39,8 @@ TEXT: dict[str, dict] = {
             "check_in": "the first message didn't check in",
         },
         "at": "At “{text}”: {reason}.",
+        "almost_asked": "Close: you hinted at it (“{hint}”). Next time say it plainly: “are you thinking "
+        "about killing yourself?” Saying the word shows you can handle the answer.",
         "never_got": "You never got to {skill}.",
         "promised": "You promised to keep it secret.",
         "referred_not_persuaded": "You connected them with someone who can help. "
@@ -93,6 +95,8 @@ TEXT: dict[str, dict] = {
             "check_in": "el primer mensaje no preguntó cómo estaba",
         },
         "at": "En “{text}”: {reason}.",
+        "almost_asked": "Casi: lo insinuaste (“{hint}”). La próxima vez dilo claro: “¿estás pensando "
+        "en suicidarte?” Decir la palabra le muestra que puedes escuchar la respuesta.",
         "never_got": "Nunca llegaste a {skill}.",
         "promised": "Prometiste guardar el secreto.",
         "referred_not_persuaded": "Le conectaste con alguien que puede ayudar. La próxima vez, dile "

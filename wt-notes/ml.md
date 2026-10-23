@@ -20,10 +20,20 @@
 - Kappa CLI (`python -m backend.app.ml.kappa`), seeded 1,000-resample bootstrap CI.
 
 ## In progress
+- HOLD: retrain once when the data lane's ~80-row train-only batch (Spanish + English indirect
+  encouragement) is merged; probes already added ("no tienes que pasar por esto solo, aquí estoy" and
+  "you're not alone in this" → encouraged_help high, currently 0.30 / 0.20; almost-asked probes OK).
 - Done: /finish speed-up (see Numbers). No pipeline hook needed.
 - Later: kappa when counselor labels exist.
 
 ## Decisions
+- "Almost asked" (integrator request): `rules.almost_asked` = no explicit term AND Model A ≥ 0.5 AND Model B
+  ≥ 0.5 AND a recognised hint phrase (`rules.HINT_PHRASES`). Deviation from the request: the "or stacked p ≥
+  0.5 before the cap" branch and the no-hint-phrase case were dropped, because they produced false coaching
+  notes ("are you thinking about quitting the team?", "...moving back?"); now 0 flags on all 1,330 labeled
+  rows, and the three hinted probes (EN/EN/ES) fire. Critic: per-message note (EN/ES) and the rewrite target
+  becomes ASK; not after the friend was already asked; negatives (secrecy/dismissed/advice) keep priority.
+  Probabilities and the engine are untouched.
 - Embedding cache misses stay one text at a time (integrator's decision, not an open request). Batched rows
   differ from per-text vectors by ~1e-6, so a cached vector would depend on which request first embedded the
   text, and the same chat could score differently depending on earlier traffic; that breaks "same input → same

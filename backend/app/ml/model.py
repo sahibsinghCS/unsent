@@ -16,7 +16,7 @@ from sklearn.pipeline import FeatureUnion
 from backend.app.contracts import POSITIVE_LABELS, SkillLabel
 from backend.app.embed import embed
 from backend.app.ml.calibrate import Stacker
-from backend.app.ml.rules import gate_asked_directly
+from backend.app.ml.rules import almost_asked, gate_asked_directly
 from backend.app.ml.uncertainty import DEFAULT_BAND
 
 LABELS: tuple[SkillLabel, ...] = tuple(SkillLabel)
@@ -118,6 +118,9 @@ class Components:
     pa: np.ndarray
     pb: np.ndarray
     p: np.ndarray
+    almost_asked: np.ndarray | None = (
+        None  # rows the explicit-term rule capped although models said "ask"
+    )
 
 
 @dataclass
@@ -201,4 +204,7 @@ class SkillModel:
         # ML + a rule from the label definition (see ml/rules.py); Model A and B stay raw.
         j = self.labels.index(SkillLabel.ASKED_DIRECTLY.value)
         p[:, j] = gate_asked_directly(texts, list(p[:, j]))
-        return Components(pa=pa, pb=pb, p=p)
+        almost = np.array(
+            [almost_asked(text, pa[i, j], pb[i, j]) for i, text in enumerate(texts)], dtype=bool
+        )
+        return Components(pa=pa, pb=pb, p=p, almost_asked=almost)
