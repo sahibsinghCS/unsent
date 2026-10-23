@@ -12,13 +12,17 @@ test setup. How each number is measured: `docs/how/*.md`.
 | What | Result | Compared with | n | Split |
 |---|---|---|---|---|
 | “Asking directly” blocked by mistake | **0.0%** |  | 37 | test |
+| Unsafe friend lines shown under attack | **0** |  | 10021 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Practicer's own crisis caught | **100.0%** |  | 37 | test |
-| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.971** | 0.827 (word list alone) | 172 | test |
-| Skill scoring on replies it never saw (macro-F1) | **0.818** | 0.48 (keyword matching) | 171 | test_freeform |
-| Confidence error (ECE, lower is better) | **0.019** | 0.115 (before calibration) | 171 | test_freeform |
-| Wrong when it says “unsure” | **62.5%** | 3.5% (when it isn't flagged) | 32 | test_freeform |
+| Skill scoring on replies it never saw (macro-F1) | **0.822** | 0.49 (keyword matching) | 221 | test_freeform |
+| Wrong when it says “unsure” | **39.2%** | 2.9% (when it isn't flagged) | 74 | test_freeform |
+| Confidence error (ECE, lower is better) | **0.012** | 0.124 (before calibration) | 221 | test_freeform |
 | Messages for a great helper to reach a guarded friend | **5 messages** |  | 3 | scripted_labels |
 | AI replies leaking a locked secret: caught | **96.0%** |  | 43 | leak_set_test |
+| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.971** | 0.827 (word list alone) | 172 | test |
+| Red-team attacks handled as expected | **74.8%** |  | 250 | attack_bank [fastembed] |
+| Still right when messages are scrambled | **94.3%** |  | 1636 | guardian test split [fastembed] |
+| Direct questions blocked mid-conversation | **0** |  | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Agreement between two separate labeling passes (κ) | **0.887** |  | 474 | freeform |
 
 ## Red-team headline
@@ -287,119 +291,119 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `pooling_whole_macro_f1` | 0.921 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_whole_ece` | 0.013 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_whole_brier` | 0.018 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_whole_validated_f1` | 0.938 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_whole_macro_f1` | 0.959 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_whole_ece` | 0.016 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_whole_brier` | 0.009 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_whole_validated_f1` | 0.99 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_whole_macro_f1` | 0.818 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_whole_ece` | 0.019 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_whole_brier` | 0.035 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_whole_validated_f1` | 0.692 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_macro_f1` | 0.916 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_pooled_ece` | 0.011 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_pooled_brier` | 0.018 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_pooled_validated_f1` | 0.95 | 142 | val_oof | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
-| `pooling_pooled_macro_f1` | 0.956 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_ece` | 0.011 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_brier` | 0.008 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_validated_f1` | 1 | 124 | test | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_macro_f1` | 0.802 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_ece` | 0.015 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_brier` | 0.034 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
-| `pooling_pooled_validated_f1` | 0.72 | 171 | test_freeform | clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_macro_f1` | 0.923 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_whole_ece` | 0.011 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_whole_brier` | 0.017 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_whole_validated_f1` | 0.944 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_whole_macro_f1` | 0.965 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_ece` | 0.012 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_brier` | 0.008 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_validated_f1` | 1 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_macro_f1` | 0.841 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_ece` | 0.012 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_brier` | 0.03 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_whole_validated_f1` | 0.7 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_macro_f1` | 0.931 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_pooled_ece` | 0.01 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_pooled_brier` | 0.015 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_pooled_validated_f1` | 0.956 | 152 | val_oof | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0 |
+| `pooling_pooled_macro_f1` | 0.969 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_ece` | 0.012 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_brier` | 0.007 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_validated_f1` | 1 | 133 | test | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_macro_f1` | 0.822 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_ece` | 0.012 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_brier` | 0.029 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
+| `pooling_pooled_validated_f1` | 0.716 | 221 | test_freeform | clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide |
 
 ### `eval/reports/ml_skills.json`
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `macro_f1_keyword_baseline` | 0.548 | 142 | val | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_a` | 0.812 | 142 | val | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_b` | 0.895 | 142 | val | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_ensemble` | 0.926 | 142 | val | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_checked_in` | 0.842 | 142 | val | ensemble; precision 0.8889, recall 0.8, support 30; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_validated` | 0.951 | 142 | val | ensemble; precision 0.9512, recall 0.9512, support 41; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_asked_directly` | 0.983 | 142 | val | ensemble; precision 1.0, recall 0.9655, support 29; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_encouraged_help` | 1 | 142 | val | ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_adult` | 0.933 | 142 | val | ensemble; precision 0.9545, recall 0.913, support 23; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_988` | 1 | 142 | val | ensemble; precision 1.0, recall 1.0, support 12; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_follow_up` | 0.946 | 142 | val | ensemble; precision 0.9459, recall 0.9459, support 37; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_dismissed` | 0.839 | 142 | val | ensemble; precision 0.8667, recall 0.8125, support 16; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_advice_dump` | 0.769 | 142 | val | ensemble; precision 0.8333, recall 0.7143, support 14; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_promised_secrecy` | 1 | 142 | val | ensemble; precision 1.0, recall 1.0, support 15; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_before_calibration` | 0.128 | 142 | val | avg of A and B; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_after_calibration` | 0.017 | 142 | val | stacked + Platt; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_before_calibration` | 0.041 | 142 | val | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_after_calibration` | 0.015 | 142 | val | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_flag_rate` | 0.085 | 142 | val | band [0.35, 0.65]; 12 flagged decisions; error rate flagged 0.75 vs unflagged 0.0163; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_flagged` | 0.75 | 12 | val | share of flagged label decisions that were wrong; n = decisions; band [0.35, 0.65]; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_unflagged` | 0.016 | 1408 | val | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_keyword_baseline` | 0.557 | 124 | test | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_a` | 0.849 | 124 | test | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_b` | 0.948 | 124 | test | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_ensemble` | 0.959 | 124 | test | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_checked_in` | 1 | 124 | test | ensemble; precision 1.0, recall 1.0, support 12; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_validated` | 0.99 | 124 | test | ensemble; precision 1.0, recall 0.9792, support 48; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_asked_directly` | 1 | 124 | test | ensemble; precision 1.0, recall 1.0, support 33; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_encouraged_help` | 0.958 | 124 | test | ensemble; precision 1.0, recall 0.92, support 25; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_adult` | 0.979 | 124 | test | ensemble; precision 1.0, recall 0.9583, support 24; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_988` | 0.947 | 124 | test | ensemble; precision 1.0, recall 0.9, support 10; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_follow_up` | 0.957 | 124 | test | ensemble; precision 0.9429, recall 0.9706, support 34; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_dismissed` | 0.8 | 124 | test | ensemble; precision 1.0, recall 0.6667, support 12; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_advice_dump` | 0.957 | 124 | test | ensemble; precision 1.0, recall 0.9167, support 12; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_promised_secrecy` | 1 | 124 | test | ensemble; precision 1.0, recall 1.0, support 16; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_before_calibration` | 0.125 | 124 | test | avg of A and B; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_after_calibration` | 0.016 | 124 | test | stacked + Platt; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_before_calibration` | 0.032 | 124 | test | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_after_calibration` | 0.009 | 124 | test | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_flag_rate` | 0.081 | 124 | test | band [0.35, 0.65]; 11 flagged decisions; error rate flagged 0.4545 vs unflagged 0.0065; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_flagged` | 0.455 | 11 | test | share of flagged label decisions that were wrong; n = decisions; band [0.35, 0.65]; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_unflagged` | 0.006 | 1229 | test | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_keyword_baseline` | 0.551 | 116 | test_unseen_text | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_a` | 0.847 | 116 | test_unseen_text | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_b` | 0.947 | 116 | test_unseen_text | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_ensemble` | 0.958 | 116 | test_unseen_text | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_checked_in` | 1 | 116 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 11; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_validated` | 0.989 | 116 | test_unseen_text | ensemble; precision 1.0, recall 0.9787, support 47; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_asked_directly` | 1 | 116 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 33; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_encouraged_help` | 0.955 | 116 | test_unseen_text | ensemble; precision 1.0, recall 0.913, support 23; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_adult` | 0.978 | 116 | test_unseen_text | ensemble; precision 1.0, recall 0.9565, support 23; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_988` | 0.947 | 116 | test_unseen_text | ensemble; precision 1.0, recall 0.9, support 10; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_follow_up` | 0.954 | 116 | test_unseen_text | ensemble; precision 0.9394, recall 0.9688, support 32; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_dismissed` | 0.8 | 116 | test_unseen_text | ensemble; precision 1.0, recall 0.6667, support 12; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_advice_dump` | 0.957 | 116 | test_unseen_text | ensemble; precision 1.0, recall 0.9167, support 12; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_promised_secrecy` | 1 | 116 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 16; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_before_calibration` | 0.125 | 116 | test_unseen_text | avg of A and B; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_after_calibration` | 0.016 | 116 | test_unseen_text | stacked + Platt; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_before_calibration` | 0.033 | 116 | test_unseen_text | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_after_calibration` | 0.01 | 116 | test_unseen_text | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_flag_rate` | 0.086 | 116 | test_unseen_text | band [0.35, 0.65]; 11 flagged decisions; error rate flagged 0.4545 vs unflagged 0.007; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_flagged` | 0.455 | 11 | test_unseen_text | share of flagged label decisions that were wrong; n = decisions; band [0.35, 0.65]; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_unflagged` | 0.007 | 1149 | test_unseen_text | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_keyword_baseline` | 0.48 | 171 | test_freeform | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_a` | 0.7 | 171 | test_freeform | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_model_b` | 0.735 | 171 | test_freeform | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `macro_f1_ensemble` | 0.818 | 171 | test_freeform | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_checked_in` | 0.711 | 171 | test_freeform | ensemble; precision 0.9412, recall 0.5714, support 28; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_validated` | 0.692 | 171 | test_freeform | ensemble; precision 0.7714, recall 0.6279, support 43; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_asked_directly` | 1 | 171 | test_freeform | ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_encouraged_help` | 0.8 | 171 | test_freeform | ensemble; precision 1.0, recall 0.6667, support 9; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_adult` | 0.857 | 171 | test_freeform | ensemble; precision 1.0, recall 0.75, support 16; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_referred_988` | 1 | 171 | test_freeform | ensemble; precision 1.0, recall 1.0, support 3; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_follow_up` | 0.8 | 171 | test_freeform | ensemble; precision 0.8667, recall 0.7429, support 35; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_dismissed` | 0.692 | 171 | test_freeform | ensemble; precision 0.9, recall 0.5625, support 16; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_advice_dump` | 0.773 | 171 | test_freeform | ensemble; precision 0.7391, recall 0.8095, support 21; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `f1_promised_secrecy` | 0.857 | 171 | test_freeform | ensemble; precision 0.75, recall 1.0, support 9; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_before_calibration` | 0.115 | 171 | test_freeform | avg of A and B; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `ece_after_calibration` | 0.019 | 171 | test_freeform | stacked + Platt; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_before_calibration` | 0.055 | 171 | test_freeform | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `brier_after_calibration` | 0.035 | 171 | test_freeform | trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_flag_rate` | 0.181 | 171 | test_freeform | band [0.35, 0.65]; 32 flagged decisions; error rate flagged 0.625 vs unflagged 0.0346; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_flagged` | 0.625 | 32 | test_freeform | share of flagged label decisions that were wrong; n = decisions; band [0.35, 0.65]; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
-| `uncertain_error_rate_unflagged` | 0.035 | 1678 | test_freeform | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T00:13:46+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 909506134301 |
+| `macro_f1_keyword_baseline` | 0.551 | 152 | val | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_a` | 0.775 | 152 | val | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_b` | 0.896 | 152 | val | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_ensemble` | 0.951 | 152 | val | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_checked_in` | 0.909 | 152 | val | ensemble; precision 1.0, recall 0.8333, support 30; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_validated` | 0.956 | 152 | val | ensemble; precision 0.9556, recall 0.9556, support 45; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_asked_directly` | 1 | 152 | val | ensemble; precision 1.0, recall 1.0, support 30; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_encouraged_help` | 1 | 152 | val | ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_adult` | 0.96 | 152 | val | ensemble; precision 1.0, recall 0.9231, support 26; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_988` | 0.947 | 152 | val | ensemble; precision 0.9474, recall 0.9474, support 19; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_follow_up` | 0.974 | 152 | val | ensemble; precision 1.0, recall 0.95, support 40; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_dismissed` | 0.839 | 152 | val | ensemble; precision 0.9286, recall 0.7647, support 17; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_advice_dump` | 0.923 | 152 | val | ensemble; precision 1.0, recall 0.8571, support 14; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_promised_secrecy` | 1 | 152 | val | ensemble; precision 1.0, recall 1.0, support 15; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_before_calibration` | 0.13 | 152 | val | avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_after_calibration` | 0.01 | 152 | val | stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_before_calibration` | 0.043 | 152 | val | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_after_calibration` | 0.012 | 152 | val | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_flag_rate` | 0.138 | 152 | val | band [0.2, 0.8]; 23 flagged decisions; error rate flagged 0.1739 vs unflagged 0.012; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_flagged` | 0.174 | 23 | val | share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_unflagged` | 0.012 | 1497 | val | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_keyword_baseline` | 0.561 | 133 | test | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_a` | 0.83 | 133 | test | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_b` | 0.966 | 133 | test | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_ensemble` | 0.969 | 133 | test | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_checked_in` | 1 | 133 | test | ensemble; precision 1.0, recall 1.0, support 12; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_validated` | 1 | 133 | test | ensemble; precision 1.0, recall 1.0, support 51; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_asked_directly` | 1 | 133 | test | ensemble; precision 1.0, recall 1.0, support 33; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_encouraged_help` | 1 | 133 | test | ensemble; precision 1.0, recall 1.0, support 27; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_adult` | 1 | 133 | test | ensemble; precision 1.0, recall 1.0, support 27; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_988` | 0.933 | 133 | test | ensemble; precision 1.0, recall 0.875, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_follow_up` | 0.97 | 133 | test | ensemble; precision 1.0, recall 0.9412, support 34; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_dismissed` | 0.833 | 133 | test | ensemble; precision 1.0, recall 0.7143, support 14; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_advice_dump` | 0.957 | 133 | test | ensemble; precision 1.0, recall 0.9167, support 12; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_promised_secrecy` | 1 | 133 | test | ensemble; precision 1.0, recall 1.0, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_before_calibration` | 0.128 | 133 | test | avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_after_calibration` | 0.012 | 133 | test | stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_before_calibration` | 0.032 | 133 | test | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_after_calibration` | 0.007 | 133 | test | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_flag_rate` | 0.113 | 133 | test | band [0.2, 0.8]; 15 flagged decisions; error rate flagged 0.0667 vs unflagged 0.0061; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_flagged` | 0.067 | 15 | test | share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_unflagged` | 0.006 | 1315 | test | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_keyword_baseline` | 0.555 | 124 | test_unseen_text | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_a` | 0.83 | 124 | test_unseen_text | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_b` | 0.968 | 124 | test_unseen_text | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_ensemble` | 0.969 | 124 | test_unseen_text | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_checked_in` | 1 | 124 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 11; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_validated` | 1 | 124 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 50; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_asked_directly` | 1 | 124 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 33; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_encouraged_help` | 1 | 124 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 25; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_adult` | 1 | 124 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 25; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_988` | 0.933 | 124 | test_unseen_text | ensemble; precision 1.0, recall 0.875, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_follow_up` | 0.968 | 124 | test_unseen_text | ensemble; precision 1.0, recall 0.9375, support 32; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_dismissed` | 0.833 | 124 | test_unseen_text | ensemble; precision 1.0, recall 0.7143, support 14; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_advice_dump` | 0.957 | 124 | test_unseen_text | ensemble; precision 1.0, recall 0.9167, support 12; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_promised_secrecy` | 1 | 124 | test_unseen_text | ensemble; precision 1.0, recall 1.0, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_before_calibration` | 0.13 | 124 | test_unseen_text | avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_after_calibration` | 0.013 | 124 | test_unseen_text | stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_before_calibration` | 0.032 | 124 | test_unseen_text | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_after_calibration` | 0.007 | 124 | test_unseen_text | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_flag_rate` | 0.121 | 124 | test_unseen_text | band [0.2, 0.8]; 15 flagged decisions; error rate flagged 0.0667 vs unflagged 0.0065; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_flagged` | 0.067 | 15 | test_unseen_text | share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_unflagged` | 0.006 | 1225 | test_unseen_text | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_keyword_baseline` | 0.49 | 221 | test_freeform | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_a` | 0.695 | 221 | test_freeform | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_model_b` | 0.752 | 221 | test_freeform | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `macro_f1_ensemble` | 0.822 | 221 | test_freeform | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_checked_in` | 0.667 | 221 | test_freeform | ensemble; precision 0.8, recall 0.5714, support 28; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_validated` | 0.716 | 221 | test_freeform | ensemble; precision 0.8286, recall 0.6304, support 46; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_asked_directly` | 1 | 221 | test_freeform | ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_encouraged_help` | 0.692 | 221 | test_freeform | ensemble; precision 0.9, recall 0.5625, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_adult` | 0.971 | 221 | test_freeform | ensemble; precision 1.0, recall 0.9429, support 35; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_referred_988` | 0.96 | 221 | test_freeform | ensemble; precision 1.0, recall 0.9231, support 26; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_follow_up` | 0.795 | 221 | test_freeform | ensemble; precision 0.8919, recall 0.7174, support 46; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_dismissed` | 0.78 | 221 | test_freeform | ensemble; precision 0.8, recall 0.7619, support 21; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_advice_dump` | 0.739 | 221 | test_freeform | ensemble; precision 0.68, recall 0.8095, support 21; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `f1_promised_secrecy` | 0.9 | 221 | test_freeform | ensemble; precision 0.8182, recall 1.0, support 9; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_before_calibration` | 0.124 | 221 | test_freeform | avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `ece_after_calibration` | 0.012 | 221 | test_freeform | stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_before_calibration` | 0.053 | 221 | test_freeform | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `brier_after_calibration` | 0.029 | 221 | test_freeform | trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_flag_rate` | 0.299 | 221 | test_freeform | band [0.2, 0.8]; 74 flagged decisions; error rate flagged 0.3919 vs unflagged 0.029; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_flagged` | 0.392 | 74 | test_freeform | share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
+| `uncertain_error_rate_unflagged` | 0.029 | 2136 | test_freeform | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284 |
 
 
 ## engine
@@ -600,6 +604,27 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `share_all_5grams_in_train` | 0.072 | 152 | val | share of rows whose every word 5-gram also occurs in train (lower is better) |
 | `share_all_5grams_in_train` | 0.226 | 133 | test | share of rows whose every word 5-gram also occurs in train (lower is better) |
 | `share_all_5grams_in_train` | 0 | 221 | test_freeform | share of rows whose every word 5-gram also occurs in train (lower is better) |
+
+
+## whatif
+
+### `eval/reports/whatif_rollouts.json`
+
+| Metric | Value | n | Split | Notes |
+|---|---|---|---|---|
+| `cases_with_paths` | 1 | 90 | scripted | share of weak points where >= 1 verified candidate exists (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `three_diverse_paths` | 1 | 90 | scripted | share with 3 paths of 3 different strategies (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `best_beats_actual_value` | 1 | 90 | scripted | best simulated path value > value of what was actually said, same horizon (1 + 3 helper turns) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `best_beats_actual_trust` | 1 | 90 | scripted | final trust of best path > final trust actually reached, same horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `mean_trust_gain` | 76.16 | 90 | scripted | mean (best path final trust - actual final trust), trust points 0-100 (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `best_at_least_textbook` | 1 | 90 | scripted | best path value >= a hand-written textbook continuation (validate, ask, refer, follow up) replayed through the same engine from the same message (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `mean_value_vs_textbook` | 57.48 | 90 | scripted | mean (best path value - textbook continuation value); value formula in docs/how/whatif.md (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `best_path_success` | 1 | 90 | scripted | share of best paths that end with the friend accepting help (ended_success) within the horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `latency_p50_ms` | 491.913 | 90 | scripted | simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `latency_p95_ms` | 583.668 | 90 | scripted | simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `deterministic` | 1 | 90 | scripted | two runs give identical results (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `unsafe_candidates` | 0 | 885 | scripted | helper messages shown in paths that Guardian.check_user would not let through (n = helper messages) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
+| `unsafe_friend_lines` | 0 | 2183 | scripted | friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed) |
 
 
 ## deploy
