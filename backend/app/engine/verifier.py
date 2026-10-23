@@ -31,6 +31,7 @@ from backend.app.contracts import (
 )
 from backend.app.embed import cosine, embed_one
 from backend.app.engine.actor import fact_levels, load_bank
+from backend.app.engine.language import wrong_language
 from backend.app.engine.state import default_config
 
 MAX_BUBBLES = 3
@@ -40,21 +41,36 @@ LEVELS = range(5)
 # Method/means words that must never appear in anything the friend says (docs/SAFE_MESSAGING.md).
 METHOD_WORDS = re.compile(
     r"\b(pills?|overdose|gun|rope|noose|hang(?:ing)? myself|jump(?:ing)? off|bridge|razor|blade|"
-    r"cut(?:ting)? myself|bleach|poison|train tracks|wrists?)\b",
+    r"cut(?:ting)? myself|bleach|poison|train tracks|wrists?|"
+    # Spanish
+    r"pastillas?|sobredosis|pistola|arma|cuerda|soga|ahorcarme|tirarme|puente|navaja|cuchilla|"
+    r"cortarme|cloro|veneno|v[ií]as del tren|mu[nñ]ecas?)\b",
     re.IGNORECASE,
 )
 # The friend must never step out of the role-play.
 PERSONA_BREAK = re.compile(
-    r"\b(as an ai|an ai\b|language model|assistant|simulation|chatbot|i'?m not real)",
+    r"\b(as an ai|an ai\b|language model|assistant|simulation|chatbot|i'?m not real\b|"
+    # Spanish
+    r"como (?:una )?ia\b|una ia\b|inteligencia artificial|modelo de lenguaje|asistente|"
+    r"simulaci[oó]n|no soy real\b|soy un bot)",
     re.IGNORECASE,
 )
 
-# The friend never gives advice or resources: getting them to help is the HELPER's job (and the skill
-# being practised). Mostly matters for LLM-written replies.
+# The friend never gives advice: getting them to help is the HELPER's job (and the skill being
+# practised). Mostly matters for LLM-written replies.
 ADVICE = re.compile(
-    r"\b(988|hotline|crisis (?:line|text)|lifeline|(?:call|text) (?:a|the) (?:helpline|crisis)|"
-    r"you should (?:see|talk to|get|reach out)|(?:see|talk to) a (?:therapist|professional)|"
-    r"seek (?:professional )?help|get professional help|trusted adult)",
+    r"\b((?:call|text) (?:a|the) (?:helpline|crisis)|you should (?:see|talk to|get|reach out)|"
+    r"(?:see|talk to) a (?:therapist|professional)|seek (?:professional )?help|"
+    r"get professional help|trusted adult|"
+    # Spanish
+    r"deber[ií]as (?:ver|hablar|buscar|llamar|ir)|busca(?:r)? ayuda|ayuda profesional|"
+    r"(?:ve|habla) (?:con|a) (?:un|una) (?:terapeuta|psic[oó]log[oa]|profesional)|adulto de confianza)",
+    re.IGNORECASE,
+)
+# Naming crisis resources is also the helper's job, until the friend accepts help (level 4), where
+# "ok, we can text 988 together" is exactly the goal.
+RESOURCE = re.compile(
+    r"\b(988|hotline|crisis (?:line|text)|lifeline|l[ií]nea (?:de )?(?:crisis|ayuda|prevenci[oó]n))",
     re.IGNORECASE,
 )
 # Backstop for the most important gate: before level 3 the friend must not disclose suicidal thoughts,
@@ -62,7 +78,10 @@ ADVICE = re.compile(
 SUICIDAL_DISCLOSURE = re.compile(
     r"(suicid|kill(?:ing)? myself|(?:not|n'?t) (?:want(?:ing)?|wanna) (?:to )?(?:be alive|live|be here)|"
     r"not (?:being|be) (?:here|alive)|wish i (?:was|were)n'?t (?:here|alive)|wasn'?t alive|"
-    r"want(?:ed)? to die|end it all|disappear)",
+    r"want(?:ed)? to die|end it all|disappear|"
+    # Spanish
+    r"matarme|quitarme la vida|no quiero (?:estar|seguir) (?:aqu[ií]|viv[oa])|no quiero vivir|"
+    r"no (?:estar|existir) m[aá]s|ya no estar|quiero morir|morirme|desaparecer)",
     re.IGNORECASE,
 )
 
@@ -76,7 +95,7 @@ REQUIRED_EVERY_LEVEL = (
 )
 
 
-def bubble_problems(bubbles: Sequence[str], guardian: GuardianService) -> list[str]:
+def bubble_problems(bubbles: Sequence[str], guardian: GuardianService, level: int = 0) -> list[str]:
     """Shape, safety and character checks shared by verify() and validate_bank()."""
     problems: list[str] = []
     if len(bubbles) > MAX_BUBBLES:
@@ -91,6 +110,8 @@ def bubble_problems(bubbles: Sequence[str], guardian: GuardianService) -> list[s
         if match := PERSONA_BREAK.search(bubble):
             problems.append(f"breaks character: {match.group(0)!r}")
         if match := ADVICE.search(bubble):
+            problems.append(f"gives advice/resources: {match.group(0)!r}")
+        elif level < 4 and (match := RESOURCE.search(bubble)):
             problems.append(f"gives advice/resources: {match.group(0)!r}")
         result = guardian.check_friend(bubble)
         if result.level != "none":
@@ -174,11 +195,13 @@ def verify(
     state: State,
     bank: Sequence[Line] | None = None,
     guardian: GuardianService | None = None,
+    locale: str | None = None,
 ) -> VerifierResult:
     """Fail if the reply reveals a fact above the current level (declared, or for LLM wording detected
-    by meaning), comes from nowhere (unknown line id or a fallback that isn't the scenario's), is empty
-    while the friend is active, has more than 3 bubbles or a bubble over 200 chars, is flagged by the
-    Guardian, contains a method word, gives advice/resources or breaks character."""
+    by meaning), comes from nowhere (unknown line id or a fallback that isn't the scenario's), is in
+    the wrong language for the chat (when `locale` is given), is empty while the friend is active,
+    has more than 3 bubbles or a bubble over 200 chars, is flagged by the Guardian, contains a method
+    word, gives advice/resources or breaks character."""
     guardian = guardian or services.guardian()
     reasons: list[str] = []
     levels = fact_levels(scenario)
@@ -191,6 +214,8 @@ def verify(
     if output.source == "llm":
         # LLM wording: nothing to look up, so check meaning instead: no locked fact may leak.
         reasons += fact_leaks(output.bubbles, scenario, state.level)
+        if locale and (found := wrong_language(output.bubbles, locale)):
+            reasons.append(f"wrong language: written in {found}, chat is in {locale}")
     elif output.line_id is not None:
         lines = {ln.id: ln for ln in (bank if bank is not None else load_bank(scenario.id))}
         line = lines.get(output.line_id)
@@ -201,16 +226,25 @@ def verify(
                 reasons.append(f"line level {line.level} > {state.level}")
             if output.bubbles and list(output.bubbles) != list(line.bubbles):
                 reasons.append("bubbles don't match the bank line")
+            if locale and line.locale != locale:
+                reasons.append(f"wrong language: {line.locale} line in a {locale} chat")
     elif output.bubbles:
         allowed = {
             t for lvl, ts in scenario.fallback_lines.items() if lvl <= state.level for t in ts
         }
         if any(bubble not in allowed for bubble in output.bubbles):
             reasons.append("text is neither a bank line nor a scenario fallback line")
+        if locale and locale != "en":
+            reasons.append(
+                f"wrong language: scenario fallback lines are English, chat is in {locale}"
+            )
+    if output.source != "llm" and state.level < 3:
+        if any(SUICIDAL_DISCLOSURE.search(b) for b in output.bubbles):
+            reasons.append("discloses suicidal thoughts before level 3")
 
     if not output.bubbles and state.status == "active":
         reasons.append("no bubbles while the friend is active")
-    reasons += bubble_problems(output.bubbles, guardian)
+    reasons += bubble_problems(output.bubbles, guardian, state.level)
     return VerifierResult(ok=not reasons, reasons=reasons)
 
 
@@ -271,7 +305,7 @@ def validate_bank(
             report.duplicates.append(f"{line.id}: same text as {texts[key]}")
         texts.setdefault(key, line.id)
         report.bubbles_checked += len(line.bubbles)
-        for problem in bubble_problems(line.bubbles, guardian):
+        for problem in bubble_problems(line.bubbles, guardian, line.level):
             target = report.method_hits if problem.startswith("method word") else None
             if problem.startswith("guardian"):
                 target = report.guardian_flags

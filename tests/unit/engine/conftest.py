@@ -50,8 +50,8 @@ def engine() -> Engine:
 class Convo:
     """Plays helper messages through an Engine and keeps the node path like the pipeline does."""
 
-    def __init__(self, engine: Engine, scenario: Scenario) -> None:
-        self.engine, self.scenario = engine, scenario
+    def __init__(self, engine: Engine, scenario: Scenario, locale: str = "en") -> None:
+        self.engine, self.scenario, self.locale = engine, scenario, locale
         state = engine.initial_state(scenario)
         self.path: list[Node] = [
             Node(
@@ -89,7 +89,7 @@ class Convo:
                 seen_no_reply=True,
             )
         else:
-            out = self.engine.generate(self.scenario, new, self.path, text, events, "en")
+            out = self.engine.generate(self.scenario, new, self.path, text, events, self.locale)
             friend = Node(
                 id=f"f{n}",
                 parent_id=user.id,
