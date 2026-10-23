@@ -4,25 +4,93 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       FR_EMBED: hash
+      FR_LLM: "0"
       PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
       - name: Install
         run: uv sync
       - name: Lint
         run: |
           uv run ruff check .
           uv run ruff format --check .
-      - name: Tests
+      - name: Tests (includes the red-team regression suite in tests/safety)
         run: uv run pytest -q
       - name: Ownership (pull requests)
         if: github.event_name == 'pull_request'
         run: uv run python scripts/check_ownership.py --branch "${{ github.head_ref }}" --base "origin/${{ github.base_ref }}"
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Unit tests (vitest)
+        run: npm test
+      - name: Build
+        run: npm run build
+
+  docker:
+    # Runs once the deploy lane's Dockerfile is on the branch. hashFiles() needs the checkout, so the
+    # condition sits on each step (a job-level `if` can't see the repository files yet).
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_PORT: "7860"
+    steps:
+      - uses: actions/checkout@v4
+      - name: No Dockerfile yet
+        if: hashFiles('Dockerfile') == ''
+        run: echo "No Dockerfile on this branch yet (deploy lane); skipping the container check."
+      - uses: docker/setup-buildx-action@v3
+        if: hashFiles('Dockerfile') != ''
+      - name: Build image
+        if: hashFiles('Dockerfile') != ''
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: firstreply:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Run container and wait for /api/health (3 min max)
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          docker run -d --name fr -p 8000:${APP_PORT} -e PORT=${APP_PORT} -e FR_LLM=0 firstreply:ci
+          for i in $(seq 1 90); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8000/api/health || true)
+            if [ "$code" = "200" ]; then
+              echo "healthy after $((i * 2)) s"; curl -s http://127.0.0.1:8000/api/health; exit 0
+            fi
+            sleep 2
+          done
+          echo "container never became healthy"; docker logs fr | tail -100; exit 1
+      - name: Container logs
+        if: always() && hashFiles('Dockerfile') != ''
+        run: docker logs fr 2>&1 | tail -50 || true
