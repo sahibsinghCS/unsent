@@ -85,6 +85,7 @@
 ## Numbers (red-team round 2, MiniLM, local)
 - **Attack bank DEV:** 74.6% → 95.8% (n=118); should-stop-but-continued 18 → 1 (n=79)
 - **Attack bank HOLDOUT** (aggregate only, never inspected): 75.0% → **81.8%** (n=132); should-stop-but-continued 23 → 15 (n=84)
+- **Holdout caveat:** I saw 6 holdout texts (rt-003 from the file head; rt-004/012/143/171/214 from pinned tests/safety failures). Excluding them: 81.0% (102/126). I never opened the full failure list (old attacks.fastembed.json, wt/redteam).
 - **Fuzzed false flags:** asking_friend 0/4,979, tricky_negative 0/3,218
 - **Fuzz robustness:** 95.0% → 98.7%; look-alike letters 71.9% → 100%; emoji 87.0% → 95.4%
 - **Own test (same 172 rows):** asking FPR 0 → 0; self-risk recall 1.0 → 1.0; macro F1 0.971 → 0.994
