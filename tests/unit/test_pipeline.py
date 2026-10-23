@@ -54,3 +54,26 @@ def test_dismissive_message_leaves_friend_on_seen(stub_mode):
     response = run_turn(_session(), "lol you'll be fine")
     assert response.friend_node is not None and response.friend_node.seen_no_reply
     assert response.friend_node.bubbles == []
+
+
+def test_last_resort_reply_is_in_the_chat_language():
+    from backend.app.content import load_lines
+    from backend.app.contracts import Session, State
+    from backend.app.pipeline import _fallback_bubbles
+
+    scenario = get_scenario("after-the-breakup")
+    state = State(level=1, turn=3)
+    english = Session(id="s", scenario_id=scenario.id, nodes={}, root_id="r", head_id="r")
+    assert _fallback_bubbles(english, scenario, state)[0] in scenario.fallback_lines[1]
+
+    spanish = english.model_copy(update={"locale": "es"})
+    bubbles = _fallback_bubbles(spanish, scenario, state)
+    calm = [
+        line
+        for line in load_lines(scenario.id, "es")
+        if line.reaction == Reaction.NEUTRAL and line.level <= 1
+    ]
+    assert calm and bubbles in [list(line.bubbles) for line in calm]
+
+    no_bank = english.model_copy(update={"locale": "fr"})
+    assert _fallback_bubbles(no_bank, scenario, state) == ["..."]

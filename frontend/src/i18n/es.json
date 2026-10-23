@@ -69,7 +69,8 @@
     "age": "{age} años",
     "start": "Escribir a {name}",
     "error": "No se pudieron cargar los escenarios.",
-    "draft": "Contenido en borrador"
+    "draft": "Contenido en borrador",
+    "only_lang": "Solo en {lang} por ahora"
   },
   "cw": {
     "title": "Antes de empezar",
@@ -138,7 +139,8 @@
       "teach": "En una conversación real, palabras así pueden alejar más a alguien. Intenta decir lo que te preocupa o pregúntale cómo se siente."
     },
     "concern": "Si algo de esto te toca de cerca, puedes llamar o escribir al 988 a cualquier hora.",
-    "empty_reply": "(sin respuesta)"
+    "empty_reply": "(sin respuesta)",
+    "practice_in": "Práctica en {lang}"
   },
   "tree": {
     "title": "Ramas de la conversación",
@@ -362,7 +364,15 @@
     "llm_model": "modelo",
     "llm_spent": "gastado hoy",
     "llm_fallback": "Si la IA está desactivada, no tiene clave, llega a su presupuesto diario o falla, el amigo usa nuestro banco de líneas revisadas. El modo rayos X muestra quién escribió cada respuesta.",
-    "llm_unknown": "Estado no disponible."
+    "llm_unknown": "Estado no disponible.",
+    "metrics_sub": "Números reales de nuestras propias pruebas con datos reservados. Cada parte se mide por separado; n es cuántos ejemplos se usaron.",
+    "vs": "vs {value} con {label}",
+    "all_records": "Los {n} números medidos",
+    "search": "Buscar métricas",
+    "no_match": "Ningún número coincide con “{q}”.",
+    "better_higher": "más alto es mejor",
+    "better_lower": "más bajo es mejor",
+    "unit_messages": "mensajes"
   },
   "checkin": {
     "title": "¿Cómo te sientes después de esto?",
@@ -398,5 +408,9 @@
   },
   "errors": {
     "session_gone": "Esta sesión de práctica expiró (se borran tras 60 minutos). Puedes empezar una nueva cuando quieras."
+  },
+  "langs": {
+    "en": "inglés",
+    "es": "español"
   }
 }

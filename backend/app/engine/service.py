@@ -105,12 +105,12 @@ class Engine:
         )
         if state.status != "silent":
             reaction = actor.decide_reaction(state, history, user_text, events, self.cfg)
-            output = self._llm_voice(scenario, state, history, reaction, ranked, bank)
+            output = self._llm_voice(scenario, state, history, reaction, ranked, bank, locale)
             if output is not None:
                 return output
         for candidate in ranked:
             output = actor.to_output(candidate)
-            if verifier.verify(output, scenario, state, bank).ok:
+            if verifier.verify(output, scenario, state, bank, locale=locale).ok:
                 return output
         return actor.to_output(ranked[-1])
 
@@ -122,6 +122,7 @@ class Engine:
         reaction: Reaction,
         ranked: list[actor.Candidate],
         bank: Sequence[Line],
+        locale: str = "en",
     ) -> ActorOutput | None:
         """A verified LLM reply, or None (LLM off / unavailable / rejected twice) -> bank voice."""
         lines = [c.line for c in ranked if c.line is not None]
@@ -130,11 +131,13 @@ class Engine:
         rejection: str | None = None
         for _ in range(self.llm_attempts):
             try:
-                output = voice.llm_reply(scenario, state, history, reaction, examples, rejection)
+                output = voice.llm_reply(
+                    scenario, state, history, reaction, examples, rejection, locale
+                )
             except llm.LLMUnavailable:
                 self.voice_stats["llm_unavailable"] += 1
                 return None
-            result = verifier.verify(output, scenario, state, bank)
+            result = verifier.verify(output, scenario, state, bank, locale=locale)
             if result.ok:
                 self.voice_stats["llm_ok"] += 1
                 return output
@@ -149,8 +152,11 @@ class Engine:
         state: State,
         bank: Sequence[Line] | None = None,
     ) -> VerifierResult:
-        if bank is None:
-            bank = self.bank(scenario.id)
+        if bank is None:  # the pipeline doesn't pass the chat's language: accept any locale's bank
+            bank = {
+                ln.id: ln for loc in ("en", "es") for ln in self.bank(scenario.id, loc)
+            }.values()
+            bank = list(bank)
         return verifier.verify(output, scenario, state, bank)
 
     # ------------------------------------------------------------------ feedback
