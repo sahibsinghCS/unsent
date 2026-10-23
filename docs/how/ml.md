@@ -73,7 +73,9 @@ what the friend just said. It shows the exemplar **only if**:
    helper wrote, and
 2. the **Guardian** passes it.
 
-Otherwise it tries the next exemplar (up to 3). If no exemplar passes, it may ask the AI for 2 suggested
+Once the friend has already been asked directly, it never suggests a reply that asks again: asking
+twice doesn't help, and the "what if" simulator follows the same rule. Otherwise it tries the next
+exemplar (up to 3). If no exemplar passes, it may ask the AI for 2 suggested
 replies (prompt in `backend/app/ml/prompts/rewrite.md`). Each one goes through **the same two checks**, and
 we keep the one with the biggest verified gain. The report records where the rewrite came from
 (`rewrite_source`: "exemplar" or "llm") and which skill it improves (`rewrite_skill`, e.g. "ask_directly").
@@ -81,7 +83,11 @@ The frontend uses these to show "Try instead: … (+0.4 ask directly)". With no 
 `FR_LLM=0`, it uses exemplars only and everything else works the same. We never suggest a reply we can't
 show is better or safe.
 
-**Feedback text is never false.** The template sentences check what actually happened. If the helper
+**Feedback text is never false.** If the friend shut down and the chat ended badly, the summary opens
+honestly and kindly ("This one slipped away, and that's exactly what practice is for.") instead of
+pretending it went fine. The whole-chat "you never got to…" notes are capped at the 3 most important,
+so a short chat isn't buried in a list. Every note about a specific message is kept. The template
+sentences check what actually happened. If the helper
 connected the friend with a counselor or 988 but never said why ("you don't have to handle this
 alone"), the report says "You connected them with someone who can help. Next time, also tell them why:
 they don't have to handle it alone." It does not claim they "never got to" helping. Mistakes are named
@@ -104,7 +110,35 @@ lecture. "No secrecy" breaks if any message promises secrecy.
 hash, row counts, date, metrics and the embedder name. The app refuses to load an artifact trained
 with a different embedder, because its numbers would be meaningless.
 
-## Why this approach (and what we considered instead)
+**Making the report fast.** Highlights mean re-scoring dozens of slightly shortened copies of every
+message, which made the end-of-chat report slow (2.4 s on a 6-message chat). Three fixes, none of which
+change a single output (a test compares the full report before and after on a fixed conversation):
+1. **Embedding cache.** The shortened copies share most of their sentences, and every copy shares the
+   friend's message, so each text is embedded once and reused. We use the app's shared per-text cache
+   (`embed.cached_scope()`), which forgets anything unused for 60 minutes, just like conversations.
+2. **One matrix product** computes all 10 labels' logistic regressions at once, instead of 10 separate
+   calls per model.
+3. **Explain while the chat happens.** When a message is scored during the chat, its highlights start
+   computing on one background worker. At the end the report just reuses them. If it's asked for before
+   they're done, it waits for that same computation rather than starting over. These remembered
+   explanations also expire after 60 minutes unused: the session cleanup sweeps them, so no text from a
+   conversation outlives it. (`FR_PREWARM_EXPLAIN=0` turns this off.)
+
+| `/finish` on a 6-message chat (fastembed, 1 user) | p50 |
+|---|---|
+| before | 2.42 s |
+| all three, user pauses 2 s before finishing | **0.24 s** |
+| all three, "finish" sent the instant the last message returns | 1.66 s |
+
+The background work makes sending a message a bit slower (p50 about 150 ms on this machine).
+
+We could get faster still by embedding all the not-yet-cached texts in one batch. We chose not to:
+batched vectors differ from one-at-a-time vectors in the sixth decimal place, so a cached vector would
+depend on which earlier request happened to embed that text first. The same conversation could then
+score slightly differently depending on what other people did before, and "the same input always gives
+the same output" matters more to us than a fraction of a second.
+
+ (and what we considered instead)
 - **Why not keywords?** A keyword list misses "have you thought about not being around anymore" and
   fires on "lol" in a kind message. On the free-form test, keywords score macro-F1 0.49 and the
   ensemble scores 0.82.
@@ -206,11 +240,17 @@ on|off` overrides it). Results (`eval/reports/ml_pooling.json`):
 | first splits (train 615) | 0.921 → 0.916 | 0.013 → 0.011 | not adopted | 0.818 → 0.802 |
 | current splits (train 824) | 0.923 → 0.931 | 0.011 → 0.010 | **adopted** | 0.841 → 0.822 |
 
-With more training data, pooling started helping on validation, so the rule adopted it. It also fixed
-more reviewer probes (13 of 14 vs 12 of 14). But on the free-form test, which never decides anything,
-it scores lower (0.822 vs 0.841), and it flags more messages as uncertain. We report that honestly
-rather than switching the rule after seeing the test. Changing a decision because of the test score
-would make the test score meaningless.
+In plain words:
+- **We pre-registered the rule.** We wrote down "adopt pooling only if validation improves without
+  hurting calibration" *before* running the experiment.
+- **The rule chose pooling, on validation data only.** With more training data, pooling started helping
+  on validation (0.923 → 0.931) and fixed one more reviewer probe (13 of 14 vs 12 of 14).
+- **The whole-message model would have scored 0.841 on the free-form test; the pooled one scores 0.822.
+  We kept the rule anyway.** Switching after seeing the test score would quietly turn the test set into
+  a second validation set. Then 0.822 (or 0.841) would no longer be an honest estimate of how the model
+  does on new messages. With n=221 the 0.02 gap is within noise anyway.
+
+The cost we accept: pooled scores flag more messages as "uncertain" on free-form text (30% vs 17%).
 
 ## Limitations
 - **Real messages are harder.** Composed test 0.97 vs free-form 0.82. The free-form number is the one to

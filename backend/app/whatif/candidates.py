@@ -110,6 +110,15 @@ def exemplar_skills(exemplar: Exemplar) -> list[str]:
     return list(dict.fromkeys(skills)) or ["listen"]
 
 
+def card_skill(exemplar: Exemplar, wanted: str) -> str:
+    """The skill a card shows for this exemplar: `wanted` if the exemplar was written for it (or is a
+    combo carrying it), otherwise the exemplar's own strategy. The critic may pick an exemplar only
+    because of a secondary label (e.g. an ask_directly reply that also validates); its chip must still
+    say what the reply mainly does."""
+    skills = exemplar_skills(exemplar)
+    return wanted if wanted in skills else skills[0]
+
+
 def find_targets(
     original: SkillProbs, before: State, first: bool, scored: list[SkillProbs]
 ) -> Targets:
@@ -119,6 +128,10 @@ def find_targets(
     missing = tuple(s for s in critic.TIP_ORDER if s != "no_secrecy" and summary[s] < ON)
     primary = target.improves if target is not None else None
     return Targets(primary=primary, missing=missing)
+
+
+def probs_ask(predict, text: str) -> float:
+    return predict([text])[0].get(SkillLabel.ASKED_DIRECTLY, 0.0)
 
 
 def critic_rewrite(
@@ -141,6 +154,8 @@ def critic_rewrite(
     for exemplar in ranked[: critic.MAX_CANDIDATES]:
         gain = critic.target_score(predict([exemplar.text])[0], target) - base
         if gain >= MIN_GAIN and guardian_ok(exemplar.text):
+            if before.flags.asked_directly_ever and probs_ask(predict, exemplar.text) >= ON:
+                return None  # they were already asked; asking again would not be a better reply
             return exemplar, target.improves
     return None
 
@@ -171,13 +186,15 @@ def select(
     rewrite = critic_rewrite(pool, original, before, first, context, predict, guardian_ok)
 
     near = [ex for ex in pool if abs(ex.level - before.level) <= LEVEL_WINDOW]
-    found = _verified(near, original, before.level, targets, predict, guardian_ok)
+    asked = before.flags.asked_directly_ever
+    found = _verified(near, original, before.level, targets, predict, guardian_ok, asked)
     if len({c.skill for c in found}) < MAX_PATHS:
-        found = _verified(pool, original, before.level, targets, predict, guardian_ok)
+        found = _verified(pool, original, before.level, targets, predict, guardian_ok, asked)
 
     chosen: list[Candidate] = []
     if rewrite is not None:
         exemplar, skill = rewrite
+        skill = card_skill(exemplar, skill)
         probs = predict([exemplar.text])[0]
         score = skill_score(probs, skill)
         chosen.append(
@@ -202,6 +219,7 @@ def _verified(
     targets: Targets,
     predict,
     guardian_ok,
+    asked: bool = False,
 ) -> list[Candidate]:
     """Every exemplar that beats the original on a skill it teaches and passes the Guardian."""
     if not pool:
@@ -211,6 +229,8 @@ def _verified(
     for exemplar, probs in zip(pool, probs_list, strict=True):
         if has_negative(probs):
             continue
+        if asked and probs.get(SkillLabel.ASKED_DIRECTLY, 0.0) >= ON:
+            continue  # they were already asked: asking again reads like not listening
         best: Candidate | None = None
         for skill in exemplar_skills(exemplar):
             score = skill_score(probs, skill)

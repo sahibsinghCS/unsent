@@ -43,6 +43,7 @@ MAX_REWRITE_CHARS = 300
 REWRITE_PROMPT = Path(__file__).parent / "prompts" / "rewrite.md"
 
 SKILL_NAMES = TEXT["en"]["skill_names"]  # English names (kept for callers and tests)
+MAX_SKILL_NOTES = 3
 TIP_ORDER = ("ask_directly", "listen", "no_secrecy", "refer", "persuade", "check_in", "follow_up")
 
 
@@ -180,6 +181,11 @@ def rubric_summary(all_probs: list[SkillProbs]) -> dict[str, float]:
     return {skill: round(value, 4) for skill, value in summary.items()}
 
 
+def asks_directly(exemplar: Exemplar) -> bool:
+    """True if the exemplar is a direct ask about suicide (by its strategy or labels)."""
+    return exemplar.strategy == "ask_directly" or SkillLabel.ASKED_DIRECTLY in exemplar.labels
+
+
 def rank_exemplars(
     exemplars: tuple[Exemplar, ...], target: Target, level: int, friend_last: str
 ) -> list[Exemplar]:
@@ -235,7 +241,15 @@ class Critic:
                     words["at"].format(text=_clip(text), reason=target.reason_text(locale))
                 )
                 self._add_rewrite(
-                    score, target, exemplars, before.level, context, path[:index], text, locale
+                    score,
+                    target,
+                    exemplars,
+                    before.level,
+                    context,
+                    path[:index],
+                    text,
+                    locale,
+                    asked_before=before.flags.asked_directly_ever,
                 )
             scores.append(score)
             first = False
@@ -244,9 +258,10 @@ class Critic:
         turning = self.engine.turning_point(path)
         if turning is not None and words["turning_reason"]:
             turning = turning.model_copy(update={"reason": words["turning_reason"]})
-        for skill in TIP_ORDER:
-            if summary[skill] < ON:
-                missed.append(missed_skill_text(skill, summary, locale))
+        # Every per-message note stays; whole-chat "never got to" notes are capped at the 3 most
+        # important (TIP_ORDER), so a short chat isn't buried in a list of everything it didn't do.
+        never = [skill for skill in TIP_ORDER if summary[skill] < ON][:MAX_SKILL_NOTES]
+        missed.extend(missed_skill_text(skill, summary, locale) for skill in never)
         return CriticReport(
             per_message=scores,
             skill_summary=summary,
@@ -276,6 +291,7 @@ class Critic:
         history: list[Node],
         text: str,
         locale: str = "en",
+        asked_before: bool = False,
     ) -> None:
         """Attach a rewrite that measurably raises the missing skill and passes the Guardian.
 
@@ -283,6 +299,8 @@ class Critic:
         """
         friend_last = context[-1] if context else ""
         original = target_score(score.probs, target)
+        if asked_before:  # never suggest asking again once they were asked (same rule as what-if)
+            exemplars = tuple(ex for ex in exemplars if not asks_directly(ex))
         ranked = rank_exemplars(exemplars, target, level, friend_last)[:MAX_CANDIDATES]
         for exemplar in ranked:
             gain = self._verified_gain(exemplar.text, target, original, context, history)
@@ -291,6 +309,12 @@ class Critic:
                 return
         best: tuple[float, str] | None = None
         for candidate in llm_candidates(target, text, context, locale):
+            if (
+                asked_before
+                and self._score_candidate(candidate, context).get(SkillLabel.ASKED_DIRECTLY, 0.0)
+                >= ON
+            ):
+                continue
             gain = self._verified_gain(candidate, target, original, context, history)
             if gain is not None and (best is None or gain > best[0]):
                 best = (gain, candidate)
@@ -301,12 +325,19 @@ class Critic:
         self, text: str, target: Target, original: float, context: list[str], history: list[Node]
     ) -> float | None:
         """The candidate's gain on the target skill, or None if it gains < 0.2 or fails the Guardian."""
-        gain = target_score(self.detector.predict(text, context), target) - original
+        gain = target_score(self._score_candidate(text, context), target) - original
         if gain < MIN_REWRITE_GAIN:
             return None
         if self.guardian.check_user(text, history).action != "continue":
             return None
         return gain
+
+    def _score_candidate(self, text: str, context: list[str]) -> SkillProbs:
+        """Score a rewrite candidate without starting a (wasted) background explanation for it."""
+        detector = self.detector
+        if hasattr(detector, "predict_many"):
+            return detector.predict_many([text], context)[0]
+        return detector.predict(text, context)
 
     @staticmethod
     def _set_rewrite(score: MessageScore, text: str, gain: float, source: str, target: Target):
@@ -366,7 +397,10 @@ def summary_text(
     )
     best = ranked[0] if ranked else None
     sentences = []
-    if best and summary[best] >= ON:
+    ended_badly = bool(path) and path[-1].state_after.status == "ended_fail"
+    if ended_badly:
+        sentences.append(words["slipped"])
+    elif best and summary[best] >= ON:
         sentences.append(words["strongest"].format(skill=words["skill_names"][best]))
     else:
         sentences.append(words["stayed"])

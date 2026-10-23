@@ -10,7 +10,14 @@ limits stay on, exactly as in production. The same 20 conversations run at 1, 5,
 concurrent users. When it spawns the server it also measures cold start (process start -> first
 healthy response, including model warm-up) and peak memory (RSS).
 
-Writes eval/reports/deploy_load.json in the shared schema (eval/README.md).
+By default users think like people do: 2-4 s before each message (reading the friend's reply,
+typing) and about 2 s before pressing Finish, seeded and jittered so every run is identical.
+That pause matters: the server explains each message in the background during the chat, so Finish
+is fast when the user pauses first. `--no-think` sends everything back to back (a burst, the
+worst case).
+
+Writes eval/reports/deploy_load.json (think time) or eval/reports/deploy_load_burst.json
+(--no-think) in the shared schema (eval/README.md).
 """
 
 from __future__ import annotations
@@ -19,10 +26,12 @@ import argparse
 import asyncio
 import json
 import os
+import random
 import subprocess
 import sys
 import time
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
@@ -31,6 +40,8 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "eval" / "reports" / "deploy_load.json"
+BURST_REPORT = ROOT / "eval" / "reports" / "deploy_load_burst.json"
+SEED = 20261025
 
 CONVERSATION = [
     "hey are you ok? you seemed really off at lunch",
@@ -40,6 +51,26 @@ CONVERSATION = [
     "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
     "i'm here. we can call 988 together and i'll check on you tonight",
 ]
+
+
+@dataclass(frozen=True)
+class Think:
+    """Seconds a simulated person pauses (uniform ranges). All zero = burst mode."""
+
+    message: tuple[float, float] = (2.0, 4.0)
+    finish: tuple[float, float] = (1.5, 2.5)
+
+    @property
+    def enabled(self) -> bool:
+        return self.message[1] > 0 or self.finish[1] > 0
+
+
+NO_THINK = Think(message=(0.0, 0.0), finish=(0.0, 0.0))
+
+
+async def pause(rng: random.Random, bounds: tuple[float, float]) -> None:
+    if bounds[1] > 0:
+        await asyncio.sleep(rng.uniform(*bounds))
 
 
 class Recorder:
@@ -62,8 +93,9 @@ class Recorder:
         return response
 
 
-async def one_user(base: str, index: int, level: int, rec: Recorder) -> None:
+async def one_user(base: str, index: int, level: int, rec: Recorder, think: Think) -> None:
     ip = f"10.{level}.{index // 250}.{index % 250 + 1}"  # a distinct visitor per conversation
+    rng = random.Random(SEED * 1000 + index)  # same pauses for conversation i at every level
     async with httpx.AsyncClient(
         base_url=base, headers={"x-forwarded-for": ip}, timeout=60.0
     ) as client:
@@ -83,21 +115,25 @@ async def one_user(base: str, index: int, level: int, rec: Recorder) -> None:
             return
         sid = created.json()["session_id"]
         for text in CONVERSATION:
+            await pause(rng, think.message)
             await rec.call(
                 client, "message", "POST", f"/api/sessions/{sid}/messages", json={"text": text}
             )
+        await pause(rng, think.finish)
         await rec.call(client, "finish", "POST", f"/api/sessions/{sid}/finish")
         await rec.call(client, "whatif", "POST", f"/api/sessions/{sid}/whatif", json={})
 
 
-async def run_level(base: str, users: int, conversations: int) -> tuple[Recorder, float]:
+async def run_level(
+    base: str, users: int, conversations: int, think: Think
+) -> tuple[Recorder, float]:
     rec = Recorder()
     queue = list(range(conversations))
     sem = asyncio.Semaphore(users)
 
     async def guarded(i: int) -> None:
         async with sem:
-            await one_user(base, i, users, rec)
+            await one_user(base, i, users, rec, think)
 
     started = time.perf_counter()
     await asyncio.gather(*(guarded(i) for i in queue))
@@ -169,8 +205,21 @@ def main() -> int:
     )
     parser.add_argument("--levels", default="1,5,10,20")
     parser.add_argument("--conversations", type=int, default=20, help="per concurrency level")
-    parser.add_argument("--out", type=Path, default=REPORT)
+    parser.add_argument(
+        "--no-think", action="store_true", help="burst mode: no pauses between requests"
+    )
+    parser.add_argument(
+        "--out", type=Path, help="default: deploy_load.json / deploy_load_burst.json"
+    )
     args = parser.parse_args()
+    think = NO_THINK if args.no_think else Think()
+    args.out = args.out or (BURST_REPORT if args.no_think else REPORT)
+    mode = (
+        f"think {think.message[0]:g}-{think.message[1]:g} s/message, "
+        f"{think.finish[0]:g}-{think.finish[1]:g} s before finish (seed {SEED})"
+        if think.enabled
+        else "burst (no think time)"
+    )
     if os.getenv("FR_LLM", "0") != "0":
         print(
             "refusing to run: set FR_LLM=0 (the load test must never call OpenAI)", file=sys.stderr
@@ -180,7 +229,7 @@ def main() -> int:
     records: list[dict] = []
     proc = None
     base = args.url
-    host = f"{os.cpu_count()} CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker"
+    host = f"{os.cpu_count()} CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; {mode}"
     if base is None:
         proc, cold = spawn_server(args.port, args.cwd)
         base = f"http://127.0.0.1:{args.port}"
@@ -194,10 +243,10 @@ def main() -> int:
 
     summary = []
     for users in [int(x) for x in args.levels.split(",")]:
-        rec, wall = asyncio.run(run_level(base, users, args.conversations))
+        rec, wall = asyncio.run(run_level(base, users, args.conversations, think))
         total = sum(len(v) for v in rec.latency.values())
         errors = sum(rec.errors.values())
-        split = f"c{users}"
+        split = f"c{users}" + ("/think" if think.enabled else "/burst")
         line = {"users": users, "requests": total, "errors": errors, "rps": round(total / wall, 1)}
         for name, values in sorted(rec.latency.items()):
             arr = np.array(values)

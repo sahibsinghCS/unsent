@@ -6,7 +6,7 @@
     "n": 152,
     "split": "val",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -15,7 +15,7 @@
     "n": 152,
     "split": "val",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -24,7 +24,7 @@
     "n": 152,
     "split": "val",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -33,7 +33,7 @@
     "n": 152,
     "split": "val",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -42,7 +42,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 1.0, recall 0.8333, support 30; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -51,7 +51,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 0.9556, recall 0.9556, support 45; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -60,7 +60,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 1.0, recall 1.0, support 30; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -69,7 +69,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -78,7 +78,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 1.0, recall 0.9231, support 26; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -87,7 +87,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 0.9474, recall 0.9474, support 19; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -96,7 +96,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 1.0, recall 0.95, support 40; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -105,7 +105,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 0.9286, recall 0.7647, support 17; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -114,7 +114,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 1.0, recall 0.8571, support 14; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -123,7 +123,7 @@
     "n": 152,
     "split": "val",
     "notes": "ensemble; precision 1.0, recall 1.0, support 15; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -132,7 +132,7 @@
     "n": 152,
     "split": "val",
     "notes": "avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -141,7 +141,7 @@
     "n": 152,
     "split": "val",
     "notes": "stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -150,7 +150,7 @@
     "n": 152,
     "split": "val",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -159,7 +159,7 @@
     "n": 152,
     "split": "val",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -168,7 +168,7 @@
     "n": 152,
     "split": "val",
     "notes": "band [0.2, 0.8]; 23 flagged decisions; error rate flagged 0.1739 vs unflagged 0.012; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -177,7 +177,7 @@
     "n": 23,
     "split": "val",
     "notes": "share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -186,7 +186,7 @@
     "n": 1497,
     "split": "val",
     "notes": "share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -195,7 +195,7 @@
     "n": 133,
     "split": "test",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -204,7 +204,7 @@
     "n": 133,
     "split": "test",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -213,7 +213,7 @@
     "n": 133,
     "split": "test",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -222,7 +222,7 @@
     "n": 133,
     "split": "test",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -231,7 +231,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 1.0, support 12; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -240,7 +240,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 1.0, support 51; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -249,7 +249,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 1.0, support 33; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -258,7 +258,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 1.0, support 27; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -267,7 +267,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 1.0, support 27; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -276,7 +276,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 0.875, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -285,7 +285,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 0.9412, support 34; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -294,7 +294,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 0.7143, support 14; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -303,7 +303,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 0.9167, support 12; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -312,7 +312,7 @@
     "n": 133,
     "split": "test",
     "notes": "ensemble; precision 1.0, recall 1.0, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -321,7 +321,7 @@
     "n": 133,
     "split": "test",
     "notes": "avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -330,7 +330,7 @@
     "n": 133,
     "split": "test",
     "notes": "stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -339,7 +339,7 @@
     "n": 133,
     "split": "test",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -348,7 +348,7 @@
     "n": 133,
     "split": "test",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -357,7 +357,7 @@
     "n": 133,
     "split": "test",
     "notes": "band [0.2, 0.8]; 15 flagged decisions; error rate flagged 0.0667 vs unflagged 0.0061; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -366,7 +366,7 @@
     "n": 15,
     "split": "test",
     "notes": "share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -375,7 +375,7 @@
     "n": 1315,
     "split": "test",
     "notes": "share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -384,7 +384,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -393,7 +393,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -402,7 +402,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -411,7 +411,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -420,7 +420,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 1.0, support 11; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -429,7 +429,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 1.0, support 50; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -438,7 +438,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 1.0, support 33; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -447,7 +447,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 1.0, support 25; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -456,7 +456,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 1.0, support 25; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -465,7 +465,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 0.875, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -474,7 +474,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 0.9375, support 32; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -483,7 +483,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 0.7143, support 14; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -492,7 +492,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 0.9167, support 12; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -501,7 +501,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "ensemble; precision 1.0, recall 1.0, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -510,7 +510,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -519,7 +519,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -528,7 +528,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -537,7 +537,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -546,7 +546,7 @@
     "n": 124,
     "split": "test_unseen_text",
     "notes": "band [0.2, 0.8]; 15 flagged decisions; error rate flagged 0.0667 vs unflagged 0.0065; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -555,7 +555,7 @@
     "n": 15,
     "split": "test_unseen_text",
     "notes": "share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -564,7 +564,7 @@
     "n": 1225,
     "split": "test_unseen_text",
     "notes": "share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -573,7 +573,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -582,7 +582,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -591,7 +591,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -600,7 +600,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -609,7 +609,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 0.8, recall 0.5714, support 28; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -618,7 +618,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 0.8286, recall 0.6304, support 46; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -627,7 +627,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -636,7 +636,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 0.9, recall 0.5625, support 16; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -645,7 +645,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 1.0, recall 0.9429, support 35; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -654,7 +654,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 1.0, recall 0.9231, support 26; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -663,7 +663,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 0.8919, recall 0.7174, support 46; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -672,7 +672,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 0.8, recall 0.7619, support 21; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -681,7 +681,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 0.68, recall 0.8095, support 21; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -690,7 +690,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "ensemble; precision 0.8182, recall 1.0, support 9; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -699,7 +699,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "avg of A and B; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -708,7 +708,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "stacked + Platt; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -717,7 +717,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -726,7 +726,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -735,7 +735,7 @@
     "n": 221,
     "split": "test_freeform",
     "notes": "band [0.2, 0.8]; 74 flagged decisions; error rate flagged 0.3919 vs unflagged 0.029; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -744,7 +744,7 @@
     "n": 74,
     "split": "test_freeform",
     "notes": "share of flagged label decisions that were wrong; n = decisions; band [0.2, 0.8]; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   },
   {
     "lane": "ml",
@@ -753,6 +753,6 @@
     "n": 2136,
     "split": "test_freeform",
     "notes": "share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T01:01:03+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 8f64277bf284",
-    "created": "2026-10-23T01:01:30+00:00"
+    "created": "2026-10-23T01:21:16+00:00"
   }
 ]

@@ -1,0 +1,20 @@
+[
+ {
+  "lane": "redteam",
+  "metric": "invariants.I8.violations",
+  "value": 0,
+  "n": 1,
+  "split": "full conversation incl. finish, what-if, rewind [fastembed]",
+  "notes": "places in memory still holding the helper's words after every session expired and every derived cache was swept; must be 0; embed=fastembed",
+  "created": "2026-10-23T01:32:02+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "invariants.I8.violations",
+  "value": 0,
+  "n": 1,
+  "split": "full conversation incl. finish, what-if, rewind [hash]",
+  "notes": "places in memory still holding the helper's words after every session expired and every derived cache was swept; must be 0; embed=hash",
+  "created": "2026-10-23T01:32:10+00:00"
+ }
+]

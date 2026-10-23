@@ -414,3 +414,71 @@ def test_language_of():
     assert language_of("eso suena muy pesado, aquí estoy contigo") == "es"
     assert language_of("are you thinking about killing yourself?") == "en"
     assert language_of("i'm here for you, not going anywhere") == "en"
+
+
+FAILED = [
+    ("friend", "just got my chem grade back", 0, 0, None),
+    ("user", "ok i gotta go to school early tomorrow, talk later maybe", 0, -10, None),
+    ("friend", "k", 0, 0, None),
+    ("user", "lol lots of people feel like that, you'll be fine", 0, -15, None),
+]
+
+
+def _failed(convo):
+    session, path = build(convo)
+    path[-1].state_after.status = "ended_fail"
+    return session, path
+
+
+def test_failed_chat_gets_an_honest_kind_opener(monkeypatch):
+    session, path = _failed(FAILED)
+    report = make_critic(monkeypatch).score_conversation(session, path)
+    assert report.summary_text.startswith("This one slipped away")
+    assert "You stayed in the conversation" not in report.summary_text
+    es_session, es_path = _failed(FAILED)
+    es_session.locale = "es"
+    es = make_critic(monkeypatch).score_conversation(es_session, es_path)
+    assert es.summary_text.startswith("Esta vez se te escapó")
+
+
+def test_whole_chat_notes_are_capped_but_per_message_notes_stay(monkeypatch):
+    session, path = _failed(FAILED)
+    report = make_critic(monkeypatch).score_conversation(session, path)
+    never = [m for m in report.missed_opportunities if m.startswith("You never got to")]
+    per_message = [m for m in report.missed_opportunities if m.startswith("At “")]
+    assert len(never) == 3
+    assert never[0] == "You never got to asking directly about suicide."  # TIP_ORDER first
+    assert len(per_message) == 2  # both messages keep their own note
+
+
+def test_no_ask_directly_rewrite_once_they_were_asked(monkeypatch, fake_llm):
+    asked = Flags(asked_directly_ever=True)
+    convo = [
+        ("friend", "i just feel done", 2, 0, None),
+        ("user", "are you thinking about killing yourself?", 3, 8, asked),
+        ("friend", "yeah sometimes", 3, 0, asked),
+        ("user", "lol you'll be fine", 3, -12, asked),
+    ]
+    validating_ask = ex(
+        30,
+        3,
+        "combo",
+        "that sounds really hard. are you thinking about suicide?",
+        [L.VALIDATED, L.ASKED_DIRECTLY],
+    )
+    plain = ex(31, 3, "validate", "that sounds so heavy, thank you for telling me")
+    monkeypatch.setattr(
+        content, "load_exemplars", lambda scenario_id, locale="en": (validating_ask, plain)
+    )
+    critic = Critic(detector=FakeDetector(), guardian=FakeGuardian(), engine=FakeEngine())
+    session, path = build(convo)
+    report = critic.score_conversation(session, path)
+    assert report.per_message[1].rewrite == "that sounds so heavy, thank you for telling me"
+
+    # with only asking exemplars and an LLM that also asks, there is no rewrite at all
+    monkeypatch.setattr(
+        content, "load_exemplars", lambda scenario_id, locale="en": (validating_ask,)
+    )
+    fake_llm(["that sounds hard. are you thinking about suicide?"])
+    report = critic.score_conversation(session, path)
+    assert report.per_message[1].rewrite is None

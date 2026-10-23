@@ -28,21 +28,24 @@
 
 ## Requests
 1. **frontend:** optional: move the inline theme script in `frontend/index.html` to `public/theme.js` (`<script src="/theme.js"></script>`). The CSP then needs no hash. Not required; the hash works and is tested.
-2. **ml (critic):** `POST /finish` costs ~1.2 s CPU per call (p50 1.17 s at 1 user, 18 s at 20 simultaneous). Worth profiling (repeated embeddings? per-message rewrites?). Messages are fine.
-3. **platform (`.env.example`):** add the new knobs: `FR_RATE_LIMIT=` (empty = on in prod), `FR_TRUST_PROXY=0`, `FR_MAX_BODY_BYTES=32768`, `FR_RL_SESSIONS_PER_MIN=10`, `FR_RL_MESSAGES_PER_MIN=30`, `FR_RL_MESSAGES_PER_DAY=300`, `FR_RL_WHATIF_PER_MIN=6`, `FR_RL_GUARDIAN_PER_MIN=30`, `FR_RL_API_PER_MIN=240`.
-4. **platform (Makefile):** `loadtest: ## load test a local prod-mode server (FR_LLM=0)` → `FR_LLM=0 $(UV) run python deploy/loadtest.py` and `csp-check:` → `node deploy/csp_check.mjs $${FR_URL:-http://127.0.0.1:7860}`.
-5. **redteam (CI):** after `docker run`, wait for `/api/health`, then run `node deploy/csp_check.mjs http://127.0.0.1:7860` (needs `npm ci` in `frontend/` for playwright-core and Chromium on the runner) and check that `docker inspect` shows `User: user`.
-6. **platform (`llm.py`):** in prod, `eval/logs/llm_usage.jsonl` is still appended on disk (role, prompt name, model, token counts, cost: no text). Not conversation content, but for "nothing on disk in prod" consider keeping it in memory when `is_prod()`.
+2. ~~ml: /finish 1.2 s CPU~~ **done** (a9f1cb9 background explanations): finish p50 57 ms at 1 user with think time.
+3. ~~platform: .env.example knobs~~, 4. ~~Makefile loadtest/csp-check~~, 6. ~~usage log in memory in prod~~: **done** in 836baaa.
+5. **redteam (CI):** after `docker run`, wait for `/api/health`, then run `node deploy/csp_check.mjs http://127.0.0.1:7860` and check that `docker inspect` shows `User: user`.
+7. **whatif:** `POST /whatif` is now the heaviest endpoint: ~0.7 s CPU per call (p50 0.72 s at 1 user; 9.7 s p50 at 20 users with think time, 13.5 s in burst). Worth profiling or caching rollouts per turning point; the 6/min per-visitor limit already bounds abuse.
 
 ## Known issues
 - No Docker daemon in this sandbox: the real `docker build` is first run by the red-team CI job.
-- Finish latency under simultaneous load (see Request 2).
+- What-if latency under simultaneous load (Request 7).
 - Rate limits key on the visitor address: a school NAT shares one bucket.
 
-## Numbers (`eval/reports/deploy_load.json`, 4-CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 worker)
-- Cold start (process start → first healthy response, incl. warm-up): **5.8 s** (n=1).
-- RSS: **796 MB** after warm-up, **1.58 GB** peak (n=1).
-- Message p50/p99: 34/94 ms (c1), 161/283 ms (c5), 290/453 ms (c10), 583/887 ms (c20); n=120 each.
-- Finish p50: 1.2 s / 4.7 s / 9.2 s / 18.1 s (c1/5/10/20; n=20). What-if p50: 130/558/840/1844 ms.
-- Errors: **0 / 800** requests. Throughput ~6–8 req/s (CPU-bound).
+## Numbers (a9f1cb9 merged; 4-CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 worker; 20 conversations per level)
+Think time (`eval/reports/deploy_load.json`: 2-4 s before each message, 1.5-2.5 s before finish, seed 20261025):
+- Message p50/p99 (n=120): 27/192 ms (c1), 25/75 (c5), 24/125 (c10), 25/345 (c20).
+- Finish p50/p99 (n=20): 57/92 ms (c1), 117/319 (c5), 215/790 (c10), 1169/1683 (c20).
+- What-if p50/p99 (n=20): 0.72/1.38 s (c1), 1.34/2.43 (c5), 3.06/5.14 (c10), 9.69/11.26 (c20).
+- Errors 0/800. Cold start 7.0 s. RSS 791 MB idle, 845 MB peak.
+Burst (`eval/reports/deploy_load_burst.json`, `--no-think`):
+- Message p50/p99: 22/217 ms (c1), 100/175 (c5), 208/356 (c10), 382/605 (c20).
+- Finish p50/p99: 50/1840 ms (c1, first call before background explanations catch up), 272/349 (c5), 718/988 (c10), 1297/1969 (c20).
+- What-if p50: 0.71 / 3.2 / 6.4 / 13.5 s. Errors 0/800. Cold start 6.2 s. RSS peak 854 MB. ~11 req/s.
 - CSP: 0 violations across 7 pages × 2 color schemes.

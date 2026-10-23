@@ -6,7 +6,7 @@
   "n": 10677,
   "split": "guardian all splits (train included) [hash]",
   "notes": "perturbed variants still correct, of messages correct unperturbed; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -15,7 +15,7 @@
   "n": 10831,
   "split": "guardian all splits (train included) [hash]",
   "notes": "perturbed variants correct (flag positives, pass negatives); embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -24,7 +24,7 @@
   "n": 559,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -33,7 +33,7 @@
   "n": 559,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -42,7 +42,7 @@
   "n": 1118,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -51,7 +51,7 @@
   "n": 1107,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -60,7 +60,7 @@
   "n": 1111,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -69,7 +69,7 @@
   "n": 1054,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -78,7 +78,7 @@
   "n": 147,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -87,7 +87,7 @@
   "n": 559,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -96,7 +96,7 @@
   "n": 1118,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -105,7 +105,7 @@
   "n": 1112,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -114,7 +114,7 @@
   "n": 1118,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -123,7 +123,7 @@
   "n": 1115,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -132,7 +132,7 @@
   "n": 2668,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -141,7 +141,7 @@
   "n": 1104,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -150,7 +150,7 @@
   "n": 757,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -159,7 +159,7 @@
   "n": 746,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -168,7 +168,7 @@
   "n": 3167,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -177,7 +177,7 @@
   "n": 2235,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -186,7 +186,7 @@
   "n": 5774,
   "split": "guardian all splits (train included) [hash]",
   "notes": "critical positives still in the right tier (crisis vs block); embed=hash",
-  "created": "2026-10-23T00:52:26+00:00"
+  "created": "2026-10-23T01:25:33+00:00"
  },
  {
   "lane": "redteam",
@@ -195,7 +195,7 @@
   "n": 10697,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "perturbed variants still correct, of messages correct unperturbed; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -204,7 +204,7 @@
   "n": 10831,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "perturbed variants correct (flag positives, pass negatives); embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -213,7 +213,7 @@
   "n": 560,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -222,7 +222,7 @@
   "n": 560,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -231,7 +231,7 @@
   "n": 1120,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -240,7 +240,7 @@
   "n": 1109,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -249,7 +249,7 @@
   "n": 1113,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -258,7 +258,7 @@
   "n": 1056,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -267,7 +267,7 @@
   "n": 148,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -276,7 +276,7 @@
   "n": 560,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -285,7 +285,7 @@
   "n": 1120,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -294,7 +294,7 @@
   "n": 1114,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -303,7 +303,7 @@
   "n": 1120,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -312,7 +312,7 @@
   "n": 1117,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -321,7 +321,7 @@
   "n": 2668,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -330,7 +330,7 @@
   "n": 1104,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -339,7 +339,7 @@
   "n": 757,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -348,7 +348,7 @@
   "n": 765,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -357,7 +357,7 @@
   "n": 3168,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -366,7 +366,7 @@
   "n": 2235,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  },
  {
   "lane": "redteam",
@@ -375,6 +375,6 @@
   "n": 5794,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "critical positives still in the right tier (crisis vs block); embed=fastembed",
-  "created": "2026-10-23T00:55:48+00:00"
+  "created": "2026-10-23T01:30:16+00:00"
  }
 ]

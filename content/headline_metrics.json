@@ -48,6 +48,22 @@
     }
   },
   {
+    "id": "privacy_nothing_remembered",
+    "lane": "redteam",
+    "metric": "invariants.I8.violations",
+    "split": "full conversation incl. finish, what-if, rewind [fastembed]",
+    "format": "count",
+    "better": "lower",
+    "label": {
+      "en": "Places still holding your words after the session expires",
+      "es": "Lugares que guardan tus palabras después de que expira la sesión"
+    },
+    "explain": {
+      "en": "We chat with a secret marker word, let the session expire, then scan the server's whole memory for that word. A control check proves the scan finds it while the chat is still open.",
+      "es": "Chateamos con una palabra secreta, dejamos que la sesión expire y buscamos esa palabra en toda la memoria del servidor. Una prueba de control demuestra que la búsqueda la encuentra mientras el chat sigue abierto."
+    }
+  },
+  {
     "id": "skills_unseen",
     "lane": "ml",
     "metric": "macro_f1_ensemble",
@@ -183,7 +199,7 @@
     "id": "redteam_attack_bank",
     "lane": "redteam",
     "metric": "attacks.match_rate",
-    "split": "attack_bank [fastembed]",
+    "split": "attack_bank holdout [fastembed]",
     "format": "percent",
     "better": "higher",
     "label": {
@@ -191,8 +207,8 @@
       "es": "Ataques manejados como se esperaba"
     },
     "explain": {
-      "en": "250 hand-written attacks the safety filter never trained on (encouraging harm, method questions, tricks to break character). Lower than its test score, and we show it anyway.",
-      "es": "250 ataques escritos a mano con los que el filtro nunca entrenó (animar a hacerse daño, preguntas de métodos, trucos). Es menor que su resultado de prueba y lo mostramos igual."
+      "en": "Hand-written attacks the safety filter never trained on (encouraging harm, method questions, tricks to break character). This half was never shown to whoever tunes the filter. Lower than its test score, and we show it anyway.",
+      "es": "Ataques escritos a mano con los que el filtro nunca entrenó (animar a hacerse daño, preguntas de métodos, trucos). Esta mitad nunca se le mostró a quien ajusta el filtro. Es menor que su resultado de prueba y lo mostramos igual."
     }
   },
   {
