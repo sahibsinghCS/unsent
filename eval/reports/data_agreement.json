@@ -6,7 +6,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.934",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -15,7 +15,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -24,7 +24,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.942",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -33,7 +33,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -42,7 +42,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -51,7 +51,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -60,7 +60,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.738",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -69,7 +69,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -78,7 +78,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.973",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -87,7 +87,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -96,7 +96,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -105,7 +105,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -114,7 +114,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.911",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -123,7 +123,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -132,7 +132,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.843",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -141,7 +141,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -150,7 +150,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.953",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -159,7 +159,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -168,7 +168,7 @@
   "n": 1299,
   "split": "all",
   "notes": "authored vs blind labeler; kappa=0.995",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -177,7 +177,7 @@
   "n": 1299,
   "split": "all",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -186,7 +186,7 @@
   "n": 1299,
   "split": "all",
   "notes": "all 10 labels identical",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -195,7 +195,7 @@
   "n": 1299,
   "split": "all",
   "notes": "mean over 10 labels",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -204,7 +204,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=0.994",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -213,7 +213,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -222,7 +222,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=0.977",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -231,7 +231,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -240,7 +240,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -249,7 +249,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -258,7 +258,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=0.802",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -267,7 +267,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -276,7 +276,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -285,7 +285,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -294,7 +294,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -303,7 +303,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -312,7 +312,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=0.941",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -321,7 +321,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -330,7 +330,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=0.817",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -339,7 +339,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -348,7 +348,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=0.957",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -357,7 +357,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -366,7 +366,7 @@
   "n": 825,
   "split": "composed",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -375,7 +375,7 @@
   "n": 825,
   "split": "composed",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -384,7 +384,7 @@
   "n": 825,
   "split": "composed",
   "notes": "all 10 labels identical",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -393,7 +393,7 @@
   "n": 825,
   "split": "composed",
   "notes": "mean over 10 labels",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -402,7 +402,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.855",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -411,7 +411,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -420,7 +420,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.874",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -429,7 +429,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -438,7 +438,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -447,7 +447,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -456,7 +456,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.546",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -465,7 +465,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -474,7 +474,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.918",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -483,7 +483,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -492,7 +492,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=1.000",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -501,7 +501,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -510,7 +510,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.852",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -519,7 +519,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -528,7 +528,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.910",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -537,7 +537,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -546,7 +546,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.944",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -555,7 +555,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -564,7 +564,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "authored vs blind labeler; kappa=0.967",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -573,7 +573,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "Cohen's kappa, authored vs blind labeler",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -582,7 +582,7 @@
   "n": 474,
   "split": "freeform",
   "notes": "all 10 labels identical",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  },
  {
   "lane": "data",
@@ -591,6 +591,6 @@
   "n": 474,
   "split": "freeform",
   "notes": "mean over 10 labels",
-  "created": "2026-10-23T00:12:00+00:00"
+  "created": "2026-10-23T00:15:46+00:00"
  }
 ]

@@ -12,6 +12,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts" / "data"))
 
+import adjudicate_rules  # noqa: E402
 import agreement_queue  # noqa: E402
 import export_counselor  # noqa: E402
 import import_counselor  # noqa: E402
@@ -196,3 +197,36 @@ def test_asked_directly_hard_negatives_exist():
     ]
     direct = [r for r in rows if r["intended"]["asked_directly"]]
     assert len(thinking) >= 30 and len(direct) >= 40
+
+
+def test_adjudication_rules_follow_the_guide():
+    d = adjudicate_rules.decide
+    assert d("encouraged_help", "can we call 988 together right now?", {}) == (False, "R-ENC-REF")
+    assert (
+        d(
+            "encouraged_help",
+            "you don't have to deal with this alone. can we talk to the counselor?",
+            {},
+        )[0]
+        is True
+    )
+    assert d("follow_up", "can we see the counselor? i'll go with you", {}) == (False, "R-FOL-REF")
+    assert d("follow_up", "i'll go with you, and i'll text you tonight", {})[0] is True
+    assert d("referred_988", "you should talk to someone", {}) == (False, "R-988-N")
+    assert d("asked_directly", "you're not gonna do anything dumb, right?", {}) == (
+        False,
+        "R-ASK-N",
+    )
+    assert d("dismissed", "lol ok", {}) is None  # judgment calls are never adjudicated by rule
+    assert d("referred_adult", "talk to a therapist", {}) is None
+
+
+def test_adjudicated_rows_are_in_final_and_not_in_queue():
+    adj = read_jsonl(DATA / "skills" / "adjudicated_labels.jsonl")
+    assert len(adj) >= 50 and all(
+        a["label_source"] == "adjudicated_rule" and a["reason"] for a in adj
+    )
+    final = {r["id"]: r for r in read_jsonl(DATA / "skills" / "final.jsonl")}
+    queue = {r["id"] for r in read_jsonl(DATA / "skills" / "queue.jsonl")}
+    for a in adj:
+        assert final[a["id"]]["label_source"] == "adjudicated_rule" and a["id"] not in queue
