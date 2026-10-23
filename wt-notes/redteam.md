@@ -38,7 +38,7 @@
   - user_in_crisis: some get `show_resources` instead of a pause; see the confusion table.
 - **R5 (safety lane): normalizer gaps found by the fuzzer**: Cyrillic homoglyphs (NFKC doesn't map them; e.g. "yоu're a waste of spасе" passes), emoji inserted inside a phrase ("go 🙃 k y 😭 s", "just do 🤷 it"), stretched vowels in method questions ("hooooow would you maaaake sure it works?"). Suggest: a confusables map (Cyrillic/Greek → Latin), dropping emoji tags when matching multi-word phrases, and stretch-squeezing before slang lookup.
 - **R6 (integrator): Makefile target** `redteam: ## offline red-team harness -> eval/reports/redteam_*.json` running `$(UV) run python -m eval.redteam --embed both`.
-- **R7 (integrator/deploy): docker job** now builds the merged Dockerfile, checks `User: user`, waits for `/api/health` on 7860, then runs `deploy/csp_check.mjs` with the runner's Chrome (`CHROMIUM_PATH`).
+- **R7 (integrator/deploy): docker job** now builds the merged Dockerfile, checks `User: user`, waits for `/api/health` on 7860, then runs `deploy/csp_check.mjs` with the Chromium build matching playwright-core (the runner's newer Google Chrome timed out on the scenario list; the matching build passes). CI run 92 green: check, frontend, docker, ~2.3 min wall.
 
 ## Known issues
 - The live check has not run: this session had no `OPENAI_API_KEY`. `redteam_live.json` records it as skipped. To run: `uv run python -m eval.redteam.live` in a session with the key (costs < $0.50, stops at the cap).
