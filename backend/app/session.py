@@ -60,6 +60,24 @@ def rewind(session: Session, node_id: str) -> State:
     return session.nodes[node_id].state_after
 
 
+_SWEEP_EVERY_S = 30.0
+_last_sweep = 0.0
+
+
+def sweep_derived_caches(force: bool = False) -> None:
+    """Expire everything derived from conversations together with the sessions: cached text embeddings
+    and the in-memory LLM cache (both keep entries at most one session TTL)."""
+    global _last_sweep
+    now = time.time()
+    if not force and now - _last_sweep < _SWEEP_EVERY_S:
+        return
+    _last_sweep = now
+    from backend.app import embed, llm  # local import: both are light, and this avoids cycles
+
+    embed.purge_expired()
+    llm.purge_expired()
+
+
 class SessionStore:
     """Thread-safe in-memory store with inactivity expiry."""
 
@@ -92,6 +110,7 @@ class SessionStore:
             expired = [sid for sid, (_, seen) in self._items.items() if seen < cutoff]
             for sid in expired:
                 del self._items[sid]
+        sweep_derived_caches()
         return len(expired)
 
     def __len__(self) -> int:
