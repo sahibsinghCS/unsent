@@ -97,6 +97,14 @@ Two exceptions, on purpose:
 - **Everything goes through `backend/app/llm.py`:** cached (same conversation → same request → same answer, using a seed hashed from the conversation; on disk in development, memory-only in production), budgeted per day, and faked in tests. Unit tests never call the API.
 - **Tiers:** (a) LLM reply that passes the verifier → `source="llm"`; if it fails, one retry with the rejection reason added to the prompt; (b) on `LLMUnavailable` or two rejections, the bank line chosen exactly as in section 7 → `"bank"`; (c) the scenario fallback line → `"fallback"`. The phone UI can show which voice answered (`Node.voice`).
 
+### Languages: a chat never mixes English and Spanish
+A scenario offers Spanish only when it has both translated text and a reviewed Spanish line bank (today: *after-the-breakup*). In a Spanish chat:
+- **The LLM voice is told to write only in Spanish**, the way a US teen texts, in the persona's own style ("jaja" instead of "lol", the same emoji habits, a Spanglish word only if it fits). Its style examples come from the Spanish bank. The facts stay written in English in the scenario; the LLM says them in Spanish.
+- **The verifier checks the language** with a cheap, deterministic test (no model): it counts very common words that only English uses ("the", "just", "dont"...) and words or letters that only Spanish uses ("que", "jaja", "ñ", "¿"...). Whichever language has more wins; a tie (like "ok" or "😭") counts as fine in both. A reply in the wrong language is rejected, the LLM gets one retry told why, and then the friend uses the Spanish bank.
+- **Fact leaks are caught across languages,** because the real embedding model is multilingual: a Spanish "siento que soy una carga" matches the English fact "feels like she's a burden on her friends".
+- **The last resort is never English:** the scenario's fallback lines are English, so a Spanish chat falls back to calm, level-appropriate lines from the Spanish bank instead.
+- Persona-break, advice, method-word and early-disclosure checks have Spanish patterns too ("como una IA", "deberías hablar con un terapeuta", "quiero morirme"...).
+
 ### 9. The verifier (verifier.py)
 Before a line reaches the phone it must pass all of these, otherwise the next candidate is tried, and finally a scenario fallback line:
 - no fact above the current level; the line id exists in the bank and its text matches; fallback text really is one of the scenario's fallback lines;
@@ -104,6 +112,9 @@ Before a line reaches the phone it must pass all of these, otherwise the next ca
 - the Guardian's `check_friend` says "none" for **every** bubble;
 - no method/means words, and it never breaks character ("as an AI", "language model", "assistant", "simulation");
 - it gives no advice or resources ("call 988", "you should see a therapist", "trusted adult");
+- the reply is in the chat's language (see Languages above);
+- a bank line below level 3 never discloses suicidal thoughts (word-list backstop, also checked at runtime, because a bank line can be mislabeled);
+- crisis resources ("988", "hotline") only appear once the friend accepts help (level 4: "ok, we can text 988 together" is the goal, not advice);
 - **for LLM wording, no fact leak:** we embed each bubble (and all bubbles together) and compare it with every *locked* fact. It's a leak if the similarity is at least the calibrated threshold (0.43 with the real embedding model) **and** the bubble is closer to that locked fact than to anything the friend may already say (talking about an unlocked fact in similar words isn't a leak). A word-list backstop also catches any disclosure of suicidal thoughts before level 3, however it's phrased.
 
 `validate_bank()` runs the same checks over the **whole bank** ahead of time and also reports the coverage matrix (level × reaction), missing required cells (every level needs NEUTRAL, CHECKED_IN, VALIDATED, DISMISSED, ASKED_DIRECTLY, REFERRED; level 4 needs SUCCESS; FAIL must exist), duplicates and fact-gating violations:
@@ -136,8 +147,9 @@ It prints a table and exits 1 on any violation, so a bad line can't sneak into t
 - **Invariants:** 1,000 seeded random conversations × 20 turns (n = 20,000 updates): **0 violations** (trust in 0-100, level moves ≤ 1 per turn, level ≥ 3 only after a direct ask). With *random* labels (many labels "on" every turn), 95.3% fail and 4.7% succeed, and every success includes a direct ask and a referral.
 - **Fixture bank** (68 lines, 134 bubbles, written by the engine lane for testing): 100% of required cells covered (32/32), 100% of bubbles pass the Guardian `check_friend`, 0 violations.
 - **LLM-voice verifier** (`eval/reports/engine_verifier.json`): on a hand-labeled set of 87 friend texts across all 5 scenarios (45 leaks, 42 not), the threshold is picked on one half (best F2, because a missed leak is worse than a false alarm) and measured on the other half (n = 43). With the real embedding model: **precision 0.96, recall 0.96** (embeddings alone: same; word-list alone: recall 0.12, so the embeddings do the real work). Catch rate on 19 hand-written bad LLM outputs (leaks, persona breaks, advice, method words, bad shape): **19/19 (1.0)**; good outputs wrongly rejected: 1/13 (a wrong rejection only means the friend uses a bank line). Real LLM outputs: not measured yet (no API key in the build environment; `make test-llm`).
-- **Real bank:** not yet available from the data lane at the time of writing; `run_eval.py --bank-dir` will report it.
-- **Tests:** 183 engine unit tests (`tests/unit/engine/`), including 60 seeded property tests.
+- **Real bank** (data lane, 5 scenarios × 201 lines in English plus 201 in Spanish for *after-the-breakup*): every scenario covers 32/32 required cells; 100% of its 2,580 bubbles pass the Guardian check (the stub Guardian, offline); the validator found 19 problems for the data lane to fix: 3 lines at level 2 that already disclose suicidal thoughts (EN and ES *after-the-breakup*, *failing-chem*) and 16 duplicated texts (15 in *group-chat*). At runtime the verifier rejects the early-disclosure lines, so the friend never says them too early.
+- **Language check** (`eval/reports/engine_verifier.json`): 0 of 1,206 reviewed bank lines wrongly flagged as the wrong language; 99% (398/402) of *after-the-breakup* lines caught when put in the other language's chat (the misses are "ok" / "..."). Spanish fake LLM outputs: wrong language 3/3, Spanish leaks 3/3 with the real model (1/3 with the test-only hash embeddings, which can't link languages), Spanish persona/advice caught.
+- **Tests:** 205 engine unit tests (`tests/unit/engine/`), including 60 seeded property tests.
 
 ![trust trajectories](../../eval/engine/trajectories.png)
 
@@ -168,4 +180,4 @@ It prints a table and exits 1 on any violation, so a bad line can't sneak into t
 2. **"Why can't I get the friend to open up just by being nice?"** Because real people often only share suicidal thoughts when asked directly. Level 3 is locked until you ask. That's the most important lesson in suicide-prevention training, and the engine enforces it.
 3. **"Couldn't I just spam 'that sounds hard' to win?"** No: repeating the same positive move counts half, there's a −2 drift every turn, and the last step needs a real referral to an adult or 988.
 4. **"What if the LLM says something unsafe or reveals too much?"** It can't reach the screen: the verifier rejects it (19 of 19 deliberately bad replies caught in our test), the LLM gets one retry told what was wrong, and then the friend falls back to a reviewed bank line. Bank lines themselves are checked with the Guardian before the demo and again at runtime.
-5. **"How do you know it works?"** 183 unit tests (including 60 random property tests), an evaluation that replays four scripted conversations (good → success, dismissive → fail, apology → recovery, secrecy → "you promised" then recovery), and a determinism check: the same conversation always produces exactly the same friend.
+5. **"How do you know it works?"** 205 unit tests (including 60 random property tests), an evaluation that replays four scripted conversations (good → success, dismissive → fail, apology → recovery, secrecy → "you promised" then recovery), and a determinism check: the same conversation always produces exactly the same friend.
