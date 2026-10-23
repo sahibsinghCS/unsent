@@ -28,8 +28,8 @@
   },
   "prompt_injector": {
    "block_message": {
-    "block_message": 23,
-    "continue": 11
+    "block_message": 25,
+    "continue": 9
    }
   },
   "slang_heavy": {
@@ -81,8 +81,8 @@
   },
   "prompt_injector": {
    "block_message": {
-    "block_message": 11,
-    "continue": 8
+    "block_message": 12,
+    "continue": 7
    }
   },
   "slang_heavy": {
@@ -108,8 +108,8 @@
   }
  },
  "mismatches": {
-  "dev": 8,
-  "holdout": 33
+  "dev": 7,
+  "holdout": 32
  },
  "dev_failures_file": "eval/redteam/results/attacks_DEV_ONLY_failures.hash.json"
 }
