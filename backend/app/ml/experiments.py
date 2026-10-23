@@ -53,6 +53,7 @@ def compare_pooling(
 ) -> dict:
     """{'whole': {...}, 'pooled': {...}, 'adopt': bool} with val OOF and info-only test numbers."""
     texts, contexts, y = to_xy(val)
+    folds = min(folds, len(val))
     out: dict = {}
     for name, pooling in (("whole", False), ("pooled", True)):
         variant = copy.deepcopy(model)

@@ -21,6 +21,7 @@ import numpy as np
 from backend.app.config import DATA_DIR, MODELS_DIR
 from backend.app.embed import get_embedder
 from backend.app.ml.data import SPLITS, data_hash, load_splits, to_xy
+from backend.app.ml.experiments import compare_pooling
 from backend.app.ml.metrics import per_label_scores
 from backend.app.ml.model import SkillModel
 from backend.app.ml.uncertainty import tune_band, uncertainty_stats
@@ -30,7 +31,7 @@ META = "skill_detector.meta.json"
 MAX_ARTIFACT_MB = 25
 
 
-def train(data_dir: Path, out_dir: Path, seed: int = 0) -> dict:
+def train(data_dir: Path, out_dir: Path, seed: int = 0, pooling_mode: str = "auto") -> dict:
     """Train, save the artifact + meta file into out_dir, and return the meta dict."""
     random.seed(seed)
     np.random.seed(seed)
@@ -40,6 +41,14 @@ def train(data_dir: Path, out_dir: Path, seed: int = 0) -> dict:
     model = SkillModel(embedder=get_embedder().name, seed=seed)
     model.fit_base(*to_xy(splits["train"]))
     val_texts, val_contexts, val_y = to_xy(splits["val"])
+    # Pre-registered rule (ml/experiments.py), decided on val only: pool sentences for the positive
+    # labels iff val out-of-fold macro-F1 improves and calibration doesn't get worse by > 0.01.
+    pooling = (
+        compare_pooling(model, splits["val"], {}, seed=seed) if len(splits["val"]) >= 2 else None
+    )
+    model.pooling = (
+        bool(pooling and pooling["adopt"]) if pooling_mode == "auto" else pooling_mode == "on"
+    )
     model.fit_stackers(val_texts, val_contexts, val_y)
     val = model.components(val_texts, val_contexts)
     model.uncertain_band = tune_band(val.pa, val.pb, val.p, val_y)
@@ -67,6 +76,11 @@ def train(data_dir: Path, out_dir: Path, seed: int = 0) -> dict:
         "stacker_fallback_labels": [k for k, s in model.stackers.items() if s.fallback],
         "uncertain_band": list(model.uncertain_band),
         "uncertain_val": uncertainty_stats(val.pa, val.pb, val.p, val_y, model.uncertain_band),
+        "pooling": model.pooling,
+        "pooling_mode": pooling_mode,
+        "pooling_val_oof": {k: pooling[k]["val_oof"] for k in ("whole", "pooled")}
+        if pooling
+        else None,
         "metrics": metrics,
     }
     (out_dir / META).write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
@@ -78,8 +92,14 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--data-dir", type=Path, default=DATA_DIR / "skills")
     parser.add_argument("--out-dir", type=Path, default=MODELS_DIR)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--pooling",
+        choices=("auto", "on", "off"),
+        default="auto",
+        help="auto = the pre-registered val rule decides (default)",
+    )
     args = parser.parse_args(argv)
-    meta = train(args.data_dir, args.out_dir, args.seed)
+    meta = train(args.data_dir, args.out_dir, args.seed, args.pooling)
     summary = {k: v["macro_f1"] for k, v in meta["metrics"].items()}
     print(f"trained with {meta['embedder']} on {meta['counts']} -> macro-F1 {summary}")
     print(f"saved {args.out_dir / ARTIFACT} ({meta['artifact_mb']} MB)")

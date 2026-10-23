@@ -2,217 +2,217 @@
   {
     "lane": "ml",
     "metric": "pooling_whole_macro_f1",
-    "value": 0.9209,
-    "n": 142,
+    "value": 0.9228,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_ece",
-    "value": 0.0132,
-    "n": 142,
+    "value": 0.0107,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_brier",
-    "value": 0.0182,
-    "n": 142,
+    "value": 0.0168,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_validated_f1",
-    "value": 0.9383,
-    "n": 142,
+    "value": 0.9438,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_macro_f1",
-    "value": 0.9587,
-    "n": 124,
+    "value": 0.9648,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_ece",
-    "value": 0.0157,
-    "n": 124,
+    "value": 0.0122,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_brier",
-    "value": 0.0094,
-    "n": 124,
+    "value": 0.0084,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_validated_f1",
-    "value": 0.9895,
-    "n": 124,
+    "value": 1.0,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_macro_f1",
-    "value": 0.8183,
-    "n": 171,
+    "value": 0.8411,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_ece",
-    "value": 0.019,
-    "n": 171,
+    "value": 0.0118,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_brier",
-    "value": 0.0345,
-    "n": 171,
+    "value": 0.0301,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_whole_validated_f1",
-    "value": 0.6923,
-    "n": 171,
+    "value": 0.7,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_macro_f1",
-    "value": 0.9158,
-    "n": 142,
+    "value": 0.9312,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_ece",
-    "value": 0.0109,
-    "n": 142,
+    "value": 0.0096,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_brier",
-    "value": 0.0175,
-    "n": 142,
+    "value": 0.0155,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_validated_f1",
-    "value": 0.95,
-    "n": 142,
+    "value": 0.9556,
+    "n": 152,
     "split": "val_oof",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_macro_f1",
-    "value": 0.9559,
-    "n": 124,
+    "value": 0.9693,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_ece",
-    "value": 0.011,
-    "n": 124,
+    "value": 0.0119,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_brier",
-    "value": 0.0084,
-    "n": 124,
+    "value": 0.0069,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_validated_f1",
     "value": 1.0,
-    "n": 124,
+    "n": 133,
     "split": "test",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_macro_f1",
-    "value": 0.8024,
-    "n": 171,
+    "value": 0.822,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_ece",
-    "value": 0.0152,
-    "n": 171,
+    "value": 0.0119,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_brier",
-    "value": 0.0344,
-    "n": 171,
+    "value": 0.0294,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   },
   {
     "lane": "ml",
     "metric": "pooling_pooled_validated_f1",
-    "value": 0.72,
-    "n": 171,
+    "value": 0.716,
+    "n": 221,
     "split": "test_freeform",
-    "notes": "clause-pooling experiment; adopt=False; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
-    "created": "2026-10-23T00:19:20+00:00"
+    "notes": "clause-pooling experiment; adopt=True; adopt iff val out-of-fold macro-F1 improves and ECE rises by at most 0.01; 5-fold, seed 0; info only, not used to decide",
+    "created": "2026-10-23T01:02:01+00:00"
   }
 ]

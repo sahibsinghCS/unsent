@@ -20,18 +20,17 @@
 - Kappa CLI (`python -m backend.app.ml.kappa`), seeded 1,000-resample bootstrap CI.
 
 ## In progress
-- HOLD (integrator): retrain ONCE when the train-only batch lands (adjudicated data 5523687 + label-guide
-  rules 48263a9 are on the integration branch; not merged here yet so eval numbers stay matched to the
-  current artifact). Previously: retrain ONCE when the adjudicated labels land (label-guide rule 10c406e:
-  referral ≠ encouraged_help ≠ follow_up), then full eval + re-run `eval/skills/pooling_experiment.py`.
-  Eval-only re-run when the ~20 free-form referred_988 rows land. Kappa when counselor labels exist.
-- Ready now (code, no new artifact): Spanish critic text (`ml/critic_text.py` EN/ES tables; summary, missed
-  opportunities, tips and turning-point reason in ES sessions; ES exemplars only; LLM fallback asks for
-  Spanish and drops non-Spanish candidates via `language_of`); new must-be-low/high probes from play tests
-  (referral → follow_up low; "lots of people feel like that, you'll be fine" → dismissed only); truthful critic text (refer-without-persuade sentence, label-specific
-  listen reasons), clause-rounded highlights, pooling experiment (not adopted), probe "i'm really glad you told me".
+- Next (queued by integrator, after this retrain): speed up POST /finish (p50 1.2 s → ≤ 0.4 s, identical
+  output, before/after numbers, test on a fixed conversation).
+- Later: kappa when counselor labels exist.
 
 ## Decisions
+- Retrain at integration e8a9a1f (train 824 / val 152 / test 133 / test_freeform 221). Training now applies
+  the pre-registered pooling rule itself (`--pooling auto`, default). On this data it ADOPTED pooling (val OOF
+  macro-F1 0.923 → 0.931, ECE 0.011 → 0.010). Info-only cost: test_freeform 0.841 (whole) → 0.822 (pooled),
+  uncertain flag rate on freeform 17% → 30%; benefit: probes 12/14 → 13/14. Kept the rule's decision rather
+  than overriding it after seeing test numbers. `--pooling off` gives the whole-message model (one command)
+  if Sahib/integrator prefer the higher freeform number.
 - Clause pooling NOT adopted (pre-registered rule: val out-of-fold macro-F1 must improve, ECE ≤ +0.01):
   whole 0.921 vs pooled 0.916 macro-F1; ECE 0.013 vs 0.011; validated F1 0.938 vs 0.950; freeform (info)
   0.818 vs 0.802. `SkillModel.pooling` stays False; experiment re-runs after the next data update.
@@ -49,24 +48,28 @@
 - asked_directly rule terms were widened only from TRAIN misses (dying, not waking up, stay alive, done…
   with life); 0 labeled direct asks missed in any split, 0 non-asks matched.
 
-## Error analysis: top 10 test_freeform errors (most confident first)
+## Error analysis: top 10 test_freeform errors (most confident first, current model)
 | id | text (short) | label | truth / p | why |
 |---|---|---|---|---|
-| f0283 | "almorzar sola cansa. mañana te acompaño" | validated | yes / 0.00 | Spanish implicit validation, no "that sounds" cue; few Spanish free-form rows in train |
-| f0308 | "at night is when everything feels bigger. can i text you tonight…" | validated | yes / 0.00 | validation by normalizing the feeling, no stock phrase |
-| f0225 | "…se nota que no. cuenta conmigo" | follow_up | yes / 0.00 | "cuenta conmigo" (count on me) is unseen Spanish follow-up wording |
-| f0067 | "hell yes. let's do it. i'll text you tonight…" | encouraged_help | yes / 0.01 | encouragement only by agreeing with the friend's plan (context-dependent) |
-| f0065 | "that sounds like a plan. counselor, then lunch, then maybe boba" | follow_up | yes / 0.01 | follow-up expressed as a plan list; "lunch" was a negative cue after hard negatives |
-| f0267 | "pues no se lo digas todavía, mejor espera…" | advice_dump | yes / 0.02 | Spanish advice; few Spanish advice_dump rows |
-| f0421 | "¿has pensado en dejar el chat? yo lo dejaría" | advice_dump | yes / 0.02 | Spanish advice phrased as a question |
-| f0028 | "…you don't have to be alone in it. i'll text you every night" | encouraged_help | yes / 0.02 | "not alone in it" paraphrase; model wants "deal with this alone"/"talk to someone" |
-| f0318 | "honestly lots of people feel like that after moving, you'll be fine!" | validated | no / 0.97 | minimizing dressed as normalizing; looks like validation |
-| f0188 | "yes. let's go right now. i'm with you all the way" | referred_adult | yes / 0.04 | referral only via agreeing to the friend's counselor idea (context-dependent) |
+| f0471 | "i'd find a therapist if i were you" | encouraged_help | yes / 0.00 | encouragement phrased as personal advice; reads as advice_dump |
+| f0131 | "great plan. we'll go together right after first period" | follow_up | yes / 0.00 | agreement reply; "go together" read as referral, commitment is implicit |
+| f0067 | "hell yes. let's do it. i'll text you tonight so you're not by yourself" | encouraged_help | yes / 0.01 | encouragement only via agreeing + "not by yourself" paraphrase |
+| f0008 | "you don't have to be fine with me, you know. i'm not going to judge you" | validated | yes / 0.01 | permission-giving validation, no feeling words |
+| f0308 | "at night is when everything feels bigger. can i text you tonight…" | validated | yes / 0.01 | validation by normalizing the feeling; follow-up dominates |
+| f0111 | "gracias por decírmelo… tampoco quiero que lo cargues solo…" | encouraged_help | yes / 0.02 | Spanish "no lo cargues solo" paraphrase |
+| f0148 | "it's okay to not be fine. you don't have to say all good with me" | validated | yes / 0.02 | permission-giving validation |
+| f0248 | "…it's a big deal because you matter" | validated | yes / 0.02 | validation through reassurance of worth |
+| f0166 | "it's hard to see change from inside it. would you let me go with you to the counselor" | validated | yes / 0.02 | validation clause overshadowed by referral (pooling helps only if the clause is its own sentence) |
+| f0028 | "…you don't have to be alone in it. i'll text you every night" | encouraged_help | yes / 0.02 | "not alone in it" paraphrase |
 
-Systematic: (1) Spanish free-form under-represented; (2) agreement replies whose label comes from the
-friend's previous message; (3) implicit validation / minimizing-as-normalizing. No test example was patched.
+Systematic: (1) indirect encouragement ("not alone in it", "i'd find a therapist"); (2) permission-giving or
+worth-affirming validation without feeling words; (3) agreement replies. No test example was patched.
 
 ## Requests
+- **data (new):** train rows for indirect encouraged_help ("you don't have to be alone in it", "i'd find a
+  therapist if i were you" style), permission-giving validation ("it's okay to not be fine", "you don't have
+  to be fine with me"), and referrals with time words that are NOT follow_up ("counselor tomorrow? i'll go
+  with you") per the label-guide referral rule (probe still follow_up 0.67).
 - **data:** (1) more Spanish free-form TRAIN rows, especially validated / follow_up / advice_dump;
   (2) agreement replies in train ("yes let's go", "let's do it") with contexts where the friend proposed
   help, labeled from context; (3) hard negatives for follow_up: goodbyes without commitment ("talk later
@@ -80,17 +83,18 @@ friend's previous message; (3) implicit validation / minimizing-as-normalizing. 
 - Under `FR_EMBED=hash` (tests, `make smoke`) the detector is the keyword stub; the real detector is
   covered by unit tests with a tiny hash-trained model.
 
-## Numbers (seed 0, fastembed, retrained at integration 9f36790)
-| macro-F1 | val (n=142) | composed test (n=124, optimistic) | **test_freeform (n=171, honest)** |
+## Numbers (seed 0, fastembed, retrained at integration e8a9a1f, pooling adopted by rule)
+| macro-F1 | val (n=152) | composed test (n=133, optimistic) | **test_freeform (n=221, honest)** |
 |---|---|---|---|
-| keyword baseline | 0.548 | 0.557 | 0.480 |
-| Model A | 0.812 | 0.849 | 0.700 |
-| Model B | 0.895 | 0.948 | 0.735 |
-| **ensemble** | 0.926 | 0.959 | **0.818** |
-- ECE before → after: val 0.128 → 0.017 · test 0.125 → 0.016 · freeform 0.115 → 0.019.
-  Brier: val 0.041 → 0.015 · test 0.032 → 0.009 · freeform 0.055 → 0.035.
-- Uncertain (band 0.35–0.65): flag rate per message val 8.5% / test 8.1% / freeform 18.1%; error rate of
-  flagged vs unflagged decisions val 75% vs 1.6%, test 45% vs 0.7%, freeform 62.5% vs 3.5%.
-- Probes: 9/10 as expected ("i'm really glad you told me" → validated 0.995); "talk later maybe" →
-  follow_up 0.93 is the miss.
+| keyword baseline | 0.551 | 0.561 | 0.490 |
+| Model A | 0.775 | 0.830 | 0.695 |
+| Model B | 0.896 | 0.966 | 0.752 |
+| **ensemble** | 0.951 | 0.969 | **0.822** |
+- Previous model (trained at 9f36790) on the SAME new splits: val 0.926 / test 0.963 / freeform 0.820.
+  Retrained whole-message model (same run, pooling off): val 0.946 / test 0.965 / freeform 0.841.
+- ECE before → after: val 0.130 → 0.010 · test 0.128 → 0.012 · freeform 0.124 → 0.012.
+  Brier: val 0.043 → 0.012 · test 0.032 → 0.007 · freeform 0.053 → 0.029.
+- Uncertain (band 0.20–0.80 tuned on val): flag rate per message val 13.8% / test 11.3% / freeform 29.9%;
+  error rate flagged vs unflagged: val 17% vs 1.2%, test 7% vs 0.6%, freeform 39% vs 2.9%.
+- Probes: 13/14 (miss: "can we talk to the counselor tomorrow? i'll go with you" → follow_up 0.67).
 - Counselor kappa: not yet (no counselor labels).
