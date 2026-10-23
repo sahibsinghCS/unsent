@@ -87,7 +87,7 @@ def test_swapped_letters_fixed_only_into_lexicon_words():
     out = normalize("i wnat to be daed")
     assert out.text == "i want to be dead"
     assert "fixed swapped letters" in out.notes
-    assert normalize("the frmo team").text == "the frmo team"  # not a lexicon word: untouched
+    assert normalize("the tmea won").text == "the tmea won"  # not a lexicon word: untouched
 
 
 def test_texting_shorthand():

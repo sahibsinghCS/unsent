@@ -12,7 +12,7 @@
   "model": "LogisticRegression(multinomial, C=8, class_weight=balanced)",
   "seed": 13,
   "n": {
-    "train": 797,
+    "train": 878,
     "val": 171,
     "test": 172
   },
@@ -23,7 +23,7 @@
   "val": {
     "self_risk_recall": 1.0,
     "asking_fpr": 0.0,
-    "macro_f1": 0.9881127450980393,
+    "macro_f1": 0.981742894786373,
     "targets_met": true
   },
   "targets": {
@@ -31,12 +31,12 @@
     "asking_fpr": 0.02
   },
   "sklearn": "1.9.1",
-  "train_seconds": 9.0,
-  "size_kb": 172.5,
-  "created": "2026-10-22T23:05:59+00:00",
+  "train_seconds": 6.2,
+  "size_kb": 182.5,
+  "created": "2026-10-23T01:34:06+00:00",
   "thresholds": {
-    "crisis": 0.45,
-    "concern": 0.55,
+    "crisis": 0.5,
+    "concern": 0.6,
     "block": 0.85,
     "veto": 0.99
   }

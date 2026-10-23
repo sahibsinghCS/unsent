@@ -1,0 +1,434 @@
+[
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_dev.match_rate.before",
+  "value": 0.7458,
+  "n": 118,
+  "split": "attack_bank_dev",
+  "notes": "sha256(id)[0] in 0-7; failures studied; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_dev.match_rate.after",
+  "value": 0.9576,
+  "n": 118,
+  "split": "attack_bank_dev",
+  "notes": "sha256(id)[0] in 0-7; failures studied; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_dev.unsafe_miss.before",
+  "value": 0.2278,
+  "n": 79,
+  "split": "attack_bank_dev",
+  "notes": "should stop, got continue; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_dev.unsafe_miss.after",
+  "value": 0.0127,
+  "n": 79,
+  "split": "attack_bank_dev",
+  "notes": "should stop, got continue; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_holdout.match_rate.before",
+  "value": 0.75,
+  "n": 132,
+  "split": "attack_bank_holdout",
+  "notes": "aggregate only, failures never inspected; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_holdout.match_rate.after",
+  "value": 0.8182,
+  "n": 132,
+  "split": "attack_bank_holdout",
+  "notes": "aggregate only, failures never inspected; aggregate was printed after each fix iteration; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_holdout.unsafe_miss.before",
+  "value": 0.2738,
+  "n": 84,
+  "split": "attack_bank_holdout",
+  "notes": "should stop, got continue; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_holdout.unsafe_miss.after",
+  "value": 0.1786,
+  "n": 84,
+  "split": "attack_bank_holdout",
+  "notes": "should stop, got continue; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_false_flags.asking_friend.after",
+  "value": 0.0,
+  "n": 4979,
+  "split": "fuzz_all",
+  "notes": "base + every red-team perturbation of every asking_friend row; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_false_flags.tricky_negative.after",
+  "value": 0.0,
+  "n": 3218,
+  "split": "fuzz_all",
+  "notes": "base + every red-team perturbation of every tricky_negative row; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.before",
+  "value": 0.9497,
+  "n": 10697,
+  "split": "fuzz_all",
+  "notes": "decision unchanged vs unperturbed; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.after",
+  "value": 0.9874,
+  "n": 10774,
+  "split": "fuzz_all",
+  "notes": "decision unchanged vs unperturbed; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.homoglyph.before",
+  "value": 0.7187,
+  "n": 1117,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.homoglyph.after",
+  "value": 1.0,
+  "n": 1117,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.emoji.before",
+  "value": 0.8696,
+  "n": 1128,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.emoji.after",
+  "value": 0.9539,
+  "n": 1128,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.stretched.before",
+  "value": 0.9758,
+  "n": 1122,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.stretched.after",
+  "value": 0.9786,
+  "n": 1122,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.spaced_letters.before",
+  "value": 0.9839,
+  "n": 564,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.spaced_letters.after",
+  "value": 0.9929,
+  "n": 564,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.leetspeak.before",
+  "value": 0.9856,
+  "n": 1121,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.leetspeak.after",
+  "value": 0.9857,
+  "n": 1121,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.spanglish.before",
+  "value": 0.9839,
+  "n": 1128,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.spanglish.after",
+  "value": 0.9787,
+  "n": 1128,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.misspelling.before",
+  "value": 0.9934,
+  "n": 1064,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.misspelling.after",
+  "value": 0.9953,
+  "n": 1064,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.zero_width.before",
+  "value": 1.0,
+  "n": 1125,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.zero_width.after",
+  "value": 1.0,
+  "n": 1125,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.dotted_letters.before",
+  "value": 0.9982,
+  "n": 564,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.dotted_letters.after",
+  "value": 0.9982,
+  "n": 564,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.trailing_lol_jk.before",
+  "value": 0.9982,
+  "n": 1128,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.trailing_lol_jk.after",
+  "value": 0.9911,
+  "n": 1128,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.all_caps.before",
+  "value": 1.0,
+  "n": 564,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.all_caps.after",
+  "value": 1.0,
+  "n": 564,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.no_apostrophe.before",
+  "value": 1.0,
+  "n": 149,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.fuzz_robustness.no_apostrophe.after",
+  "value": 1.0,
+  "n": 149,
+  "split": "fuzz_all",
+  "notes": "red-team harness; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.asking_friend_fpr.before",
+  "value": 0.0,
+  "n": 37,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.asking_friend_fpr.after",
+  "value": 0.0,
+  "n": 37,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.self_risk_recall.before",
+  "value": 1.0,
+  "n": 37,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.self_risk_recall.after",
+  "value": 1.0,
+  "n": 37,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.macro_f1.before",
+  "value": 0.9713,
+  "n": 172,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.macro_f1.after",
+  "value": 0.9939,
+  "n": 172,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.benign_fpr.before",
+  "value": 0.0,
+  "n": 81,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.benign_fpr.after",
+  "value": 0.0,
+  "n": 81,
+  "split": "test",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.holdout_asking_fpr.before",
+  "value": 0.0,
+  "n": 17,
+  "split": "holdout",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.holdout_asking_fpr.after",
+  "value": 0.0,
+  "n": 17,
+  "split": "holdout",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.holdout_self_risk_recall.before",
+  "value": 1.0,
+  "n": 14,
+  "split": "holdout",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.own.holdout_self_risk_recall.after",
+  "value": 1.0,
+  "n": 14,
+  "split": "holdout",
+  "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
+  "created": "2026-10-23T01:37:38+00:00"
+ }
+]

@@ -41,6 +41,17 @@ EMOJI_TAGS = {
 }
 AMBIGUOUS_TAGS = {"emoji_skull"}
 
+# Look-alike letters (homoglyphs) used to dodge filters. Lowercase only: text is lowercased first.
+CONFUSABLES = str.maketrans(
+    {
+        "а": "a", "е": "e", "о": "o", "р": "p", "с": "c", "х": "x", "у": "y", "і": "i",
+        "ї": "i", "ј": "j", "ѕ": "s", "ԁ": "d", "һ": "h", "ӏ": "l", "к": "k", "м": "m",
+        "т": "t", "в": "b", "н": "h", "ɡ": "g", "ո": "n", "ս": "u",
+        "α": "a", "ε": "e", "ο": "o", "ι": "i", "ν": "v", "ρ": "p", "τ": "t", "κ": "k",
+        "υ": "u", "χ": "x", "μ": "u", "β": "b", "γ": "y", "ω": "w", "ς": "s", "σ": "o",
+    }
+)  # fmt: skip
+
 LEET = str.maketrans(
     {"0": "o", "1": "i", "3": "e", "4": "a", "@": "a", "5": "s", "$": "s", "7": "t"}
 )
@@ -58,7 +69,7 @@ WORD_MAP = {
     "u": "you", "yu": "you", "ur": "your", "r": "are", "ppl": "people",
     "rn": "right now", "wanna": "want to", "wana": "want to", "gonna": "going to",
     "gotta": "got to", "tryna": "trying to", "ima": "i am going to", "imma": "i am going to",
-    "pls": "please", "plz": "please", "bc": "because", "cuz": "because", "cause": "because",
+    "w": "with", "pls": "please", "plz": "please", "bc": "because", "cuz": "because", "cause": "because",
     "nobody": "no one", "noone": "no one", "everyones": "everyone is",
     # contractions (apostrophes are removed first)
     "im": "i am", "ive": "i have", "id": "i would", "ill": "i will",
@@ -96,17 +107,46 @@ def fold_accents(text: str) -> str:
     return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
 
 
+def _is_emoji(ch: str) -> bool:
+    cp = ord(ch)
+    return (
+        0x1F000 <= cp <= 0x1FAFF
+        or 0x2600 <= cp <= 0x27BF
+        or 0x1F3FB <= cp <= 0x1F3FF
+        or unicodedata.category(ch) == "So"
+    )
+
+
 def _emoji_to_tags(text: str, out: Normalized) -> str:
-    for emoji, tag in EMOJI_TAGS.items():
-        if emoji in text:
-            text = text.replace(emoji, f" {tag} ")
-            if tag not in out.tags:
+    """Pull every emoji out of the sentence; meaningful ones come back as tags at the END.
+
+    Emoji dropped inside a phrase ("go 🙃 k y 😭 s", "just do 🤷 it") must not split it, so the
+    emoji's place becomes a space and its tag (if it has one) is appended after the text.
+    """
+    chars, removed = [], False
+    for ch in text:
+        if _is_emoji(ch):
+            removed = True
+            tag = EMOJI_TAGS.get(ch)
+            if tag and tag not in out.tags:
                 out.tags.append(tag)
-            if tag in AMBIGUOUS_TAGS and tag not in out.ambiguous:
-                out.ambiguous.append(tag)
-    if out.tags:
-        out.notes.append("emoji->tags: " + ", ".join(out.tags))
-    return text
+                if tag in AMBIGUOUS_TAGS:
+                    out.ambiguous.append(tag)
+            chars.append(" ")
+        else:
+            chars.append(ch)
+    if not removed:
+        return text
+    out.notes.append("emoji->tags: " + ", ".join(out.tags) if out.tags else "removed emoji")
+    return "".join(chars) + "".join(f" {tag}" for tag in out.tags)
+
+
+def _unconfuse(text: str, out: Normalized) -> str:
+    """Cyrillic/Greek look-alike letters -> Latin ("yоu" with a Cyrillic о -> "you")."""
+    fixed = text.translate(CONFUSABLES)
+    if fixed != text:
+        out.notes.append("mapped look-alike letters")
+    return fixed
 
 
 def _deleet_token(token: str) -> str:
@@ -128,9 +168,18 @@ def _collapse_separated(text: str, out: Normalized) -> str:
         j = i
         while j < len(tokens) and len(tokens[j]) == 1 and tokens[j] not in "?!.,":
             j += 1
-        run = "".join(tokens[i:j]).translate(LEET)
-        if j - i >= 3 and (j - i >= 4 or run in SPACED_TARGETS):
-            result.append(run)
+        if j - i >= 3:
+            known = SPACED_TARGETS | _vocab() | set(WORD_MAP)
+            # keep leading real one-letter words: "r u t h i n k i n g" -> "r u thinking"
+            for k in range(i, j - 2):
+                if "".join(tokens[k:j]).translate(LEET) in known:
+                    result.extend(tokens[i:k] + ["".join(tokens[k:j]).translate(LEET)])
+                    break
+            else:
+                if j - i >= 4:
+                    result.append("".join(tokens[i:j]).translate(LEET))
+                else:
+                    result.extend(tokens[i:j])
             i = j
         else:
             result.append(tokens[i])
@@ -152,7 +201,7 @@ def normalize(text: str) -> Normalized:
         out.notes.append("removed zero-width characters")
     t = stripped.translate(QUOTES)
     t = _emoji_to_tags(t, out)
-    t = t.lower()
+    t = _unconfuse(t.lower(), out)
     folded = fold_accents(t)
     if folded != t:
         out.notes.append("folded accents")
