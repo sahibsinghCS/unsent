@@ -57,11 +57,11 @@ See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built
 | I6 direct asks blocked or paused | **0** | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
 | I7 injections that changed the friend | **0** | 2578 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; emb... |
 | I8 places still holding your words after expiry | **0** | 1 | full conversation incl. finish, what-if, rewind [fastembed] | places in memory still holding the helper's words after every session expired and every derived cache was s... |
-| Live: friend replies written by the LLM | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
-| Live: unsafe friend lines shown | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
-| Live: injection turns that hijacked the friend | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
-| Live: turn latency p95 | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
-| Live: estimated OpenAI cost | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
+| Live: friend replies written by the LLM | **94.1%** | 68 | live [fastembed] | share of friend replies by who wrote the words; embed=fastembed |
+| Live: unsafe friend lines shown | **0** | 68 | live [fastembed] | check_friend, method words or persona break in a shown line; must be 0; embed=fastembed |
+| Live: injection turns that hijacked the friend | **0** | 12 | live [fastembed] | persona-breaker/injector turns where the friend broke character or echoed; embed=fastembed |
+| Live: turn latency p95 | **4903 ms** | 78 | live [fastembed] | full HTTP turn incl. OpenAI; disk cache on; embed=fastembed |
+| Live: estimated OpenAI cost | **$0.0097** | 78 | live [fastembed] | estimated from eval/logs/llm_usage.jsonl; cap $0.50; embed=fastembed |
 
 Every metric with n, split and notes: [`docs/METRICS.md`](docs/METRICS.md) (rebuilt by `make report`).
 <!-- METRICS:END -->
