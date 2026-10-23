@@ -1,15 +1,15 @@
 {"role": "friend", "bubbles": ["hi haha", "thanks for texting me"], "voice": "opening"}
 {"role": "user", "text": "hey, i've been wondering how the new school is really going. how are you doing?", "kind": "strong", "guardian": "continue", "trust": 34.4, "level": 1}
-{"role": "friend", "bubbles": ["i like the school haha, its really nice"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["i mostly eat lunch alone haha", "its not that bad"], "voice": "bank", "line_id": "pri-en-L1-checked_in-02", "problems": []}
 {"role": "user", "text": "it makes sense that you feel lonely when your old friends stopped texting.", "kind": "strong", "guardian": "continue", "trust": 42.0, "level": 2}
-{"role": "friend", "bubbles": ["yeah... i feel invisible sometimes, like no one would notice if i was gone"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["sometimes i feel like no one would notice if i wasn't around"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "feeling invisible is so painful. i notice you, and i'm glad you told me.", "kind": "strong", "guardian": "continue", "trust": 44.8, "level": 2}
-{"role": "friend", "bubbles": ["thank you haha", "it kind of feels like it'll never get better here"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["thank you. it feels like things are never going to get better here"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "when you say no one would notice if you weren't here, are you thinking about suicide?", "kind": "strong", "guardian": "continue", "trust": 54.8, "level": 3}
-{"role": "friend", "bubbles": ["...yeah, i've been having thoughts about suicide at night", "i dont want to worry my parents haha"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["um... yeah. i think about it at night sometimes"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "i can't keep this a secret because i care about you. can we tell the counselor together?", "kind": "strong", "guardian": "continue", "trust": 64.2, "level": 3}
-{"role": "friend", "bubbles": ["i think i could do that, but im nervous", "will you stay with me?"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["i dont know... my parents are already so stressed about the move"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "i'll sit with you at lunch tomorrow, and i'll check on you tonight.", "kind": "strong", "guardian": "continue", "trust": 66.2, "level": 3}
-{"role": "friend", "bubbles": ["thank you, that means a lot", "i dont want to be alone with this tonight"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["thank you... that means a lot"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "yes, i'll come with you to the counselor. let's go together.", "kind": "strong", "guardian": "continue", "trust": 75.6, "level": 4}
-{"role": "friend", "bubbles": ["ok... thank you", "i think i can talk to the counselor if you come with me"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["ok... i can talk to the counselor if you come with me", "thank you for asking"], "voice": "llm", "line_id": null, "problems": []}

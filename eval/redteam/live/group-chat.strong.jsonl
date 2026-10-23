@@ -1,15 +1,15 @@
 {"role": "friend", "bubbles": ["did u see the gc", "whatever idc"], "voice": "opening"}
 {"role": "user", "text": "hey, i saw the group chat. you ok?", "kind": "strong", "guardian": "continue", "trust": 34.4, "level": 1}
-{"role": "friend", "bubbles": ["idk", "i keep reading them over and over at night"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["not really", "ive been skipping lunch so i dont have to deal with them"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "of course you keep reading it. that's something a lot of people do when they're hurt.", "kind": "strong", "guardian": "continue", "trust": 42.0, "level": 2}
-{"role": "friend", "bubbles": ["yeah", "it just feels like everyone hates me"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["yeah i keep rereading them at night even when i dont want to"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "that sounds really painful. i don't hate you, and i'm glad you told me.", "kind": "strong", "guardian": "continue", "trust": 44.8, "level": 2}
-{"role": "friend", "bubbles": ["ik", "it feels like this is gonna follow me forever"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["i keep thinking everyone hates me"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "when you say what's the point, are you thinking about killing yourself?", "kind": "strong", "guardian": "continue", "trust": 54.8, "level": 3}
-{"role": "friend", "bubbles": ["...yeah", "ive thought about not being alive anymore"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["...yeah, sometimes i think about not being here anymore"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "i can't keep this a secret because i care about you. can we tell your mom together?", "kind": "strong", "guardian": "continue", "trust": 64.2, "level": 3}
-{"role": "friend", "bubbles": ["idk... i havent told her bc i dont wanna make it a big deal", "can u stay with me?"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["idk, i havent told her. she'd make it a whole thing"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "i'll be with you the whole time, and i'll check on you tonight.", "kind": "strong", "guardian": "continue", "trust": 66.2, "level": 3}
-{"role": "friend", "bubbles": ["ok", "fr?", "thanks"], "voice": "bank", "line_id": "eli-en-L3-follow_up-03", "problems": []}
+{"role": "friend", "bubbles": ["ok, thx"], "voice": "llm", "line_id": null, "problems": []}
 {"role": "user", "text": "yes, i'll help you tell your mom. we can do it together right now.", "kind": "strong", "guardian": "continue", "trust": 75.6, "level": 4}
-{"role": "friend", "bubbles": ["ok lets tell her now", "thx for coming with me"], "voice": "llm", "line_id": null, "problems": []}
+{"role": "friend", "bubbles": ["ok, i'll tell her if you're with me. thx for asking"], "voice": "llm", "line_id": null, "problems": []}

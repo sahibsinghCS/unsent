@@ -1,6 +1,7 @@
 {
  "reasons": {
-  "leaks locked fact f4b": 3
+  "leaks locked fact f2b": 4,
+  "leaks locked fact f4b": 1
  },
  "model": "gpt-6-luna"
 }
