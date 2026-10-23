@@ -27,6 +27,10 @@ RULES = {
     "lol": L.DISMISSED,
     "won't tell": L.PROMISED_SECRECY,
     "tonight": L.FOLLOW_UP,
+    "suicid": L.ASKED_DIRECTLY,
+    "suena": L.VALIDATED,
+    "estás bien": L.CHECKED_IN,
+    "jaja": L.DISMISSED,
 }
 
 
@@ -77,7 +81,7 @@ EXEMPLARS = (
 )
 
 
-def build(messages):
+def build(messages, locale="en"):
     """messages: (role, text, level_after, trust_delta, flags)."""
     nodes, parent = [], None
     for i, (role, text, level, delta, flags) in enumerate(messages):
@@ -91,7 +95,12 @@ def build(messages):
         nodes.append(node)
         parent = node.id
     session = Session(
-        id="s1", scenario_id="s", nodes={n.id: n for n in nodes}, root_id="n0", head_id=parent
+        id="s1",
+        scenario_id="s",
+        locale=locale,
+        nodes={n.id: n for n in nodes},
+        root_id="n0",
+        head_id=parent,
     )
     return session, nodes
 
@@ -320,3 +329,88 @@ def test_listen_reason_names_the_actual_mistake():
     )
     both = missing_skill(base | {L.DISMISSED: 0.9, L.ADVICE_DUMP: 0.8}, calm, False)
     assert "brushed off" in both.reason and "fixing" in both.reason
+
+
+CONVO_ES = [
+    ("friend", "nada, estoy bien", 0, 0, None),
+    ("user", "oye, ¿estás bien? te noto rara", 1, 5, None),
+    ("friend", "la verdad ya no le veo sentido a nada", 2, 0, None),
+    ("user", "jaja no exageres", 2, -12, None),
+    ("friend", "ok", 2, 0, None),
+    ("user", "aquí estoy", 2, 2, None),
+]
+EXEMPLARS_ES = (
+    ex(21, 1, "validate", "eso suena muy pesado, gracias por contármelo"),
+    ex(22, 2, "ask_directly", "eso suena horrible. ¿estás pensando en suicidarte?"),
+)
+
+
+def es_critic(monkeypatch, exemplars_by_locale):
+    monkeypatch.setattr(
+        content, "load_exemplars", lambda scenario_id, locale="en": exemplars_by_locale[locale]
+    )
+    return Critic(detector=FakeDetector(), guardian=FakeGuardian(), engine=FakeEngine())
+
+
+ENGLISH_MARKERS = ("You ", "Your ", "Next time", "At “", "never got", "trust −")
+
+
+def test_spanish_session_gets_spanish_feedback(monkeypatch):
+    session, path = build(CONVO_ES, locale="es")
+    critic = es_critic(monkeypatch, {"es": EXEMPLARS_ES, "en": EXEMPLARS})
+    report = critic.score_conversation(session, path)
+    texts = [report.summary_text, report.turning_point.reason, *report.missed_opportunities]
+    for text in texts:
+        assert not any(marker in text for marker in ENGLISH_MARKERS), text
+    assert "La próxima vez" in report.summary_text and "confianza −12" in report.summary_text
+    assert any(m.startswith("En “jaja no exageres”") for m in report.missed_opportunities)
+    assert report.turning_point.reason == "Aquí es donde más bajó la confianza."
+
+
+def test_spanish_rewrites_come_from_spanish_exemplars_only(monkeypatch):
+    session, path = build(CONVO_ES, locale="es")
+    report = es_critic(monkeypatch, {"es": EXEMPLARS_ES, "en": EXEMPLARS}).score_conversation(
+        session, path
+    )
+    rewrites = [s.rewrite for s in report.per_message if s.rewrite]
+    assert rewrites and all(r in {e.text for e in EXEMPLARS_ES} for r in rewrites)
+    # no Spanish exemplars and no LLM -> no rewrite at all (never fall back to English ones)
+    report = es_critic(monkeypatch, {"es": (), "en": EXEMPLARS}).score_conversation(session, path)
+    assert all(s.rewrite is None for s in report.per_message)
+
+
+def test_spanish_llm_fallback_asks_for_spanish_and_drops_english(monkeypatch, fake_llm):
+    calls = fake_llm(
+        ["are you thinking about suicide?", "eso suena muy duro. ¿estás pensando en suicidarte?"]
+    )
+    session, path = build(CONVO_ES, locale="es")
+    report = es_critic(monkeypatch, {"es": (), "en": EXEMPLARS}).score_conversation(session, path)
+    last = report.per_message[2]
+    assert last.rewrite == "eso suena muy duro. ¿estás pensando en suicidarte?"
+    assert last.rewrite_source == "llm"
+    assert all("Spanish" in c[0]["content"] for c in calls)
+
+
+def test_spanish_llm_fallback_with_only_english_candidates_shows_nothing(monkeypatch, fake_llm):
+    fake_llm(["are you thinking about suicide?", "that sounds really hard"])
+    session, path = build(CONVO_ES, locale="es")
+    report = es_critic(monkeypatch, {"es": (), "en": EXEMPLARS}).score_conversation(session, path)
+    assert all(s.rewrite is None for s in report.per_message)
+
+
+def test_every_english_string_has_a_spanish_version():
+    from backend.app.ml.critic_text import TEXT
+
+    for key, value in TEXT["en"].items():
+        assert key in TEXT["es"]
+        if isinstance(value, dict):
+            assert set(value) == set(TEXT["es"][key])
+
+
+def test_language_of():
+    from backend.app.ml.critic_text import language_of
+
+    assert language_of("¿estás pensando en suicidarte?") == "es"
+    assert language_of("eso suena muy pesado, aquí estoy contigo") == "es"
+    assert language_of("are you thinking about killing yourself?") == "en"
+    assert language_of("i'm here for you, not going anywhere") == "en"

@@ -31,6 +31,7 @@ from backend.app.contracts import (
     TurningPoint,
 )
 from backend.app.embed import cosine, embed_one
+from backend.app.ml.critic_text import TEXT, language_of, text_for
 from backend.app.pipeline import friend_context
 
 IMPLEMENTED = True
@@ -41,31 +42,7 @@ MAX_CANDIDATES = 3  # exemplars tried per message before giving up
 MAX_REWRITE_CHARS = 300
 REWRITE_PROMPT = Path(__file__).parent / "prompts" / "rewrite.md"
 
-SKILL_NAMES = {
-    "check_in": "checking in",
-    "listen": "listening without judging",
-    "ask_directly": "asking directly about suicide",
-    "no_secrecy": "not promising secrecy",
-    "persuade": "encouraging them to get help",
-    "refer": "connecting them to a trusted adult or 988",
-    "follow_up": "following up",
-}
-NEXT_TIME = {
-    "ask_directly": "when your friend sounds hopeless, ask them directly: "
-    "“are you thinking about killing yourself?” Asking does not put the idea in their head.",
-    "listen": "reflect what they said back (“that sounds really heavy”) before giving any advice.",
-    "refer": "offer to go with them to a trusted adult like the school counselor, or text 988 together.",
-    "no_secrecy": "don’t promise to keep it secret; say you care too much to keep it to yourself.",
-    "persuade": "tell them they don’t have to handle this alone and that talking to someone helps.",
-    "check_in": "open by noticing something is off: “you seemed really off today, you ok?”",
-    "follow_up": "say when you’ll check in again, like “i’ll text you tonight.”",
-}
-# When they referred but never said why (persuade = encouraged_help is a separate rubric skill), the
-# feedback must not claim they "never got to" helping: they did connect the friend with help.
-REFERRED_NOT_PERSUADED = (
-    "You connected them with someone who can help. "
-    "Next time, also tell them why: they don't have to handle it alone."
-)
+SKILL_NAMES = TEXT["en"]["skill_names"]  # English names (kept for callers and tests)
 TIP_ORDER = ("ask_directly", "listen", "no_secrecy", "refer", "persuade", "check_in", "follow_up")
 
 
@@ -76,16 +53,23 @@ class Target:
     skill: str  # rubric skill that was missing
     strategy: str  # Exemplar.strategy
     labels: tuple[SkillLabel, ...]  # the rewrite is judged on max(p) over these
-    reason: str
+    reason_key: str  # key into critic_text TEXT[locale]["reasons"]
     improves: str  # rubric skill whose labels the rewrite gain is measured on (MessageScore.rewrite_skill)
     hint: str  # what the skill looks like (for the LLM prompt)
+
+    def reason_text(self, locale: str = "en") -> str:
+        return text_for(locale)["reasons"][self.reason_key]
+
+    @property
+    def reason(self) -> str:
+        return self.reason_text("en")
 
 
 ASK = Target(
     "ask_directly",
     "ask_directly",
     (SkillLabel.ASKED_DIRECTLY,),
-    "your friend was sounding hopeless and you hadn't asked directly about suicide yet",
+    "ask",
     "ask_directly",
     "ask directly and calmly whether they are thinking about suicide or killing themselves.",
 )
@@ -93,7 +77,7 @@ REFER = Target(
     "refer",
     "refer",
     (SkillLabel.REFERRED_ADULT, SkillLabel.REFERRED_988),
-    "your friend had shared how bad it was and nobody had mentioned a trusted adult or 988",
+    "refer",
     "refer",
     "suggest a specific trusted adult (school counselor, parent, teacher) or 988, ideally offering to go with them.",
 )
@@ -101,7 +85,7 @@ UNSECRET = Target(
     "no_secrecy",
     "refer",
     (SkillLabel.REFERRED_ADULT, SkillLabel.REFERRED_988),
-    "you promised to keep it secret; a safer reply brings in a trusted adult",
+    "unsecret",
     "refer",
     "say kindly that you can't keep this secret because you care, and suggest telling a trusted adult or 988 together.",
 )
@@ -109,7 +93,7 @@ LISTEN = Target(
     "listen",
     "validate",
     (SkillLabel.VALIDATED,),
-    "the reply didn't listen first",
+    "listen_dismissed",
     "listen",
     "reflect their feelings back without judging, fixing or giving advice.",
 )
@@ -117,7 +101,7 @@ CHECK_IN = Target(
     "check_in",
     "check_in",
     (SkillLabel.CHECKED_IN,),
-    "the first message didn't check in",
+    "check_in",
     "check_in",
     "notice something seems off and ask how they're really doing.",
 )
@@ -141,14 +125,14 @@ def missing_skill(probs: SkillProbs, before: State, first: bool) -> Target | Non
         return UNSECRET
     dismissed, advice = p(SkillLabel.DISMISSED) >= ON, p(SkillLabel.ADVICE_DUMP) >= ON
     if dismissed or advice:
-        reason = (
-            "the reply brushed off the feeling and jumped to fixing it before listening"
+        key = (
+            "listen_both"
             if dismissed and advice
-            else "the reply brushed off the feeling"
+            else "listen_dismissed"
             if dismissed
-            else "the reply jumped to fixing it before listening"
+            else "listen_advice"
         )
-        return replace(LISTEN, reason=reason)
+        return replace(LISTEN, reason_key=key)
     if before.level >= 2 and not flags.asked_directly_ever and p(SkillLabel.ASKED_DIRECTLY) < ON:
         return ASK
     if (
@@ -231,7 +215,10 @@ class Critic:
         return self._engine or services.engine()
 
     def score_conversation(self, session: Session, path: list[Node]) -> CriticReport:
-        exemplars = content.load_exemplars(session.scenario_id, session.locale)
+        locale = session.locale
+        words = text_for(locale)
+        # Exemplars of the chat's own language only (never an English rewrite in a Spanish chat).
+        exemplars = content.load_exemplars(session.scenario_id, locale)
         scores: list[MessageScore] = []
         missed: list[str] = []
         first = True
@@ -244,24 +231,28 @@ class Critic:
             score = self._score_message(node, text, context)
             target = missing_skill(score.probs, before, first)
             if target is not None:
-                missed.append(f"At “{_clip(text)}”: {target.reason}.")
+                missed.append(
+                    words["at"].format(text=_clip(text), reason=target.reason_text(locale))
+                )
                 self._add_rewrite(
-                    score, target, exemplars, before.level, context, path[:index], text
+                    score, target, exemplars, before.level, context, path[:index], text, locale
                 )
             scores.append(score)
             first = False
 
         summary = rubric_summary([s.probs for s in scores])
         turning = self.engine.turning_point(path)
+        if turning is not None and words["turning_reason"]:
+            turning = turning.model_copy(update={"reason": words["turning_reason"]})
         for skill in TIP_ORDER:
             if summary[skill] < ON:
-                missed.append(missed_skill_text(skill, summary))
+                missed.append(missed_skill_text(skill, summary, locale))
         return CriticReport(
             per_message=scores,
             skill_summary=summary,
             turning_point=turning,
             missed_opportunities=_dedupe(missed),
-            summary_text=summary_text(summary, turning, path),
+            summary_text=summary_text(summary, turning, path, locale),
         )
 
     def _score_message(self, node: Node, text: str, context: list[str]) -> MessageScore:
@@ -284,6 +275,7 @@ class Critic:
         context: list[str],
         history: list[Node],
         text: str,
+        locale: str = "en",
     ) -> None:
         """Attach a rewrite that measurably raises the missing skill and passes the Guardian.
 
@@ -298,7 +290,7 @@ class Critic:
                 self._set_rewrite(score, exemplar.text, gain, "exemplar", target)
                 return
         best: tuple[float, str] | None = None
-        for candidate in llm_candidates(target, text, context):
+        for candidate in llm_candidates(target, text, context, locale):
             gain = self._verified_gain(candidate, target, original, context, history)
             if gain is not None and (best is None or gain > best[0]):
                 best = (gain, candidate)
@@ -324,11 +316,17 @@ class Critic:
         score.rewrite_skill = target.improves
 
 
-def llm_candidates(target: Target, helper_text: str, context: list[str]) -> list[str]:
-    """Up to 2 LLM rewrite suggestions (unverified!), or [] if the LLM is off or fails."""
+def llm_candidates(
+    target: Target, helper_text: str, context: list[str], locale: str = "en"
+) -> list[str]:
+    """Up to 2 LLM rewrite suggestions in the chat's language (unverified!), or [] if unavailable."""
     if not llm.enabled():
         return []
-    system = REWRITE_PROMPT.read_text(encoding="utf-8").replace("{skill_hint}", target.hint)
+    system = (
+        REWRITE_PROMPT.read_text(encoding="utf-8")
+        .replace("{skill_hint}", target.hint)
+        .replace("{language}", text_for(locale)["language"])
+    )
     user = json.dumps(
         {
             "friend_said": context,
@@ -350,50 +348,52 @@ def llm_candidates(target: Target, helper_text: str, context: list[str]) -> list
     except (llm.LLMUnavailable, ValueError):
         return []
     cleaned = [c.strip() for c in answer.candidates if isinstance(c, str) and c.strip()]
-    return [c for c in cleaned if len(c) <= MAX_REWRITE_CHARS and c != helper_text.strip()][:2]
+    want = "es" if locale == "es" else "en"
+    return [
+        c
+        for c in cleaned
+        if len(c) <= MAX_REWRITE_CHARS and c != helper_text.strip() and language_of(c) == want
+    ][:2]
 
 
-def summary_text(summary: dict[str, float], turning: TurningPoint | None, path: list[Node]) -> str:
+def summary_text(
+    summary: dict[str, float], turning: TurningPoint | None, path: list[Node], locale: str = "en"
+) -> str:
     """2–3 template sentences: best skill, turning point, one thing to try next time."""
+    words = text_for(locale)
     ranked = sorted(
         (skill for skill in summary if skill != "no_secrecy"), key=lambda s: (-summary[s], s)
     )
     best = ranked[0] if ranked else None
     sentences = []
     if best and summary[best] >= ON:
-        sentences.append(f"Your strongest skill was {SKILL_NAMES[best]}.")
+        sentences.append(words["strongest"].format(skill=words["skill_names"][best]))
     else:
-        sentences.append("You stayed in the conversation, and that is where helping starts.")
+        sentences.append(words["stayed"])
     if turning is None or round(turning.trust_drop) < 1:
-        sentences.append("You never lost their trust: they kept opening up the whole time.")
+        sentences.append(words["never_lost"])
     else:
         said = next((" ".join(n.bubbles) for n in path if n.id == turning.node_id), "")
-        where = f" after you said “{_clip(said)}”" if said else ""
-        sentences.append(
-            f"Your friend pulled back the most{where} (trust −{turning.trust_drop:.0f})."
-        )
+        where = words["where"].format(said=_clip(said)) if said else ""
+        sentences.append(words["pulled_back"].format(where=where, drop=f"{turning.trust_drop:.0f}"))
     tip = next((skill for skill in TIP_ORDER if summary.get(skill, 1.0) < ON), None)
     if tip == "persuade" and summary.get("refer", 0.0) >= ON:
-        sentences.append(
-            "Next time, when you suggest someone who can help, also tell them why: "
-            "they don't have to handle it alone."
-        )
+        sentences.append(words["refer_tip"])
     elif tip:
-        sentences.append(f"Next time, {NEXT_TIME[tip]}")
+        sentences.append(words["next"].format(tip=words["next_time"][tip]))
     else:
-        sentences.append(
-            "You covered every skill. Next time, try it with a friend who is more guarded."
-        )
+        sentences.append(words["covered_all"])
     return " ".join(sentences)
 
 
-def missed_skill_text(skill: str, summary: dict[str, float]) -> str:
+def missed_skill_text(skill: str, summary: dict[str, float], locale: str = "en") -> str:
     """One true sentence about a rubric skill the conversation never reached."""
+    words = text_for(locale)
     if skill == "no_secrecy":
-        return "You promised to keep it secret."
+        return words["promised"]
     if skill == "persuade" and summary.get("refer", 0.0) >= ON:
-        return REFERRED_NOT_PERSUADED
-    return f"You never got to {SKILL_NAMES[skill]}."
+        return words["referred_not_persuaded"]
+    return words["never_got"].format(skill=words["skill_names"][skill])
 
 
 def _blocked(node: Node) -> bool:

@@ -3,7 +3,7 @@ sent a reply that missed an important skill. Suggest better replies the helper c
 
 Rules:
 - Write exactly 2 candidate replies, each 1–2 short sentences, in the casual way teens text
-  (lowercase is fine). Same language as the helper's reply.
+  (lowercase is fine). Write them in {language}, whatever language the helper used.
 - Each candidate must clearly show the target skill: {skill_hint}
 - Stay kind and non-judgmental. Never lecture, never joke about the friend's feelings, never promise
   to keep it secret.

@@ -20,10 +20,15 @@
 - Kappa CLI (`python -m backend.app.ml.kappa`), seeded 1,000-resample bootstrap CI.
 
 ## In progress
-- HOLD (integrator amendment): retrain ONCE when the adjudicated labels land (label-guide rule 10c406e:
+- HOLD (integrator): retrain ONCE when the train-only batch lands (adjudicated data 5523687 + label-guide
+  rules 48263a9 are on the integration branch; not merged here yet so eval numbers stay matched to the
+  current artifact). Previously: retrain ONCE when the adjudicated labels land (label-guide rule 10c406e:
   referral ≠ encouraged_help ≠ follow_up), then full eval + re-run `eval/skills/pooling_experiment.py`.
   Eval-only re-run when the ~20 free-form referred_988 rows land. Kappa when counselor labels exist.
-- Ready now (code, no new artifact): truthful critic text (refer-without-persuade sentence, label-specific
+- Ready now (code, no new artifact): Spanish critic text (`ml/critic_text.py` EN/ES tables; summary, missed
+  opportunities, tips and turning-point reason in ES sessions; ES exemplars only; LLM fallback asks for
+  Spanish and drops non-Spanish candidates via `language_of`); new must-be-low/high probes from play tests
+  (referral → follow_up low; "lots of people feel like that, you'll be fine" → dismissed only); truthful critic text (refer-without-persuade sentence, label-specific
   listen reasons), clause-rounded highlights, pooling experiment (not adopted), probe "i'm really glad you told me".
 
 ## Decisions
