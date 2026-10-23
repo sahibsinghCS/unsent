@@ -123,6 +123,52 @@ def load_metrics() -> list[dict]:
     return records
 
 
+def load_headline() -> list[dict]:
+    """The few numbers judges should see first (content/headline_metrics.json), in EN and ES.
+    The How page and `make report` both read this file, so the headline is defined once."""
+    path = CONTENT_DIR / "headline_metrics.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _find_record(records: list[dict], lane: str, metric: str, split: str) -> dict | None:
+    """The newest report record for (lane, metric, split), or None."""
+    matches = [
+        r
+        for r in records
+        if r.get("lane") == lane and r.get("metric") == metric and r.get("split") == split
+    ]
+    return max(matches, key=lambda r: str(r.get("created", ""))) if matches else None
+
+
+def resolve_headline(records: list[dict]) -> list[dict]:
+    """Each headline definition with its measured value, n and notes filled in from the reports.
+    `found` is False until the lane has written that number (the UI hides those)."""
+    resolved = []
+    for item in load_headline():
+        record = _find_record(records, item["lane"], item["metric"], item["split"])
+        entry = {**item, "found": record is not None and record.get("value") is not None}
+        if record is not None:
+            entry.update(
+                value=record.get("value"),
+                n=record.get("n"),
+                notes=record.get("notes", ""),
+                created=record.get("created"),
+                source=record.get("source"),
+            )
+        base = item.get("baseline")
+        if base:
+            base_record = _find_record(records, base["lane"], base["metric"], base["split"])
+            entry["baseline"] = {
+                **base,
+                "value": None if base_record is None else base_record.get("value"),
+                "n": None if base_record is None else base_record.get("n"),
+            }
+        resolved.append(entry)
+    return resolved
+
+
 def clear_caches() -> None:
     load_scenarios.cache_clear()
     load_lines.cache_clear()
