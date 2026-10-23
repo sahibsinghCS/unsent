@@ -181,6 +181,11 @@ def rubric_summary(all_probs: list[SkillProbs]) -> dict[str, float]:
     return {skill: round(value, 4) for skill, value in summary.items()}
 
 
+def asks_directly(exemplar: Exemplar) -> bool:
+    """True if the exemplar is a direct ask about suicide (by its strategy or labels)."""
+    return exemplar.strategy == "ask_directly" or SkillLabel.ASKED_DIRECTLY in exemplar.labels
+
+
 def rank_exemplars(
     exemplars: tuple[Exemplar, ...], target: Target, level: int, friend_last: str
 ) -> list[Exemplar]:
@@ -236,7 +241,15 @@ class Critic:
                     words["at"].format(text=_clip(text), reason=target.reason_text(locale))
                 )
                 self._add_rewrite(
-                    score, target, exemplars, before.level, context, path[:index], text, locale
+                    score,
+                    target,
+                    exemplars,
+                    before.level,
+                    context,
+                    path[:index],
+                    text,
+                    locale,
+                    asked_before=before.flags.asked_directly_ever,
                 )
             scores.append(score)
             first = False
@@ -278,6 +291,7 @@ class Critic:
         history: list[Node],
         text: str,
         locale: str = "en",
+        asked_before: bool = False,
     ) -> None:
         """Attach a rewrite that measurably raises the missing skill and passes the Guardian.
 
@@ -285,6 +299,8 @@ class Critic:
         """
         friend_last = context[-1] if context else ""
         original = target_score(score.probs, target)
+        if asked_before:  # never suggest asking again once they were asked (same rule as what-if)
+            exemplars = tuple(ex for ex in exemplars if not asks_directly(ex))
         ranked = rank_exemplars(exemplars, target, level, friend_last)[:MAX_CANDIDATES]
         for exemplar in ranked:
             gain = self._verified_gain(exemplar.text, target, original, context, history)
@@ -293,6 +309,12 @@ class Critic:
                 return
         best: tuple[float, str] | None = None
         for candidate in llm_candidates(target, text, context, locale):
+            if (
+                asked_before
+                and self._score_candidate(candidate, context).get(SkillLabel.ASKED_DIRECTLY, 0.0)
+                >= ON
+            ):
+                continue
             gain = self._verified_gain(candidate, target, original, context, history)
             if gain is not None and (best is None or gain > best[0]):
                 best = (gain, candidate)
