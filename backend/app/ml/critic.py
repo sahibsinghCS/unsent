@@ -43,6 +43,7 @@ MAX_REWRITE_CHARS = 300
 REWRITE_PROMPT = Path(__file__).parent / "prompts" / "rewrite.md"
 
 SKILL_NAMES = TEXT["en"]["skill_names"]  # English names (kept for callers and tests)
+MAX_SKILL_NOTES = 3
 TIP_ORDER = ("ask_directly", "listen", "no_secrecy", "refer", "persuade", "check_in", "follow_up")
 
 
@@ -244,9 +245,10 @@ class Critic:
         turning = self.engine.turning_point(path)
         if turning is not None and words["turning_reason"]:
             turning = turning.model_copy(update={"reason": words["turning_reason"]})
-        for skill in TIP_ORDER:
-            if summary[skill] < ON:
-                missed.append(missed_skill_text(skill, summary, locale))
+        # Every per-message note stays; whole-chat "never got to" notes are capped at the 3 most
+        # important (TIP_ORDER), so a short chat isn't buried in a list of everything it didn't do.
+        never = [skill for skill in TIP_ORDER if summary[skill] < ON][:MAX_SKILL_NOTES]
+        missed.extend(missed_skill_text(skill, summary, locale) for skill in never)
         return CriticReport(
             per_message=scores,
             skill_summary=summary,
@@ -301,12 +303,19 @@ class Critic:
         self, text: str, target: Target, original: float, context: list[str], history: list[Node]
     ) -> float | None:
         """The candidate's gain on the target skill, or None if it gains < 0.2 or fails the Guardian."""
-        gain = target_score(self.detector.predict(text, context), target) - original
+        gain = target_score(self._score_candidate(text, context), target) - original
         if gain < MIN_REWRITE_GAIN:
             return None
         if self.guardian.check_user(text, history).action != "continue":
             return None
         return gain
+
+    def _score_candidate(self, text: str, context: list[str]) -> SkillProbs:
+        """Score a rewrite candidate without starting a (wasted) background explanation for it."""
+        detector = self.detector
+        if hasattr(detector, "predict_many"):
+            return detector.predict_many([text], context)[0]
+        return detector.predict(text, context)
 
     @staticmethod
     def _set_rewrite(score: MessageScore, text: str, gain: float, source: str, target: Target):
@@ -366,7 +375,10 @@ def summary_text(
     )
     best = ranked[0] if ranked else None
     sentences = []
-    if best and summary[best] >= ON:
+    ended_badly = bool(path) and path[-1].state_after.status == "ended_fail"
+    if ended_badly:
+        sentences.append(words["slipped"])
+    elif best and summary[best] >= ON:
         sentences.append(words["strongest"].format(skill=words["skill_names"][best]))
     else:
         sentences.append(words["stayed"])
