@@ -73,7 +73,9 @@ what the friend just said. It shows the exemplar **only if**:
    helper wrote, and
 2. the **Guardian** passes it.
 
-Otherwise it tries the next exemplar (up to 3). If no exemplar passes, it may ask the AI for 2 suggested
+Once the friend has already been asked directly, it never suggests a reply that asks again: asking
+twice doesn't help, and the "what if" simulator follows the same rule. Otherwise it tries the next
+exemplar (up to 3). If no exemplar passes, it may ask the AI for 2 suggested
 replies (prompt in `backend/app/ml/prompts/rewrite.md`). Each one goes through **the same two checks**, and
 we keep the one with the biggest verified gain. The report records where the rewrite came from
 (`rewrite_source`: "exemplar" or "llm") and which skill it improves (`rewrite_skill`, e.g. "ask_directly").

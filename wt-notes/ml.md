@@ -24,6 +24,9 @@
 - Later: kappa when counselor labels exist.
 
 ## Decisions
+- Once the friend was asked directly (flags.asked_directly_ever before the message), the critic never suggests a
+  rewrite that asks again: exemplars with strategy ask_directly or the asked_directly label are skipped, and LLM
+  candidates the detector scores asked_directly ≥ 0.5 are dropped (same rule as what-if).
 - Integrator + Sahib: keep the pooled model the pre-registered rule chose (freeform 0.822 vs whole 0.841,
   within noise at n=221); docs/how/ml.md states the rule, the val decision and the 0.841 we gave up.
 - Critic: ended_fail chats open with "This one slipped away, and that's exactly what practice is for." (ES:
