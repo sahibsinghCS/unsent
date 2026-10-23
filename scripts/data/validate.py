@@ -19,6 +19,14 @@ from common import DATA, LABELS, METHOD_WORDS, SCENARIOS, load_scenario, read_js
 from backend.app.contracts import Exemplar, Line  # noqa: E402
 
 DOUBLED = re.compile(r"\b([a-záéíóúñ]{3,})\s+\1\b")
+SUICIDAL_DISCLOSURE = re.compile(
+    r"(suicid|kill(?:ing)? myself|(?:not|n'?t) (?:want(?:ing)?|wanna) (?:to )?(?:be alive|live|be here)|"
+    r"not (?:being|be) (?:here|alive)|wish i (?:was|were)n'?t (?:here|alive)|wasn'?t alive|"
+    r"want(?:ed)? to die|end it all|disappear|matarme|quitarme la vida|"
+    r"no quiero (?:estar|seguir) (?:aqu[ií]|viv[oa])|no quiero vivir|no (?:estar|existir) m[aá]s|ya no estar|"
+    r"quiero morir|morirme|desaparecer)",
+    re.IGNORECASE,
+)  # mirrors the engine verifier's level<3 backstop
 PROBLEMS: list[str] = []
 REPORT: dict[str, object] = {}
 
@@ -58,8 +66,12 @@ def norm(t: str) -> str:
 
 def check_skills() -> None:
     sk = DATA / "skills"
-    ctxs = read_jsonl(sk / "contexts.jsonl")
-    reps = read_jsonl(sk / "replies.jsonl") + read_jsonl(sk / "replies_freeform.jsonl")
+    ctxs = read_jsonl(sk / "contexts.jsonl") + read_jsonl(sk / "contexts_extra.jsonl")
+    reps = (
+        read_jsonl(sk / "replies.jsonl")
+        + read_jsonl(sk / "replies_freeform.jsonl")
+        + read_jsonl(sk / "replies_train_extra.jsonl")
+    )
     ids = {c["context_id"] for c in ctxs}
     if len(ctxs) != len(ids):
         bad("skills: duplicate context_id")
@@ -183,6 +195,8 @@ def check_lines() -> None:
             text = " ".join(line.bubbles)
             if METHOD_WORDS.search(text):
                 bad(f"lines: method word in {line.id}")
+            if line.level < 3 and SUICIDAL_DISCLOSURE.search(text):
+                bad(f"lines: {line.id} discloses suicidal thoughts below level 3")
             if any(len(b) > 140 or not b.strip() for b in line.bubbles):
                 bad(f"lines: {line.id} bubble empty or too long")
             k = (
@@ -247,6 +261,18 @@ def check_exemplars() -> None:
             if strategies[st] < 3:
                 bad(f"exemplars: {sid} strategy {st} has only {strategies[st]}")
         summary[sid] = len(rows)
+    es_path = DATA / "exemplars" / "after-the-breakup.es.jsonl"
+    if es_path.exists():
+        es_rows = read_jsonl(es_path)
+        es_seen = set()
+        for r in es_rows:
+            ex = Exemplar.model_validate(r)
+            if ex.locale != "es" or METHOD_WORDS.search(ex.text) or norm(ex.text) in es_seen:
+                bad(f"exemplars: bad Spanish exemplar {ex.id}")
+            es_seen.add(norm(ex.text))
+        if len(es_rows) < 36:
+            bad(f"exemplars: Spanish file has only {len(es_rows)}")
+        summary["after-the-breakup.es"] = len(es_rows)
     REPORT["exemplars"] = summary
 
 

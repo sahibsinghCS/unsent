@@ -26,11 +26,15 @@ def kappa(a: list[bool], b: list[bool]) -> float:
 
 
 def run(audit: dict[str, int] | None = None, seed: int = 42) -> dict:
-    audit = audit or {"composed": 100, "freeform": 20}
-    ctx = {c["context_id"]: c for c in read_jsonl(SK / "contexts.jsonl")}
+    audit = audit or {"composed": 100, "freeform": 20, "freeform_train": 10}
+    ctx = {
+        c["context_id"]: c
+        for c in read_jsonl(SK / "contexts.jsonl") + read_jsonl(SK / "contexts_extra.jsonl")
+    }
     replies = {r["id"]: r for r in read_jsonl(SK / "replies.jsonl")}
-    for r in read_jsonl(SK / "replies_freeform.jsonl"):
-        replies[r["id"]] = r
+    for name in ("replies_freeform", "replies_train_extra"):
+        for r in read_jsonl(SK / f"{name}.jsonl"):
+            replies[r["id"]] = r
     blind = {r["id"]: r for r in read_jsonl(SK / "blind_labels.jsonl")}
     ids = [i for i in replies if i in blind]
     now = datetime.now(UTC).astimezone().isoformat(timespec="seconds")
@@ -45,7 +49,7 @@ def run(audit: dict[str, int] | None = None, seed: int = 42) -> dict:
         )
 
     records, summary = [], {}
-    for subset in ("all", "composed", "freeform"):
+    for subset in ("all", "composed", "freeform", "freeform_train"):
         sub = [i for i in ids if subset == "all" or src(i) == subset]
         if not sub:
             continue

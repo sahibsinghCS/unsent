@@ -1,7 +1,7 @@
 """Seeded 70/15/15 split of data/skills/final.jsonl, grouped by context_id, stratified by scenario.
 
 Composed replies: every reply of a context lands in the same split (no leakage of the friend context).
-Free-form replies: the freeform replies of composed-val contexts go to val; those of composed-test contexts
+Train-only free-form rows (source "freeform_train", own x-* contexts) always go to train. Free-form replies: the freeform replies of composed-val contexts go to val; those of composed-test contexts
 plus a seeded half of the composed-train contexts become test_freeform.jsonl (never trained on); the rest go
 to train. data/skills/survey_real.jsonl (real anonymous replies) always goes to test.
 """
@@ -40,6 +40,7 @@ def split_contexts(rows: list[dict], seed: int = 42) -> dict[str, str]:
 
 def main() -> None:
     rows = read_jsonl(SK / "final.jsonl")
+    train_only = [r for r in rows if r.get("source") == "freeform_train"]
     composed = [r for r in rows if r.get("source", "composed") == "composed"]
     freeform = [r for r in rows if r.get("source") == "freeform"]
     assign = split_contexts(composed)
@@ -57,6 +58,7 @@ def main() -> None:
             out["test_freeform"].append(r)
         else:
             out[assign[r["context_id"]]].append(r)
+    out["train"] += train_only  # TRAIN-ONLY rows (own contexts); never val/test
     out["test"] += read_jsonl(SK / "survey_real.jsonl")
     for name, rs in out.items():
         write_jsonl(SK / "splits" / f"{name}.jsonl", rs)

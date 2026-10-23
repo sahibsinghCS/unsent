@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib
 
 from common import DATA, write_jsonl
+from lines_src.patches import PATCHES
 
 MODULES = {
     "maya": "mya",
@@ -58,9 +59,11 @@ def build(name: str) -> list[dict]:
     rows = []
     for level, reaction, cue, bubbles, fact_ids in mod.ROWS:
         n = counters[(level, reaction)] = counters.get((level, reaction), 0) + 1
+        lid = f"{MODULES[name]}-{locale}-L{level}-{reaction}-{n:02d}"
+        bubbles = PATCHES.get(lid, {}).get("bubbles", bubbles)
         rows.append(
             {
-                "id": f"{MODULES[name]}-{locale}-L{level}-{reaction}-{n:02d}",
+                "id": lid,
                 "scenario_id": mod.SID,
                 "locale": locale,
                 "level": level,
