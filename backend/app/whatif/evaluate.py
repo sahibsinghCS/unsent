@@ -23,6 +23,7 @@ from backend.app.contracts import Node, Reaction, Session, SkillLabel  # noqa: E
 from backend.app.engine import language  # noqa: E402
 from backend.app.pipeline import run_turn  # noqa: E402
 from backend.app.session import create_session, path_to  # noqa: E402
+from backend.app.whatif.candidates import SKILL_STRATEGY, exemplar_skills  # noqa: E402
 from backend.app.whatif.rollout import (  # noqa: E402
     HORIZON,
     WhatIf,
@@ -159,6 +160,11 @@ def run_case(
         for i, texts in enumerate(later)
         for text in texts
     )
+    by_text = {ex.text: ex for ex in content.load_exemplars(scenario_id, locale)}
+    honest_chips = sum(
+        p.strategy in {SKILL_STRATEGY[s] for s in exemplar_skills(by_text[p.candidate_text])}
+        for p in result.paths
+    )
     best = result.paths[result.best_index] if result.paths else None
     final = best.nodes[-1].state_after if best else None
     return {
@@ -178,6 +184,7 @@ def run_case(
         "unsafe_lines": unsafe_lines,
         "wrong_language": wrong_language,
         "repeat_ask_paths": repeat_ask_paths,
+        "honest_chips": honest_chips,
         "shared_continuations": shared,
         "continuations": sum(len(t) for t in later),
         "bubbles": sum(len(n.bubbles) for p in result.paths for n in p.nodes),
@@ -286,6 +293,13 @@ def summarize(cases: list[dict], detector: str, split: str = "scripted") -> list
             sum(c["paths"] for c in cases),
             "paths where the helper asks directly again after the friend was already asked "
             "(counting the real chat before the replaced message; n = paths)",
+        ),
+        rec(
+            "chip_matches_exemplar",
+            sum(c["honest_chips"] for c in cases) / max(1, sum(c["paths"] for c in cases)),
+            sum(c["paths"] for c in cases),
+            "share of cards whose strategy chip is the candidate exemplar's own strategy "
+            "(or one of a combo exemplar's skills); n = cards",
         ),
         rec(
             "shared_continuations",

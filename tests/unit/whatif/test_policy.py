@@ -76,3 +76,35 @@ def test_policy_is_deterministic():
     node_id = services.engine().turning_point(path).node_id
     runs = [WhatIf().simulate(session, path, node_id).model_dump() for _ in range(2)]
     assert runs[0] == runs[1]
+
+
+def test_card_chip_matches_the_exemplar_strategy():
+    from backend.app.whatif.candidates import STRATEGY_SKILL, card_skill, exemplar_skills
+
+    ask = Exemplar(
+        id="x",
+        scenario_id="after-the-breakup",
+        level=2,
+        strategy="ask_directly",
+        text="gracias por contármelo. ¿estás pensando en matarte?",
+        labels=[SkillLabel.ASKED_DIRECTLY, SkillLabel.VALIDATED],
+    )
+    assert card_skill(ask, "listen") == "ask_directly"
+    combo = ask.model_copy(update={"strategy": "combo"})
+    assert card_skill(combo, "listen") == "listen"
+    # every card of a real result: its chip is the exemplar's own strategy (or one of a combo's skills)
+    from backend.app.content import load_exemplars
+    from backend.app.whatif.candidates import SKILL_STRATEGY
+
+    for locale in ("en", "es"):
+        by_text = {ex.text: ex for ex in load_exemplars("after-the-breakup", locale)}
+        session = new_session(locale=locale)
+        chat = WEAK_CHAT if locale == "en" else ["hola, ¿estás bien?", "jaja ya se te pasará"]
+        path = play(session, chat)
+        for node_id in user_ids(path):
+            for p in WhatIf().simulate(session, path, node_id).paths:
+                ex = by_text[p.candidate_text]
+                allowed = {SKILL_STRATEGY[s] for s in exemplar_skills(ex)}
+                assert p.strategy in allowed, (p.strategy, ex.strategy)
+                if ex.strategy in STRATEGY_SKILL:
+                    assert p.strategy == SKILL_STRATEGY[STRATEGY_SKILL[ex.strategy]]

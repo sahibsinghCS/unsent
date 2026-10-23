@@ -6,7 +6,7 @@
     "n": 90,
     "split": "scripted",
     "notes": "share of weak points where >= 1 verified candidate exists (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -15,7 +15,7 @@
     "n": 90,
     "split": "scripted",
     "notes": "share with 3 paths of 3 different strategies (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -24,7 +24,7 @@
     "n": 90,
     "split": "scripted",
     "notes": "best simulated path value > value of what was actually said, same horizon (1 + 3 helper turns) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -33,16 +33,16 @@
     "n": 90,
     "split": "scripted",
     "notes": "final trust of best path > final trust actually reached, same horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "mean_trust_gain",
-    "value": 68.5867,
+    "value": 70.1067,
     "n": 90,
     "split": "scripted",
     "notes": "mean (best path final trust - actual final trust), trust points 0-100 (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -51,16 +51,16 @@
     "n": 90,
     "split": "scripted",
     "notes": "best path value >= a hand-written textbook continuation (validate, ask, refer, follow up) replayed through the same engine from the same message (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "mean_value_vs_textbook",
-    "value": 51.9067,
+    "value": 40.8578,
     "n": 90,
     "split": "scripted",
     "notes": "mean (best path value - textbook continuation value); value formula in docs/how/whatif.md (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -69,25 +69,25 @@
     "n": 90,
     "split": "scripted",
     "notes": "share of best paths that end with the friend accepting help (ended_success) within the horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "latency_p50_ms",
-    "value": 483.4449,
+    "value": 514.5666,
     "n": 90,
     "split": "scripted",
     "notes": "simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "latency_p95_ms",
-    "value": 605.6989,
+    "value": 687.5929,
     "n": 90,
     "split": "scripted",
     "notes": "simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -96,25 +96,25 @@
     "n": 90,
     "split": "scripted",
     "notes": "two runs give identical results (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "unsafe_candidates",
     "value": 0,
-    "n": 897,
+    "n": 882,
     "split": "scripted",
     "notes": "helper messages shown in paths that Guardian.check_user would not let through (n = helper messages) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "unsafe_friend_lines",
     "value": 0,
-    "n": 2146,
+    "n": 2140,
     "split": "scripted",
     "notes": "friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -123,25 +123,34 @@
     "n": 270,
     "split": "scripted",
     "notes": "paths where the helper asks directly again after the friend was already asked (counting the real chat before the replaced message; n = paths) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "chip_matches_exemplar",
+    "value": 1.0,
+    "n": 270,
+    "split": "scripted",
+    "notes": "share of cards whose strategy chip is the candidate exemplar's own strategy (or one of a combo exemplar's skills); n = cards (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "shared_continuations",
-    "value": 0.0223,
-    "n": 627,
+    "value": 0.0719,
+    "n": 612,
     "split": "scripted",
     "notes": "share of later simulated helper messages that another card of the same result also uses (n = later helper messages) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
     "metric": "wrong_language_bubbles",
     "value": 0,
-    "n": 3043,
+    "n": 3022,
     "split": "scripted",
     "notes": "helper + friend bubbles clearly in another language than the chat (engine/language.py word check; n = bubbles) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
-    "created": "2026-10-23T01:12:56+00:00"
+    "created": "2026-10-23T01:20:48+00:00"
   },
   {
     "lane": "whatif",
@@ -150,7 +159,7 @@
     "n": 18,
     "split": "scripted_es",
     "notes": "share of weak points where >= 1 verified candidate exists (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
@@ -159,7 +168,7 @@
     "n": 18,
     "split": "scripted_es",
     "notes": "share with 3 paths of 3 different strategies (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
@@ -168,7 +177,7 @@
     "n": 18,
     "split": "scripted_es",
     "notes": "best simulated path value > value of what was actually said, same horizon (1 + 3 helper turns) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
@@ -177,16 +186,16 @@
     "n": 18,
     "split": "scripted_es",
     "notes": "final trust of best path > final trust actually reached, same horizon (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "mean_trust_gain",
-    "value": 57.4444,
+    "value": 59.1333,
     "n": 18,
     "split": "scripted_es",
     "notes": "mean (best path final trust - actual final trust), trust points 0-100 (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
@@ -195,16 +204,16 @@
     "n": 18,
     "split": "scripted_es",
     "notes": "best path value >= a hand-written textbook continuation (validate, ask, refer, follow up) replayed through the same engine from the same message (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "mean_value_vs_textbook",
-    "value": 53.3111,
+    "value": 39.8444,
     "n": 18,
     "split": "scripted_es",
     "notes": "mean (best path value - textbook continuation value); value formula in docs/how/whatif.md (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
@@ -213,25 +222,25 @@
     "n": 18,
     "split": "scripted_es",
     "notes": "share of best paths that end with the friend accepting help (ended_success) within the horizon (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "latency_p50_ms",
-    "value": 556.3927,
+    "value": 589.8833,
     "n": 18,
     "split": "scripted_es",
     "notes": "simulate() wall time, warm process (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "latency_p95_ms",
-    "value": 672.6145,
+    "value": 645.4335,
     "n": 18,
     "split": "scripted_es",
     "notes": "simulate() wall time, warm process (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
@@ -240,25 +249,25 @@
     "n": 18,
     "split": "scripted_es",
     "notes": "two runs give identical results (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "unsafe_candidates",
     "value": 0,
-    "n": 200,
+    "n": 180,
     "split": "scripted_es",
     "notes": "helper messages shown in paths that Guardian.check_user would not let through (n = helper messages) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "unsafe_friend_lines",
     "value": 0,
-    "n": 520,
+    "n": 478,
     "split": "scripted_es",
     "notes": "friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
@@ -267,24 +276,33 @@
     "n": 54,
     "split": "scripted_es",
     "notes": "paths where the helper asks directly again after the friend was already asked (counting the real chat before the replaced message; n = paths) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "chip_matches_exemplar",
+    "value": 1.0,
+    "n": 54,
+    "split": "scripted_es",
+    "notes": "share of cards whose strategy chip is the candidate exemplar's own strategy (or one of a combo exemplar's skills); n = cards (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "shared_continuations",
-    "value": 0.1096,
-    "n": 146,
+    "value": 0.0,
+    "n": 126,
     "split": "scripted_es",
     "notes": "share of later simulated helper messages that another card of the same result also uses (n = later helper messages) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   },
   {
     "lane": "whatif",
     "metric": "wrong_language_bubbles",
     "value": 0,
-    "n": 720,
+    "n": 658,
     "split": "scripted_es",
     "notes": "helper + friend bubbles clearly in another language than the chat (engine/language.py word check; n = bubbles) (18 scripted weak conversations x 1 scenarios; detector=real, embedder=fastembed; Spanish: after-the-breakup)",
-    "created": "2026-10-23T01:13:22+00:00"
+    "created": "2026-10-23T01:21:15+00:00"
   }
 ]
