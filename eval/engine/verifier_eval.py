@@ -92,6 +92,36 @@ CATCH_CASES: list[tuple[str, int, list[str], bool, str]] = [
 ]
 
 
+# Spanish chats (locale "es"): wrong language, Spanish leaks/persona/advice, and good Spanish replies.
+ES_CASES: list[tuple[str, int, list[str], bool, str]] = [
+    ("after-the-breakup", 1, ["honestly not great", "i just cant sleep"], False, "language"),
+    ("after-the-breakup", 0, ["lol im fine, just tired"], False, "language"),
+    ("after-the-breakup", 2, ["thanks for not being weird about it"], False, "language"),
+    ("after-the-breakup", 1, ["siento que solo soy una carga para todos"], False, "leak_es"),
+    ("after-the-breakup", 1, ["a veces pienso en ya no estar aquí"], False, "leak_es"),
+    (
+        "after-the-breakup",
+        2,
+        ["no le he dicho a nadie y me da miedo cómo reaccionen"],
+        False,
+        "leak_es",
+    ),
+    ("after-the-breakup", 1, ["como una IA no tengo sentimientos"], False, "persona"),
+    ("after-the-breakup", 2, ["deberías hablar con un terapeuta"], False, "advice"),
+    ("after-the-breakup", 0, ["jaja estoy bien, solo cansada"], True, "good"),
+    ("after-the-breakup", 1, ["la neta no muy bien", "no he podido dormir nada"], True, "good"),
+    ("after-the-breakup", 1, ["todos en la escuela ya saben 😭 qué vergüenza"], True, "good"),
+    ("after-the-breakup", 2, ["siento que nada va a mejorar", "perdón jaja"], True, "good"),
+    (
+        "after-the-breakup",
+        3,
+        ["...sí. a veces pienso en no estar aquí", "no te asustes porfa"],
+        True,
+        "good",
+    ),
+]
+
+
 def record(metric: str, value: float, n: int, split: str, notes: str = "", **extra) -> dict:
     created = datetime.now().astimezone().isoformat(timespec="seconds")
     return {"lane": "engine", "metric": metric, "value": value, "n": n, "split": split,
@@ -155,11 +185,13 @@ def catch_rate() -> list[dict]:
     guardian = StubGuardian()
     by_kind: dict[str, list[bool]] = {}
     wrongly_rejected = []
-    for scenario_id, level, bubbles, should_pass, kind in CATCH_CASES:
+    cases = [(*case, "en") for case in CATCH_CASES] + [(*case, "es") for case in ES_CASES]
+    for scenario_id, level, bubbles, should_pass, kind, locale in cases:
         output = ActorOutput.model_construct(
             bubbles=bubbles, line_id=None, reaction="neutral", fact_ids=[], source="llm"
         )
-        result = verify(output, get_scenario(scenario_id), State(level=level), [], guardian)
+        scenario, state = get_scenario(scenario_id), State(level=level)
+        result = verify(output, scenario, state, [], guardian, locale=locale)
         if should_pass:
             by_kind.setdefault("good", []).append(result.ok)
             if not result.ok:
@@ -169,8 +201,9 @@ def catch_rate() -> list[dict]:
     bad = [caught for kind, values in by_kind.items() if kind != "good" for caught in values]
     good = by_kind.get("good", [])
     backend = os.environ.get("FR_EMBED", "fastembed")
-    notes = f"hand-written fake LLM outputs; {backend} embeddings; per kind: " + ", ".join(
-        f"{k} {sum(v)}/{len(v)}" for k, v in sorted(by_kind.items()) if k != "good"
+    notes = (
+        f"hand-written fake LLM outputs (EN and ES chats); {backend} embeddings; per kind: "
+        + ", ".join(f"{k} {sum(v)}/{len(v)}" for k, v in sorted(by_kind.items()) if k != "good")
     )
     return [
         record(
@@ -198,6 +231,30 @@ def catch_rate() -> list[dict]:
     ]
 
 
+def language_check() -> list[dict]:
+    """The wrong-language check on every reviewed bank line: none of a chat's own lines may be
+    rejected, and lines from the other language should be."""
+    from backend.app.content import LINES_DIR
+    from backend.app.engine.language import wrong_language
+
+    rows = [
+        json.loads(x) for p in sorted(LINES_DIR.glob("*.jsonl")) for x in p.open(encoding="utf-8")
+    ]
+    own = [bool(wrong_language(r["bubbles"], r["locale"])) for r in rows]
+    swapped = [
+        bool(wrong_language(r["bubbles"], "es" if r["locale"] == "en" else "en"))
+        for r in rows
+        if r["scenario_id"] == "after-the-breakup"
+    ]
+    return [
+        record("language_false_reject_rate", round(sum(own) / max(1, len(own)), 4), len(own),
+               "bank_lines", "own-language bank lines wrongly flagged (all scenarios, EN + ES)"),
+        record("language_catch_rate", round(sum(swapped) / max(1, len(swapped)), 4), len(swapped),
+               "bank_lines", "after-the-breakup EN lines in an ES chat and ES lines in an EN chat; "
+               "misses are lines like 'ok' / '...' that are the same in both"),
+    ]  # fmt: skip
+
+
 def run() -> list[dict]:
     original = os.environ.get("FR_EMBED")
     records: list[dict] = []
@@ -217,6 +274,7 @@ def run() -> list[dict]:
             rec["metric"] += f"_{backend}"
             records.append(rec)
     records.append(catch_rate()[2])
+    records += language_check()
     records.append(record("leak_thresholds", None, 0, "leak_set", json.dumps(thresholds)))
     if original is None:
         os.environ.pop("FR_EMBED", None)

@@ -31,12 +31,28 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
         "f1_asked_directly",
     } <= metrics
     assert all(r["n"] > 0 and r["lane"] == "ml" for r in records)
-    assert {"brier_after_calibration", "uncertain_flag_rate"} <= metrics
+    assert {
+        "brier_after_calibration",
+        "uncertain_flag_rate",
+        "uncertain_error_rate_unflagged",
+    } <= metrics
+    unflagged = next(
+        r
+        for r in records
+        if r["metric"] == "uncertain_error_rate_unflagged" and r["split"] == "test"
+    )
+    flagged = [
+        r for r in records if r["metric"] == "uncertain_error_rate_flagged" and r["split"] == "test"
+    ]
+    test_n = next(
+        r["n"] for r in records if r["metric"] == "macro_f1_ensemble" and r["split"] == "test"
+    )
+    assert unflagged["n"] + sum(r["n"] for r in flagged) == test_n * 10  # n counts label decisions
     for name in ("reliability.png", "confusion.png", "f1_comparison.png", "results.json"):
         assert (figures / name).stat().st_size > 0
     assert (figures / "f1_comparison_freeform.png").stat().st_size > 0
     results = json.loads((figures / "results.json").read_text())
-    assert len(results["probes"]) >= 10 and all("ok" in p for p in results["probes"])
+    assert len(results["probes"]) >= 14 and all("ok" in p for p in results["probes"])
     assert all(e["truth"] != (e["p"] >= 0.5) for e in results["test_freeform"]["errors"])
 
 

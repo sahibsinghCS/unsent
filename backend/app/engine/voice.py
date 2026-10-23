@@ -59,6 +59,18 @@ GUIDANCE: dict[Reaction, str] = {
 }
 
 
+# Which language to write in. A chat never mixes languages; the verifier rejects the wrong one.
+LANGUAGE_RULES: dict[str, str] = {
+    "en": "Write in English.",
+    "es": (
+        "Write ONLY in Spanish: natural, casual Spanish the way a US teen texts, in this persona's exact "
+        'style (lowercase if they write lowercase, the same emoji habits, "jaja" instead of "lol"). '
+        "A Spanglish word is fine only if it fits the persona; never whole English sentences. The facts "
+        "above are written in English for you: say them in Spanish."
+    ),
+}
+
+
 class ActorReply(BaseModel):
     """What the LLM must return."""
 
@@ -87,6 +99,7 @@ def system_prompt(
     reaction: Reaction,
     examples: Sequence[Line],
     rejection: str | None = None,
+    locale: str = "en",
 ) -> str:
     """The actor prompt (prompts/actor.md) filled in. Locked facts never appear in it."""
     persona = scenario.persona
@@ -113,6 +126,7 @@ def system_prompt(
         guidance=GUIDANCE.get(reaction, ""),
         examples=example_text or "- (none)",
         rejection=retry,
+        language=LANGUAGE_RULES.get(locale, LANGUAGE_RULES["en"]),
     )
 
 
@@ -142,9 +156,11 @@ def llm_reply(
     reaction: Reaction,
     examples: Sequence[Line],
     rejection: str | None = None,
+    locale: str = "en",
 ) -> ActorOutput:
     """One LLM-written reply (unverified). Raises llm.LLMUnavailable when there is no LLM answer."""
-    messages = chat_messages(history, system_prompt(scenario, state, reaction, examples, rejection))
+    system = system_prompt(scenario, state, reaction, examples, rejection, locale)
+    messages = chat_messages(history, system)
     try:
         reply = llm.chat_json(
             PROMPT_NAME,

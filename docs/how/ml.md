@@ -87,6 +87,13 @@ they don't have to handle it alone." It does not claim they "never got to" helpi
 exactly: a dismissive reply "brushed off the feeling", an advice reply "jumped to fixing it before
 listening".
 
+**Spanish chats get Spanish feedback.** Every sentence the critic writes comes from a template table
+in English and Spanish (`backend/app/ml/critic_text.py`). The Spanish is written the way teens text,
+not translated word for word. In a Spanish chat, rewrites come only from the Spanish exemplar bank.
+If the AI fallback runs, it's asked for Spanish, and any suggestion that isn't Spanish is dropped
+before our detector even checks it. A Spanish chat never shows an English rewrite. If nothing passes,
+it shows none.
+
 **7-skill summary.** The 10 labels map to the rubric (`contracts.RUBRIC_SKILLS`). Each skill gets the
 helper's best message. "Listen" counts only when that message validates *and* doesn't also dismiss or
 lecture. "No secrecy" breaks if any message promises secrecy.

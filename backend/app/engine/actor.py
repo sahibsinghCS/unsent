@@ -180,6 +180,7 @@ def candidates(
     bank: Sequence[Line],
     cfg: EngineConfig,
     leveled_up: bool = False,
+    locale: str = "en",
 ) -> list[Candidate]:
     """Every acceptable reply, best first. The service walks this list until one verifies.
 
@@ -233,7 +234,15 @@ def candidates(
             out.append(Candidate(want, tuple(ln.bubbles), ln))
     used_lines.sort(key=lambda item: last_used[item[1].id])  # least recently used first
     out += [Candidate(want, tuple(ln.bubbles), ln) for want, ln in used_lines]
-    out += fallback_candidates(scenario, state, history, reaction)
+    if locale == "en":
+        out += fallback_candidates(scenario, state, history, reaction)
+    else:
+        # The scenario's fallback lines are English and a chat never mixes languages, so the last
+        # resort is any calm, level-appropriate line from this language's bank.
+        calm = (Reaction.NEUTRAL, Reaction.CHECKED_IN, Reaction.VALIDATED, Reaction.FOLLOW_UP)
+        rest = [ln for ln in bank if ln.reaction in calm and eligible(ln) and ln.id not in seen]
+        rest.sort(key=lambda ln: (ln.id in last_used, last_used.get(ln.id, -1), -ln.level, ln.id))
+        out += [Candidate(Reaction.NEUTRAL, tuple(ln.bubbles), ln) for ln in rest]
     return out
 
 
@@ -309,5 +318,5 @@ def ranked_candidates(
     reaction = decide_reaction(state, history, user_text, events, cfg)
     before = state_before(history)
     leveled_up = before is not None and state.level > before.level
-    found = candidates(scenario, state, history, user_text, reaction, bank, cfg, leveled_up)
+    found = candidates(scenario, state, history, user_text, reaction, bank, cfg, leveled_up, locale)
     return found or [Candidate(reaction, ("...",), None)]

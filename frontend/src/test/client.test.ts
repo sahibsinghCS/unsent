@@ -14,7 +14,7 @@ describe('API client', () => {
   it('returns parsed JSON and calls the relative /api URL', async () => {
     const fn = mockFetch(json(200, [{ id: 'after-the-breakup' }]));
     await expect(api.scenarios()).resolves.toEqual([{ id: 'after-the-breakup' }]);
-    expect(fn.mock.calls[0][0]).toBe('/api/scenarios');
+    expect(fn.mock.calls[0][0]).toBe('/api/scenarios?lang=en');
   });
 
   it('sends POST bodies as JSON', async () => {
@@ -57,5 +57,23 @@ describe('API client', () => {
     const fn = mockFetch(json(200, {}));
     await api.realmode('es', '*');
     expect(fn.mock.calls[0][0]).toBe('/api/realmode?lang=es&country=*');
+  });
+});
+
+describe('localized scenarios', () => {
+  it('asks the API for the UI language', async () => {
+    const fn = mockFetch(json(200, []));
+    await api.scenarios('es');
+    expect(fn.mock.calls[0][0]).toBe('/api/scenarios?lang=es');
+  });
+  it('knows which friends support a language (missing locales = English only)', async () => {
+    const { supportsLang } = await import('../lib/scenarios');
+    const maya = { locales: ['en', 'es'] } as never;
+    const jordan = { locales: ['en'] } as never;
+    const legacy = {} as never;
+    expect(supportsLang(maya, 'es')).toBe(true);
+    expect(supportsLang(jordan, 'es')).toBe(false);
+    expect(supportsLang(legacy, 'en')).toBe(true);
+    expect(supportsLang(legacy, 'es')).toBe(false);
   });
 });

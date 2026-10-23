@@ -17,6 +17,9 @@
 - **Pacing (integrator request after the full-real playtest):** `eval/engine/pacing.py` (scripted label sequences × 5 scenarios, targets a-e) → `eval/reports/engine_pacing.json` + `eval/engine/pacing.png`; tuned config: guarded 0.8, thresholds [0,25,40,55,70], `ask_unlock_trust: 45` (at level 2 a direct ask unlocks level 3), `disclosure_referral_bonus: 5`. All 35 checks pass; `tests/unit/engine/test_pacing.py` guards them. Integrator's real new-school run now succeeds at message 6.
 - **Turning point:** only drops ≥ 5 (`turning_point_min_drop`), else None.
 
+- **i18n (contracts 1.3):** a chat never mixes languages. `engine/language.py` (function-word EN/ES check, no deps); prompt `$language` rule (US-teen Spanish, persona style, facts conveyed in Spanish); few-shot from the locale bank; verifier rejects wrong language (retry once, then locale bank), ES persona/advice/method/disclosure patterns; non-EN last resort = calm level-appropriate bank lines in that language (never the English scenario fallbacks); `Engine.verify` (pipeline call, no locale) accepts EN+ES bank lines and skips the language check. Resource words (988, hotline) allowed at level 4; "im not really" no longer a persona break; bank lines below level 3 checked at runtime for early disclosure. 22 tests in `test_language.py` (incl. a slow cross-language leak test on the real model).
+- **Real bank evaluated** (`eval/reports/engine_bank.json`): 5 EN + 1 ES banks.
+
 ## In progress
 - Nothing. Waiting for the data lane's real bank (`data/lines/`) to run `run_eval.py --bank-dir` and the validator on it.
 
@@ -34,6 +37,9 @@
 - Leak threshold: best F2 on the even half of the leak set; reported on the odd half.
 
 ## Requests
+- **data lane (bank fixes found by the validator; the engine already skips these at runtime):** `mya-en-L2-asked_directly-03`, `mya-es-L2-asked_directly-03`, `jor-en-L2-asked_directly-03` disclose suicidal thoughts at level 2 (move to level 3 or reword); 16 duplicate texts (15 in group-chat, 1 in new-school). Run `uv run python -m backend.app.engine.verifier --all` (and `--locale es`).
+- **safety lane:** `check_friend` should handle Spanish friend lines (the pipeline runs it on every bubble; a false flag on a Spanish line would make the pipeline fall back to an English scenario line).
+- **integrator (pipeline):** `_friend_reply`'s own fallback uses English `scenario.fallback_lines`; in a Spanish chat it should not be reached (the engine already returns a verified Spanish line), but a localized fallback there would make it airtight.
 - **integrator (contracts, additive):** add `State.last_labels: list[SkillLabel] = []` so diminishing returns survives serialization/restarts; the engine would then drop its side table.
 - **integrator (critic stub / ml critic):** use `services.engine().missed_opportunities(path, scenario.persona.name)` for `CriticReport.missed_opportunities` (turn-named, specific).
 - **integrator (pipeline):** `_friend_reply` sets `reaction=DISMISSED` for Seen; fine, but could be `None` with `seen_no_reply=True`. Also the pipeline's own fallback (if verify fails) is now never reached because `Engine.generate` already returns a verified line.
@@ -46,6 +52,9 @@
 - LLM voice not tried against the real API from this environment (no key). Run `make test-llm` and `make spike` with a key, then add real outputs to the catch-rate eval.
 
 ## Numbers
+- Language: 0/1,206 bank lines wrongly flagged; 398/402 cross-language lines caught. Fake LLM catch rate incl. ES cases: 27/27 (fastembed), 25/27 (hash: can't link languages); false rejects 1/18 (fastembed).
+- Real banks: 32/32 required cells per scenario, Guardian (stub) pass 100% of 2,580 bubbles, 19 violations for data lane.
+- Live LLM check: skipped, no OPENAI_API_KEY in this session.
 - Pacing (worst scenario, messages to success): excellent open 4 / guarded 5; one slip open 7 / guarded 9; dismissive, advice-only, never-asks, never-refers never succeed; low-trust ask deflects (35/35 checks).
 - Scripted (keyword detector, fixture bank), after tuning: good → success in 4; dismissive → fail in 2; apology → success in 8; secrecy→refer → 52.6 at turn 8. Random labels: 4.7% success.
 - LLM-voice verifier (held-out half of leak set, n=43): fastembed precision 0.96 / recall 0.96 (threshold 0.43); hash 1.0 / 1.0 (threshold 0.25; the set is lexically close to the facts, so treat hash as a test-only number). Word-list alone: recall 0.12.

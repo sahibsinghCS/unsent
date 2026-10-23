@@ -284,9 +284,15 @@ def bank_report(bank_dir: Path) -> list[dict]:
     guardian = StubGuardian()  # the stub check_friend; the real Guardian is checked at runtime
     out = []
     targets = [(bank_dir, sid, "bank") for sid in sorted(load_scenarios())]
+    targets += [
+        (bank_dir, sid, "bank_es")
+        for sid in sorted(load_scenarios())
+        if (bank_dir / f"{sid}.es.jsonl").exists()
+    ]
     targets.append((FIXTURES, SCENARIO, "engine_fixture"))
     for directory, sid, split in targets:
-        lines = load_bank(sid, "en", directory) if directory.exists() else ()
+        locale = "es" if split == "bank_es" else "en"
+        lines = load_bank(sid, locale, directory) if directory.exists() else ()
         if not lines:
             out.append(
                 record(

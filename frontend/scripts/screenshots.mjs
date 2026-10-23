@@ -178,6 +178,17 @@ async function run(device) {
   await page.goto(`${BASE}/how`);
   await page.getByTestId('guardian-box').waitFor();
   await page.getByTestId('llm-status').locator('dl').waitFor(); // live LLM status from /api/health
+  // Headline cards when the backend has measured numbers; the full table stays collapsed and searchable
+  if ((await page.getByTestId('all-metrics').count()) > 0) {
+    await page.getByTestId('headline-card').first().waitFor();
+    const details = page.getByTestId('all-metrics');
+    if (await details.evaluate((d) => d.open)) throw new Error('Full metrics table should start collapsed');
+    await details.locator('summary').click();
+    await page.fill('#metric-search', 'macro_f1');
+    await details.locator('tbody tr').first().waitFor();
+    await details.locator('summary').click();
+    await page.fill('#metric-search', '').catch(() => {});
+  }
   await page.getByRole('button', { name: '“kms”' }).click();
   await page.getByTestId('guardian-result').waitFor();
   await shot('18-how', { full: true });
@@ -236,10 +247,38 @@ async function run(device) {
   await page.locator('button:visible:text-is("es")').first().click();
   await page.locator('button:visible[aria-label*="oscuro"]').first().click();
   await shot('22-landing-es-dark', { full: true });
-  await page.goto(`${BASE}/chat/${sessionId}`);
+
+  // Transparency in Spanish (headline labels and explanations come from the API in ES)
+  await page.goto(`${BASE}/how`);
+  await page.getByTestId('guardian-box').waitFor();
+  await page.waitForTimeout(300);
+  await shot('28-how-es', { full: true });
+
+  // Practice in Spanish: localized scenario text, "Solo en inglés por ahora" on English-only friends
+  await page.goto(`${BASE}/practice`);
+  await page.getByTestId('scenarios').waitFor();
+  await page.getByText('Después de la ruptura').waitFor();
+  if ((await page.getByTestId('lang-only').count()) < 1) throw new Error('No "English only" chips in Spanish mode');
+  await shot('27-practice-es', { full: true });
+
+  // A real Spanish chat with Maya (Spanish opening and lines) in X-ray mode
+  await page.locator('[data-testid="scenarios"] button', { hasText: 'Maya' }).click();
+  await page.getByTestId('content-warning').waitFor();
+  await page.getByRole('button', { name: /Entiendo/ }).click();
+  await page.waitForURL(/\/chat\//);
   await page.getByTestId('composer').waitFor();
+  if (await page.getByTestId('chat-locale').count()) throw new Error('Maya should chat in Spanish');
+  await page.getByText('perdón por andar rara').first().waitFor();
+  await send('oye, ¿estás bien? te noté muy rara en el almuerzo');
+  await send('eso suena muy difícil, lo siento mucho');
+  await send('¿estás pensando en suicidarte?');
   await page.getByTestId('xray-toggle').click();
   await shot('23-chat-dark-es-xray');
+
+  // An English-only friend started in Spanish mode: English chat, a neutral chip, Spanish UI
+  const en = await page.request.post(`${BASE}/api/sessions`, { data: { scenario_id: 'group-chat', locale: 'es', country: 'US' } }).then((r) => r.json());
+  await page.goto(`${BASE}/chat/${en.session_id}`);
+  await page.getByTestId('chat-locale').filter({ hasText: 'Práctica en inglés' }).waitFor();
 
   // Horizontal overflow check (nothing should scroll sideways)
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);

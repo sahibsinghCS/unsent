@@ -32,7 +32,7 @@
 4. **Deterministic and offline.** The same input gives the same output. Unit tests run offline with `FR_EMBED=hash`.
 5. **Explainable by Sahib.** Every lane keeps `docs/how/<lane>.md` in plain language, so a high-school student can answer a skeptical engineer's questions about it.
 
-## 3. Architecture (v2, zero cost)
+## 3. Architecture (v3: the LLM is only the voice)
 ```
 Helper message
   → GUARDIAN (safety lane)      normalizer + human-reviewable lexicon + trained classifier, speaker-aware, <50 ms

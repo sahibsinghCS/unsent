@@ -1,0 +1,25 @@
+# Keep the build context small and free of secrets: the Dockerfile copies only what it needs.
+.git
+.github
+.env
+.env.*
+!.env.example
+**/__pycache__
+**/*.pyc
+.venv
+.cache
+.pytest_cache
+.ruff_cache
+**/node_modules
+frontend/dist
+frontend/screenshots
+eval/logs
+eval/cache
+research
+tools
+tests
+docs
+wt-notes
+scripts
+*.log
+**/.DS_Store

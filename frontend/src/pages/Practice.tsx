@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
+import { scenarioList, supportsLang } from '../lib/scenarios';
 import type { ScenarioSummary } from '../api/models';
 import { Icon } from '../components/Icon';
 import { ContentWarningModal } from '../components/Safety';
@@ -19,10 +20,11 @@ export function Practice() {
   const [chosen, setChosen] = useState<ScenarioSummary | null>(null);
   const [starting, setStarting] = useState(false);
 
+  // Localized title/situation/warning come from the API in the UI language.
   const load = useCallback(() => {
     setError(null);
-    api.scenarios().then(setScenarios, (e) => setError(e.message));
-  }, []);
+    scenarioList(lang).then(setScenarios, (e) => setError(e.message));
+  }, [lang]);
   useEffect(load, [load]);
 
   async function start() {
@@ -67,6 +69,11 @@ export function Practice() {
                     {s.guardedness === 'guarded' ? t('practice.guarded') : t('practice.open')}
                   </span>
                 </div>
+                {!supportsLang(s, lang) && (
+                  <span className="chip mt-3 w-fit border-line bg-sunken text-muted" data-testid="lang-only">
+                    {t('practice.only_lang', { lang: t('langs.en') })}
+                  </span>
+                )}
                 <p className="mt-4 font-semibold">{s.title}</p>
                 <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted">{s.situation}</p>
                 <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand">

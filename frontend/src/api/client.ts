@@ -68,7 +68,7 @@ const post = <T>(path: string, body: unknown = {}) =>
 
 export const api = {
   health: () => request<Health>('/health'),
-  scenarios: () => request<ScenarioSummary[]>('/scenarios'),
+  scenarios: (lang = 'en') => request<ScenarioSummary[]>(`/scenarios?lang=${encodeURIComponent(lang)}`),
   startSession: (scenario_id: string, locale: string, country: string) =>
     post<SessionView>('/sessions', { scenario_id, locale, country }),
   session: (id: string) => request<SessionView>(`/sessions/${encodeURIComponent(id)}`),

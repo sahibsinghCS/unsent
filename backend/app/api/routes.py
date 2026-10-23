@@ -15,6 +15,7 @@ from backend.app.content import (
     load_metrics,
     load_realmode,
     load_scenarios,
+    resolve_headline,
     scenario_locales,
     scenario_text,
 )
@@ -249,4 +250,9 @@ def guardian_check(request: GuardianCheckRequest) -> GuardianResult:
 @router.get("/metrics")
 def metrics() -> dict:
     """Every evaluation record in eval/reports/*.json (shown on the Transparency page)."""
-    return {"components": services.status(), "records": load_metrics()}
+    records = load_metrics()
+    return {
+        "components": services.status(),
+        "headline": resolve_headline(records),
+        "records": records,
+    }

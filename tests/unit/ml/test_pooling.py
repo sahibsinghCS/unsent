@@ -25,8 +25,12 @@ def test_pooling_keeps_negatives_on_the_whole_message(detector):
         model.pooling = model_pooling
     secrecy = list(model.labels).index(SkillLabel.PROMISED_SECRECY.value)
     referred = list(model.labels).index(SkillLabel.REFERRED_ADULT.value)
-    assert pa[0, secrecy] == whole_pa[0, secrecy] and pb[0, secrecy] == whole_pb[0, secrecy]
-    assert pa[0, referred] >= whole_pa[0, referred]  # positives can only go up (max)
+    # Batched float32 math can differ in the last bits between batch sizes and CPUs, so compare the
+    # logic (negatives keep the whole-message score, positives take the max) with a tiny tolerance.
+    tol = 1e-5
+    assert np.isclose(pa[0, secrecy], whole_pa[0, secrecy], atol=tol)
+    assert np.isclose(pb[0, secrecy], whole_pb[0, secrecy], atol=tol)
+    assert pa[0, referred] >= whole_pa[0, referred] - tol  # positives can only go up (max)
 
 
 def test_out_of_fold_never_scores_a_row_with_its_own_stacker():

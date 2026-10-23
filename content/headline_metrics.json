@@ -1,0 +1,170 @@
+[
+  {
+    "id": "asking_never_blocked",
+    "lane": "safety",
+    "metric": "asking_friend_fpr",
+    "split": "test",
+    "format": "percent",
+    "better": "lower",
+    "label": {
+      "en": "“Asking directly” blocked by mistake",
+      "es": "“Preguntar directo” bloqueado por error"
+    },
+    "explain": {
+      "en": "Asking a friend “are you thinking about killing yourself?” is the right move, so our safety filter must never block it. Measured on held-out test messages.",
+      "es": "Preguntarle a un amigo “¿estás pensando en suicidarte?” es lo correcto, así que nuestro filtro de seguridad nunca debe bloquearlo. Medido con mensajes de prueba apartados."
+    }
+  },
+  {
+    "id": "helper_crisis_caught",
+    "lane": "safety",
+    "metric": "self_risk_recall",
+    "split": "test",
+    "format": "percent",
+    "better": "higher",
+    "label": {
+      "en": "Practicer's own crisis caught",
+      "es": "Crisis propia detectada"
+    },
+    "explain": {
+      "en": "If the person practicing says they're at risk themselves, the role-play pauses and shows real help.",
+      "es": "Si la persona que practica dice que está en riesgo, el juego de rol se pausa y muestra ayuda real."
+    }
+  },
+  {
+    "id": "guardian_accuracy",
+    "lane": "safety",
+    "metric": "combined.macro_f1",
+    "split": "test",
+    "format": "score",
+    "better": "higher",
+    "baseline": {
+      "lane": "safety",
+      "metric": "lexicon_only.macro_f1",
+      "split": "test",
+      "label": { "en": "word list alone", "es": "solo la lista de palabras" }
+    },
+    "label": {
+      "en": "Safety filter accuracy (macro-F1, 6 kinds of message)",
+      "es": "Precisión del filtro de seguridad (macro-F1, 6 tipos de mensaje)"
+    },
+    "explain": {
+      "en": "Our trained classifier plus a reviewed word list, compared with the word list alone.",
+      "es": "Nuestro clasificador entrenado más una lista de palabras revisada, comparado con solo la lista."
+    }
+  },
+  {
+    "id": "skills_unseen",
+    "lane": "ml",
+    "metric": "macro_f1_ensemble",
+    "split": "test_freeform",
+    "format": "score",
+    "better": "higher",
+    "baseline": {
+      "lane": "ml",
+      "metric": "macro_f1_keyword_baseline",
+      "split": "test_freeform",
+      "label": { "en": "keyword matching", "es": "buscar palabras clave" }
+    },
+    "label": {
+      "en": "Skill scoring on replies it never saw (macro-F1)",
+      "es": "Puntaje de habilidades en respuestas nunca vistas (macro-F1)"
+    },
+    "explain": {
+      "en": "Hand-written practice replies that share no phrasing with the training data, scored for 10 helping skills.",
+      "es": "Respuestas de práctica escritas a mano que no comparten frases con los datos de entrenamiento, evaluadas en 10 habilidades."
+    }
+  },
+  {
+    "id": "honest_confidence",
+    "lane": "ml",
+    "metric": "ece_after_calibration",
+    "split": "test_freeform",
+    "format": "score",
+    "better": "lower",
+    "baseline": {
+      "lane": "ml",
+      "metric": "ece_before_calibration",
+      "split": "test_freeform",
+      "label": { "en": "before calibration", "es": "antes de calibrar" }
+    },
+    "label": {
+      "en": "Confidence error (ECE, lower is better)",
+      "es": "Error de confianza (ECE, menor es mejor)"
+    },
+    "explain": {
+      "en": "When the model says it's 80% sure, it should be right about 80% of the time. This measures how far off that is.",
+      "es": "Cuando el modelo dice que está 80% seguro, debería acertar cerca del 80% de las veces. Esto mide qué tan lejos está."
+    }
+  },
+  {
+    "id": "unsure_means_something",
+    "lane": "ml",
+    "metric": "uncertain_error_rate_flagged",
+    "split": "test_freeform",
+    "format": "percent",
+    "better": "higher",
+    "baseline": {
+      "lane": "ml",
+      "metric": "uncertain_error_rate_unflagged",
+      "split": "test_freeform",
+      "label": { "en": "when it isn't flagged", "es": "cuando no se marca" }
+    },
+    "label": {
+      "en": "Wrong when it says “unsure”",
+      "es": "Se equivoca cuando dice “no estoy seguro”"
+    },
+    "explain": {
+      "en": "A skill is flagged “unsure” when our two models disagree. Flagged calls are wrong far more often, so the flag tells you when to double-check.",
+      "es": "Una habilidad se marca como dudosa cuando nuestros dos modelos no coinciden. Esas decisiones fallan mucho más, así que la marca te avisa cuándo revisar."
+    }
+  },
+  {
+    "id": "great_helper_pacing",
+    "lane": "engine",
+    "metric": "pacing_excellent_guarded_max_turns_to_success",
+    "split": "scripted_labels",
+    "format": "messages",
+    "better": "lower",
+    "label": {
+      "en": "Messages for a great helper to reach a guarded friend",
+      "es": "Mensajes para que un gran ayudante llegue a un amigo reservado"
+    },
+    "explain": {
+      "en": "With strong replies, a guarded friend agrees to get help within this many messages. Dismissive replies cost trust and can get you left on “Seen”.",
+      "es": "Con buenas respuestas, un amigo reservado acepta ayuda en esta cantidad de mensajes. Las respuestas que minimizan bajan la confianza y te pueden dejar en “Visto”."
+    }
+  },
+  {
+    "id": "secret_leaks_caught",
+    "lane": "engine",
+    "metric": "leak_combined_recall_fastembed",
+    "split": "leak_set_test",
+    "format": "percent",
+    "better": "higher",
+    "label": {
+      "en": "AI replies leaking a locked secret: caught",
+      "es": "Respuestas de la IA que revelan un secreto bloqueado: detectadas"
+    },
+    "explain": {
+      "en": "The friend can't reveal what they aren't ready to share yet. Our verifier checks every AI-written reply before it's shown.",
+      "es": "El amigo no puede revelar lo que aún no está listo para contar. Nuestro verificador revisa cada respuesta escrita por la IA antes de mostrarla."
+    }
+  },
+  {
+    "id": "label_agreement",
+    "lane": "data",
+    "metric": "mean_kappa",
+    "split": "freeform",
+    "format": "score",
+    "better": "higher",
+    "label": {
+      "en": "Agreement between two separate labeling passes (κ)",
+      "es": "Acuerdo entre dos etiquetados separados (κ)"
+    },
+    "explain": {
+      "en": "Every practice reply was labeled twice by separate AI passes that couldn't see each other's labels. 1.0 is perfect; above 0.8 is strong. Disagreements go to human review.",
+      "es": "Cada respuesta se etiquetó dos veces, en pasadas de IA separadas que no veían las etiquetas de la otra. 1.0 es perfecto; más de 0.8 es fuerte. Los desacuerdos pasan a revisión humana."
+    }
+  }
+]
