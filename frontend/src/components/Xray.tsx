@@ -59,9 +59,13 @@ export function TrustMath({ node, before }: { node: Node; before: State | null }
       {terms.map((term, i) => (
         <span key={term.key + i} className="whitespace-nowrap">
           {i > 0 && <span className="mr-1.5 text-muted">·</span>}
-          <b style={{ color: (LABEL_COLOR as Record<string, string>)[term.key] }} className={term.key in LABEL_COLOR ? '' : 'text-muted'}>
-            {signedAuto(term.value)}
-          </b>{' '}
+          {/* Label color as a dot; the number itself stays high-contrast text (WCAG AA at 11px). */}
+          <span
+            className="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            style={{ background: (LABEL_COLOR as Record<string, string>)[term.key] ?? 'rgb(var(--muted))' }}
+            aria-hidden="true"
+          />
+          <b className="text-ink">{signedAuto(term.value)}</b>{' '}
           <span className="text-muted">{name(term.key)}</span>
         </span>
       ))}

@@ -164,10 +164,10 @@
     "seen": "Lo dejó en Visto (la confianza bajó demasiado)",
     "level_label": "Nivel de apertura {n}",
     "voice": {
-      "label": "Palabras",
-      "llm": "IA, verificado ✓",
+      "label": "Quién escribió las palabras",
+      "llm": "Redacción de IA · revisada por nuestro verificador",
       "bank": "Línea revisada",
-      "fallback": "Respaldo"
+      "fallback": "Línea revisada · respaldo"
     },
     "clamp_low": "(la confianza no baja de 0, cambio real {change})",
     "clamp_high": "(la confianza no sube de 100, cambio real {change})"

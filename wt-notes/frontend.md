@@ -20,6 +20,8 @@
 
 - **Real what-if** (20afbfe): "Skill match N%" instead of "Critic score", localized strategy names, a friendly empty state when `paths` is `[]` (EN/ES, with a test). Re-shot 14 against the real backend, plus `29-whatif-es` (real Spanish Maya rollouts).
 
+- **Final quality pass** (51e87a9): full journey on the real backend in EN + ES, light + dark, mobile + desktop (new ES shots: blocked, crisis, feedback, real mode). axe-core on 9 pages × 2 themes reports 0 violations after fixing 4 serious contrast issues. A keyboard-only chat test passes. The slow-backend harness (4.5 s latency, slow 503) checks the typing dots, disabled Send, a single request, kept drafts, the error state and retry. Added a synchronous double-send guard in Chat. X-ray voice now reads "AI wording · checked by our verifier" / "Reviewed line" (EN + ES). Screenshots all re-shot; feedback shows real verified rewrites and what-if the real rollouts.
+
 ## In progress
 - Nothing. Lane is feature-complete against the stubs.
 

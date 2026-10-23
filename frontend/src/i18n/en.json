@@ -160,10 +160,10 @@
     "seen": "Left on Seen (trust fell too far)",
     "level_label": "Disclosure level {n}",
     "voice": {
-      "label": "Words",
-      "llm": "AI, verified ✓",
+      "label": "Who wrote the words",
+      "llm": "AI wording · checked by our verifier",
       "bank": "Reviewed line",
-      "fallback": "Fallback"
+      "fallback": "Reviewed line · fallback"
     },
     "clamp_low": "(trust can't go below 0, actual change {change})",
     "clamp_high": "(trust can't go above 100, actual change {change})"
