@@ -1,8 +1,13 @@
 # Deploying FirstReply (about 10 minutes)
 
 FirstReply runs as one Docker container: FastAPI serves the API under `/api` and the built React app
-at `/`. The plan is a **free Hugging Face Docker Space** (CPU basic: 2 vCPU, 16 GB RAM). You click
+at `/`. The original plan was a **Hugging Face Docker Space** (CPU basic: 2 vCPU, 16 GB RAM). You click
 through the Hugging Face and OpenAI websites; one script does the upload.
+
+> **Update (Oct 2026):** Hugging Face now requires a paid PRO subscription to host a Docker Space,
+> even on CPU basic (`402 Payment Required: ... requires a PRO subscription`). The free route we use is
+> **Google Cloud Run** (§9). Render's free plan does not fit: the app needs about **810 MB** of memory
+> at startup (mostly the multilingual embedding model), and Render free gives 512 MB.
 
 **What it costs**
 
@@ -134,6 +139,47 @@ FR_ENV=prod FR_EMBED=fastembed FASTEMBED_CACHE_PATH=.cache/fastembed \
 
 **Always exactly one worker:** practice sessions live in that one process's memory (and are deleted
 after an hour of inactivity), so a second worker would not find them.
+
+## 9. Free hosting: Google Cloud Run (about 20 minutes, first time)
+
+Cloud Run builds the same `Dockerfile` straight from GitHub, so your OpenAI key never leaves Google's
+console. It scales to zero when nobody is using it: the first visit after a quiet spell takes about
+30-60 seconds to wake up (wake it before judging, see §6).
+
+**What it costs:** the always-free tier (2 million requests, 180,000 vCPU-seconds and 360,000
+GiB-seconds a month) covers judging traffic many times over. Google asks for a card to open a billing
+account; with the budget alert below nothing should be charged. The only thing that can cost a few cents a
+month is storing the built image (about 1-2 GB in Artifact Registry, 0.5 GB free); delete it after judging.
+
+1. **Account and project:** go to **https://console.cloud.google.com**, sign in, accept the free trial /
+   create a billing account, then **Select a project → New project** named `firstreply`.
+2. **Budget alert (safety net):** **Billing → Budgets & alerts → Create budget**, amount **$1**, alerts
+   at 50% / 100%, email to you.
+3. **Store the OpenAI key as a secret:** search **Secret Manager** → enable the API → **Create secret**,
+   name `OPENAI_API_KEY`, paste your key → **Create**.
+4. **Create the service:** search **Cloud Run** → **Create service** (also called **Deploy container** →
+   **Service**) → **Continuously deploy from a repository (source or function)** → **Set up with Cloud
+   Build** → connect GitHub → repository `sahibsinghcs/hackathon-cac`, branch `^wt/live$` (or `^main$` once
+   merged) → Build type **Dockerfile**, path `/Dockerfile` → **Save**.
+5. **Service settings** (same page):
+   - Service name `firstreply`, region `us-central1`.
+   - Authentication: **Allow unauthenticated invocations** (judges must open it without a login).
+   - Billing: **Request-based**. Minimum instances **0**. **Maximum instances 1** (required: practice
+     sessions live in one process's memory, so a second instance would not find them; this also caps cost).
+   - **Containers → Settings:** container port **7860**; memory **2 GiB**; CPU **1**; request timeout 60 s.
+   - **Variables & secrets → Add variable:** `FR_ENV=prod`, `LLM_DAILY_BUDGET_USD=1`,
+     `OPENAI_MODEL=gpt-6-luna`, `OPENAI_PRICE_INPUT_PER_M=0.10`, `OPENAI_PRICE_OUTPUT_PER_M=0.50`.
+   - **Reference a secret:** `OPENAI_API_KEY` → exposed as environment variable `OPENAI_API_KEY`, version
+     `latest` (if asked, grant the service account *Secret Manager Secret Accessor*).
+   - **Create.** The first build takes about 5-10 minutes; the URL looks like
+     `https://firstreply-xxxxxxxx-uc.a.run.app`.
+6. **Check it:** open `<URL>/api/health`. All five components must say `"real"`, and `llm.has_key` and
+   `llm.enabled` must be `true`, with `model_actor` `gpt-6-luna`.
+
+**Redeploy:** push to the connected branch; Cloud Build rebuilds and Cloud Run switches over with no
+downtime. **Roll back:** Cloud Run → `firstreply` → **Revisions** → pick the previous one → **Manage
+traffic** → 100%. **Off switch for OpenAI:** **Edit & deploy new revision** → add `FR_LLM=0`.
+**After judging:** delete the service and the image in Artifact Registry.
 
 ## What the container does for safety
 

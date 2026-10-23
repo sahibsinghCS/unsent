@@ -33,12 +33,14 @@ Earlier run with the default **gpt-5-mini** (cost $0.0654): llm voice **0%**, ba
   the designed behaviour.
 
 ## In progress
-- Deploy to a public HF Space: blocked on permission (see Requests).
+- Deploy: Hugging Face refused the Space (`402 Payment Required`: Docker Spaces now need PRO). Sahib won't pay.
+  Render free (512 MB) is too small: the prod server measured **810 MB RSS** at startup (fastembed multilingual
+  MiniLM). Chosen route: **Google Cloud Run** free tier, deployed from GitHub via the console (docs/DEPLOY.md §9),
+  max instances 1 (in-memory sessions). Waiting on Sahib to do the console steps (this environment has no
+  Google Cloud login); then I verify health, CSP and live chats on the URL.
 
 ## Requests
-- Session permission: creating the public Space and copying the OpenAI key into its secret were both refused
-  by the session's auto-mode permission check. Sahib must approve, or do those two steps in the HF web UI
-  (docs/DEPLOY.md §1-2).
+- Integrator: optional memory cut (smaller embedding model) would make the app fit 512 MB free hosts.
 
 ## Known issues (product, for the integrator)
 - **gpt-5-mini never produces the friend voice.** `backend/app/llm.py::_create_completion` sends
