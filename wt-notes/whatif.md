@@ -25,8 +25,6 @@
 
 ## Requests
 - **frontend:** handle `paths: []` (no verified better reply in this language / at this point) with a short message instead of an empty grid.
-- **integrator:** call `backend.app.whatif.cache.warm_up()` from `main.warm_up`.
-- **ml (critic):** `missing_skill`'s LISTEN rewrite can pick an exemplar that asks directly even after the friend was already asked; what-if then skips it as #1 so "Try instead" and "What if" differ in that case. Same rule in the critic would keep them aligned.
 
 ## Known issues
 - Evaluation weak points are scripted with weak continuations, so "beats actual" is an easy bar (the textbook comparison is the harder one).
@@ -36,6 +34,6 @@
 - 3 diverse paths 100% / 100%; best beats actual (value, trust) 100% / 100%; success 100% / 100%; best ≥ textbook 100% / 100%; deterministic 100% / 100%; chip = exemplar's own strategy 100% (270) / 100% (54).
 - mean trust gain +70.1 / +59.1; value over textbook +40.9 / +39.8 (the ML retrain moved these; identical with/without the chip fix).
 - continuation policy before → after (previous detector): paths asking directly twice 110/270 → 0 and 40/54 → 0; shared later messages 89% → 2.2% and 94% → 11% (now 7.2% / 0%).
-- latency p50/p95 0.51/0.69 s / 0.59/0.65 s.
+- latency p50/p95 0.49/0.76 s / 0.58/0.88 s (after the ML speed/critic merge).
 - unsafe candidates 0/882 / 0/180; unsafe friend bubbles 0/2,140 / 0/478; wrong-language bubbles 0/3,022 / 0/658.
 - Spanish exemplar own-skill score (retrained detector): mean 0.82, 86% ≥ 0.5 (n = 29); ex-mya-es-11 0.28 → 0.73.

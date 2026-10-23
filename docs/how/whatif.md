@@ -78,7 +78,7 @@ The detector and the Guardian re-embed the same ~40 exemplar texts at every look
 simulation runs inside `embed.cached_scope()` (`whatif/cache.py`), so for that request only, each text is
 embedded once, on its own (its vector never depends on which batch it came in), and reused. The cache
 forgets texts after the 60-minute session lifetime, like everything else that holds chat text. That took
-p95 from 2.6 s to about 0.6 s with the real models, with identical results. `whatif.cache.warm_up()`
+p95 from 2.6 s to about 0.6–0.8 s with the real models, with identical results. `whatif.cache.warm_up()`
 embeds every friend's exemplars at startup so the first click is fast too.
 
 ## Why this approach (and what we considered instead)
@@ -113,7 +113,7 @@ conversations × 5 friends = **90 weak points**. Each script has one weak messag
 | paths that ask directly a second time | 0 / 270 | 0 / 54 |
 | later messages also used by another card | 7.2% (n = 612) | 0% (n = 126) |
 | card chip = the exemplar's own strategy | 100% (n = 270) | 100% (n = 54) |
-| latency p50 / p95 (warm process, this box) | 0.51 s / 0.69 s | 0.59 s / 0.65 s |
+| latency p50 / p95 (warm process, this box) | 0.49 s / 0.76 s | 0.58 s / 0.88 s |
 | two runs identical | 100% | 100% |
 | candidate messages the Guardian would block | 0 / 882 | 0 / 180 |
 | friend bubbles failing `check_friend` | 0 / 2,140 | 0 / 478 |
