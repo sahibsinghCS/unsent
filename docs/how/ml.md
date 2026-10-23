@@ -104,7 +104,26 @@ lecture. "No secrecy" breaks if any message promises secrecy.
 hash, row counts, date, metrics and the embedder name. The app refuses to load an artifact trained
 with a different embedder, because its numbers would be meaningless.
 
-## Why this approach (and what we considered instead)
+**Making the report fast.** Highlights mean re-scoring dozens of slightly shortened copies of every
+message, which made the end-of-chat report slow (2.4 s on a 6-message chat). Three fixes, none of which
+change a single output (a test compares the full report before and after on a fixed conversation):
+1. **Embedding cache.** The shortened copies share most of their sentences, and every copy shares the
+   friend's message, so each text is embedded once and remembered (LRU, 20,000 texts).
+2. **One matrix product** computes all 10 labels' logistic regressions at once, instead of 10 separate
+   calls per model.
+3. **Explain while the chat happens.** When a message is scored during the chat, its highlights start
+   computing on one background worker. At the end the report just reuses them. If it's asked for before
+   they're done, it waits for that same computation rather than starting over.
+   (`FR_PREWARM_EXPLAIN=0` turns this off.)
+
+| `/finish` on a 6-message chat (fastembed, 1 user) | p50 |
+|---|---|
+| before | 2.42 s |
+| cache + matrix product only | 1.21 s |
+| all three, user pauses 2 s before finishing | **0.09 s** |
+| all three, "finish" sent the instant the last message returns | 0.94 s |
+
+ (and what we considered instead)
 - **Why not keywords?** A keyword list misses "have you thought about not being around anymore" and
   fires on "lol" in a kind message. On the free-form test, keywords score macro-F1 0.49 and the
   ensemble scores 0.82.

@@ -301,12 +301,19 @@ class Critic:
         self, text: str, target: Target, original: float, context: list[str], history: list[Node]
     ) -> float | None:
         """The candidate's gain on the target skill, or None if it gains < 0.2 or fails the Guardian."""
-        gain = target_score(self.detector.predict(text, context), target) - original
+        gain = target_score(self._score_candidate(text, context), target) - original
         if gain < MIN_REWRITE_GAIN:
             return None
         if self.guardian.check_user(text, history).action != "continue":
             return None
         return gain
+
+    def _score_candidate(self, text: str, context: list[str]) -> SkillProbs:
+        """Score a rewrite candidate without starting a (wasted) background explanation for it."""
+        detector = self.detector
+        if hasattr(detector, "predict_many"):
+            return detector.predict_many([text], context)[0]
+        return detector.predict(text, context)
 
     @staticmethod
     def _set_rewrite(score: MessageScore, text: str, gain: float, source: str, target: Target):

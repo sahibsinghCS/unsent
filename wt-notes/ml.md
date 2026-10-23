@@ -20,8 +20,7 @@
 - Kappa CLI (`python -m backend.app.ml.kappa`), seeded 1,000-resample bootstrap CI.
 
 ## In progress
-- Next (queued by integrator, after this retrain): speed up POST /finish (p50 1.2 s → ≤ 0.4 s, identical
-  output, before/after numbers, test on a fixed conversation).
+- Done: /finish speed-up (see Numbers). No pipeline hook needed.
 - Later: kappa when counselor labels exist.
 
 ## Decisions
@@ -79,6 +78,10 @@ worth-affirming validation without feeling words; (3) agreement replies. No test
 - **integrator:** the ML eval and the app need `FR_EMBED=fastembed` (the artifact refuses `hash`).
 
 ## Known issues
+- /finish worst case: if "finish" arrives the instant the last message returns after a burst of messages,
+  it waits for the background explanations still queued (p50 0.94 s); with ≥ 2 s of think time it's 0.09 s.
+  The deploy lane's load test should include think time between messages, or it measures this worst case.
+- Background explanations add CPU during the chat: /messages p50 50 → 80 ms on this machine.
 - First fastembed call takes ~2.5 s (model load); then ~60–110 ms per message for predict + highlights.
 - Under `FR_EMBED=hash` (tests, `make smoke`) the detector is the keyword stub; the real detector is
   covered by unit tests with a tiny hash-trained model.
@@ -98,3 +101,7 @@ worth-affirming validation without feeling words; (3) agreement replies. No test
   error rate flagged vs unflagged: val 17% vs 1.2%, test 7% vs 0.6%, freeform 39% vs 2.9%.
 - Probes: 13/14 (miss: "can we talk to the counselor tomorrow? i'll go with you" → follow_up 0.67).
 - Counselor kappa: not yet (no counselor labels).
+- /finish p50 on a fixed 6-message chat (fastembed, FR_LLM=0, 1 user, cold caches each run, n=5):
+  before 2.42 s → cache + stacked LR 1.21 s → + background explanations 0.09 s (2 s pause before finish)
+  / 0.94 s (finish immediately after the last message). Output identical (unit test on a fixed conversation;
+  real-model API report compared field by field, 0 differences > 1e-6).

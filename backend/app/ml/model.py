@@ -5,15 +5,18 @@ per-label stacker. This object is what `train.py` saves with joblib and `skill_d
 from __future__ import annotations
 
 import re
+import threading
+from collections import OrderedDict
 from dataclasses import dataclass, field
 
 import numpy as np
+from scipy.special import expit
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import FeatureUnion
 
 from backend.app.contracts import POSITIVE_LABELS, SkillLabel
-from backend.app.embed import embed
+from backend.app.embed import embed, get_embedder
 from backend.app.ml.calibrate import Stacker
 from backend.app.ml.rules import gate_asked_directly
 from backend.app.ml.uncertainty import DEFAULT_BAND
@@ -30,6 +33,24 @@ class ConstantModel:
     def predict_proba(self, x) -> np.ndarray:
         n = x.shape[0]
         return np.column_stack([np.full(n, 1 - self.prior), np.full(n, self.prior)])
+
+
+def stacked_proba(models: dict[str, object], labels: tuple[str, ...], x) -> np.ndarray:
+    """All labels' probabilities in one matrix product (same math as each LR's predict_proba)."""
+    weights, bias, constant = [], [], {}
+    for j, label in enumerate(labels):
+        model = models[label]
+        if isinstance(model, ConstantModel):
+            constant[j] = model.prior
+            weights.append(np.zeros(x.shape[1]))
+            bias.append(0.0)
+        else:
+            weights.append(model.coef_[0])
+            bias.append(float(model.intercept_[0]))
+    probs = expit(np.asarray(x @ np.column_stack(weights)) + np.array(bias))
+    for j, prior in constant.items():
+        probs[:, j] = prior
+    return probs
 
 
 def fit_binary(x, y: np.ndarray, c: float, seed: int):
@@ -80,11 +101,53 @@ def sentences(text: str) -> list[str]:
     return parts if len(parts) >= 2 else []
 
 
+class EmbeddingCache:
+    """LRU cache of sentence embeddings keyed by (embedder, text).
+
+    Explanations and pooling re-score many near-identical texts (the same sentence with one phrase
+    removed, the same friend message for every variant), so most embeddings are repeats.
+    """
+
+    def __init__(self, max_items: int = 20000) -> None:
+        self.max_items = max_items
+        self._items: OrderedDict[tuple[str, str], np.ndarray] = OrderedDict()
+        self._lock = threading.Lock()
+
+    def embed(self, texts: list[str]) -> np.ndarray:
+        name = get_embedder().name
+        with self._lock:
+            missing = sorted({t for t in texts if (name, t) not in self._items})
+        if missing:
+            vectors = embed(missing)
+            with self._lock:
+                for text, vector in zip(missing, vectors, strict=True):
+                    self._items[(name, text)] = vector
+                while len(self._items) > self.max_items:
+                    self._items.popitem(last=False)
+        with self._lock:
+            out = []
+            for text in texts:
+                vector = self._items.get((name, text))
+                if vector is None:  # evicted in between (tiny cache): embed directly
+                    vector = embed([text])[0]
+                else:
+                    self._items.move_to_end((name, text))
+                out.append(vector)
+        return np.array(out, dtype=np.float32).reshape(len(texts), -1)
+
+    def clear(self) -> None:
+        with self._lock:
+            self._items.clear()
+
+
+EMBEDDINGS = EmbeddingCache()
+
+
 def embed_features(texts: list[str], contexts: list[str]) -> np.ndarray:
     """Model A features: embed(reply) ⊕ embed(friend's last message); an empty context is a zero vector."""
-    reply = embed(texts)
+    reply = EMBEDDINGS.embed(texts)
     unique = sorted({c for c in contexts if c})
-    lookup = dict(zip(unique, embed(unique), strict=True)) if unique else {}
+    lookup = dict(zip(unique, EMBEDDINGS.embed(unique), strict=True)) if unique else {}
     ctx = np.zeros_like(reply)
     for row, context in enumerate(contexts):
         if context:
@@ -134,9 +197,9 @@ class SkillModel:
     def base_proba(self, texts: list[str], contexts: list[str]) -> tuple[np.ndarray, np.ndarray]:
         xa = embed_features(texts, contexts)
         xb = self.vectorizer.transform(texts)
-        pa = np.column_stack([self.model_a[label].predict_proba(xa)[:, 1] for label in self.labels])
-        pb = np.column_stack([self.model_b[label].predict_proba(xb)[:, 1] for label in self.labels])
-        return pa, pb
+        return stacked_proba(self.model_a, self.labels, xa), stacked_proba(
+            self.model_b, self.labels, xb
+        )
 
     def pooled_proba(self, texts: list[str], contexts: list[str]) -> tuple[np.ndarray, np.ndarray]:
         """Score the whole message and each of its sentences; POSITIVE labels take the max.
