@@ -27,7 +27,7 @@ See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built
 | What | Result | Compared with | n | Split |
 |---|---|---|---|---|
 | “Asking directly” blocked by mistake | **0.0%** |  | 37 | test |
-| Unsafe friend lines shown under attack | **0** |  | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
+| Unsafe friend lines shown under attack | **0** |  | 9737 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Practicer's own crisis caught | **100.0%** |  | 37 | test |
 | Places still holding your words after the session expires | **0** |  | 1 | full conversation incl. finish, what-if, rewind [fastembed] |
 | Skill scoring on replies it never saw (macro-F1) | **0.822** | 0.49 (keyword matching) | 221 | test_freeform |
@@ -35,9 +35,9 @@ See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built
 | Confidence error (ECE, lower is better) | **0.012** | 0.124 (before calibration) | 221 | test_freeform |
 | Messages for a great helper to reach a guarded friend | **5 messages** |  | 3 | scripted_labels |
 | AI replies leaking a locked secret: caught | **96.0%** |  | 43 | leak_set_test |
-| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.994** | 0.86 (word list alone) | 172 | test |
-| Red-team attacks handled as expected | **81.8%** |  | 132 | attack_bank holdout [fastembed] |
-| Still right when messages are scrambled | **98.6%** |  | 1636 | guardian test split [fastembed] |
+| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.994** | 0.863 (word list alone) | 172 | test |
+| Red-team attacks handled as expected | **82.6%** |  | 132 | attack_bank holdout [fastembed] |
+| Still right when messages are scrambled | **99.0%** |  | 1636 | guardian test split [fastembed] |
 | Direct questions blocked mid-conversation | **0** |  | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Agreement between two separate labeling passes (κ) | **0.887** |  | 474 | freeform |
 
@@ -45,17 +45,17 @@ See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built
 
 | What | Result | n | Split | Notes |
 |---|---|---|---|---|
-| Attack bank, holdout half: Guardian did the expected thing | **81.8%** | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in... |
-| Attack bank, holdout half: should be stopped but got through | **17.9%** | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in... |
-| Attack bank, all 250: Guardian did the expected thing | **89.2%** | 250 | attack_bank [fastembed] | full bank; Guardian action == expected_action, single message, no history; embed=fastembed |
-| Fuzzed messages still handled right | **98.6%** | 1636 | guardian test split [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
-| I1 unsafe friend lines shown | **0** | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
-| I2 facts revealed too early | **0** | 4360 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
-| I3 method/means words in friend lines | **0** | 9724 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
-| I4 crisis turns mishandled | **0** | 276 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
-| I5 blocked turns mishandled | **0** | 630 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=fastembed |
+| Attack bank, holdout half: Guardian did the expected thing | **82.6%** | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in... |
+| Attack bank, holdout half: should be stopped but got through | **16.7%** | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in... |
+| Attack bank, all 250: Guardian did the expected thing | **89.6%** | 250 | attack_bank [fastembed] | full bank; Guardian action == expected_action, single message, no history; embed=fastembed |
+| Fuzzed messages still handled right | **99.0%** | 1636 | guardian test split [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
+| I1 unsafe friend lines shown | **0** | 9737 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
+| I2 facts revealed too early | **0** | 4362 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
+| I3 method/means words in friend lines | **0** | 9737 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
+| I4 crisis turns mishandled | **0** | 280 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
+| I5 blocked turns mishandled | **0** | 637 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=fastembed |
 | I6 direct asks blocked or paused | **0** | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
-| I7 injections that changed the friend | **0** | 2575 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; emb... |
+| I7 injections that changed the friend | **0** | 2578 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; emb... |
 | I8 places still holding your words after expiry | **0** | 1 | full conversation incl. finish, what-if, rewind [fastembed] | places in memory still holding the helper's words after every session expired and every derived cache was s... |
 | Live: friend replies written by the LLM | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
 | Live: unsafe friend lines shown | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
