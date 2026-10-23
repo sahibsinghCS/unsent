@@ -672,74 +672,150 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `cold_start_s` | 5.78 | 1 | local | process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `rss_idle_mb` | 796.23 | 1 | local | after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/finish` | 1,172 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/finish` | 1,396 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/finish` | 1,428 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/message` | 34.4 | 120 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/message` | 66.09 | 120 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/message` | 93.99 | 120 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/scenarios` | 3.58 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/scenarios` | 6.33 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/scenarios` | 39.61 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/session_create` | 2.07 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/session_create` | 2.53 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/session_create` | 3.46 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/whatif` | 130.21 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/whatif` | 178.59 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/whatif` | 205.64 | 20 | c1 | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `error_rate` | 0 | 200 | c1 | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 6.15 | 200 | c1 | 20 conversations, 1 at a time |
-| `latency_p50_ms/finish` | 4,652 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/finish` | 5,313 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/finish` | 5,521 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/message` | 161.13 | 120 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/message` | 234.82 | 120 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/message` | 282.96 | 120 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/scenarios` | 48.45 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/scenarios` | 167.16 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/scenarios` | 174.53 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/session_create` | 7.8 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/session_create` | 52.84 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/session_create` | 63.61 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/whatif` | 557.74 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/whatif` | 691.06 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/whatif` | 716.15 | 20 | c5 | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `error_rate` | 0 | 200 | c5 | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 7.69 | 200 | c5 | 20 conversations, 5 at a time |
-| `latency_p50_ms/finish` | 9,217 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/finish` | 10,535 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/finish` | 10,613 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/message` | 289.76 | 120 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/message` | 391.91 | 120 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/message` | 452.55 | 120 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/scenarios` | 200.83 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/scenarios` | 423.68 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/scenarios` | 465.75 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/session_create` | 52.91 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/session_create` | 220.31 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/session_create` | 281.4 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/whatif` | 840.35 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/whatif` | 1,150 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/whatif` | 1,210 | 20 | c10 | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `error_rate` | 0 | 200 | c10 | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 7.92 | 200 | c10 | 20 conversations, 10 at a time |
-| `latency_p50_ms/finish` | 18,052 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/finish` | 19,521 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/finish` | 19,727 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/message` | 582.55 | 120 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/message` | 838.51 | 120 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/message` | 887.28 | 120 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/scenarios` | 619.33 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/scenarios` | 1,034 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/scenarios` | 1,052 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/session_create` | 40.54 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/session_create` | 53.23 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/session_create` | 56.02 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p50_ms/whatif` | 1,844 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p95_ms/whatif` | 2,488 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `latency_p99_ms/whatif` | 2,669 | 20 | c20 | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
-| `error_rate` | 0 | 200 | c20 | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 7.82 | 200 | c20 | 20 conversations, 20 at a time |
-| `rss_peak_mb` | 1,584 | 1 | local | peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker |
+| `cold_start_s` | 7.02 | 1 | local | process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `rss_idle_mb` | 790.79 | 1 | local | after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/finish` | 57.14 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 82.63 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 92.19 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 27.42 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 128.71 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 191.91 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 4.02 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 8.31 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 45.39 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 2.57 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 3.38 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 3.43 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 719.03 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 1,199 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 1,376 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 200 | c1/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 0.48 | 200 | c1/think | 20 conversations, 1 at a time |
+| `latency_p50_ms/finish` | 116.97 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 273.74 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 319.1 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 25.44 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 50.41 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 74.51 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 6.51 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 193.66 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 223.44 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 5.56 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 25.44 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 126.24 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 1,340 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 2,178 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 2,431 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 200 | c5/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 2.28 | 200 | c5/think | 20 conversations, 5 at a time |
+| `latency_p50_ms/finish` | 215.25 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 699.53 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 790.12 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 23.81 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 46.81 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 125.23 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 98.5 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 380.11 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 416.73 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 12.65 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 110.31 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 140.78 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 3,063 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 5,028 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 5,143 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 200 | c10/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 4.02 | 200 | c10/think | 20 conversations, 10 at a time |
+| `latency_p50_ms/finish` | 1,169 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 1,641 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 1,683 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 24.93 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 87.22 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 345 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 647.12 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 1,115 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 1,153 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 27.87 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 30.48 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 30.62 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 9,693 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 11,090 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 11,262 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 200 | c20/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 5.91 | 200 | c20/think | 20 conversations, 20 at a time |
+| `rss_peak_mb` | 845.06 | 1 | local | peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+
+### `eval/reports/deploy_load_burst.json`
+
+| Metric | Value | n | Split | Notes |
+|---|---|---|---|---|
+| `cold_start_s` | 6.15 | 1 | local | process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `rss_idle_mb` | 790.75 | 1 | local | after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/finish` | 49.88 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 243.11 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 1,840 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 21.81 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 127.46 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 217.09 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 3.9 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 6.33 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 26.64 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 2.4 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 3.06 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 3.14 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 706.68 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 1,116 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 1,403 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 200 | c1/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 8.11 | 200 | c1/burst | 20 conversations, 1 at a time |
+| `latency_p50_ms/finish` | 272.46 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 319.68 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 349.17 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 99.75 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 146.29 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 174.87 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 90.64 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 183.22 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 249.43 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 11.38 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 55.81 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 56.07 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 3,198 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 3,447 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 3,512 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 200 | c5/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 11.53 | 200 | c5/burst | 20 conversations, 5 at a time |
+| `latency_p50_ms/finish` | 718.44 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 945.4 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 988.2 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 208.3 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 339.06 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 355.66 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 154.79 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 354.23 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 384.22 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 22.86 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 121.58 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 164.18 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 6,379 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 6,907 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 6,908 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 200 | c10/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 11.19 | 200 | c10/burst | 20 conversations, 10 at a time |
+| `latency_p50_ms/finish` | 1,297 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 1,527 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 1,969 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 382.13 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 535.5 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 605.02 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 591.71 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 1,045 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 1,082 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 48.51 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 55.5 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 55.97 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 13,491 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 13,985 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 14,049 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 200 | c20/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 10.7 | 200 | c20/burst | 20 conversations, 20 at a time |
+| `rss_peak_mb` | 853.87 | 1 | local | peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
