@@ -24,6 +24,10 @@
 - Later: kappa when counselor labels exist.
 
 ## Decisions
+- Embedding cache misses stay one text at a time (integrator's decision, not an open request). Batched rows
+  differ from per-text vectors by ~1e-6, so a cached vector would depend on which request first embedded the
+  text, and the same chat could score differently depending on earlier traffic; that breaks "same input → same
+  output". The cost is accepted: /finish 0.24 s with think time (target ≤ 0.4 s), /messages ~150 ms.
 - Once the friend was asked directly (flags.asked_directly_ever before the message), the critic never suggests a
   rewrite that asks again: exemplars with strategy ask_directly or the asked_directly label are skipped, and LLM
   candidates the detector scores asked_directly ≥ 0.5 are dropped (same rule as what-if).
@@ -73,10 +77,6 @@ Systematic: (1) indirect encouragement ("not alone in it", "i'd find a therapist
 worth-affirming validation without feeling words; (3) agreement replies. No test example was patched.
 
 ## Requests
-- **integrator (optional, speed):** embed.py's cached_scope embeds cache misses one text at a time. Embedding
-  all misses of one embed() call in a single batch (then caching each row) would bring /finish back toward
-  0.09 s with think time and cut /messages CPU; fastembed mean-pools with the attention mask, so rows should
-  match per-text vectors to ~1e-6. Only if you're comfortable with that.
 - **data (new):** train rows for indirect encouraged_help ("you don't have to be alone in it", "i'd find a
   therapist if i were you" style), permission-giving validation ("it's okay to not be fine", "you don't have
   to be fine with me"), and referrals with time words that are NOT follow_up ("counselor tomorrow? i'll go
