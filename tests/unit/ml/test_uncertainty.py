@@ -43,3 +43,20 @@ def test_tune_band_is_one_of_the_candidates_and_respects_flag_rate():
 def test_training_records_the_band(trained_dir):
     meta = json.loads((trained_dir / META).read_text())
     assert len(meta["uncertain_band"]) == 2 and "flag_rate_per_message" in meta["uncertain_val"]
+
+
+def test_training_records_the_pooling_decision(trained_dir):
+    meta = json.loads((trained_dir / META).read_text())
+    assert isinstance(meta["pooling"], bool)
+    oof = meta["pooling_val_oof"]
+    adopt = oof["pooled"]["macro_f1"] > oof["whole"]["macro_f1"] and (
+        oof["pooled"]["ece"] <= oof["whole"]["ece"] + 0.01
+    )
+    assert meta["pooling"] == adopt
+
+
+def test_pooling_can_be_forced_off(seed_data_dir, tmp_path):
+    from backend.app.ml.train import train
+
+    meta = train(seed_data_dir, tmp_path, seed=0, pooling_mode="off")
+    assert meta["pooling"] is False and meta["pooling_mode"] == "off"

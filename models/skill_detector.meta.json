@@ -1,50 +1,66 @@
 {
   "embedder": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
   "data_dir": "/home/user/hackathon-cac/data/skills",
-  "data_hash": "90950613430117f485d225bc47a313b8435df61fe8dae5d8478dac39d603df91",
+  "data_hash": "8f64277bf2849bcea859d3b56fcd0a978f003638812ece72c52e82f2bd9543a0",
   "counts": {
-    "train": 615,
-    "val": 142,
-    "test": 124
+    "train": 824,
+    "val": 152,
+    "test": 133
   },
   "seed": 0,
-  "trained_at": "2026-10-23T00:13:46+00:00",
-  "artifact_mb": 0.53,
+  "trained_at": "2026-10-23T01:01:03+00:00",
+  "artifact_mb": 0.65,
   "stacker_fallback_labels": [],
   "uncertain_band": [
-    0.35,
-    0.65
+    0.2,
+    0.8
   ],
   "uncertain_val": {
     "band": [
-      0.35,
-      0.65
+      0.2,
+      0.8
     ],
-    "messages": 142,
-    "flag_rate_per_message": 0.0845,
-    "flagged_decisions": 12,
-    "flagged_error_rate": 0.75,
-    "unflagged_error_rate": 0.0163
+    "messages": 152,
+    "flag_rate_per_message": 0.1382,
+    "flagged_decisions": 23,
+    "unflagged_decisions": 1497,
+    "flagged_error_rate": 0.1739,
+    "unflagged_error_rate": 0.012
+  },
+  "pooling": true,
+  "pooling_val_oof": {
+    "whole": {
+      "macro_f1": 0.9228,
+      "ece": 0.0107,
+      "brier": 0.0168,
+      "validated_f1": 0.9438
+    },
+    "pooled": {
+      "macro_f1": 0.9312,
+      "ece": 0.0096,
+      "brier": 0.0155,
+      "validated_f1": 0.9556
+    }
   },
   "metrics": {
     "val": {
       "checked_in": {
-        "precision": 0.8889,
-        "recall": 0.8,
-        "f1": 0.8421,
+        "precision": 1.0,
+        "recall": 0.8333,
+        "f1": 0.9091,
         "support": 30
       },
       "validated": {
-        "precision": 0.9512,
-        "recall": 0.9512,
-        "f1": 0.9512,
-        "support": 41
+        "precision": 0.9556,
+        "recall": 0.9556,
+        "f1": 0.9556,
+        "support": 45
       },
       "asked_directly": {
         "precision": 1.0,
-        "recall": 0.9655,
-        "f1": 0.9825,
-        "support": 29
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 30
       },
       "encouraged_help": {
         "precision": 1.0,
@@ -53,33 +69,33 @@
         "support": 18
       },
       "referred_adult": {
-        "precision": 0.9545,
-        "recall": 0.913,
-        "f1": 0.9333,
-        "support": 23
+        "precision": 1.0,
+        "recall": 0.9231,
+        "f1": 0.96,
+        "support": 26
       },
       "referred_988": {
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "support": 12
+        "precision": 0.9474,
+        "recall": 0.9474,
+        "f1": 0.9474,
+        "support": 19
       },
       "follow_up": {
-        "precision": 0.9459,
-        "recall": 0.9459,
-        "f1": 0.9459,
-        "support": 37
+        "precision": 1.0,
+        "recall": 0.95,
+        "f1": 0.9744,
+        "support": 40
       },
       "dismissed": {
-        "precision": 0.8667,
-        "recall": 0.8125,
+        "precision": 0.9286,
+        "recall": 0.7647,
         "f1": 0.8387,
-        "support": 16
+        "support": 17
       },
       "advice_dump": {
-        "precision": 0.8333,
-        "recall": 0.7143,
-        "f1": 0.7692,
+        "precision": 1.0,
+        "recall": 0.8571,
+        "f1": 0.9231,
         "support": 14
       },
       "promised_secrecy": {
@@ -88,7 +104,7 @@
         "f1": 1.0,
         "support": 15
       },
-      "macro_f1": 0.9263
+      "macro_f1": 0.9508
     },
     "test": {
       "checked_in": {
@@ -99,9 +115,9 @@
       },
       "validated": {
         "precision": 1.0,
-        "recall": 0.9792,
-        "f1": 0.9895,
-        "support": 48
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 51
       },
       "asked_directly": {
         "precision": 1.0,
@@ -111,33 +127,33 @@
       },
       "encouraged_help": {
         "precision": 1.0,
-        "recall": 0.92,
-        "f1": 0.9583,
-        "support": 25
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 27
       },
       "referred_adult": {
         "precision": 1.0,
-        "recall": 0.9583,
-        "f1": 0.9787,
-        "support": 24
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 27
       },
       "referred_988": {
         "precision": 1.0,
-        "recall": 0.9,
-        "f1": 0.9474,
-        "support": 10
+        "recall": 0.875,
+        "f1": 0.9333,
+        "support": 16
       },
       "follow_up": {
-        "precision": 0.9429,
-        "recall": 0.9706,
-        "f1": 0.9565,
+        "precision": 1.0,
+        "recall": 0.9412,
+        "f1": 0.9697,
         "support": 34
       },
       "dismissed": {
         "precision": 1.0,
-        "recall": 0.6667,
-        "f1": 0.8,
-        "support": 12
+        "recall": 0.7143,
+        "f1": 0.8333,
+        "support": 14
       },
       "advice_dump": {
         "precision": 1.0,
@@ -151,7 +167,7 @@
         "f1": 1.0,
         "support": 16
       },
-      "macro_f1": 0.9587
+      "macro_f1": 0.9693
     }
   }
 }
