@@ -430,5 +430,14 @@
   "split": "holdout",
   "notes": "safety splits, same rows before and after; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only (no OpenAI)",
   "created": "2026-10-23T01:37:38+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round2.attack_holdout.match_rate.after_excluding_seen",
+  "value": 0.8095,
+  "n": 126,
+  "split": "attack_bank_holdout",
+  "notes": "HOLDOUT minus 6 holdout attacks whose text the safety lane saw (rt-003 file head; rt-004, rt-012, rt-143, rt-171, rt-214 via pinned tests/safety regression failures). Unsafe misses 15/81.",
+  "created": "2026-10-23T01:41:24+00:00"
  }
 ]

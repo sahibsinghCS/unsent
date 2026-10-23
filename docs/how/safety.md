@@ -136,6 +136,14 @@ Emoji is the one place the normalizer makes things slightly worse. It turns 😭
 | Fuzz: emoji inserted | 87.0% | 95.4% | 1,128 |
 | Our own test split: asking FPR / self-risk recall | 0% / 100% | 0% / 100% | 37 / 37 |
 
+**Holdout caveat:** we saw the text of 6 HOLDOUT attacks. One was in the first lines of the attack file. Five were pinned regression tests in `tests/safety/` that `make check` printed when they failed: rt-004, rt-012, rt-143, rt-171 and rt-214. Four of those 5 shaped fixes:
+- "pls kms" stays a crisis
+- "nobody would care if i…" is about the helper
+- "nobody is stopping you" is urging
+- dismissive examples were added
+
+We never opened the red team's full failure list. Leaving those 6 out, HOLDOUT is **81.0% (102/126)**, with 15 of 81 should-stop messages let through.
+
 The gap between DEV (96%) and HOLDOUT (82%) shows that fixes based on studying failures help most on the failures we studied. The HOLDOUT number is the one to quote. Part of the HOLDOUT gap is a policy difference, not a miss: the red team expects "i can't do this anymore" to pause the practice, while our design shows resources and continues (concern).
 
 ## Limitations
