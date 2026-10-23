@@ -12,9 +12,9 @@
 |---|---|---|
 | `data/skills/contexts.jsonl` | 75 friend contexts (5 scenarios × levels 0–4 × 3) | skill detector |
 | `data/skills/replies.jsonl` | 825 composed helper replies (properly punctuated joins) with authored `intended` labels | skill detector |
-| `data/skills/replies_freeform.jsonl` | 443 hand-written whole replies (`source: "freeform"`, 13% Spanish; includes 30 `follow_up` hard negatives that mention lunch/school/tonight/tomorrow/later, 20 plain follow-ups, ~40 `asked_directly` hard negatives like "have you thought about transferring?", and ~20 rarely-phrased genuine direct asks) | skill detector, `test_freeform` |
-| `data/skills/blind_labels.jsonl` | 1,268 independent labels | agreement |
-| `data/skills/final.jsonl`, `splits/{train,val,test,test_freeform}.jsonl` | 1,052 agreed rows → 615 / 142 / 124 / 171 | training and evaluation |
+| `data/skills/replies_freeform.jsonl` | 474 hand-written whole replies (`source: "freeform"`, 13% Spanish; includes 30 `follow_up` hard negatives that mention lunch/school/tonight/tomorrow/later, 20 plain follow-ups, ~40 `asked_directly` hard negatives like "have you thought about transferring?", and ~20 rarely-phrased genuine direct asks, and 31 test-only replies: 20 `referred_988` positives plus near-miss negatives that encourage help without naming a line) | skill detector, `test_freeform` |
+| `data/skills/blind_labels.jsonl` | 1,299 independent labels | agreement |
+| `data/skills/final.jsonl`, `splits/{train,val,test,test_freeform}.jsonl` | 1,078 agreed rows → 615 / 142 / 124 / 197 | training and evaluation |
 | `data/guardian/messages.jsonl` + `splits/` | 698 helper messages in 8 categories (488 / 105 / 105, stratified) | Guardian |
 | `data/lines/<scenario>.en.jsonl` | 5 × 201 friend lines (+ `after-the-breakup.es.jsonl`, 201 Spanish lines) | friend voice |
 | `data/exemplars/<scenario>.en.jsonl` | 5 × 40 better replies, with labels | critic, "what if" |
@@ -27,26 +27,26 @@
 **Line bank:** for each persona, every disclosure level 0–4 × 12 reactions (+ `fail`) has 3 lines, plus 3 openings and 3 successes. Every line reveals only facts at or below its level (checked by `validate.py` against the scenario files), keeps the persona's texting style, and answers an example `cue`. Realism rules: asked directly at levels 0–1 → surprised/deflecting; level 2 → hesitant partial truth; level 3 → honest disclosure without details; dismissed → short, hurt; referral before trust → resistance, after trust → openness.
 
 ## Agreement (authored vs. independent blind labeler)
-One blind pass labeled all 1,268 practice replies from `docs/LABEL_GUIDE.md` only (reports: `eval/reports/data_agreement.json`, composed and free-form separately).
+One blind pass labeled all 1,299 practice replies from `docs/LABEL_GUIDE.md` only (reports: `eval/reports/data_agreement.json`, composed and free-form separately).
 | Set | Rows | Exact match (all 10 labels) | Mean Cohen's κ |
 |---|---|---|---|
 | Composed (phrase pools) | 825 | 85.9% | 0.949 |
-| Free-form (hand-written whole messages) | 443 | 77.4% | 0.883 |
-| All | 1,268 | 83.0% | 0.929 |
+| Free-form (hand-written whole messages) | 474 | 77.9% | 0.887 |
+| All | 1,299 | 83.0% | 0.929 |
 
-Most disagreements are real judgment calls: the blind labeler tags vague leading questions ("you're not gonna do anything dumb, right?") and bare subject changes as `dismissed`, and adds `encouraged_help` to offers to go to a counselor or 988. These 216 rows are in `queue.jsonl` for Sahib, and are left out of `final.jsonl` until a human decides. (An earlier, more lenient blind pass on a previous version of the composed set agreed 97%; the lower numbers here are more realistic.)
+Most disagreements are real judgment calls: the blind labeler tags vague leading questions ("you're not gonna do anything dumb, right?") and bare subject changes as `dismissed`, and adds `encouraged_help` to offers to go to a counselor or 988. These 221 rows are in `queue.jsonl` for Sahib, and are left out of `final.jsonl` until a human decides. (An earlier, more lenient blind pass on a previous version of the composed set agreed 97%; the lower numbers here are more realistic.)
 
 ## Leakage (`eval/reports/data_leakage.json`)
 Share of each eval set whose word 5-grams *all* occur in train: val 7.7%, **test (composed) 21.0%**, **test_freeform 0.0%**. The composed test set reuses phrases from train by construction, so its scores are optimistic; `test_freeform` is the honest generalization set. No normalized reply text appears in more than one split.
 
 ## Splits
-`final.jsonl` = 1,052 rows (human > agreed). `train` 615 / `val` 142 / `test` 124 (composed, grouped by context, seed 42) / `test_freeform` 171 (never trained on). Free-form rows of val contexts go to val; those of test contexts plus a seeded half of the train contexts form `test_freeform`, the rest go to train. (Friend contexts are therefore shared between train and `test_freeform`; the helper text, which is what is evaluated, is disjoint.) `test_freeform` is thin for `referred_988` (3 positives).
+`final.jsonl` = 1,078 rows (human > agreed). `train` 615 / `val` 142 / `test` 124 (composed, grouped by context, seed 42) / `test_freeform` 197 (never trained on). Free-form rows of val contexts go to val; those of test contexts plus a seeded half of the train contexts form `test_freeform`, the rest go to train. (Friend contexts are therefore shared between train and `test_freeform`; the helper text, which is what is evaluated, is disjoint.) `test_freeform` positives per label: checked_in 28, validated 44, asked_directly 18, encouraged_help 14, referred_adult 19, referred_988 18, follow_up 40, dismissed 20, advice_dump 21, promised_secrecy 9. The 31 newest rows are marked `split_hint: "test_freeform"` and were appended without moving any existing row (verified by id diff).
 
 ## Limitations (honest)
 - Composed replies are synthetic and template-built (free-form replies are whole messages, but still written by AI): phrasing variety is lower than real teen texts; models will look better here than in the wild. Use `survey_real.jsonl` (anonymous, consented replies, test only) and the ChatGPT cross-model set (`docs/CHATGPT_TESTSET_PROMPT.md`) for realistic numbers.
 - Same author wrote and (first-pass) labeled; the blind pass is a different run but the same model family. Human labels (queue + counselor sample) are the real check.
 - Spanish is natural but not reviewed by a native-speaker teen yet; five scenarios, one persona each; US context (988).
-- The 216 disagreements are *excluded* from `final.jsonl` until a human labels them, which slightly under-represents hard cases.
+- The 221 disagreements are *excluded* from `final.jsonl` until a human labels them, which slightly under-represents hard cases.
 - All friend lines and exemplars are `review_status: "draft"` until a human has read them.
 
 ## Ethics and safety
