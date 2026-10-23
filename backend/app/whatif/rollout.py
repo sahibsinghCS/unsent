@@ -61,6 +61,17 @@ def path_value(start: State, end: State, helper_turns: int) -> float:
     return round(value, 4)
 
 
+# The rubric's order for a conversation: listen, ask, persuade, refer, follow up (check-in opens it).
+SKILL_ORDER = ("check_in", "listen", "ask_directly", "persuade", "refer", "follow_up")
+
+
+def shown_skills(events: SkillProbs | None) -> set[str]:
+    """Rubric skills this helper message clearly shows (per-message rubric score >= 0.5)."""
+    if not events:
+        return set()
+    return {skill for skill in SKILL_ORDER if cands.skill_score(events, skill) >= cands.ON}
+
+
 def step_score(before: State, after: State) -> float:
     """One-step look-ahead score: trust change + 10 x level change +/- 25 for an ending."""
     score = after.trust - before.trust + LEVEL_POINTS * (after.level - before.level)
@@ -199,9 +210,11 @@ class Simulator:
         follow_ups: list[str] | None = None,
         avoid: frozenset[str] = frozenset(),
         horizon: int = HORIZON,
+        elsewhere: frozenset[str] = frozenset(),
     ) -> Rollout:
         """`first_text`, then up to `horizon` more helper turns: either the given `follow_ups`, or the
-        exemplar with the best one-step look-ahead each turn (never repeating a text)."""
+        next move chosen by `best_next` (never repeating a text). `elsewhere` holds continuations
+        already used by other cards, which are tried last so the cards don't read alike."""
         history = list(base_path)
         state = history[-1].state_after
         prev = labels_before(base_path, self.threshold)
@@ -210,6 +223,7 @@ class Simulator:
         used = set(avoid) | {first_text.strip()}
         text: str | None = first_text
         events = self.predict([first_text], friend_context(history))[0]
+        achieved = {s for node in scored_user_nodes(base_path) for s in shown_skills(node.events)}
         for step in range(horizon + 1):
             if text is None:
                 break
@@ -224,6 +238,7 @@ class Simulator:
             out.helper_turns += 1
             out.unsafe_friend_lines += int(unsafe)
             prev, state, out.final = active_labels(events, self.threshold), after, after
+            achieved |= shown_skills(events)
             if after.status in ("ended_success", "ended_fail") or step == horizon:
                 break
             if follow_ups is not None:
@@ -231,7 +246,9 @@ class Simulator:
                 if text is not None:
                     events = self.predict([text], friend_context(history))[0]
             else:
-                text, events = self.best_next(history, state, prev, pool, used)
+                text, events = self.best_next(
+                    history, state, prev, pool, used, frozenset(achieved), elsewhere
+                )
                 if text is not None:
                     used.add(text.strip())
         return out
@@ -243,20 +260,39 @@ class Simulator:
         prev: frozenset[SkillLabel],
         pool: Sequence[Exemplar],
         used: set[str],
+        achieved: frozenset[str] = frozenset(),
+        elsewhere: frozenset[str] = frozenset(),
     ) -> tuple[str | None, SkillProbs]:
-        """The unused exemplar whose next engine step scores best (trust delta + level progress),
-        that the Guardian lets through. Ties go to the exemplar id."""
+        """The next helper move, like a person who remembers what they already said:
+          - never ask directly again once the friend has been asked (or anything negative);
+          - first, exemplars that teach a skill not yet shown on this path (rubric order breaks ties
+            between equally good ones); then the rest, e.g. a re-worded referral while the friend
+            hasn't accepted yet;
+          - within that, texts no other card used, then the best one-step look-ahead
+            (trust change + 10 x level change +/- 25 ending), then the exemplar id.
+        The Guardian must let it through."""
         options = [ex for ex in pool if ex.text.strip() not in used]
         if not options:
             return None, {}
         probs = self.predict([ex.text for ex in options], friend_context(history))
         scored = []
+        asked = state.flags.asked_directly_ever
         for exemplar, events in zip(options, probs, strict=True):
             if cands.has_negative(events):
                 continue
+            if asked and events.get(SkillLabel.ASKED_DIRECTLY, 0.0) >= cands.ON:
+                continue
+            new = (set(cands.exemplar_skills(exemplar)) & shown_skills(events)) - achieved
             after = self.engine.update(state, events, self.scenario, prev_active=prev)
-            scored.append((-step_score(state, after), exemplar.id, exemplar.text, events))
-        for _, _, text, events in sorted(scored, key=lambda row: (row[0], row[1])):
+            key = (
+                0 if new else 1,
+                exemplar.text in elsewhere,
+                -step_score(state, after),
+                min((SKILL_ORDER.index(sk) for sk in new), default=len(SKILL_ORDER)),
+                exemplar.id,
+            )
+            scored.append((key, exemplar.text, events))
+        for _, text, events in sorted(scored, key=lambda row: row[0]):
             if self.guardian.check_user(text, history).action == "continue":
                 return text, events
         return None, {}
@@ -360,8 +396,17 @@ class WhatIf:
         pool = [ex for ex in exemplars if not set(ex.labels) & set(NEGATIVE_LABELS)]
         avoid = frozenset(" ".join(n.bubbles).strip() for n in path if n.role == "user")
         paths: list[WhatIfPath] = []
+        shown = {c.text for c in picked}  # other cards' texts read as repeats if reused
         for i, candidate in enumerate(picked):
-            run = sim.rollout(base, candidate.text, f"{node_id}.w{i}", pool, avoid=avoid)
+            run = sim.rollout(
+                base,
+                candidate.text,
+                f"{node_id}.w{i}",
+                pool,
+                avoid=avoid,
+                elsewhere=frozenset(shown),
+            )
+            shown |= {n.bubbles[0] for n in run.nodes if n.role == "user"}
             paths.append(
                 WhatIfPath(
                     candidate_text=candidate.text,

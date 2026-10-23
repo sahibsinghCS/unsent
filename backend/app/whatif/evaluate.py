@@ -19,7 +19,7 @@ from pathlib import Path
 os.environ["FR_LLM"] = "0"
 
 from backend.app import content, services  # noqa: E402
-from backend.app.contracts import Node, Reaction, Session  # noqa: E402
+from backend.app.contracts import Node, Reaction, Session, SkillLabel  # noqa: E402
 from backend.app.engine import language  # noqa: E402
 from backend.app.pipeline import run_turn  # noqa: E402
 from backend.app.session import create_session, path_to  # noqa: E402
@@ -142,6 +142,23 @@ def run_case(
         for n in p.nodes
         for b in n.bubbles
     )
+    asks_before = sum(
+        (n.events or {}).get(SkillLabel.ASKED_DIRECTLY, 0.0) >= 0.5
+        for n in base
+        if n.role == "user"
+    )
+    repeat_ask_paths = sum(
+        asks_before
+        + sum((n.events or {}).get(SkillLabel.ASKED_DIRECTLY, 0.0) >= 0.5 for n in p.nodes)
+        >= 2
+        for p in result.paths
+    )
+    later = [[n.bubbles[0] for n in p.nodes if n.role == "user"][1:] for p in result.paths]
+    shared = sum(
+        any(text in other for j, other in enumerate(later) if j != i)
+        for i, texts in enumerate(later)
+        for text in texts
+    )
     best = result.paths[result.best_index] if result.paths else None
     final = best.nodes[-1].state_after if best else None
     return {
@@ -160,6 +177,9 @@ def run_case(
         "unsafe_candidates": unsafe_candidates,
         "unsafe_lines": unsafe_lines,
         "wrong_language": wrong_language,
+        "repeat_ask_paths": repeat_ask_paths,
+        "shared_continuations": shared,
+        "continuations": sum(len(t) for t in later),
         "bubbles": sum(len(n.bubbles) for p in result.paths for n in p.nodes),
         "candidates": sum(len(p.nodes) // 2 for p in result.paths),
         "friend_lines": sum(
@@ -259,6 +279,21 @@ def summarize(cases: list[dict], detector: str, split: str = "scripted") -> list
             sum(c["unsafe_lines"] for c in cases),
             sum(c["friend_lines"] for c in cases),
             "friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles)",
+        ),
+        rec(
+            "paths_asking_directly_twice",
+            sum(c["repeat_ask_paths"] for c in cases),
+            sum(c["paths"] for c in cases),
+            "paths where the helper asks directly again after the friend was already asked "
+            "(counting the real chat before the replaced message; n = paths)",
+        ),
+        rec(
+            "shared_continuations",
+            sum(c["shared_continuations"] for c in cases)
+            / max(1, sum(c["continuations"] for c in cases)),
+            sum(c["continuations"] for c in cases),
+            "share of later simulated helper messages that another card of the same result also "
+            "uses (n = later helper messages)",
         ),
         rec(
             "wrong_language_bubbles",
