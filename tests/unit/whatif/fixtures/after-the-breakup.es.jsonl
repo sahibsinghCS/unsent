@@ -1,0 +1,4 @@
+{"id": "fx-es-01", "scenario_id": "after-the-breakup", "locale": "es", "level": 1, "strategy": "validate", "text": "eso suena muy difícil, lo siento mucho. aquí estoy.", "labels": ["validated"]}
+{"id": "fx-es-02", "scenario_id": "after-the-breakup", "locale": "es", "level": 2, "strategy": "ask_directly", "text": "¿estás pensando en suicidarte? me lo puedes decir.", "labels": ["asked_directly"]}
+{"id": "fx-es-03", "scenario_id": "after-the-breakup", "locale": "es", "level": 3, "strategy": "refer", "text": "¿hablamos con la consejera mañana? yo voy contigo.", "labels": ["referred_adult"]}
+{"id": "fx-es-04", "scenario_id": "after-the-breakup", "locale": "es", "level": 1, "strategy": "follow_up", "text": "te escribo esta noche para ver cómo sigues.", "labels": ["follow_up"]}

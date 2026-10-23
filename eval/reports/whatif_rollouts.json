@@ -1,0 +1,119 @@
+[
+  {
+    "lane": "whatif",
+    "metric": "cases_with_paths",
+    "value": 1.0,
+    "n": 90,
+    "split": "scripted",
+    "notes": "share of weak points where >= 1 verified candidate exists (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "three_diverse_paths",
+    "value": 1.0,
+    "n": 90,
+    "split": "scripted",
+    "notes": "share with 3 paths of 3 different strategies (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "best_beats_actual_value",
+    "value": 1.0,
+    "n": 90,
+    "split": "scripted",
+    "notes": "best simulated path value > value of what was actually said, same horizon (1 + 3 helper turns) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "best_beats_actual_trust",
+    "value": 1.0,
+    "n": 90,
+    "split": "scripted",
+    "notes": "final trust of best path > final trust actually reached, same horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "mean_trust_gain",
+    "value": 76.16,
+    "n": 90,
+    "split": "scripted",
+    "notes": "mean (best path final trust - actual final trust), trust points 0-100 (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "best_at_least_textbook",
+    "value": 1.0,
+    "n": 90,
+    "split": "scripted",
+    "notes": "best path value >= a hand-written textbook continuation (validate, ask, refer, follow up) replayed through the same engine from the same message (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "mean_value_vs_textbook",
+    "value": 57.48,
+    "n": 90,
+    "split": "scripted",
+    "notes": "mean (best path value - textbook continuation value); value formula in docs/how/whatif.md (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "best_path_success",
+    "value": 1.0,
+    "n": 90,
+    "split": "scripted",
+    "notes": "share of best paths that end with the friend accepting help (ended_success) within the horizon (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "latency_p50_ms",
+    "value": 491.9134,
+    "n": 90,
+    "split": "scripted",
+    "notes": "simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "latency_p95_ms",
+    "value": 583.6678,
+    "n": 90,
+    "split": "scripted",
+    "notes": "simulate() wall time, warm process (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "deterministic",
+    "value": 1.0,
+    "n": 90,
+    "split": "scripted",
+    "notes": "two runs give identical results (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "unsafe_candidates",
+    "value": 0,
+    "n": 885,
+    "split": "scripted",
+    "notes": "helper messages shown in paths that Guardian.check_user would not let through (n = helper messages) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  },
+  {
+    "lane": "whatif",
+    "metric": "unsafe_friend_lines",
+    "value": 0,
+    "n": 2183,
+    "split": "scripted",
+    "notes": "friend bubbles shown in paths that fail Guardian.check_friend (n = bubbles) (18 scripted weak conversations x 5 scenarios; detector=real, embedder=fastembed)",
+    "created": "2026-10-23T00:53:06+00:00"
+  }
+]
