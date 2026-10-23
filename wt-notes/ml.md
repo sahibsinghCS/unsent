@@ -24,6 +24,11 @@
 - Later: kappa when counselor labels exist.
 
 ## Decisions
+- Integrator + Sahib: keep the pooled model the pre-registered rule chose (freeform 0.822 vs whole 0.841,
+  within noise at n=221); docs/how/ml.md states the rule, the val decision and the 0.841 we gave up.
+- Critic: ended_fail chats open with "This one slipped away, and that's exactly what practice is for." (ES:
+  "Esta vez se te escapó, y justo para eso sirve practicar."); whole-chat "never got to" notes capped at 3 by
+  TIP_ORDER; per-message notes all kept.
 - Retrain at integration e8a9a1f (train 824 / val 152 / test 133 / test_freeform 221). Training now applies
   the pre-registered pooling rule itself (`--pooling auto`, default). On this data it ADOPTED pooling (val OOF
   macro-F1 0.923 → 0.931, ECE 0.011 → 0.010). Info-only cost: test_freeform 0.841 (whole) → 0.822 (pooled),

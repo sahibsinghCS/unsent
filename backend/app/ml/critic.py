@@ -43,6 +43,7 @@ MAX_REWRITE_CHARS = 300
 REWRITE_PROMPT = Path(__file__).parent / "prompts" / "rewrite.md"
 
 SKILL_NAMES = TEXT["en"]["skill_names"]  # English names (kept for callers and tests)
+MAX_SKILL_NOTES = 3
 TIP_ORDER = ("ask_directly", "listen", "no_secrecy", "refer", "persuade", "check_in", "follow_up")
 
 
@@ -244,9 +245,10 @@ class Critic:
         turning = self.engine.turning_point(path)
         if turning is not None and words["turning_reason"]:
             turning = turning.model_copy(update={"reason": words["turning_reason"]})
-        for skill in TIP_ORDER:
-            if summary[skill] < ON:
-                missed.append(missed_skill_text(skill, summary, locale))
+        # Every per-message note stays; whole-chat "never got to" notes are capped at the 3 most
+        # important (TIP_ORDER), so a short chat isn't buried in a list of everything it didn't do.
+        never = [skill for skill in TIP_ORDER if summary[skill] < ON][:MAX_SKILL_NOTES]
+        missed.extend(missed_skill_text(skill, summary, locale) for skill in never)
         return CriticReport(
             per_message=scores,
             skill_summary=summary,
@@ -373,7 +375,10 @@ def summary_text(
     )
     best = ranked[0] if ranked else None
     sentences = []
-    if best and summary[best] >= ON:
+    ended_badly = bool(path) and path[-1].state_after.status == "ended_fail"
+    if ended_badly:
+        sentences.append(words["slipped"])
+    elif best and summary[best] >= ON:
         sentences.append(words["strongest"].format(skill=words["skill_names"][best]))
     else:
         sentences.append(words["stayed"])

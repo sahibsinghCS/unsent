@@ -81,7 +81,11 @@ The frontend uses these to show "Try instead: … (+0.4 ask directly)". With no 
 `FR_LLM=0`, it uses exemplars only and everything else works the same. We never suggest a reply we can't
 show is better or safe.
 
-**Feedback text is never false.** The template sentences check what actually happened. If the helper
+**Feedback text is never false.** If the friend shut down and the chat ended badly, the summary opens
+honestly and kindly ("This one slipped away, and that's exactly what practice is for.") instead of
+pretending it went fine. The whole-chat "you never got to…" notes are capped at the 3 most important,
+so a short chat isn't buried in a list. Every note about a specific message is kept. The template
+sentences check what actually happened. If the helper
 connected the friend with a counselor or 988 but never said why ("you don't have to handle this
 alone"), the report says "You connected them with someone who can help. Next time, also tell them why:
 they don't have to handle it alone." It does not claim they "never got to" helping. Mistakes are named
@@ -225,11 +229,17 @@ on|off` overrides it). Results (`eval/reports/ml_pooling.json`):
 | first splits (train 615) | 0.921 → 0.916 | 0.013 → 0.011 | not adopted | 0.818 → 0.802 |
 | current splits (train 824) | 0.923 → 0.931 | 0.011 → 0.010 | **adopted** | 0.841 → 0.822 |
 
-With more training data, pooling started helping on validation, so the rule adopted it. It also fixed
-more reviewer probes (13 of 14 vs 12 of 14). But on the free-form test, which never decides anything,
-it scores lower (0.822 vs 0.841), and it flags more messages as uncertain. We report that honestly
-rather than switching the rule after seeing the test. Changing a decision because of the test score
-would make the test score meaningless.
+In plain words:
+- **We pre-registered the rule.** We wrote down "adopt pooling only if validation improves without
+  hurting calibration" *before* running the experiment.
+- **The rule chose pooling, on validation data only.** With more training data, pooling started helping
+  on validation (0.923 → 0.931) and fixed one more reviewer probe (13 of 14 vs 12 of 14).
+- **The whole-message model would have scored 0.841 on the free-form test; the pooled one scores 0.822.
+  We kept the rule anyway.** Switching after seeing the test score would quietly turn the test set into
+  a second validation set. Then 0.822 (or 0.841) would no longer be an honest estimate of how the model
+  does on new messages. With n=221 the 0.02 gap is within noise anyway.
+
+The cost we accept: pooled scores flag more messages as "uncertain" on free-form text (30% vs 17%).
 
 ## Limitations
 - **Real messages are harder.** Composed test 0.97 vs free-form 0.82. The free-form number is the one to
