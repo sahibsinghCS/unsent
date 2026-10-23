@@ -995,10 +995,49 @@ _EXTRA3: list[tuple[str, str, str]] = [
 ]
 
 
+# Fifth batch (integrator request, test-only): referred_988 positives (incl. the "call 988 or whatever lol" case)
+# and near-miss negatives that encourage help / refer an adult / follow up without naming any line.
+# These rows carry split_hint "test_freeform" and are never trained on.
+_EXTRA4: list[tuple[str, str, str]] = [
+    ("breakup-L2-2", "you can call or text 988 anytime, it's free and someone always picks up", "n"),
+    ("chem-L3-2", "can we text 988 together right now? i'll stay with you the whole time", "n f"),
+    ("gc-L3-1", "there's a crisis text line you can reach, 988. want me to sit with you while you try it?", "n f"),
+    ("ns-L2-2", "it's 988, like nine-eight-eight. you can call or text it. can you save it in your phone for me?", "n"),
+    ("sam-L3-2", "i looked it up and there's a hotline you can text, 988, and a real person answers", "n"),
+    ("breakup-L3-1", "that sounds so heavy and i'm glad you told me. please text 988 if tonight gets bad", "v n"),
+    ("chem-L2-3", "ugh just call 988 or whatever lol, they handle this stuff", "n d"),
+    ("gc-L2-2", "ok just text 988 i guess, they deal with this stuff", "n d"),
+    ("sam-L1-2", "lmao just call a hotline or something, it'll be fine", "n d"),
+    ("ns-L3-3", "there's a number you can text any hour, 988. i can text it with you so you're not alone", "n f"),
+    ("breakup-L4-2", "have you ever texted a crisis line? 988 is free and they're really nice", "n"),
+    ("chem-L4-1", "if you don't want to talk to me you can reach 988 any time, but i'm not going anywhere either", "n f"),
+    ("gc-L4-2", "i saved 988 in my phone just in case. you should too", "n"),
+    ("sam-L3-3", "do you want me to dial 988 with you on speaker?", "n"),
+    ("breakup-L3-2", "puedes llamar o mandar un mensaje al 988, es gratis y siempre contestan", "n"),
+    ("chem-L3-1", "¿llamamos al 988 juntos ahora mismo? yo me quedo contigo", "n f"),
+    ("ns-L3-1", "existe una línea de crisis, el 988, y atienden en español", "n"),
+    ("gc-L3-3", "me importas mucho. guarda el 988 en tu teléfono, por favor", "v n"),
+    ("sam-L2-1", "llama al 988 o lo que sea jaja", "n d"),
+    ("ns-L2-3", "hay una línea de ayuda a la que puedes mandar texto, el 988, a cualquier hora", "n"),
+    ("breakup-L2-1", "you should really talk to someone about this", "e"),
+    ("chem-L2-2", "talking to a professional could help, you know", "e"),
+    ("gc-L2-1", "text me anytime, i mean it", "f"),
+    ("sam-L2-2", "call me whenever you want, i'll pick up", "f"),
+    ("ns-L2-1", "tell your mom, she'd want to know", "r"),
+    ("breakup-L3-3", "maybe tell your coach, they'd listen", "r"),
+    ("chem-L3-3", "there's the school counselor, i can come with you", "r"),
+    ("gc-L3-2", "i'd find a therapist if i were you", "e"),
+    ("sam-L3-1", "no tienes que hacerlo solo, pide ayuda a alguien", "e"),
+    ("ns-L3-2", "escríbeme cuando quieras, a la hora que sea", "f"),
+    ("breakup-L4-3", "ask for help from somebody you trust, it's not weak", "e"),
+]
+HINTED = {t for _, t, _ in _EXTRA4}
+
+
 def ordered() -> list[tuple[str, str, str]]:
     """Stable order (ids never shift): base + second batch by context as first released, then the third batch."""
     out = []
     for ctx, items in FF.items():
         out += [(ctx, t, c) for t, c in items]
         out += [(c2, t, cd) for c2, t, cd in _EXTRA if c2 == ctx]
-    return out + list(_EXTRA2) + list(_EXTRA3)
+    return out + list(_EXTRA2) + list(_EXTRA3) + list(_EXTRA4)

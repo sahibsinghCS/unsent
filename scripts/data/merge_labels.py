@@ -57,6 +57,7 @@ def build(provisional: bool = False) -> tuple[list[dict], dict]:
                 "labels": labels,
                 "label_source": src,
                 "source": r.get("source", "composed"),
+                **({"split_hint": r["split_hint"]} if r.get("split_hint") else {}),
             }
         )
     stats["audit_rows_checked"] = audit_n
