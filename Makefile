@@ -2,7 +2,7 @@
 UV ?= uv
 export PYTHONPATH := $(CURDIR)
 
-.PHONY: help install dev dev-stub lint format test test-llm check smoke ownership fixtures schema eval report docs train guardian-train label loadtest csp-check docker spike models
+.PHONY: help install dev dev-stub lint format test test-llm check smoke ownership fixtures schema eval report docs train guardian-train label redteam loadtest csp-check docker spike models
 
 help: ## list targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' Makefile | awk 'BEGIN{FS=":.*?## "}{printf "  %-15s %s\n", $$1, $$2}'
@@ -61,6 +61,9 @@ guardian-train: ## train the Guardian classifier (SAFETY lane)
 
 label: ## open the labeling tool (DATA lane)
 	@if [ -f tools/labeler/index.html ]; then echo "Open tools/labeler/index.html in your browser"; else echo "label: not implemented yet (lane: data)"; fi
+
+redteam: ## offline red-team harness: attack bank, multi-turn invariants, fuzzing (no API)
+	$(UV) run python -m eval.redteam --embed both
 
 loadtest: ## load test a local prod-mode server (FR_LLM=0, no API cost)
 	FR_LLM=0 $(UV) run python deploy/loadtest.py

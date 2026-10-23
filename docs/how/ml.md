@@ -36,10 +36,11 @@ our model verifies.** The summary is fill-in-the-blank templates.
   A logistic regression on top of model scores is called **Platt scaling**. It makes the output
   *calibrated*: when it says 0.8, the label really is there about 80% of the time.
 - **Uncertain:** we flag a label only when the two models land on **opposite sides** of 0.5 (one says
-  yes, the other no) **and** the final calibrated probability is in a middle band. The band
-  (0.35–0.65) was picked on the validation set: the band where flagged decisions are clearly more
-  error-prone, with at most 15% of messages flagged. On the free-form test, flagged decisions were wrong
-  62.5% of the time and unflagged ones 3.5%, so the flag really means "check this one".
+  yes, the other no) **and** the final calibrated probability is in a middle band. The band is
+  picked on the validation set: the band where flagged decisions are clearly more error-prone, with at
+  most 15% of messages flagged. It's 0.20–0.80 for the current model. On the free-form test, flagged
+  decisions were wrong 39% of the time and unflagged ones 2.9%, so the flag really means "check this
+  one".
 
 **ML + a rule from the label definition.** The label guide says `asked_directly` needs an *explicit*
 mention of suicide, killing oneself, ending one's life, not wanting to be alive or here, or self-harm
@@ -99,88 +100,83 @@ helper's best message. "Listen" counts only when that message validates *and* do
 lecture. "No secrecy" breaks if any message promises secrecy.
 
 **Training** (`make train`): seeded, fits A and B on **train** and the stackers on **val**, and only
-*scores* **test**. It saves `models/skill_detector.joblib` (0.53 MB) and a `.meta.json` with the data
+*scores* **test**. It saves `models/skill_detector.joblib` (0.65 MB) and a `.meta.json` with the data
 hash, row counts, date, metrics and the embedder name. The app refuses to load an artifact trained
 with a different embedder, because its numbers would be meaningless.
 
 ## Why this approach (and what we considered instead)
 - **Why not keywords?** A keyword list misses "have you thought about not being around anymore" and
-  fires on "lol" in a kind message. On the free-form test, keywords score macro-F1 0.48 and the
+  fires on "lol" in a kind message. On the free-form test, keywords score macro-F1 0.49 and the
   ensemble scores 0.82.
 - **Why two models?** They make *different* mistakes. Meaning-based A handles paraphrases and Spanish.
-  Spelling-based B handles slang and typos. On the free-form test, A alone gets 0.70, B alone 0.74,
+  Spelling-based B handles slang and typos. On the free-form test, A alone gets 0.70, B alone 0.75,
   and together 0.82. When they disagree, that's an honest "we're not sure" signal.
 - **Why not a big neural network or an LLM?** It has to be free, fast (about 60 ms per message on a
   laptop CPU), offline, deterministic and explainable. Also, an LLM would make this an "AI wrapper".
   Logistic regression is the standard tool when you have about 800 examples.
 - **Why calibrate?** The engine and X-ray mode treat the numbers as probabilities. Uncalibrated models
   are overconfident. Calibration cut the average gap between "what it says" and "how often it's right"
-  from 0.115 to 0.019 on the free-form test.
+  from 0.124 to 0.012 on the free-form test.
 
 ## How we measured it (real numbers, with n and the split)
-Data: the data lane's splits. Train 615, val 142, test 124 (all `label_source: agreed`), grouped by
-conversation so no friend context appears in two splits. Embedder: fastembed MiniLM. Threshold 0.5,
-seed 0. Model A and B are fitted on train. The stacker, the uncertain band and every other tuned
-number are fitted on val. Both test sets are only scored.
-Full records are in `eval/reports/ml_skills.json`; details, probes and errors in
-`eval/skills/results.json`. Charts: `eval/skills/f1_comparison*.png`, `reliability*.png`,
+Data: the data lane's splits. Train 824, val 152, composed test 133, free-form test 221, all
+human-agreed labels, grouped by conversation so no friend context appears in two splits. Embedder:
+fastembed MiniLM. Threshold 0.5, seed 0. Model A and B are fitted on train. The stacker, the uncertain
+band and the pooling decision are fitted on val. Both test sets are only scored.
+Full records are in `eval/reports/ml_skills.json` (and `ml_pooling.json`); details, probes and errors
+are in `eval/skills/results.json`. Charts: `eval/skills/f1_comparison*.png`, `reliability*.png`,
 `confusion*.png` (no suffix = composed test, `_freeform` = free-form test).
 
 **Two test sets, and which one to believe.**
-- **Composed test (n=124):** replies written the same way as the training replies. 21% of them are
-  fully covered by phrases from training, so these numbers are **optimistic**.
-- **Free-form test (n=171): the honest number.** Hand-written replies in people's own words, never
+- **Composed test (n=133):** replies written the same way as the training replies. Many reuse
+  training phrases, so these numbers are **optimistic**.
+- **Free-form test (n=221): the honest number.** Hand-written replies in people's own words, never
   trained on, 0% phrase overlap with training. It's the best estimate of how the detector does on
   real teen messages.
 
-| macro-F1 | Composed test (n=124) | **Free-form test (n=171)** |
-|---|---|---|
-| Keyword baseline (the stub) | 0.557 | 0.480 |
-| Model A (embeddings + LR) | 0.849 | 0.700 |
-| Model B (char/word TF-IDF + LR) | 0.948 | 0.735 |
-| **Stacked + calibrated ensemble** | **0.959** | **0.818** |
-
-On the free-form test the ensemble beats each model alone by 8–12 points. That's the point of stacking
-two different models.
+| macro-F1 | val (n=152) | Composed test (n=133) | **Free-form test (n=221)** |
+|---|---|---|---|
+| Keyword baseline (the stub) | 0.551 | 0.561 | 0.490 |
+| Model A (embeddings + LR) | 0.775 | 0.830 | 0.695 |
+| Model B (char/word TF-IDF + LR) | 0.896 | 0.966 | 0.752 |
+| **Stacked + calibrated ensemble** | **0.951** | **0.969** | **0.822** |
 
 | Ensemble per label, free-form test | precision | recall | F1 | positives | keyword F1 |
 |---|---|---|---|---|---|
-| checked_in | 0.94 | 0.57 | 0.71 | 28 | 0.40 |
-| validated | 0.77 | 0.63 | 0.69 | 43 | 0.31 |
+| checked_in | 0.80 | 0.57 | 0.67 | 28 | 0.40 |
+| validated | 0.83 | 0.63 | 0.72 | 46 | 0.32 |
 | asked_directly | 1.00 | 1.00 | 1.00 | 18 | 0.50 |
-| encouraged_help | 1.00 | 0.67 | 0.80 | 9 | 0.00 |
-| referred_adult | 1.00 | 0.75 | 0.86 | 16 | 0.71 |
-| referred_988 | 1.00 | 1.00 | 1.00 | 3 | 1.00 |
-| follow_up | 0.87 | 0.74 | 0.80 | 35 | 0.33 |
-| dismissed | 0.90 | 0.56 | 0.69 | 16 | 0.69 |
-| advice_dump | 0.74 | 0.81 | 0.77 | 21 | 0.25 |
-| promised_secrecy | 0.75 | 1.00 | 0.86 | 9 | 0.62 |
+| encouraged_help | 0.90 | 0.56 | 0.69 | 16 | 0.12 |
+| referred_adult | 1.00 | 0.94 | 0.97 | 35 | 0.79 |
+| referred_988 | 1.00 | 0.92 | 0.96 | 26 | 1.00 |
+| follow_up | 0.89 | 0.72 | 0.80 | 46 | 0.29 |
+| dismissed | 0.80 | 0.76 | 0.78 | 21 | 0.63 |
+| advice_dump | 0.68 | 0.81 | 0.74 | 21 | 0.25 |
+| promised_secrecy | 0.82 | 1.00 | 0.90 | 9 | 0.62 |
 
-The composed-test per-label table is in `eval/skills/results.json`. There every label scores 0.80–1.00.
-
-**Calibration** (lower is better):
+**Calibration** (lower is better; the stacker was fitted on val):
 
 | | ECE before → after | Brier before → after |
 |---|---|---|
-| val (n=142; the stacker was fitted here) | 0.128 → 0.017 | 0.041 → 0.015 |
-| composed test (n=124) | 0.125 → 0.016 | 0.032 → 0.009 |
-| free-form test (n=171) | 0.115 → 0.019 | 0.055 → 0.035 |
+| val (n=152) | 0.130 → 0.010 | 0.043 → 0.012 |
+| composed test (n=133) | 0.128 → 0.012 | 0.032 → 0.007 |
+| free-form test (n=221) | 0.124 → 0.012 | 0.053 → 0.029 |
 
-**Uncertain flag** (band 0.35–0.65, chosen on val):
+**Uncertain flag** (band 0.20–0.80, chosen on val):
 
 | | messages with a flag | error rate, flagged decisions | error rate, unflagged |
 |---|---|---|---|
-| val | 8.5% | 75% (9 of 12) | 1.6% |
-| composed test | 8.1% | 45% (5 of 11) | 0.7% |
-| free-form test | 18.1% | 62.5% (20 of 32) | 3.5% |
+| val | 13.8% | 17% (n=23) | 1.2% (n=1,497) |
+| composed test | 11.3% | 7% (n=15) | 0.6% (n=1,315) |
+| free-form test | 29.9% | 39% (n=74) | 2.9% (n=2,136) |
 
-- **Explicit-term rule for `asked_directly`:** included in the ensemble numbers above. On the free-form
-  test `asked_directly` scores F1 1.00. The rule never blocks a labeled direct ask in any split.
-- **Probes** (hand-written sentences from a reviewer, not a test set): 8 of 9 behave as expected.
-  "you seemed off at lunch" → follow_up 0.30 (was 0.77). "are you thinking about quitting the group
-  chat?" → asked_directly 0.17. "when you said disappear, did you mean you want to die?" → 0.998.
-  Still wrong: "ok i gotta go to school early tomorrow, talk later maybe" → follow_up 0.93. A goodbye
-  isn't a commitment.
+- **Explicit-term rule for `asked_directly`:** included in the ensemble numbers above. Free-form F1
+  1.00. The rule never blocks a labeled direct ask in any split.
+- **Probes** (hand-written sentences from reviewers, not a test set): 13 of 14 behave as expected.
+  "you seemed off at lunch" → follow_up 0.06. "talk later maybe" → 0.11. "lots of people feel like
+  that, you'll be fine" → dismissed 0.98, validated 0.30, advice 0.14. Still wrong: "can we talk to the
+  counselor tomorrow? i'll go with you" → follow_up 0.67. By the label guide a referral with "i'll go
+  with you" isn't a follow-up.
 - **Counselor agreement (kappa):** the tool is ready (`python -m backend.app.ml.kappa`). The
   counselor sheet hasn't come back yet.
 
@@ -196,35 +192,39 @@ The composed-test per-label table is in `eval/skills/results.json`. There every 
   1 = perfect, 0 = luck. The 95% confidence interval comes from re-sampling the rows 1,000 times
   (seeded).
 
-**Experiment we tried and did not adopt: clause pooling.** Messages that do two things ("i'm really glad
-you told me. can we talk to the counselor tomorrow?") can water down the first skill. We tried scoring
-each sentence separately and taking the strongest sentence for the positive skills only. Negative
-labels stayed on the whole message, so "i won't tell anyone… except the counselor" can't turn into a
-promise of secrecy. The stacker was then refitted. We fixed the rule before running it: adopt only if
-validation macro-F1 improves without hurting calibration. Measured with 5-fold cross-validation on val
-(`eval/reports/ml_pooling.json`):
+**Clause pooling: an experiment with a rule we fixed in advance.** Messages that do two things
+("i'm really glad you told me. can we talk to the counselor tomorrow?") can water down the first
+skill. Pooling scores each sentence separately and takes the strongest sentence for the positive skills
+only. Negative labels stay on the whole message, so "i won't tell anyone… except the counselor" can't
+turn into a promise of secrecy. The stacker is refitted after pooling. We wrote the rule before running
+it: adopt only if validation macro-F1 (5-fold out-of-fold on val) improves and calibration (ECE) gets
+no more than 0.01 worse. Training now applies that rule automatically (`make train`; `--pooling
+on|off` overrides it). Results (`eval/reports/ml_pooling.json`):
 
-| | val macro-F1 (out-of-fold) | val ECE | validated F1 (val) | free-form macro-F1 (info only) |
+| Data version | val macro-F1, whole → pooled | val ECE, whole → pooled | Decision | free-form macro-F1, whole → pooled (info only) |
 |---|---|---|---|---|
-| whole message (kept) | **0.921** | 0.013 | 0.938 | **0.818** |
-| clause pooling | 0.916 | 0.011 | 0.950 | 0.802 |
+| first splits (train 615) | 0.921 → 0.916 | 0.013 → 0.011 | not adopted | 0.818 → 0.802 |
+| current splits (train 824) | 0.923 → 0.931 | 0.011 → 0.010 | **adopted** | 0.841 → 0.822 |
 
-Pooling helped `validated` and calibration a little but lowered overall F1, so we kept the simpler
-whole-message model. We'll re-run the test after the next data update. Negative results are results.
+With more training data, pooling started helping on validation, so the rule adopted it. It also fixed
+more reviewer probes (13 of 14 vs 12 of 14). But on the free-form test, which never decides anything,
+it scores lower (0.822 vs 0.841), and it flags more messages as uncertain. We report that honestly
+rather than switching the rule after seeing the test. Changing a decision because of the test score
+would make the test score meaningless.
 
 ## Limitations
-- **Real messages are harder.** Composed test 0.96 vs free-form 0.82. The free-form number is the one to
+- **Real messages are harder.** Composed test 0.97 vs free-form 0.82. The free-form number is the one to
   quote. Real teens may be messier still. A real-survey set would be the next check.
-- **Implicit skills are hardest.** Free-form recall is lowest for checked_in (0.57), dismissed (0.56)
-  and validated (0.63). People check in or brush off feelings in many indirect ways ("almorzar sola
+- **Implicit skills are hardest.** Free-form recall is lowest for encouraged_help (0.56), checked_in
+  (0.57) and validated (0.63). People check in or brush off feelings in many indirect ways ("almorzar sola
   cansa" validates without any "that sounds…").
 - **Replies that only make sense with context.** "yes. let's go right now" is a referral only because
   the friend just agreed to see the counselor. The model sees the friend's last message, but these
   are still the most common misses.
-- **Spanish free-form replies** are under-represented in training, and several of the top errors are
-  Spanish.
-- **Goodbyes can look like follow-ups** ("talk later maybe" → 0.93). Needs more counter-examples in
-  the data.
+- **Indirect encouragement** ("i'd find a therapist if i were you", "you don't have to be alone in it")
+  and **permission-giving validation** ("it's okay to not be fine") are the most common free-form misses.
+- **A referral with a time word** ("…the counselor tomorrow? i'll go with you") still scores follow_up
+  0.67, though the label guide says it isn't one.
 - Our detector judges AI rewrite suggestions, so a suggestion that games our model's quirks could
   pass. The Guardian check and the exemplars-first order limit this.
 
@@ -235,7 +235,7 @@ whole-message model. We'll re-run the test after the next data update. Negative 
    optional rewrite *suggestions*, and our detector decides whether to show them.
 2. **"Your F1 is 0.96. Isn't that too good?"** Yes, for the composed test, and we say so: 21% of those
    replies reuse training phrases. That's why we built a second, free-form test set written in people's
-   own words with zero overlap. There the ensemble scores 0.82, against 0.48 for keyword matching. 0.82
+   own words with zero overlap. There the ensemble scores 0.82, against 0.49 for keyword matching. 0.82
    is the number we stand behind.
 3. **"How do you know which words mattered?"** Occlusion. We delete phrases and measure how much the
    odds fall, so the highlight is an actual measurement of the model, not a guess. The tests check that
@@ -245,6 +245,6 @@ whole-message model. We'll re-run the test after the next data update. Negative 
    least 0.2 according to our own detector, and the Guardian must pass it. If nothing passes both
    checks, we show none.
 5. **"Why trust the probabilities?"** They're calibrated on data the base models never saw. The
-   reliability diagram shows that predicted and observed rates line up (calibration error 0.019 on the
+   reliability diagram shows that predicted and observed rates line up (calibration error 0.012 on the
    free-form test). When our two models disagree and the answer is close, we say "uncertain". Those
-   flagged decisions really are wrong far more often (62.5% vs 3.5%), so the flag is earned.
+   flagged decisions really are wrong far more often (39% vs 2.9%), so the flag is earned.

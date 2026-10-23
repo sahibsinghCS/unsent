@@ -1,7 +1,7 @@
 {
   "val": {
     "name": "val",
-    "n": 142,
+    "n": 152,
     "scores": {
       "keyword_baseline": {
         "checked_in": {
@@ -12,15 +12,15 @@
         },
         "validated": {
           "precision": 1.0,
-          "recall": 0.3415,
-          "f1": 0.5091,
-          "support": 41
+          "recall": 0.3556,
+          "f1": 0.5246,
+          "support": 45
         },
         "asked_directly": {
           "precision": 1.0,
-          "recall": 0.4483,
-          "f1": 0.619,
-          "support": 29
+          "recall": 0.4667,
+          "f1": 0.6364,
+          "support": 30
         },
         "encouraged_help": {
           "precision": 0.0,
@@ -29,28 +29,28 @@
           "support": 18
         },
         "referred_adult": {
-          "precision": 0.8889,
-          "recall": 0.6957,
-          "f1": 0.7805,
-          "support": 23
+          "precision": 0.9048,
+          "recall": 0.7308,
+          "f1": 0.8085,
+          "support": 26
         },
         "referred_988": {
           "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 12
+          "recall": 0.9474,
+          "f1": 0.973,
+          "support": 19
         },
         "follow_up": {
           "precision": 1.0,
-          "recall": 0.1351,
-          "f1": 0.2381,
-          "support": 37
+          "recall": 0.15,
+          "f1": 0.2609,
+          "support": 40
         },
         "dismissed": {
           "precision": 0.8889,
-          "recall": 0.5,
-          "f1": 0.64,
-          "support": 16
+          "recall": 0.4706,
+          "f1": 0.6154,
+          "support": 17
         },
         "advice_dump": {
           "precision": 1.0,
@@ -64,119 +64,119 @@
           "f1": 0.64,
           "support": 15
         },
-        "macro_f1": 0.5476
+        "macro_f1": 0.5508
       },
       "model_a": {
         "checked_in": {
-          "precision": 0.7576,
-          "recall": 0.8333,
-          "f1": 0.7937,
+          "precision": 0.7027,
+          "recall": 0.8667,
+          "f1": 0.7761,
           "support": 30
         },
         "validated": {
-          "precision": 0.7609,
-          "recall": 0.8537,
-          "f1": 0.8046,
-          "support": 41
+          "precision": 0.6349,
+          "recall": 0.8889,
+          "f1": 0.7407,
+          "support": 45
         },
         "asked_directly": {
-          "precision": 1.0,
-          "recall": 0.9655,
-          "f1": 0.9825,
-          "support": 29
+          "precision": 0.9677,
+          "recall": 1.0,
+          "f1": 0.9836,
+          "support": 30
         },
         "encouraged_help": {
-          "precision": 0.7273,
+          "precision": 0.6154,
           "recall": 0.8889,
-          "f1": 0.8,
+          "f1": 0.7273,
           "support": 18
         },
         "referred_adult": {
-          "precision": 0.875,
-          "recall": 0.913,
-          "f1": 0.8936,
-          "support": 23
+          "precision": 0.8667,
+          "recall": 1.0,
+          "f1": 0.9286,
+          "support": 26
         },
         "referred_988": {
-          "precision": 1.0,
+          "precision": 0.7308,
           "recall": 1.0,
-          "f1": 1.0,
-          "support": 12
+          "f1": 0.8444,
+          "support": 19
         },
         "follow_up": {
-          "precision": 0.6296,
-          "recall": 0.9189,
-          "f1": 0.7473,
-          "support": 37
+          "precision": 0.5714,
+          "recall": 1.0,
+          "f1": 0.7273,
+          "support": 40
         },
         "dismissed": {
-          "precision": 0.3529,
-          "recall": 0.75,
-          "f1": 0.48,
-          "support": 16
+          "precision": 0.2941,
+          "recall": 0.5882,
+          "f1": 0.3922,
+          "support": 17
         },
         "advice_dump": {
-          "precision": 0.7059,
-          "recall": 0.8571,
-          "f1": 0.7742,
+          "precision": 0.7333,
+          "recall": 0.7857,
+          "f1": 0.7586,
           "support": 14
         },
         "promised_secrecy": {
-          "precision": 0.7778,
+          "precision": 0.8235,
           "recall": 0.9333,
-          "f1": 0.8485,
+          "f1": 0.875,
           "support": 15
         },
-        "macro_f1": 0.8124
+        "macro_f1": 0.7754
       },
       "model_b": {
         "checked_in": {
-          "precision": 0.9565,
-          "recall": 0.7333,
-          "f1": 0.8302,
+          "precision": 1.0,
+          "recall": 0.8333,
+          "f1": 0.9091,
           "support": 30
         },
         "validated": {
-          "precision": 0.9111,
-          "recall": 1.0,
-          "f1": 0.9535,
-          "support": 41
+          "precision": 0.8958,
+          "recall": 0.9556,
+          "f1": 0.9247,
+          "support": 45
         },
         "asked_directly": {
-          "precision": 0.8182,
-          "recall": 0.931,
-          "f1": 0.871,
-          "support": 29
+          "precision": 0.7838,
+          "recall": 0.9667,
+          "f1": 0.8657,
+          "support": 30
         },
         "encouraged_help": {
-          "precision": 1.0,
+          "precision": 0.9474,
           "recall": 1.0,
-          "f1": 1.0,
+          "f1": 0.973,
           "support": 18
         },
         "referred_adult": {
-          "precision": 0.9545,
-          "recall": 0.913,
-          "f1": 0.9333,
-          "support": 23
+          "precision": 0.9615,
+          "recall": 0.9615,
+          "f1": 0.9615,
+          "support": 26
         },
         "referred_988": {
-          "precision": 1.0,
+          "precision": 0.95,
           "recall": 1.0,
-          "f1": 1.0,
-          "support": 12
+          "f1": 0.9744,
+          "support": 19
         },
         "follow_up": {
-          "precision": 0.8974,
-          "recall": 0.9459,
-          "f1": 0.9211,
-          "support": 37
+          "precision": 0.907,
+          "recall": 0.975,
+          "f1": 0.9398,
+          "support": 40
         },
         "dismissed": {
-          "precision": 0.875,
-          "recall": 0.875,
-          "f1": 0.875,
-          "support": 16
+          "precision": 0.75,
+          "recall": 0.8824,
+          "f1": 0.8108,
+          "support": 17
         },
         "advice_dump": {
           "precision": 1.0,
@@ -186,30 +186,30 @@
         },
         "promised_secrecy": {
           "precision": 1.0,
-          "recall": 0.9333,
-          "f1": 0.9655,
+          "recall": 1.0,
+          "f1": 1.0,
           "support": 15
         },
-        "macro_f1": 0.895
+        "macro_f1": 0.8959
       },
       "ensemble": {
         "checked_in": {
-          "precision": 0.8889,
-          "recall": 0.8,
-          "f1": 0.8421,
+          "precision": 1.0,
+          "recall": 0.8333,
+          "f1": 0.9091,
           "support": 30
         },
         "validated": {
-          "precision": 0.9512,
-          "recall": 0.9512,
-          "f1": 0.9512,
-          "support": 41
+          "precision": 0.9556,
+          "recall": 0.9556,
+          "f1": 0.9556,
+          "support": 45
         },
         "asked_directly": {
           "precision": 1.0,
-          "recall": 0.9655,
-          "f1": 0.9825,
-          "support": 29
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 30
         },
         "encouraged_help": {
           "precision": 1.0,
@@ -218,33 +218,33 @@
           "support": 18
         },
         "referred_adult": {
-          "precision": 0.9545,
-          "recall": 0.913,
-          "f1": 0.9333,
-          "support": 23
+          "precision": 1.0,
+          "recall": 0.9231,
+          "f1": 0.96,
+          "support": 26
         },
         "referred_988": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 12
+          "precision": 0.9474,
+          "recall": 0.9474,
+          "f1": 0.9474,
+          "support": 19
         },
         "follow_up": {
-          "precision": 0.9459,
-          "recall": 0.9459,
-          "f1": 0.9459,
-          "support": 37
+          "precision": 1.0,
+          "recall": 0.95,
+          "f1": 0.9744,
+          "support": 40
         },
         "dismissed": {
-          "precision": 0.8667,
-          "recall": 0.8125,
+          "precision": 0.9286,
+          "recall": 0.7647,
           "f1": 0.8387,
-          "support": 16
+          "support": 17
         },
         "advice_dump": {
-          "precision": 0.8333,
-          "recall": 0.7143,
-          "f1": 0.7692,
+          "precision": 1.0,
+          "recall": 0.8571,
+          "f1": 0.9231,
           "support": 14
         },
         "promised_secrecy": {
@@ -253,101 +253,101 @@
           "f1": 1.0,
           "support": 15
         },
-        "macro_f1": 0.9263
+        "macro_f1": 0.9508
       }
     },
-    "ece_before": 0.1275,
-    "ece_after": 0.0167,
-    "brier_before": 0.0407,
-    "brier_after": 0.015,
+    "ece_before": 0.1304,
+    "ece_after": 0.0099,
+    "brier_before": 0.0426,
+    "brier_after": 0.0124,
     "uncertain": {
       "band": [
-        0.35,
-        0.65
+        0.2,
+        0.8
       ],
-      "messages": 142,
-      "flag_rate_per_message": 0.0845,
-      "flagged_decisions": 12,
-      "unflagged_decisions": 1408,
-      "flagged_error_rate": 0.75,
-      "unflagged_error_rate": 0.0163
+      "messages": 152,
+      "flag_rate_per_message": 0.1382,
+      "flagged_decisions": 23,
+      "unflagged_decisions": 1497,
+      "flagged_error_rate": 0.1739,
+      "unflagged_error_rate": 0.012
     },
     "errors": [
-      {
-        "id": "f0245",
-        "text": "gracias por confiar en m\u00ed, no voy a dejarte solo",
-        "label": "follow_up",
-        "truth": true,
-        "p": 0.012
-      },
       {
         "id": "f0269",
         "text": "haha you're welcome. you don't have to be polite with me, i'm just checking in",
         "label": "checked_in",
         "truth": true,
-        "p": 0.016
+        "p": 0.009
       },
       {
         "id": "f0274",
         "text": "that's good to hear, but i'll keep asking, haha. you can say if it's not fine",
         "label": "checked_in",
         "truth": true,
-        "p": 0.025
+        "p": 0.017
       },
       {
         "id": "r0603",
         "text": "have u tried like going for a walk. u dont gotta deal w this alone \u2764\ufe0f",
         "label": "advice_dump",
         "truth": true,
-        "p": 0.038
+        "p": 0.032
+      },
+      {
+        "id": "f0245",
+        "text": "gracias por confiar en m\u00ed, no voy a dejarte solo",
+        "label": "follow_up",
+        "truth": true,
+        "p": 0.046
       },
       {
         "id": "f0143",
         "text": "spring cleaning in october, sure sam. you're kind of a mystery rn",
         "label": "checked_in",
         "truth": true,
-        "p": 0.052
+        "p": 0.058
       },
       {
-        "id": "f0072",
-        "text": "ha. thriving is a strong word for someone who texts me at 2am. you ok?",
-        "label": "checked_in",
+        "id": "f0073",
+        "text": "if one class is ruining your week that's not nothing. it's okay to be bothered by it",
+        "label": "validated",
         "truth": true,
-        "p": 0.146
+        "p": 0.072
       },
       {
         "id": "f0145",
         "text": "honestly if you're stressed you should just chill and play some games. oh wait",
         "label": "dismissed",
         "truth": true,
-        "p": 0.17
-      },
-      {
-        "id": "f0263",
-        "text": "desde luego, llamemos al 988 juntos si quieres y luego hablamos con tu mam\u00e1",
-        "label": "follow_up",
-        "truth": false,
-        "p": 0.787
-      },
-      {
-        "id": "f0337",
-        "text": "what happened at lunch? you walked out in the middle of it",
-        "label": "checked_in",
-        "truth": true,
-        "p": 0.222
+        "p": 0.127
       },
       {
         "id": "f0144",
         "text": "haha you're a funny guy but i'd feel better if you told me how you really are",
-        "label": "validated",
-        "truth": false,
-        "p": 0.765
+        "label": "checked_in",
+        "truth": true,
+        "p": 0.146
+      },
+      {
+        "id": "f0263",
+        "text": "desde luego, llamemos al 988 juntos si quieres y luego hablamos con tu mam\u00e1",
+        "label": "referred_adult",
+        "truth": true,
+        "p": 0.171
+      },
+      {
+        "id": "r0336",
+        "text": "Your secret is safe with me. I won't say a word. You're overreacting a little.",
+        "label": "dismissed",
+        "truth": true,
+        "p": 0.192
       }
     ]
   },
   "test": {
     "name": "test",
-    "n": 124,
+    "n": 133,
     "scores": {
       "keyword_baseline": {
         "checked_in": {
@@ -358,9 +358,348 @@
         },
         "validated": {
           "precision": 1.0,
-          "recall": 0.4583,
-          "f1": 0.6286,
-          "support": 48
+          "recall": 0.4706,
+          "f1": 0.64,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 0.5152,
+          "f1": 0.68,
+          "support": 33
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 0.0741,
+          "f1": 0.1379,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 0.9545,
+          "recall": 0.7778,
+          "f1": 0.8571,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333,
+          "support": 16
+        },
+        "follow_up": {
+          "precision": 1.0,
+          "recall": 0.1765,
+          "f1": 0.3,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 0.875,
+          "recall": 0.5,
+          "f1": 0.6364,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "support": 12
+        },
+        "promised_secrecy": {
+          "precision": 0.6667,
+          "recall": 0.25,
+          "f1": 0.3636,
+          "support": 16
+        },
+        "macro_f1": 0.5615
+      },
+      "model_a": {
+        "checked_in": {
+          "precision": 0.7059,
+          "recall": 1.0,
+          "f1": 0.8276,
+          "support": 12
+        },
+        "validated": {
+          "precision": 0.7833,
+          "recall": 0.9216,
+          "f1": 0.8468,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 33
+        },
+        "encouraged_help": {
+          "precision": 0.7027,
+          "recall": 0.963,
+          "f1": 0.8125,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 0.8438,
+          "recall": 1.0,
+          "f1": 0.9153,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.8889,
+          "support": 16
+        },
+        "follow_up": {
+          "precision": 0.5818,
+          "recall": 0.9412,
+          "f1": 0.7191,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 0.5263,
+          "recall": 0.7143,
+          "f1": 0.6061,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 0.6667,
+          "recall": 0.8333,
+          "f1": 0.7407,
+          "support": 12
+        },
+        "promised_secrecy": {
+          "precision": 0.8889,
+          "recall": 1.0,
+          "f1": 0.9412,
+          "support": 16
+        },
+        "macro_f1": 0.8298
+      },
+      "model_b": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
+        },
+        "validated": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 33
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 16
+        },
+        "follow_up": {
+          "precision": 0.9444,
+          "recall": 1.0,
+          "f1": 0.9714,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 1.0,
+          "recall": 0.7143,
+          "f1": 0.8333,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571,
+          "support": 12
+        },
+        "promised_secrecy": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 16
+        },
+        "macro_f1": 0.9662
+      },
+      "ensemble": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
+        },
+        "validated": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 51
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 33
+        },
+        "encouraged_help": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 27
+        },
+        "referred_adult": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 27
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333,
+          "support": 16
+        },
+        "follow_up": {
+          "precision": 1.0,
+          "recall": 0.9412,
+          "f1": 0.9697,
+          "support": 34
+        },
+        "dismissed": {
+          "precision": 1.0,
+          "recall": 0.7143,
+          "f1": 0.8333,
+          "support": 14
+        },
+        "advice_dump": {
+          "precision": 1.0,
+          "recall": 0.9167,
+          "f1": 0.9565,
+          "support": 12
+        },
+        "promised_secrecy": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 16
+        },
+        "macro_f1": 0.9693
+      }
+    },
+    "ece_before": 0.1282,
+    "ece_after": 0.0119,
+    "brier_before": 0.0318,
+    "brier_after": 0.0069,
+    "uncertain": {
+      "band": [
+        0.2,
+        0.8
+      ],
+      "messages": 133,
+      "flag_rate_per_message": 0.1128,
+      "flagged_decisions": 15,
+      "unflagged_decisions": 1315,
+      "flagged_error_rate": 0.0667,
+      "unflagged_error_rate": 0.0061
+    },
+    "errors": [
+      {
+        "id": "r0787",
+        "text": "can you send me the notes from class",
+        "label": "dismissed",
+        "truth": true,
+        "p": 0.006
+      },
+      {
+        "id": "r0325",
+        "text": "colleges don't care about one class, relax. just go outside and exercise, that fixes everything",
+        "label": "dismissed",
+        "truth": true,
+        "p": 0.076
+      },
+      {
+        "id": "r0464",
+        "text": "Hay gente con problemas peores, \u00bfsabes?",
+        "label": "dismissed",
+        "truth": true,
+        "p": 0.099
+      },
+      {
+        "id": "r0168",
+        "text": "are u thinking about ending ur life, im literally just a text away",
+        "label": "follow_up",
+        "truth": true,
+        "p": 0.163
+      },
+      {
+        "id": "r0176",
+        "text": "Ay, qu\u00e9 dram\u00e1tico. En fin.\n\u00bfQuieres que llamemos juntos a la l\u00ednea de crisis?",
+        "label": "dismissed",
+        "truth": true,
+        "p": 0.236
+      },
+      {
+        "id": "r0510",
+        "text": "are you thinking about killing yourself?, text me whenever, even at 3am. i'll answer",
+        "label": "follow_up",
+        "truth": true,
+        "p": 0.326
+      },
+      {
+        "id": "r0512",
+        "text": "i can sit w u whiile u text 988, reahcing out for support isn't weak, it's brave",
+        "label": "referred_988",
+        "truth": true,
+        "p": 0.405
+      },
+      {
+        "id": "r0173",
+        "text": "ok and? everyone has problems lol. have u tried like going for a walk",
+        "label": "advice_dump",
+        "truth": true,
+        "p": 0.449
+      },
+      {
+        "id": "r0176",
+        "text": "Ay, qu\u00e9 dram\u00e1tico. En fin.\n\u00bfQuieres que llamemos juntos a la l\u00ednea de crisis?",
+        "label": "referred_988",
+        "truth": true,
+        "p": 0.478
+      }
+    ]
+  },
+  "test_unseen_text": {
+    "name": "test_unseen_text",
+    "n": 124,
+    "scores": {
+      "keyword_baseline": {
+        "checked_in": {
+          "precision": 1.0,
+          "recall": 0.4545,
+          "f1": 0.625,
+          "support": 11
+        },
+        "validated": {
+          "precision": 1.0,
+          "recall": 0.48,
+          "f1": 0.6486,
+          "support": 50
         },
         "asked_directly": {
           "precision": 1.0,
@@ -376,361 +715,15 @@
         },
         "referred_adult": {
           "precision": 0.95,
-          "recall": 0.7917,
-          "f1": 0.8636,
-          "support": 24
-        },
-        "referred_988": {
-          "precision": 1.0,
-          "recall": 0.8,
-          "f1": 0.8889,
-          "support": 10
-        },
-        "follow_up": {
-          "precision": 1.0,
-          "recall": 0.1765,
-          "f1": 0.3,
-          "support": 34
-        },
-        "dismissed": {
-          "precision": 0.8571,
-          "recall": 0.5,
-          "f1": 0.6316,
-          "support": 12
-        },
-        "advice_dump": {
-          "precision": 1.0,
-          "recall": 0.25,
-          "f1": 0.4,
-          "support": 12
-        },
-        "promised_secrecy": {
-          "precision": 0.6667,
-          "recall": 0.25,
-          "f1": 0.3636,
-          "support": 16
-        },
-        "macro_f1": 0.5571
-      },
-      "model_a": {
-        "checked_in": {
-          "precision": 0.7333,
-          "recall": 0.9167,
-          "f1": 0.8148,
-          "support": 12
-        },
-        "validated": {
-          "precision": 0.8431,
-          "recall": 0.8958,
-          "f1": 0.8687,
-          "support": 48
-        },
-        "asked_directly": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 33
-        },
-        "encouraged_help": {
-          "precision": 0.7917,
           "recall": 0.76,
-          "f1": 0.7755,
+          "f1": 0.8444,
           "support": 25
         },
-        "referred_adult": {
-          "precision": 0.9231,
-          "recall": 1.0,
-          "f1": 0.96,
-          "support": 24
-        },
         "referred_988": {
-          "precision": 0.9,
-          "recall": 0.9,
-          "f1": 0.9,
-          "support": 10
-        },
-        "follow_up": {
-          "precision": 0.7179,
-          "recall": 0.8235,
-          "f1": 0.7671,
-          "support": 34
-        },
-        "dismissed": {
-          "precision": 0.5882,
-          "recall": 0.8333,
-          "f1": 0.6897,
-          "support": 12
-        },
-        "advice_dump": {
-          "precision": 0.7692,
-          "recall": 0.8333,
-          "f1": 0.8,
-          "support": 12
-        },
-        "promised_secrecy": {
-          "precision": 0.8421,
-          "recall": 1.0,
-          "f1": 0.9143,
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333,
           "support": 16
-        },
-        "macro_f1": 0.849
-      },
-      "model_b": {
-        "checked_in": {
-          "precision": 1.0,
-          "recall": 0.9167,
-          "f1": 0.9565,
-          "support": 12
-        },
-        "validated": {
-          "precision": 0.9792,
-          "recall": 0.9792,
-          "f1": 0.9792,
-          "support": 48
-        },
-        "asked_directly": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 33
-        },
-        "encouraged_help": {
-          "precision": 1.0,
-          "recall": 0.92,
-          "f1": 0.9583,
-          "support": 25
-        },
-        "referred_adult": {
-          "precision": 1.0,
-          "recall": 0.9167,
-          "f1": 0.9565,
-          "support": 24
-        },
-        "referred_988": {
-          "precision": 1.0,
-          "recall": 0.9,
-          "f1": 0.9474,
-          "support": 10
-        },
-        "follow_up": {
-          "precision": 0.9444,
-          "recall": 1.0,
-          "f1": 0.9714,
-          "support": 34
-        },
-        "dismissed": {
-          "precision": 1.0,
-          "recall": 0.6667,
-          "f1": 0.8,
-          "support": 12
-        },
-        "advice_dump": {
-          "precision": 1.0,
-          "recall": 0.8333,
-          "f1": 0.9091,
-          "support": 12
-        },
-        "promised_secrecy": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 16
-        },
-        "macro_f1": 0.9478
-      },
-      "ensemble": {
-        "checked_in": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 12
-        },
-        "validated": {
-          "precision": 1.0,
-          "recall": 0.9792,
-          "f1": 0.9895,
-          "support": 48
-        },
-        "asked_directly": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 33
-        },
-        "encouraged_help": {
-          "precision": 1.0,
-          "recall": 0.92,
-          "f1": 0.9583,
-          "support": 25
-        },
-        "referred_adult": {
-          "precision": 1.0,
-          "recall": 0.9583,
-          "f1": 0.9787,
-          "support": 24
-        },
-        "referred_988": {
-          "precision": 1.0,
-          "recall": 0.9,
-          "f1": 0.9474,
-          "support": 10
-        },
-        "follow_up": {
-          "precision": 0.9429,
-          "recall": 0.9706,
-          "f1": 0.9565,
-          "support": 34
-        },
-        "dismissed": {
-          "precision": 1.0,
-          "recall": 0.6667,
-          "f1": 0.8,
-          "support": 12
-        },
-        "advice_dump": {
-          "precision": 1.0,
-          "recall": 0.9167,
-          "f1": 0.9565,
-          "support": 12
-        },
-        "promised_secrecy": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 16
-        },
-        "macro_f1": 0.9587
-      }
-    },
-    "ece_before": 0.1246,
-    "ece_after": 0.0157,
-    "brier_before": 0.032,
-    "brier_after": 0.0094,
-    "uncertain": {
-      "band": [
-        0.35,
-        0.65
-      ],
-      "messages": 124,
-      "flag_rate_per_message": 0.0806,
-      "flagged_decisions": 11,
-      "unflagged_decisions": 1229,
-      "flagged_error_rate": 0.4545,
-      "unflagged_error_rate": 0.0065
-    },
-    "errors": [
-      {
-        "id": "r0787",
-        "text": "can you send me the notes from class",
-        "label": "dismissed",
-        "truth": true,
-        "p": 0.001
-      },
-      {
-        "id": "r0464",
-        "text": "Hay gente con problemas peores, \u00bfsabes?",
-        "label": "dismissed",
-        "truth": true,
-        "p": 0.057
-      },
-      {
-        "id": "r0014",
-        "text": "Tiene sentido, I get why you feel like that. Pedir ayuda no es weak.",
-        "label": "encouraged_help",
-        "truth": true,
-        "p": 0.108
-      },
-      {
-        "id": "r0176",
-        "text": "Ay, qu\u00e9 dram\u00e1tico. En fin.\n\u00bfQuieres que llamemos juntos a la l\u00ednea de crisis?",
-        "label": "referred_988",
-        "truth": true,
-        "p": 0.123
-      },
-      {
-        "id": "r0325",
-        "text": "colleges don't care about one class, relax. just go outside and exercise, that fixes everything",
-        "label": "dismissed",
-        "truth": true,
-        "p": 0.138
-      },
-      {
-        "id": "r0005",
-        "text": "can we go see the counselor tgt? ill come w u",
-        "label": "follow_up",
-        "truth": false,
-        "p": 0.668
-      },
-      {
-        "id": "r0788",
-        "text": "i'm on my way home from school",
-        "label": "follow_up",
-        "truth": false,
-        "p": 0.642
-      },
-      {
-        "id": "r0323",
-        "text": "Es normal sentirse as\u00ed, no est\u00e1s exagerando. \u00bfPuedes hablar con tus pap\u00e1s? Yo estoy contigo cuando lo hagas. Nos vemos antes de clases ma\u00f1ana.",
-        "label": "referred_adult",
-        "truth": true,
-        "p": 0.372
-      },
-      {
-        "id": "r0176",
-        "text": "Ay, qu\u00e9 dram\u00e1tico. En fin.\n\u00bfQuieres que llamemos juntos a la l\u00ednea de crisis?",
-        "label": "dismissed",
-        "truth": true,
-        "p": 0.375
-      },
-      {
-        "id": "r0557",
-        "text": "Let's meet before school tomorrow. Reaching out for support isn't weak, it's brave.",
-        "label": "follow_up",
-        "truth": true,
-        "p": 0.431
-      }
-    ]
-  },
-  "test_unseen_text": {
-    "name": "test_unseen_text",
-    "n": 116,
-    "scores": {
-      "keyword_baseline": {
-        "checked_in": {
-          "precision": 1.0,
-          "recall": 0.4545,
-          "f1": 0.625,
-          "support": 11
-        },
-        "validated": {
-          "precision": 1.0,
-          "recall": 0.4681,
-          "f1": 0.6377,
-          "support": 47
-        },
-        "asked_directly": {
-          "precision": 1.0,
-          "recall": 0.5152,
-          "f1": 0.68,
-          "support": 33
-        },
-        "encouraged_help": {
-          "precision": 1.0,
-          "recall": 0.087,
-          "f1": 0.16,
-          "support": 23
-        },
-        "referred_adult": {
-          "precision": 0.9474,
-          "recall": 0.7826,
-          "f1": 0.8571,
-          "support": 23
-        },
-        "referred_988": {
-          "precision": 1.0,
-          "recall": 0.8,
-          "f1": 0.8889,
-          "support": 10
         },
         "follow_up": {
           "precision": 1.0,
@@ -739,10 +732,10 @@
           "support": 32
         },
         "dismissed": {
-          "precision": 0.8571,
+          "precision": 0.875,
           "recall": 0.5,
-          "f1": 0.6316,
-          "support": 12
+          "f1": 0.6364,
+          "support": 14
         },
         "advice_dump": {
           "precision": 1.0,
@@ -756,20 +749,20 @@
           "f1": 0.3636,
           "support": 16
         },
-        "macro_f1": 0.5514
+        "macro_f1": 0.555
       },
       "model_a": {
         "checked_in": {
-          "precision": 0.7143,
-          "recall": 0.9091,
-          "f1": 0.8,
+          "precision": 0.6875,
+          "recall": 1.0,
+          "f1": 0.8148,
           "support": 11
         },
         "validated": {
-          "precision": 0.84,
-          "recall": 0.8936,
-          "f1": 0.866,
-          "support": 47
+          "precision": 0.7797,
+          "recall": 0.92,
+          "f1": 0.844,
+          "support": 50
         },
         "asked_directly": {
           "precision": 1.0,
@@ -778,61 +771,61 @@
           "support": 33
         },
         "encouraged_help": {
-          "precision": 0.7727,
-          "recall": 0.7391,
-          "f1": 0.7556,
-          "support": 23
+          "precision": 0.6857,
+          "recall": 0.96,
+          "f1": 0.8,
+          "support": 25
         },
         "referred_adult": {
-          "precision": 0.92,
+          "precision": 0.8333,
           "recall": 1.0,
-          "f1": 0.9583,
-          "support": 23
+          "f1": 0.9091,
+          "support": 25
         },
         "referred_988": {
-          "precision": 0.9,
-          "recall": 0.9,
-          "f1": 0.9,
-          "support": 10
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.8889,
+          "support": 16
         },
         "follow_up": {
-          "precision": 0.7222,
-          "recall": 0.8125,
-          "f1": 0.7647,
+          "precision": 0.6,
+          "recall": 0.9375,
+          "f1": 0.7317,
           "support": 32
         },
         "dismissed": {
-          "precision": 0.625,
-          "recall": 0.8333,
-          "f1": 0.7143,
-          "support": 12
+          "precision": 0.5556,
+          "recall": 0.7143,
+          "f1": 0.625,
+          "support": 14
         },
         "advice_dump": {
-          "precision": 0.7692,
+          "precision": 0.6667,
           "recall": 0.8333,
-          "f1": 0.8,
+          "f1": 0.7407,
           "support": 12
         },
         "promised_secrecy": {
-          "precision": 0.8421,
+          "precision": 0.8889,
           "recall": 1.0,
-          "f1": 0.9143,
+          "f1": 0.9412,
           "support": 16
         },
-        "macro_f1": 0.8473
+        "macro_f1": 0.8295
       },
       "model_b": {
         "checked_in": {
           "precision": 1.0,
-          "recall": 0.9091,
-          "f1": 0.9524,
+          "recall": 1.0,
+          "f1": 1.0,
           "support": 11
         },
         "validated": {
-          "precision": 0.9787,
-          "recall": 0.9787,
-          "f1": 0.9787,
-          "support": 47
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
         },
         "asked_directly": {
           "precision": 1.0,
@@ -842,38 +835,38 @@
         },
         "encouraged_help": {
           "precision": 1.0,
-          "recall": 0.913,
-          "f1": 0.9545,
-          "support": 23
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
         },
         "referred_adult": {
           "precision": 1.0,
-          "recall": 0.913,
-          "f1": 0.9545,
-          "support": 23
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
         },
         "referred_988": {
           "precision": 1.0,
-          "recall": 0.9,
-          "f1": 0.9474,
-          "support": 10
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 16
         },
         "follow_up": {
-          "precision": 0.9412,
+          "precision": 0.9697,
           "recall": 1.0,
-          "f1": 0.9697,
+          "f1": 0.9846,
           "support": 32
         },
         "dismissed": {
           "precision": 1.0,
-          "recall": 0.6667,
-          "f1": 0.8,
-          "support": 12
+          "recall": 0.7143,
+          "f1": 0.8333,
+          "support": 14
         },
         "advice_dump": {
           "precision": 1.0,
-          "recall": 0.8333,
-          "f1": 0.9091,
+          "recall": 0.75,
+          "f1": 0.8571,
           "support": 12
         },
         "promised_secrecy": {
@@ -882,7 +875,7 @@
           "f1": 1.0,
           "support": 16
         },
-        "macro_f1": 0.9466
+        "macro_f1": 0.9675
       },
       "ensemble": {
         "checked_in": {
@@ -893,9 +886,9 @@
         },
         "validated": {
           "precision": 1.0,
-          "recall": 0.9787,
-          "f1": 0.9892,
-          "support": 47
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
         },
         "asked_directly": {
           "precision": 1.0,
@@ -905,33 +898,33 @@
         },
         "encouraged_help": {
           "precision": 1.0,
-          "recall": 0.913,
-          "f1": 0.9545,
-          "support": 23
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
         },
         "referred_adult": {
           "precision": 1.0,
-          "recall": 0.9565,
-          "f1": 0.9778,
-          "support": 23
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
         },
         "referred_988": {
           "precision": 1.0,
-          "recall": 0.9,
-          "f1": 0.9474,
-          "support": 10
+          "recall": 0.875,
+          "f1": 0.9333,
+          "support": 16
         },
         "follow_up": {
-          "precision": 0.9394,
-          "recall": 0.9688,
-          "f1": 0.9538,
+          "precision": 1.0,
+          "recall": 0.9375,
+          "f1": 0.9677,
           "support": 32
         },
         "dismissed": {
           "precision": 1.0,
-          "recall": 0.6667,
-          "f1": 0.8,
-          "support": 12
+          "recall": 0.7143,
+          "f1": 0.8333,
+          "support": 14
         },
         "advice_dump": {
           "precision": 1.0,
@@ -945,24 +938,24 @@
           "f1": 1.0,
           "support": 16
         },
-        "macro_f1": 0.9579
+        "macro_f1": 0.9691
       }
     },
-    "ece_before": 0.1251,
-    "ece_after": 0.016,
-    "brier_before": 0.0326,
-    "brier_after": 0.01,
+    "ece_before": 0.13,
+    "ece_after": 0.0127,
+    "brier_before": 0.0322,
+    "brier_after": 0.0072,
     "uncertain": {
       "band": [
-        0.35,
-        0.65
+        0.2,
+        0.8
       ],
-      "messages": 116,
-      "flag_rate_per_message": 0.0862,
-      "flagged_decisions": 11,
-      "unflagged_decisions": 1149,
-      "flagged_error_rate": 0.4545,
-      "unflagged_error_rate": 0.007
+      "messages": 124,
+      "flag_rate_per_message": 0.121,
+      "flagged_decisions": 15,
+      "unflagged_decisions": 1225,
+      "flagged_error_rate": 0.0667,
+      "unflagged_error_rate": 0.0065
     },
     "errors": [
       {
@@ -970,76 +963,69 @@
         "text": "can you send me the notes from class",
         "label": "dismissed",
         "truth": true,
-        "p": 0.001
-      },
-      {
-        "id": "r0464",
-        "text": "Hay gente con problemas peores, \u00bfsabes?",
-        "label": "dismissed",
-        "truth": true,
-        "p": 0.057
-      },
-      {
-        "id": "r0014",
-        "text": "Tiene sentido, I get why you feel like that. Pedir ayuda no es weak.",
-        "label": "encouraged_help",
-        "truth": true,
-        "p": 0.108
-      },
-      {
-        "id": "r0176",
-        "text": "Ay, qu\u00e9 dram\u00e1tico. En fin.\n\u00bfQuieres que llamemos juntos a la l\u00ednea de crisis?",
-        "label": "referred_988",
-        "truth": true,
-        "p": 0.123
+        "p": 0.006
       },
       {
         "id": "r0325",
         "text": "colleges don't care about one class, relax. just go outside and exercise, that fixes everything",
         "label": "dismissed",
         "truth": true,
-        "p": 0.138
+        "p": 0.076
       },
       {
-        "id": "r0005",
-        "text": "can we go see the counselor tgt? ill come w u",
-        "label": "follow_up",
-        "truth": false,
-        "p": 0.668
-      },
-      {
-        "id": "r0788",
-        "text": "i'm on my way home from school",
-        "label": "follow_up",
-        "truth": false,
-        "p": 0.642
-      },
-      {
-        "id": "r0323",
-        "text": "Es normal sentirse as\u00ed, no est\u00e1s exagerando. \u00bfPuedes hablar con tus pap\u00e1s? Yo estoy contigo cuando lo hagas. Nos vemos antes de clases ma\u00f1ana.",
-        "label": "referred_adult",
+        "id": "r0464",
+        "text": "Hay gente con problemas peores, \u00bfsabes?",
+        "label": "dismissed",
         "truth": true,
-        "p": 0.372
+        "p": 0.099
+      },
+      {
+        "id": "r0168",
+        "text": "are u thinking about ending ur life, im literally just a text away",
+        "label": "follow_up",
+        "truth": true,
+        "p": 0.163
       },
       {
         "id": "r0176",
         "text": "Ay, qu\u00e9 dram\u00e1tico. En fin.\n\u00bfQuieres que llamemos juntos a la l\u00ednea de crisis?",
         "label": "dismissed",
         "truth": true,
-        "p": 0.375
+        "p": 0.236
       },
       {
-        "id": "r0557",
-        "text": "Let's meet before school tomorrow. Reaching out for support isn't weak, it's brave.",
+        "id": "r0510",
+        "text": "are you thinking about killing yourself?, text me whenever, even at 3am. i'll answer",
         "label": "follow_up",
         "truth": true,
-        "p": 0.431
+        "p": 0.326
+      },
+      {
+        "id": "r0512",
+        "text": "i can sit w u whiile u text 988, reahcing out for support isn't weak, it's brave",
+        "label": "referred_988",
+        "truth": true,
+        "p": 0.405
+      },
+      {
+        "id": "r0173",
+        "text": "ok and? everyone has problems lol. have u tried like going for a walk",
+        "label": "advice_dump",
+        "truth": true,
+        "p": 0.449
+      },
+      {
+        "id": "r0176",
+        "text": "Ay, qu\u00e9 dram\u00e1tico. En fin.\n\u00bfQuieres que llamemos juntos a la l\u00ednea de crisis?",
+        "label": "referred_988",
+        "truth": true,
+        "p": 0.478
       }
     ]
   },
   "test_freeform": {
     "name": "test_freeform",
-    "n": 171,
+    "n": 221,
     "scores": {
       "keyword_baseline": {
         "checked_in": {
@@ -1049,10 +1035,10 @@
           "support": 28
         },
         "validated": {
-          "precision": 0.8889,
-          "recall": 0.186,
-          "f1": 0.3077,
-          "support": 43
+          "precision": 0.8182,
+          "recall": 0.1957,
+          "f1": 0.3158,
+          "support": 46
         },
         "asked_directly": {
           "precision": 1.0,
@@ -1061,34 +1047,34 @@
           "support": 18
         },
         "encouraged_help": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "support": 9
+          "precision": 1.0,
+          "recall": 0.0625,
+          "f1": 0.1176,
+          "support": 16
         },
         "referred_adult": {
-          "precision": 0.8333,
-          "recall": 0.625,
-          "f1": 0.7143,
-          "support": 16
+          "precision": 0.9231,
+          "recall": 0.6857,
+          "f1": 0.7869,
+          "support": 35
         },
         "referred_988": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "support": 3
+          "support": 26
         },
         "follow_up": {
-          "precision": 0.875,
-          "recall": 0.2,
-          "f1": 0.3256,
-          "support": 35
+          "precision": 0.8,
+          "recall": 0.1739,
+          "f1": 0.2857,
+          "support": 46
         },
         "dismissed": {
-          "precision": 0.9,
-          "recall": 0.5625,
-          "f1": 0.6923,
-          "support": 16
+          "precision": 0.9091,
+          "recall": 0.4762,
+          "f1": 0.625,
+          "support": 21
         },
         "advice_dump": {
           "precision": 1.0,
@@ -1102,232 +1088,225 @@
           "f1": 0.6154,
           "support": 9
         },
-        "macro_f1": 0.4805
+        "macro_f1": 0.4896
       },
       "model_a": {
         "checked_in": {
-          "precision": 0.7241,
-          "recall": 0.75,
-          "f1": 0.7368,
+          "precision": 0.6286,
+          "recall": 0.7857,
+          "f1": 0.6984,
           "support": 28
         },
         "validated": {
-          "precision": 0.5397,
-          "recall": 0.7907,
-          "f1": 0.6415,
-          "support": 43
+          "precision": 0.5119,
+          "recall": 0.9348,
+          "f1": 0.6615,
+          "support": 46
         },
         "asked_directly": {
-          "precision": 0.9,
+          "precision": 0.8571,
           "recall": 1.0,
-          "f1": 0.9474,
+          "f1": 0.9231,
           "support": 18
         },
         "encouraged_help": {
-          "precision": 0.5833,
-          "recall": 0.7778,
-          "f1": 0.6667,
-          "support": 9
+          "precision": 0.4815,
+          "recall": 0.8125,
+          "f1": 0.6047,
+          "support": 16
         },
         "referred_adult": {
-          "precision": 0.7857,
-          "recall": 0.6875,
-          "f1": 0.7333,
-          "support": 16
-        },
-        "referred_988": {
-          "precision": 1.0,
+          "precision": 0.8333,
           "recall": 1.0,
-          "f1": 1.0,
-          "support": 3
-        },
-        "follow_up": {
-          "precision": 0.6458,
-          "recall": 0.8857,
-          "f1": 0.747,
+          "f1": 0.9091,
           "support": 35
         },
+        "referred_988": {
+          "precision": 0.7879,
+          "recall": 1.0,
+          "f1": 0.8814,
+          "support": 26
+        },
+        "follow_up": {
+          "precision": 0.5432,
+          "recall": 0.9565,
+          "f1": 0.6929,
+          "support": 46
+        },
         "dismissed": {
-          "precision": 0.3529,
-          "recall": 0.75,
-          "f1": 0.48,
-          "support": 16
+          "precision": 0.3542,
+          "recall": 0.8095,
+          "f1": 0.4928,
+          "support": 21
         },
         "advice_dump": {
-          "precision": 0.3448,
-          "recall": 0.4762,
-          "f1": 0.4,
+          "precision": 0.4062,
+          "recall": 0.619,
+          "f1": 0.4906,
           "support": 21
         },
         "promised_secrecy": {
-          "precision": 0.4737,
+          "precision": 0.4286,
           "recall": 1.0,
-          "f1": 0.6429,
+          "f1": 0.6,
           "support": 9
         },
-        "macro_f1": 0.6996
+        "macro_f1": 0.6954
       },
       "model_b": {
         "checked_in": {
-          "precision": 0.9091,
-          "recall": 0.3571,
-          "f1": 0.5128,
-          "support": 28
-        },
-        "validated": {
-          "precision": 0.7,
-          "recall": 0.6512,
-          "f1": 0.6747,
-          "support": 43
-        },
-        "asked_directly": {
-          "precision": 0.4103,
-          "recall": 0.8889,
-          "f1": 0.5614,
-          "support": 18
-        },
-        "encouraged_help": {
-          "precision": 1.0,
-          "recall": 0.5556,
-          "f1": 0.7143,
-          "support": 9
-        },
-        "referred_adult": {
-          "precision": 1.0,
-          "recall": 0.625,
-          "f1": 0.7692,
-          "support": 16
-        },
-        "referred_988": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 3
-        },
-        "follow_up": {
-          "precision": 0.8387,
-          "recall": 0.7429,
-          "f1": 0.7879,
-          "support": 35
-        },
-        "dismissed": {
-          "precision": 0.9167,
-          "recall": 0.6875,
-          "f1": 0.7857,
-          "support": 16
-        },
-        "advice_dump": {
-          "precision": 0.8667,
-          "recall": 0.619,
-          "f1": 0.7222,
-          "support": 21
-        },
-        "promised_secrecy": {
-          "precision": 0.6923,
-          "recall": 1.0,
-          "f1": 0.8182,
-          "support": 9
-        },
-        "macro_f1": 0.7346
-      },
-      "ensemble": {
-        "checked_in": {
-          "precision": 0.9412,
+          "precision": 0.6667,
           "recall": 0.5714,
-          "f1": 0.7111,
+          "f1": 0.6154,
           "support": 28
         },
         "validated": {
-          "precision": 0.7714,
-          "recall": 0.6279,
-          "f1": 0.6923,
-          "support": 43
+          "precision": 0.7333,
+          "recall": 0.7174,
+          "f1": 0.7253,
+          "support": 46
         },
         "asked_directly": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
+          "precision": 0.4,
+          "recall": 0.8889,
+          "f1": 0.5517,
           "support": 18
         },
         "encouraged_help": {
-          "precision": 1.0,
-          "recall": 0.6667,
-          "f1": 0.8,
-          "support": 9
-        },
-        "referred_adult": {
-          "precision": 1.0,
-          "recall": 0.75,
-          "f1": 0.8571,
-          "support": 16
-        },
-        "referred_988": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "support": 3
-        },
-        "follow_up": {
-          "precision": 0.8667,
-          "recall": 0.7429,
-          "f1": 0.8,
-          "support": 35
-        },
-        "dismissed": {
           "precision": 0.9,
           "recall": 0.5625,
           "f1": 0.6923,
           "support": 16
         },
+        "referred_adult": {
+          "precision": 0.9412,
+          "recall": 0.9143,
+          "f1": 0.9275,
+          "support": 35
+        },
+        "referred_988": {
+          "precision": 0.96,
+          "recall": 0.9231,
+          "f1": 0.9412,
+          "support": 26
+        },
+        "follow_up": {
+          "precision": 0.7609,
+          "recall": 0.7609,
+          "f1": 0.7609,
+          "support": 46
+        },
+        "dismissed": {
+          "precision": 0.5926,
+          "recall": 0.7619,
+          "f1": 0.6667,
+          "support": 21
+        },
         "advice_dump": {
-          "precision": 0.7391,
-          "recall": 0.8095,
-          "f1": 0.7727,
+          "precision": 0.8235,
+          "recall": 0.6667,
+          "f1": 0.7368,
           "support": 21
         },
         "promised_secrecy": {
-          "precision": 0.75,
+          "precision": 0.8182,
           "recall": 1.0,
-          "f1": 0.8571,
+          "f1": 0.9,
           "support": 9
         },
-        "macro_f1": 0.8183
+        "macro_f1": 0.7518
+      },
+      "ensemble": {
+        "checked_in": {
+          "precision": 0.8,
+          "recall": 0.5714,
+          "f1": 0.6667,
+          "support": 28
+        },
+        "validated": {
+          "precision": 0.8286,
+          "recall": 0.6304,
+          "f1": 0.716,
+          "support": 46
+        },
+        "asked_directly": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 18
+        },
+        "encouraged_help": {
+          "precision": 0.9,
+          "recall": 0.5625,
+          "f1": 0.6923,
+          "support": 16
+        },
+        "referred_adult": {
+          "precision": 1.0,
+          "recall": 0.9429,
+          "f1": 0.9706,
+          "support": 35
+        },
+        "referred_988": {
+          "precision": 1.0,
+          "recall": 0.9231,
+          "f1": 0.96,
+          "support": 26
+        },
+        "follow_up": {
+          "precision": 0.8919,
+          "recall": 0.7174,
+          "f1": 0.7952,
+          "support": 46
+        },
+        "dismissed": {
+          "precision": 0.8,
+          "recall": 0.7619,
+          "f1": 0.7805,
+          "support": 21
+        },
+        "advice_dump": {
+          "precision": 0.68,
+          "recall": 0.8095,
+          "f1": 0.7391,
+          "support": 21
+        },
+        "promised_secrecy": {
+          "precision": 0.8182,
+          "recall": 1.0,
+          "f1": 0.9,
+          "support": 9
+        },
+        "macro_f1": 0.822
       }
     },
-    "ece_before": 0.1153,
-    "ece_after": 0.019,
-    "brier_before": 0.0546,
-    "brier_after": 0.0345,
+    "ece_before": 0.1241,
+    "ece_after": 0.0119,
+    "brier_before": 0.0531,
+    "brier_after": 0.0294,
     "uncertain": {
       "band": [
-        0.35,
-        0.65
+        0.2,
+        0.8
       ],
-      "messages": 171,
-      "flag_rate_per_message": 0.1813,
-      "flagged_decisions": 32,
-      "unflagged_decisions": 1678,
-      "flagged_error_rate": 0.625,
-      "unflagged_error_rate": 0.0346
+      "messages": 221,
+      "flag_rate_per_message": 0.2986,
+      "flagged_decisions": 74,
+      "unflagged_decisions": 2136,
+      "flagged_error_rate": 0.3919,
+      "unflagged_error_rate": 0.029
     },
     "errors": [
       {
-        "id": "f0283",
-        "text": "almorzar sola cansa. ma\u00f1ana te acompa\u00f1o",
-        "label": "validated",
+        "id": "f0471",
+        "text": "i'd find a therapist if i were you",
+        "label": "encouraged_help",
         "truth": true,
-        "p": 0.001
+        "p": 0.0
       },
       {
-        "id": "f0308",
-        "text": "at night is when everything feels bigger. can i text you tonight and tomorrow?",
-        "label": "validated",
-        "truth": true,
-        "p": 0.001
-      },
-      {
-        "id": "f0225",
-        "text": "s\u00e9 que dices que da igual, pero se nota que no. cuenta conmigo",
+        "id": "f0131",
+        "text": "great plan. we'll go together right after first period",
         "label": "follow_up",
         "truth": true,
         "p": 0.003
@@ -1337,28 +1316,49 @@
         "text": "hell yes. let's do it. i'll text you tonight so you're not by yourself",
         "label": "encouraged_help",
         "truth": true,
-        "p": 0.011
+        "p": 0.005
       },
       {
-        "id": "f0065",
-        "text": "that sounds like a plan. counselor, then lunch, then maybe boba, my treat",
-        "label": "follow_up",
+        "id": "f0008",
+        "text": "you don't have to be fine with me, you know. i'm not going to judge you",
+        "label": "validated",
         "truth": true,
-        "p": 0.012
+        "p": 0.006
       },
       {
-        "id": "f0267",
-        "text": "pues no se lo digas todav\u00eda, mejor espera a ver qu\u00e9 pasa",
-        "label": "advice_dump",
+        "id": "f0308",
+        "text": "at night is when everything feels bigger. can i text you tonight and tomorrow?",
+        "label": "validated",
         "truth": true,
-        "p": 0.015
+        "p": 0.007
       },
       {
-        "id": "f0421",
-        "text": "\u00bfhas pensado en dejar el chat? yo lo dejar\u00eda",
-        "label": "advice_dump",
+        "id": "f0111",
+        "text": "gracias por dec\u00edrmelo, de verdad. tampoco quiero que lo cargues solo, \u00bfpuedo acompa\u00f1arte con la consejera?",
+        "label": "encouraged_help",
+        "truth": true,
+        "p": 0.017
+      },
+      {
+        "id": "f0148",
+        "text": "it's okay to not be fine. you don't have to say all good with me",
+        "label": "validated",
         "truth": true,
         "p": 0.018
+      },
+      {
+        "id": "f0248",
+        "text": "i know you're scared of it being a big deal. it's a big deal because you matter",
+        "label": "validated",
+        "truth": true,
+        "p": 0.023
+      },
+      {
+        "id": "f0166",
+        "text": "it's hard to see change from inside it. would you let me go with you to talk to the counselor?",
+        "label": "validated",
+        "truth": true,
+        "p": 0.024
       },
       {
         "id": "f0028",
@@ -1366,20 +1366,6 @@
         "label": "encouraged_help",
         "truth": true,
         "p": 0.024
-      },
-      {
-        "id": "f0318",
-        "text": "honestly lots of people feel like that after moving, you'll be fine!",
-        "label": "validated",
-        "truth": false,
-        "p": 0.972
-      },
-      {
-        "id": "f0188",
-        "text": "yes. let's go right now. i'm with you all the way",
-        "label": "referred_adult",
-        "truth": true,
-        "p": 0.036
       }
     ]
   },
@@ -1388,21 +1374,21 @@
       "text": "you seemed off at lunch",
       "label": "follow_up",
       "expect": "low",
-      "p": 0.3,
+      "p": 0.055,
       "ok": true
     },
     {
       "text": "ok i gotta go to school early tomorrow, talk later maybe",
       "label": "follow_up",
       "expect": "low",
-      "p": 0.93,
-      "ok": false
+      "p": 0.109,
+      "ok": true
     },
     {
       "text": "are you thinking about quitting the group chat?",
       "label": "asked_directly",
       "expect": "low",
-      "p": 0.17,
+      "p": 0.067,
       "ok": true
     },
     {
@@ -1416,7 +1402,7 @@
       "text": "i keep thinking about him",
       "label": "asked_directly",
       "expect": "low",
-      "p": 0.2,
+      "p": 0.097,
       "ok": true
     },
     {
@@ -1430,56 +1416,56 @@
       "text": "can we talk to the counselor tomorrow? i'll go with you",
       "label": "follow_up",
       "expect": "low",
-      "p": 0.998,
+      "p": 0.667,
       "ok": false
     },
     {
       "text": "lots of people feel like that, you'll be fine",
       "label": "validated",
       "expect": "low",
-      "p": 0.553,
-      "ok": false
+      "p": 0.297,
+      "ok": true
     },
     {
       "text": "lots of people feel like that, you'll be fine",
       "label": "advice_dump",
       "expect": "low",
-      "p": 0.704,
-      "ok": false
+      "p": 0.136,
+      "ok": true
     },
     {
       "text": "lots of people feel like that, you'll be fine",
       "label": "dismissed",
       "expect": "high",
-      "p": 0.852,
+      "p": 0.977,
       "ok": true
     },
     {
       "text": "i'm not going anywhere",
       "label": "follow_up",
       "expect": "high",
-      "p": 0.99,
+      "p": 0.93,
       "ok": true
     },
     {
       "text": "i'm really glad you told me",
       "label": "validated",
       "expect": "high",
-      "p": 0.995,
+      "p": 0.976,
       "ok": true
     },
     {
       "text": "i'll come over saturday if you want company",
       "label": "follow_up",
       "expect": "high",
-      "p": 0.995,
+      "p": 0.684,
       "ok": true
     },
     {
       "text": "when you said disappear, did you mean you want to die?",
       "label": "asked_directly",
       "expect": "high",
-      "p": 0.998,
+      "p": 0.988,
       "ok": true
     }
   ]
