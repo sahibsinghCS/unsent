@@ -14,7 +14,6 @@ jobs:
     timeout-minutes: 15
     env:
       FR_EMBED: hash
-      FR_LLM: "0"
       PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
