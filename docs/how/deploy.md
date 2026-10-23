@@ -66,28 +66,36 @@ and it protects that public server:
 one worker, **no OpenAI calls**: `FR_LLM=0`) on a 4-CPU sandbox, then runs the same 20 simulated
 conversations at 1, 5, 10 and 20 users at a time. Each user: scenario list → new session → 6
 messages → finish (feedback) → what-if, each from its own address so the real rate limits stay on.
-Full results: `eval/reports/deploy_load.json`.
+By default each user **thinks like a person**: 2–4 s before each message and about 2 s before
+Finish (seeded random pauses, so every run is identical). That matters because the server
+explains each message in the background while you chat, so Finish is ready almost instantly.
+`--no-think` removes every pause (a burst: the worst case).
+Results: `eval/reports/deploy_load.json` (think time) and `deploy_load_burst.json` (burst).
 
-| Concurrent users | Message p50 / p99 (n=120) | Finish p50 (n=20) | What-if p50 (n=20) | Errors (n=200) |
+**With think time (realistic):**
+
+| Users at once | Message p50 / p99 (n=120) | Finish p50 / p99 (n=20) | What-if p50 / p99 (n=20) | Errors (n=200) |
 |---|---|---|---|---|
-| 1 | 34 ms / 94 ms | 1.2 s | 130 ms | 0 |
-| 5 | 161 ms / 283 ms | 4.7 s | 558 ms | 0 |
-| 10 | 290 ms / 453 ms | 9.2 s | 840 ms | 0 |
-| 20 | 583 ms / 887 ms | 18.1 s | 1.8 s | 0 |
+| 1 | 27 / 192 ms | 57 / 92 ms | 0.72 / 1.4 s | 0 |
+| 5 | 25 / 75 ms | 117 / 319 ms | 1.3 / 2.4 s | 0 |
+| 10 | 24 / 125 ms | 215 / 790 ms | 3.1 / 5.1 s | 0 |
+| 20 | 25 / 345 ms | 1.2 / 1.7 s | 9.7 / 11.3 s | 0 |
 
-- **Cold start:** 5.8 s from process start to the first healthy response, including loading every
-  model (n=1).
-- **Memory:** 796 MB after warm-up, 1.58 GB peak during the test (n=1). The Space has 16 GB.
-- **Throughput:** about 6–8 requests per second, flat from 5 to 20 users: the CPU is the limit.
+**Burst (no pauses, worst case):** message p50 22 / 100 / 208 / 382 ms and finish p50
+50 / 272 / 718 / 1297 ms at 1 / 5 / 10 / 20 users; what-if p50 0.7 / 3.2 / 6.4 / 13.5 s; 0 errors.
+
+- **Cold start:** 6–7 s from process start to the first healthy response, including loading every
+  model (n=1 per run).
+- **Memory:** 791 MB after warm-up, 854 MB peak (n=1). The Space has 16 GB.
 - **CSP:** `deploy/csp_check.mjs` drives headless Chromium through every page (landing, practice,
   chat with X-ray and branches, feedback, what-if, real mode, transparency + Guardian) in light
   and dark mode: **0 violations, 0 console errors**. As a control, changing one character of the
   inline script makes the check fail, so it really does catch violations.
 
 ## Limitations
-- **"Finish" (the feedback report) is the slow step:** about 1.2 s of CPU each, and requests share
-  2 CPUs, so 20 people pressing Finish *at the same instant* wait up to ~20 s. Real visitors are
-  spread out; messages stay under 1 s even at 20 at once.
+- **What-if is now the slow step:** it simulates several alternative conversations, about 0.7 s of
+  CPU each, and requests share the CPUs, so with 20 people asking for a what-if at about the same
+  time the last ones wait ~10 s. Messages stay well under 0.5 s and Finish under 2 s even at 20 users.
 - With OpenAI turned on, each message also waits for OpenAI (typically 1–3 s); the load test
   deliberately measured our own server without it.
 - Rate limits use the visitor's address, so a whole school on one network shares a bucket
@@ -109,9 +117,10 @@ Full results: `eval/reports/deploy_load.json`.
    the browser: "only run scripts from this site." Even if someone found a way to inject code into
    the page, the browser would refuse to run it. We tested it in a real headless browser on every
    page: zero violations.
-4. **"How many people can use it at once?"** We measured: at 20 simultaneous users every request
-   succeeded and messages took under 0.9 s at the 99th percentile. The feedback report is the slow
-   part (about 1.2 s of CPU each), so a whole class pressing Finish at once would queue.
+4. **"How many people can use it at once?"** We measured: with 20 simultaneous users (pausing like
+   real people), every request succeeded, messages took under 0.35 s at the 99th percentile and the
+   feedback report under 1.7 s. The what-if is the heavy part (it simulates alternative
+   conversations), so a whole class asking at once would wait about 10 s.
 5. **"Why only one server process?"** Sessions are kept in memory for privacy (nothing on disk), and
    memory isn't shared between processes; a second process wouldn't find your conversation. One
    process handles our measured load with zero errors.
