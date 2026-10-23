@@ -58,8 +58,12 @@ def norm(t: str) -> str:
 
 def check_skills() -> None:
     sk = DATA / "skills"
-    ctxs = read_jsonl(sk / "contexts.jsonl")
-    reps = read_jsonl(sk / "replies.jsonl") + read_jsonl(sk / "replies_freeform.jsonl")
+    ctxs = read_jsonl(sk / "contexts.jsonl") + read_jsonl(sk / "contexts_extra.jsonl")
+    reps = (
+        read_jsonl(sk / "replies.jsonl")
+        + read_jsonl(sk / "replies_freeform.jsonl")
+        + read_jsonl(sk / "replies_train_extra.jsonl")
+    )
     ids = {c["context_id"] for c in ctxs}
     if len(ctxs) != len(ids):
         bad("skills: duplicate context_id")
@@ -247,6 +251,18 @@ def check_exemplars() -> None:
             if strategies[st] < 3:
                 bad(f"exemplars: {sid} strategy {st} has only {strategies[st]}")
         summary[sid] = len(rows)
+    es_path = DATA / "exemplars" / "after-the-breakup.es.jsonl"
+    if es_path.exists():
+        es_rows = read_jsonl(es_path)
+        es_seen = set()
+        for r in es_rows:
+            ex = Exemplar.model_validate(r)
+            if ex.locale != "es" or METHOD_WORDS.search(ex.text) or norm(ex.text) in es_seen:
+                bad(f"exemplars: bad Spanish exemplar {ex.id}")
+            es_seen.add(norm(ex.text))
+        if len(es_rows) < 36:
+            bad(f"exemplars: Spanish file has only {len(es_rows)}")
+        summary["after-the-breakup.es"] = len(es_rows)
     REPORT["exemplars"] = summary
 
 
