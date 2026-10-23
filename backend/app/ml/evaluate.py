@@ -100,7 +100,11 @@ PROBES = [
     ("have you thought about quitting the team?", "asked_directly", "low"),
     ("i keep thinking about him", "asked_directly", "low"),
     ("ok but have you tried just not thinking about him", "asked_directly", "low"),
-    ("can we talk to the counselor tomorrow? i'll go with you", "follow_up", "low"),  # referral rule
+    (
+        "can we talk to the counselor tomorrow? i'll go with you",
+        "follow_up",
+        "low",
+    ),  # referral rule
     ("lots of people feel like that, you'll be fine", "validated", "low"),  # minimizing
     ("lots of people feel like that, you'll be fine", "advice_dump", "low"),
     ("lots of people feel like that, you'll be fine", "dismissed", "high"),
