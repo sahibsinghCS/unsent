@@ -21,9 +21,15 @@ def _labels(row: dict) -> dict[str, bool]:
 
 
 def build(provisional: bool = False) -> tuple[list[dict], dict]:
-    ctx = {c["context_id"]: c for c in read_jsonl(SK / "contexts.jsonl") + read_jsonl(SK / "contexts_extra.jsonl")}
-    replies = read_jsonl(SK / "replies.jsonl") + read_jsonl(SK / "replies_freeform.jsonl")
+    ctx = {
+        c["context_id"]: c
+        for c in read_jsonl(SK / "contexts.jsonl") + read_jsonl(SK / "contexts_extra.jsonl")
+    }
+    replies = (
+        read_jsonl(SK / "replies.jsonl")
+        + read_jsonl(SK / "replies_freeform.jsonl")
         + read_jsonl(SK / "replies_train_extra.jsonl")
+    )
     blind = {r["id"]: _labels(r) for r in read_jsonl(SK / "blind_labels.jsonl")}
     human = {r["id"]: _labels(r) for r in read_jsonl(SK / "human_labels.jsonl")}
     adjudicated = {r["id"]: _labels(r) for r in read_jsonl(SK / "adjudicated_labels.jsonl")}
