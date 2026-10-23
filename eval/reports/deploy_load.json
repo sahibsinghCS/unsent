@@ -2,640 +2,640 @@
   {
     "lane": "deploy",
     "metric": "cold_start_s",
-    "value": 5.78,
+    "value": 7.02,
     "n": 1,
     "split": "local",
-    "notes": "process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:21+00:00"
+    "notes": "process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:22:26+00:00"
   },
   {
     "lane": "deploy",
     "metric": "rss_idle_mb",
-    "value": 796.23,
+    "value": 790.79,
     "n": 1,
     "split": "local",
-    "notes": "after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:21+00:00"
+    "notes": "after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:22:26+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/finish",
-    "value": 1171.94,
+    "value": 57.14,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/finish",
-    "value": 1396.38,
+    "value": 82.63,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/finish",
-    "value": 1427.64,
+    "value": 92.19,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/message",
-    "value": 34.4,
+    "value": 27.42,
     "n": 120,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/message",
-    "value": 66.09,
+    "value": 128.71,
     "n": 120,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/message",
-    "value": 93.99,
+    "value": 191.91,
     "n": 120,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/scenarios",
-    "value": 3.58,
+    "value": 4.02,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/scenarios",
-    "value": 6.33,
+    "value": 8.31,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/scenarios",
-    "value": 39.61,
+    "value": 45.39,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/session_create",
-    "value": 2.07,
+    "value": 2.57,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/session_create",
-    "value": 2.53,
+    "value": 3.38,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/session_create",
-    "value": 3.46,
+    "value": 3.43,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/whatif",
-    "value": 130.21,
+    "value": 719.03,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/whatif",
-    "value": 178.59,
+    "value": 1198.97,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/whatif",
-    "value": 205.64,
+    "value": 1375.98,
     "n": 20,
-    "split": "c1",
-    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:43:53+00:00"
+    "split": "c1/think",
+    "notes": "1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "error_rate",
     "value": 0.0,
     "n": 200,
-    "split": "c1",
+    "split": "c1/think",
     "notes": "non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20",
-    "created": "2026-10-23T00:43:53+00:00"
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "throughput_rps",
-    "value": 6.15,
+    "value": 0.48,
     "n": 200,
-    "split": "c1",
+    "split": "c1/think",
     "notes": "20 conversations, 1 at a time",
-    "created": "2026-10-23T00:43:53+00:00"
+    "created": "2026-10-23T01:29:25+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/finish",
-    "value": 4651.87,
+    "value": 116.97,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/finish",
-    "value": 5313.49,
+    "value": 273.74,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/finish",
-    "value": 5520.82,
+    "value": 319.1,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/message",
-    "value": 161.13,
+    "value": 25.44,
     "n": 120,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/message",
-    "value": 234.82,
+    "value": 50.41,
     "n": 120,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/message",
-    "value": 282.96,
+    "value": 74.51,
     "n": 120,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/scenarios",
-    "value": 48.45,
+    "value": 6.51,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/scenarios",
-    "value": 167.16,
+    "value": 193.66,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/scenarios",
-    "value": 174.53,
+    "value": 223.44,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/session_create",
-    "value": 7.8,
+    "value": 5.56,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/session_create",
-    "value": 52.84,
+    "value": 25.44,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/session_create",
-    "value": 63.61,
+    "value": 126.24,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/whatif",
-    "value": 557.74,
+    "value": 1339.51,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/whatif",
-    "value": 691.06,
+    "value": 2178.23,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/whatif",
-    "value": 716.15,
+    "value": 2430.87,
     "n": 20,
-    "split": "c5",
-    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:19+00:00"
+    "split": "c5/think",
+    "notes": "5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "error_rate",
     "value": 0.0,
     "n": 200,
-    "split": "c5",
+    "split": "c5/think",
     "notes": "non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20",
-    "created": "2026-10-23T00:44:19+00:00"
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "throughput_rps",
-    "value": 7.69,
+    "value": 2.28,
     "n": 200,
-    "split": "c5",
+    "split": "c5/think",
     "notes": "20 conversations, 5 at a time",
-    "created": "2026-10-23T00:44:19+00:00"
+    "created": "2026-10-23T01:30:52+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/finish",
-    "value": 9217.35,
+    "value": 215.25,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/finish",
-    "value": 10535.08,
+    "value": 699.53,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/finish",
-    "value": 10612.86,
+    "value": 790.12,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/message",
-    "value": 289.76,
+    "value": 23.81,
     "n": 120,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/message",
-    "value": 391.91,
+    "value": 46.81,
     "n": 120,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/message",
-    "value": 452.55,
+    "value": 125.23,
     "n": 120,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/scenarios",
-    "value": 200.83,
+    "value": 98.5,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/scenarios",
-    "value": 423.68,
+    "value": 380.11,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/scenarios",
-    "value": 465.75,
+    "value": 416.73,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/session_create",
-    "value": 52.91,
+    "value": 12.65,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/session_create",
-    "value": 220.31,
+    "value": 110.31,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/session_create",
-    "value": 281.4,
+    "value": 140.78,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/whatif",
-    "value": 840.35,
+    "value": 3063.38,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/whatif",
-    "value": 1150.04,
+    "value": 5027.65,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/whatif",
-    "value": 1210.21,
+    "value": 5142.53,
     "n": 20,
-    "split": "c10",
-    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:44:45+00:00"
+    "split": "c10/think",
+    "notes": "10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "error_rate",
     "value": 0.0,
     "n": 200,
-    "split": "c10",
+    "split": "c10/think",
     "notes": "non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20",
-    "created": "2026-10-23T00:44:45+00:00"
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "throughput_rps",
-    "value": 7.92,
+    "value": 4.02,
     "n": 200,
-    "split": "c10",
+    "split": "c10/think",
     "notes": "20 conversations, 10 at a time",
-    "created": "2026-10-23T00:44:45+00:00"
+    "created": "2026-10-23T01:31:42+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/finish",
-    "value": 18052.3,
+    "value": 1168.62,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/finish",
-    "value": 19521.06,
+    "value": 1641.41,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/finish",
-    "value": 19726.59,
+    "value": 1682.67,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/message",
-    "value": 582.55,
+    "value": 24.93,
     "n": 120,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/message",
-    "value": 838.51,
+    "value": 87.22,
     "n": 120,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/message",
-    "value": 887.28,
+    "value": 345.0,
     "n": 120,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/scenarios",
-    "value": 619.33,
+    "value": 647.12,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/scenarios",
-    "value": 1033.7,
+    "value": 1114.51,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/scenarios",
-    "value": 1051.66,
+    "value": 1152.95,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/session_create",
-    "value": 40.54,
+    "value": 27.87,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/session_create",
-    "value": 53.23,
+    "value": 30.48,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/session_create",
-    "value": 56.02,
+    "value": 30.62,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p50_ms/whatif",
-    "value": 1844.17,
+    "value": 9692.67,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p95_ms/whatif",
-    "value": 2487.71,
+    "value": 11089.94,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "latency_p99_ms/whatif",
-    "value": 2668.93,
+    "value": 11262.2,
     "n": 20,
-    "split": "c20",
-    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "split": "c20/think",
+    "notes": "20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "error_rate",
     "value": 0.0,
     "n": 200,
-    "split": "c20",
+    "split": "c20/think",
     "notes": "non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20",
-    "created": "2026-10-23T00:45:10+00:00"
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "throughput_rps",
-    "value": 7.82,
+    "value": 5.91,
     "n": 200,
-    "split": "c20",
+    "split": "c20/think",
     "notes": "20 conversations, 20 at a time",
-    "created": "2026-10-23T00:45:10+00:00"
+    "created": "2026-10-23T01:32:16+00:00"
   },
   {
     "lane": "deploy",
     "metric": "rss_peak_mb",
-    "value": 1584.21,
+    "value": 845.06,
     "n": 1,
     "split": "local",
-    "notes": "peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker",
-    "created": "2026-10-23T00:45:10+00:00"
+    "notes": "peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025)",
+    "created": "2026-10-23T01:32:16+00:00"
   }
 ]
