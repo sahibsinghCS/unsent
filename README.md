@@ -1,28 +1,64 @@
 # FirstReply
 
-> Practice the text that could save a friend.
+**Practice the text that could save a friend's life.**
 
-FirstReply lets teens practice the text that could save a friend's life: they chat with a realistic simulated friend who's struggling while models we trained score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.
+[![CI](https://github.com/sahibsinghCS/hackathon-cac/actions/workflows/ci.yml/badge.svg)](https://github.com/sahibsinghCS/hackathon-cac/actions/workflows/ci.yml)
 
-Built for the 2026 Congressional App Challenge.
+FirstReply lets teens practice the text that could save a friend's life. They chat with a realistic simulated friend who is struggling, while models we trained score every reply, keep the conversation safe, and show exactly where they lost the friend and what would have worked.
 
-**The AI is only the voice.** OpenAI writes the practice friend's wording. Our own deterministic engine decides what the friend may reveal, our verifier and Guardian check every reply, and our trained models score the helper. With no API key, the friend falls back to a reviewed line bank and everything still works.
+Built for the 2026 Congressional App Challenge (IL-11).
 
-> FirstReply is a practice tool, not a crisis service. If someone is in immediate danger, call 911. In the US, call or text **988**.
+> **FirstReply is a practice tool, not a crisis service.** If someone is in immediate danger, call 911. In the US, call or text **988** (en español: llama al 988 y oprime 2, o envía AYUDA al 988).
 
-## Quick start
-```bash
-uv sync                 # install Python dependencies
-make dev-stub           # API on http://localhost:8000 with every component stubbed
-make check              # lint + tests
-make help               # all commands
+## Why
+
+In 2023, 20.4% of US high school students seriously considered suicide (CDC YRBS), and teens usually tell a friend before they tell an adult. Most apps help the person who is struggling. FirstReply trains the *friend*: what to say first, how to ask directly, and how to get them to a trusted adult or 988.
+
+## What it looks like
+
+| Texting a friend, with X-ray mode on | Feedback: where you lost them, and what would have worked |
+|---|---|
+| ![Chat with X-ray](frontend/screenshots/07-chat-xray-desktop.png) | ![Feedback](frontend/screenshots/12-feedback-desktop.png) |
+| **What if: better replies played forward** | **Every friend is labeled with the languages it supports** |
+| ![What if](frontend/screenshots/14-whatif-desktop.png) | ![Practice in Spanish](frontend/screenshots/27-practice-es-desktop.png) |
+
+## What it does
+
+- **5 friends to practice with**, each with their own situation, texting style and level of guardedness. Maya also works fully in Spanish.
+- **A friend who reacts realistically.** Trust goes up or down with every reply. The friend opens up step by step (from "surface" to "thoughts of suicide" to "open to help"), goes quiet and leaves you on "Seen" if you brush them off, and agrees to get help when you've earned it.
+- **X-ray mode** shows what our models saw in each message, and the exact trust math ("+6.4 trusted adult · −2 time = +8.4").
+- **Feedback** on 7 helping skills (based on the Question, Persuade, Refer framework), the message where you lost them, highlighted words, and a verified better reply for each weak message.
+- **What if**: three better replies are played forward through the same engine, so you can see where each would have gone.
+- **Rewind** to any message and try again: the conversation becomes a tree.
+- **Safety first**: if *you* seem to be at risk, the practice stops and shows real help. Harmful messages are blocked with a short explanation. A "real mode" page has fixed (non-AI) steps and crisis lines.
+
+## How it works: the AI is only the voice
+
+```mermaid
+flowchart LR
+  A[Your message] --> G{Guardian<br/>safety check}
+  G -- you seem at risk --> C[Pause + real resources]
+  G -- harmful --> B[Blocked, with a teaching note]
+  G -- ok --> S[Skill detector<br/>2 trained models]
+  S --> E[State engine<br/>trust, disclosure level, Seen]
+  E --> V[Friend voice<br/>OpenAI words it, or a reviewed line]
+  V --> R{Verifier + Guardian<br/>check the reply}
+  R -- pass --> F[Friend replies]
+  R -- fail --> L[Reviewed line bank]
+  L --> F
 ```
-API docs: http://localhost:8000/docs
 
-## How it works
-See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built with `make docs`).
+- **OpenAI writes only the friend's wording.** Our deterministic engine decides *what* the friend may reveal and when. The verifier rejects any reply that leaks something the friend isn't ready to share, breaks character, gives advice, or comes out in the wrong language. Then a reviewed line is used instead. With no API key, everything still works with the reviewed line bank.
+- **Our own models score the helper**: multilingual sentence embeddings plus logistic regression, and character/word n-grams plus logistic regression, stacked and calibrated. They run locally, with no API.
+- **The Guardian** (our safety filter) is speaker-aware. Asking your friend *"are you thinking about killing yourself?"* is the most important skill, so it is never blocked. It combines a text normalizer (slang, l33t, look-alike letters, emoji, Spanish), a reviewed word list and a trained classifier.
+- **Privacy:** no accounts and no database. Conversations live only in server memory and are deleted after 60 minutes of inactivity, along with everything derived from them. A test scans the whole server memory to prove it.
+
+The full explanation, written so a high-school student can defend it to an engineer, is in [`HOW_IT_WORKS.md`](HOW_IT_WORKS.md).
 
 ## Results
+
+Every number comes from our own tests on data the models never trained on, with *n* (how many examples) and the split. The table is generated by `make report` from `eval/reports/*.json`.
+
 <!-- METRICS:START -->
 | What | Result | Compared with | n | Split |
 |---|---|---|---|---|
@@ -66,8 +102,58 @@ See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built
 Every metric with n, split and notes: [`docs/METRICS.md`](docs/METRICS.md) (rebuilt by `make report`).
 <!-- METRICS:END -->
 
+## Run it yourself
+
+You need Python 3.11+ with [uv](https://docs.astral.sh/uv/), and Node 20+.
+
+```bash
+uv sync                                         # Python dependencies
+(cd frontend && npm ci && npm run build)        # build the web app
+make dev                                        # open http://localhost:8000
+```
+
+- The first start downloads the ~240 MB multilingual embedding model.
+- To use the AI voice, copy `.env.example` to `.env` and set `OPENAI_API_KEY`. Without it, the friend uses the reviewed line bank.
+- `FR_LLM=0 make dev` runs fully offline.
+
+| Command | What it does |
+|---|---|
+| `make check` | lint + about 780 tests (offline) |
+| `make smoke` | a full conversation through the HTTP API |
+| `make eval` / `make report` | re-run every evaluation and rebuild the numbers above |
+| `make redteam` | attack bank, multi-turn safety invariants, fuzzing |
+| `make train` | retrain the skill detector (deterministic) |
+| `make help` | every command |
+
+Deployment (Docker, or Google Cloud Run): [`docs/DEPLOY.md`](docs/DEPLOY.md).
+
+## Repository map
+
+| Path | What |
+|---|---|
+| `backend/app/pipeline.py` | the turn pipeline: Guardian → detector → engine → voice → verifier |
+| `backend/app/safety/` | the Guardian |
+| `backend/app/ml/` | skill detector, calibration, explanations, critic |
+| `backend/app/engine/` | state engine, LLM voice, verifier |
+| `backend/app/whatif/` | what-if rollouts |
+| `frontend/` | React + TypeScript + Tailwind web app (English and Spanish) |
+| `data/` | scenarios, friend line bank, labeled practice replies, safety examples, attack bank |
+| `eval/` | evaluation scripts, red-team harness, reports |
+| `docs/` | rubric, label guide, safe-messaging rules, dataset card, metrics, deployment |
+
+## Limitations
+
+- These are simulated friends, not real people, and the scores are coaching, not a diagnosis. The scenarios, friend lines and rubric are drafts awaiting review by a school counselor.
+- The skill detector is strong on English and weaker on Spanish free-form text. Spanish practice is complete only for Maya so far.
+- The safety filter misses some attacks it has never seen (see "Red-team attacks handled as expected" above). Because the engine only allows reviewed content to decide what the friend says, a missed attack still can't make the friend unsafe (0 unsafe friend lines in 524 adversarial conversations).
+- The AI voice adds 2–5 seconds per reply.
+
 ## Project docs
-- [`FIRSTREPLY.md`](FIRSTREPLY.md): product plan
-- [`docs/LANES.md`](docs/LANES.md): architecture and build lanes
+
+- [`HOW_IT_WORKS.md`](HOW_IT_WORKS.md): every part explained, with questions a judge might ask
 - [`docs/RUBRIC.md`](docs/RUBRIC.md): the 7 helping skills
+- [`docs/LABEL_GUIDE.md`](docs/LABEL_GUIDE.md): how practice replies are labeled
 - [`docs/SAFE_MESSAGING.md`](docs/SAFE_MESSAGING.md): content safety rules
+- [`docs/DATASET.md`](docs/DATASET.md): how the data was made and checked
+- [`docs/METRICS.md`](docs/METRICS.md): every measured number
+- [`DEVLOG.md`](DEVLOG.md): decisions and what changed along the way
