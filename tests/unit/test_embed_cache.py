@@ -83,3 +83,21 @@ def test_session_purge_sweeps_conversation_caches(counting, monkeypatch):
     sweep_derived_caches(force=True)
     assert embed.purge_expired() == 0 and "k" not in llm._memory_cache
     llm._memory_cache.clear()
+
+
+def test_registered_sweepers_run_with_the_session_purge():
+    from backend.app import session
+
+    calls: list[int] = []
+
+    def purge() -> int:
+        calls.append(1)
+        return 0
+
+    session.register_sweeper(purge)
+    session.register_sweeper(purge)  # registering twice is harmless
+    try:
+        sweep_derived_caches(force=True)
+        assert calls == [1]
+    finally:
+        session._sweepers.remove(purge)

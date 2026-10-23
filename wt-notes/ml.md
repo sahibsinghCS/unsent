@@ -20,11 +20,18 @@
 - Kappa CLI (`python -m backend.app.ml.kappa`), seeded 1,000-resample bootstrap CI.
 
 ## In progress
-- Next (queued by integrator, after this retrain): speed up POST /finish (p50 1.2 s → ≤ 0.4 s, identical
-  output, before/after numbers, test on a fixed conversation).
+- Done: /finish speed-up (see Numbers). No pipeline hook needed.
 - Later: kappa when counselor labels exist.
 
 ## Decisions
+- Once the friend was asked directly (flags.asked_directly_ever before the message), the critic never suggests a
+  rewrite that asks again: exemplars with strategy ask_directly or the asked_directly label are skipped, and LLM
+  candidates the detector scores asked_directly ≥ 0.5 are dropped (same rule as what-if).
+- Integrator + Sahib: keep the pooled model the pre-registered rule chose (freeform 0.822 vs whole 0.841,
+  within noise at n=221); docs/how/ml.md states the rule, the val decision and the 0.841 we gave up.
+- Critic: ended_fail chats open with "This one slipped away, and that's exactly what practice is for." (ES:
+  "Esta vez se te escapó, y justo para eso sirve practicar."); whole-chat "never got to" notes capped at 3 by
+  TIP_ORDER; per-message notes all kept.
 - Retrain at integration e8a9a1f (train 824 / val 152 / test 133 / test_freeform 221). Training now applies
   the pre-registered pooling rule itself (`--pooling auto`, default). On this data it ADOPTED pooling (val OOF
   macro-F1 0.923 → 0.931, ECE 0.011 → 0.010). Info-only cost: test_freeform 0.841 (whole) → 0.822 (pooled),
@@ -66,6 +73,10 @@ Systematic: (1) indirect encouragement ("not alone in it", "i'd find a therapist
 worth-affirming validation without feeling words; (3) agreement replies. No test example was patched.
 
 ## Requests
+- **integrator (optional, speed):** embed.py's cached_scope embeds cache misses one text at a time. Embedding
+  all misses of one embed() call in a single batch (then caching each row) would bring /finish back toward
+  0.09 s with think time and cut /messages CPU; fastembed mean-pools with the attention mask, so rows should
+  match per-text vectors to ~1e-6. Only if you're comfortable with that.
 - **data (new):** train rows for indirect encouraged_help ("you don't have to be alone in it", "i'd find a
   therapist if i were you" style), permission-giving validation ("it's okay to not be fine", "you don't have
   to be fine with me"), and referrals with time words that are NOT follow_up ("counselor tomorrow? i'll go
@@ -79,6 +90,12 @@ worth-affirming validation without feeling words; (3) agreement replies. No test
 - **integrator:** the ML eval and the app need `FR_EMBED=fastembed` (the artifact refuses `hash`).
 
 ## Known issues
+- /finish worst case: if "finish" arrives the instant the last message returns after a burst of messages,
+  it waits for the background explanations still queued (p50 1.66 s); with ≥ 2 s of think time it's 0.24 s.
+  The deploy lane's load test should include think time between messages, or it measures this worst case.
+- Background explanations add CPU during the chat: /messages p50 50 → ~150 ms on this machine.
+- Privacy: the memoized explanations expire after the session TTL (registered with session.register_sweeper);
+  embeddings use embed.py's shared TTL'd cache. No ml-local cache keeps conversation text longer.
 - First fastembed call takes ~2.5 s (model load); then ~60–110 ms per message for predict + highlights.
 - Under `FR_EMBED=hash` (tests, `make smoke`) the detector is the keyword stub; the real detector is
   covered by unit tests with a tiny hash-trained model.
@@ -98,3 +115,8 @@ worth-affirming validation without feeling words; (3) agreement replies. No test
   error rate flagged vs unflagged: val 17% vs 1.2%, test 7% vs 0.6%, freeform 39% vs 2.9%.
 - Probes: 13/14 (miss: "can we talk to the counselor tomorrow? i'll go with you" → follow_up 0.67).
 - Counselor kappa: not yet (no counselor labels).
+- /finish p50 on a fixed 6-message chat (fastembed, FR_LLM=0, 1 user, cold caches each run, n=5), after the
+  privacy fix (shared TTL'd per-text cache from embed.py + TTL'd explanation memo): before 2.42 s → 0.24 s with
+  a 2 s pause before finish / 1.66 s with finish sent immediately; /messages p50 ~150 ms. (My earlier private
+  batched LRU gave 0.09 / 0.94 s; the shared cache embeds misses one text at a time.) Output identical (unit test on a fixed conversation;
+  real-model API report compared field by field, 0 differences > 1e-6).

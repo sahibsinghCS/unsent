@@ -8,6 +8,7 @@ import re
 from dataclasses import dataclass, field
 
 import numpy as np
+from scipy.special import expit
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import FeatureUnion
@@ -30,6 +31,24 @@ class ConstantModel:
     def predict_proba(self, x) -> np.ndarray:
         n = x.shape[0]
         return np.column_stack([np.full(n, 1 - self.prior), np.full(n, self.prior)])
+
+
+def stacked_proba(models: dict[str, object], labels: tuple[str, ...], x) -> np.ndarray:
+    """All labels' probabilities in one matrix product (same math as each LR's predict_proba)."""
+    weights, bias, constant = [], [], {}
+    for j, label in enumerate(labels):
+        model = models[label]
+        if isinstance(model, ConstantModel):
+            constant[j] = model.prior
+            weights.append(np.zeros(x.shape[1]))
+            bias.append(0.0)
+        else:
+            weights.append(model.coef_[0])
+            bias.append(float(model.intercept_[0]))
+    probs = expit(np.asarray(x @ np.column_stack(weights)) + np.array(bias))
+    for j, prior in constant.items():
+        probs[:, j] = prior
+    return probs
 
 
 def fit_binary(x, y: np.ndarray, c: float, seed: int):
@@ -134,9 +153,9 @@ class SkillModel:
     def base_proba(self, texts: list[str], contexts: list[str]) -> tuple[np.ndarray, np.ndarray]:
         xa = embed_features(texts, contexts)
         xb = self.vectorizer.transform(texts)
-        pa = np.column_stack([self.model_a[label].predict_proba(xa)[:, 1] for label in self.labels])
-        pb = np.column_stack([self.model_b[label].predict_proba(xb)[:, 1] for label in self.labels])
-        return pa, pb
+        return stacked_proba(self.model_a, self.labels, xa), stacked_proba(
+            self.model_b, self.labels, xb
+        )
 
     def pooled_proba(self, texts: list[str], contexts: list[str]) -> tuple[np.ndarray, np.ndarray]:
         """Score the whole message and each of its sentences; POSITIVE labels take the max.

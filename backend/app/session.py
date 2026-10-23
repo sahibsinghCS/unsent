@@ -9,6 +9,7 @@ from __future__ import annotations
 import threading
 import time
 import uuid
+from collections.abc import Callable
 
 from backend.app.config import session_ttl_seconds
 from backend.app.contracts import Node, Session, State
@@ -62,11 +63,19 @@ def rewind(session: Session, node_id: str) -> State:
 
 _SWEEP_EVERY_S = 30.0
 _last_sweep = 0.0
+_sweepers: list[Callable[[], object]] = []
+
+
+def register_sweeper(purge: Callable[[], object]) -> None:
+    """Register a cache's purge function. Any component that keeps text derived from conversations in
+    memory (embeddings, explanations, ...) must drop entries older than the session TTL when it runs."""
+    if purge not in _sweepers:
+        _sweepers.append(purge)
 
 
 def sweep_derived_caches(force: bool = False) -> None:
-    """Expire everything derived from conversations together with the sessions: cached text embeddings
-    and the in-memory LLM cache (both keep entries at most one session TTL)."""
+    """Expire everything derived from conversations together with the sessions: cached text embeddings,
+    the in-memory LLM cache and every registered cache (each keeps entries at most one session TTL)."""
     global _last_sweep
     now = time.time()
     if not force and now - _last_sweep < _SWEEP_EVERY_S:
@@ -76,6 +85,8 @@ def sweep_derived_caches(force: bool = False) -> None:
 
     embed.purge_expired()
     llm.purge_expired()
+    for purge in list(_sweepers):
+        purge()
 
 
 class SessionStore:

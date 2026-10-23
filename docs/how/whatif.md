@@ -24,17 +24,25 @@ version of that search, using the same pieces the real chat uses:
      your message on the skill it teaches, it trips no negative label (dismissing, advice-dumping,
      promising secrecy), and the **Guardian** lets it through.
    - If the feedback report already showed a "Try instead" rewrite for that message, that rewrite is
-     **candidate #1**, so the two screens never disagree.
+     **candidate #1**, so the two screens agree (unless that rewrite would ask directly again after the
+     friend was already asked: no candidate ever asks twice).
    - We pick **3 different** ones with *maximal marginal relevance* (MMR): each pick must be relevant
      but different from the ones already picked (a different skill, and never a near-copy, measured with
      sentence embeddings).
 2. **Play each one forward (rollout).** The candidate replaces your message and goes through the **real
    state engine** (trust, levels, gates, "Seen", endings) and the friend answers with the **reviewed line
    bank voice**, exactly the way the live chat does when the AI voice is off. Then we simulate **up to 3
-   more helper messages**. For each of those, we try every unused exemplar, ask the engine "what would
-   happen next?" (one-step look-ahead), and send the one that helps most: trust change + 10 × level gained
-   (± 25 if the chat would end). A text is never sent twice. If the friend leaves you on Seen, or the
-   chat ends, the simulation does exactly what the engine says.
+   more helper messages**, chosen like a person who remembers what they already said:
+   - **never ask directly twice:** once the friend has been asked, no later message asks again;
+   - **a new skill first:** exemplars that teach a skill not yet shown on this path come before ones
+     that repeat a skill (rubric order listen → ask → persuade → refer → follow up breaks ties), so a
+     referral is repeated only when nothing new is left, and then with different words;
+   - **different from the other cards:** messages another card already used are tried last;
+   - among the rest, we ask the engine "what would happen next?" (one-step look-ahead) and send the one
+     that helps most: trust change + 10 × level gained (± 25 if the chat would end).
+
+   A text is never sent twice. If the friend leaves you on Seen, or the chat ends, the simulation does
+   exactly what the engine says.
 3. **Score each path** with the value formula below and mark the best one.
 
 ### The value formula
@@ -65,10 +73,12 @@ that the simulated states, "Seen" and friend lines are **identical** to the live
 the naive copy gives a different (wrong) trust.
 
 ### Speed
-The detector and the Guardian re-embed the same ~40 exemplar texts at every look-ahead step. While a
-simulation runs we wrap the shared embedder in a small cache (`whatif/cache.py`) so each text is embedded
-once, on its own (so its vector never depends on which batch it came in). That took p95 from 2.6 s to
-about 0.6 s with the real models, with identical results.
+The detector and the Guardian re-embed the same ~40 exemplar texts at every look-ahead step. A
+simulation runs inside `embed.cached_scope()` (`whatif/cache.py`), so for that request only, each text is
+embedded once, on its own (its vector never depends on which batch it came in), and reused. The cache
+forgets texts after the 60-minute session lifetime, like everything else that holds chat text. That took
+p95 from 2.6 s to about 0.6 s with the real models, with identical results. `whatif.cache.warm_up()`
+embeds every friend's exemplars at startup so the first click is fast too.
 
 ## Why this approach (and what we considered instead)
 - **Bank voice, not the AI voice:** the simulation is deterministic (same chat → same three paths, every
@@ -91,19 +101,29 @@ conversations × 5 friends = **90 weak points**. Each script has one weak messag
 3 advice-dump texts), placed first, after a check-in, or after listening, followed by weak replies
 ("ok", "that sucks"…). These scripts are ours, not training data.
 
-| Metric | Value | n |
+| Metric | English (split "scripted", n = 90 weak points) | Spanish, Maya ("scripted_es", n = 18) |
 |---|---|---|
-| weak points with 3 paths of 3 different strategies | 100% | 90 |
-| best path beats what was actually said (value) | 100% | 90 |
-| best path beats what was actually said (final trust) | 100% | 90 |
-| mean trust gain (best path − actual, 0–100 scale) | +76.2 | 90 |
-| best path ≥ a hand-written "textbook" continuation (validate → ask → refer → follow up) | 100% | 90 |
-| mean value over that textbook continuation | +57.5 | 90 |
-| best paths where the friend accepts help within the horizon | 100% | 90 |
-| latency p50 / p95 (warm process, this box) | 0.49 s / 0.58 s | 90 |
-| two runs identical | 100% | 90 |
-| candidate messages the Guardian would block | 0 | 885 messages |
-| friend bubbles failing `check_friend` | 0 | 2,183 bubbles |
+| 3 paths with 3 different strategies | 100% | 100% |
+| best path beats what was actually said (value and final trust) | 100% | 100% |
+| mean trust gain (best path − actual, 0–100 scale) | +68.6 | +57.4 |
+| best path ≥ a hand-written "textbook" continuation (validate → ask → refer → follow up) | 100% | 100% |
+| mean value over that textbook continuation | +51.9 | +53.3 |
+| best paths where the friend accepts help within the horizon | 100% | 100% |
+| paths that ask directly a second time | 0 / 270 | 0 / 54 |
+| later messages also used by another card | 2.2% (n = 627) | 11.0% (n = 146) |
+| latency p50 / p95 (warm process, this box) | 0.48 s / 0.61 s | 0.56 s / 0.67 s |
+| two runs identical | 100% | 100% |
+| candidate messages the Guardian would block | 0 / 897 | 0 / 200 |
+| friend bubbles failing `check_friend` | 0 / 2,146 | 0 / 520 |
+| bubbles in the wrong language | 0 / 3,043 | 0 / 720 |
+
+**Before and after the "remember what you said" rule** (same eval). Before, the later messages were
+pure trust-greedy: 110 / 270 English paths (40 / 54 Spanish) asked directly a second time, often after
+the friend had already answered, and 89% (Spanish 94%) of later messages were the same ones the other
+cards used, so the cards read alike. After: 0 repeated asks and 2% (11%) shared. It costs some
+simulated trust (mean gain +76.2 → +68.6; Spanish +71.2 → +57.4; value over textbook +57.5 → +51.9;
+Spanish +65.9 → +53.3) because asking again still earns trust in the engine, but it reads like a real
+person, and every share above stayed at 100%.
 
 **Read these honestly:** the scripted continuations are deliberately weak, so "beats what was said" is an
 easy bar. The textbook comparison is the harder one; the search wins mostly because exemplars often
@@ -117,9 +137,12 @@ engine rewards each skill.
 - **Candidates come only from the reviewed exemplar bank** (about 40 per friend), so a reply is only as
   good as the best exemplar for that moment. If no exemplar beats your message on the skill it teaches,
   fewer than 3 cards (or none) appear; we never invent one.
-- **Greedy look-ahead:** each later message is the best *next step*, not the best 3-step plan.
-- **Spanish** works only where the friend has Spanish exemplars (the data lane is adding Maya's). A chat
-  never mixes languages, so a Spanish chat without Spanish exemplars gets no cards rather than English ones.
+- **Greedy look-ahead:** each later message is the best *next step* (after the "new skill first" rules),
+  not the best 3-step plan.
+- **Spanish skill scores are weaker:** the detector is less sure about Spanish, so a Spanish card can show
+  a low critic score (e.g. 0.28 for a good validating reply) until the ML lane's Spanish retrain lands.
+- **Spanish** works only where the friend has Spanish exemplars (today: Maya). A chat never mixes
+  languages, so a Spanish chat without Spanish exemplars would get no cards rather than English ones.
 - The evaluation uses scripted weak points, not real users' chats.
 
 ## Questions a judge might ask (with answers)
