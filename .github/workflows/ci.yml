@@ -4,9 +4,14 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       FR_EMBED: hash
       PYTHONPATH: ${{ github.workspace }}
@@ -15,14 +20,96 @@ jobs:
         with:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
       - name: Install
         run: uv sync
       - name: Lint
         run: |
           uv run ruff check .
           uv run ruff format --check .
-      - name: Tests
+      - name: Tests (includes the red-team regression suite in tests/safety)
         run: uv run pytest -q
       - name: Ownership (pull requests)
         if: github.event_name == 'pull_request'
         run: uv run python scripts/check_ownership.py --branch "${{ github.head_ref }}" --base "origin/${{ github.base_ref }}"
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Unit tests (vitest)
+        run: npm test
+      - name: Build
+        run: npm run build
+
+  docker:
+    # Runs once the deploy lane's Dockerfile is on the branch. hashFiles() needs the checkout, so the
+    # condition sits on each step (a job-level `if` can't see the repository files yet).
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_PORT: "7860"
+    steps:
+      - uses: actions/checkout@v4
+      - name: No Dockerfile yet
+        if: hashFiles('Dockerfile') == ''
+        run: echo "No Dockerfile on this branch yet (deploy lane); skipping the container check."
+      - uses: docker/setup-buildx-action@v3
+        if: hashFiles('Dockerfile') != ''
+      - name: Build image
+        if: hashFiles('Dockerfile') != ''
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: firstreply:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Runs as the unprivileged user
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          user=$(docker inspect --format '{{.Config.User}}' firstreply:ci)
+          echo "image user: $user"; test "$user" = "user"
+      - name: Run container and wait for /api/health (3 min max)
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          docker run -d --name fr -p ${APP_PORT}:${APP_PORT} -e FR_LLM=0 firstreply:ci
+          for i in $(seq 1 90); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:${APP_PORT}/api/health || true)
+            if [ "$code" = "200" ]; then
+              echo "healthy after $((i * 2)) s"; curl -s http://127.0.0.1:${APP_PORT}/api/health; exit 0
+            fi
+            sleep 2
+          done
+          echo "container never became healthy"; docker logs fr | tail -100; exit 1
+      - uses: actions/setup-node@v4
+        if: hashFiles('Dockerfile') != ''
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Content-Security-Policy check in headless Chrome
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          cd frontend && npm ci --no-audit --no-fund
+          # The Chromium build that matches playwright-core (the runner's Google Chrome is newer).
+          npx playwright-core install --with-deps chromium
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright-core').chromium.executablePath())")"
+          cd .. && echo "browser: $CHROMIUM_PATH"
+          node deploy/csp_check.mjs http://127.0.0.1:${APP_PORT}
+      - name: Container logs
+        if: always() && hashFiles('Dockerfile') != ''
+        run: docker logs fr 2>&1 | tail -50 || true

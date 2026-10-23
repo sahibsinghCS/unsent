@@ -16,6 +16,22 @@
     }
   },
   {
+    "id": "redteam_friend_unsafe",
+    "lane": "redteam",
+    "metric": "invariants.I1.violations",
+    "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed]",
+    "format": "count",
+    "better": "lower",
+    "label": {
+      "en": "Unsafe friend lines shown under attack",
+      "es": "Mensajes inseguros del amigo bajo ataque"
+    },
+    "explain": {
+      "en": "We ran 524 adversarial conversations through the real app and checked every friend message with our safety filter. n = friend messages checked.",
+      "es": "Corrimos 524 conversaciones con ataques en la app real y revisamos cada mensaje del amigo con nuestro filtro. n = mensajes revisados."
+    }
+  },
+  {
     "id": "helper_crisis_caught",
     "lane": "safety",
     "metric": "self_risk_recall",
@@ -32,28 +48,6 @@
     }
   },
   {
-    "id": "guardian_accuracy",
-    "lane": "safety",
-    "metric": "combined.macro_f1",
-    "split": "test",
-    "format": "score",
-    "better": "higher",
-    "baseline": {
-      "lane": "safety",
-      "metric": "lexicon_only.macro_f1",
-      "split": "test",
-      "label": { "en": "word list alone", "es": "solo la lista de palabras" }
-    },
-    "label": {
-      "en": "Safety filter accuracy (macro-F1, 6 kinds of message)",
-      "es": "Precisión del filtro de seguridad (macro-F1, 6 tipos de mensaje)"
-    },
-    "explain": {
-      "en": "Our trained classifier plus a reviewed word list, compared with the word list alone.",
-      "es": "Nuestro clasificador entrenado más una lista de palabras revisada, comparado con solo la lista."
-    }
-  },
-  {
     "id": "skills_unseen",
     "lane": "ml",
     "metric": "macro_f1_ensemble",
@@ -64,7 +58,10 @@
       "lane": "ml",
       "metric": "macro_f1_keyword_baseline",
       "split": "test_freeform",
-      "label": { "en": "keyword matching", "es": "buscar palabras clave" }
+      "label": {
+        "en": "keyword matching",
+        "es": "buscar palabras clave"
+      }
     },
     "label": {
       "en": "Skill scoring on replies it never saw (macro-F1)",
@@ -73,28 +70,6 @@
     "explain": {
       "en": "Hand-written practice replies that share no phrasing with the training data, scored for 10 helping skills.",
       "es": "Respuestas de práctica escritas a mano que no comparten frases con los datos de entrenamiento, evaluadas en 10 habilidades."
-    }
-  },
-  {
-    "id": "honest_confidence",
-    "lane": "ml",
-    "metric": "ece_after_calibration",
-    "split": "test_freeform",
-    "format": "score",
-    "better": "lower",
-    "baseline": {
-      "lane": "ml",
-      "metric": "ece_before_calibration",
-      "split": "test_freeform",
-      "label": { "en": "before calibration", "es": "antes de calibrar" }
-    },
-    "label": {
-      "en": "Confidence error (ECE, lower is better)",
-      "es": "Error de confianza (ECE, menor es mejor)"
-    },
-    "explain": {
-      "en": "When the model says it's 80% sure, it should be right about 80% of the time. This measures how far off that is.",
-      "es": "Cuando el modelo dice que está 80% seguro, debería acertar cerca del 80% de las veces. Esto mide qué tan lejos está."
     }
   },
   {
@@ -108,7 +83,10 @@
       "lane": "ml",
       "metric": "uncertain_error_rate_unflagged",
       "split": "test_freeform",
-      "label": { "en": "when it isn't flagged", "es": "cuando no se marca" }
+      "label": {
+        "en": "when it isn't flagged",
+        "es": "cuando no se marca"
+      }
     },
     "label": {
       "en": "Wrong when it says “unsure”",
@@ -117,6 +95,31 @@
     "explain": {
       "en": "A skill is flagged “unsure” when our two models disagree. Flagged calls are wrong far more often, so the flag tells you when to double-check.",
       "es": "Una habilidad se marca como dudosa cuando nuestros dos modelos no coinciden. Esas decisiones fallan mucho más, así que la marca te avisa cuándo revisar."
+    }
+  },
+  {
+    "id": "honest_confidence",
+    "lane": "ml",
+    "metric": "ece_after_calibration",
+    "split": "test_freeform",
+    "format": "score",
+    "better": "lower",
+    "baseline": {
+      "lane": "ml",
+      "metric": "ece_before_calibration",
+      "split": "test_freeform",
+      "label": {
+        "en": "before calibration",
+        "es": "antes de calibrar"
+      }
+    },
+    "label": {
+      "en": "Confidence error (ECE, lower is better)",
+      "es": "Error de confianza (ECE, menor es mejor)"
+    },
+    "explain": {
+      "en": "When the model says it's 80% sure, it should be right about 80% of the time. This measures how far off that is.",
+      "es": "Cuando el modelo dice que está 80% seguro, debería acertar cerca del 80% de las veces. Esto mide qué tan lejos está."
     }
   },
   {
@@ -149,6 +152,79 @@
     "explain": {
       "en": "The friend can't reveal what they aren't ready to share yet. Our verifier checks every AI-written reply before it's shown.",
       "es": "El amigo no puede revelar lo que aún no está listo para contar. Nuestro verificador revisa cada respuesta escrita por la IA antes de mostrarla."
+    }
+  },
+  {
+    "id": "guardian_accuracy",
+    "lane": "safety",
+    "metric": "combined.macro_f1",
+    "split": "test",
+    "format": "score",
+    "better": "higher",
+    "baseline": {
+      "lane": "safety",
+      "metric": "lexicon_only.macro_f1",
+      "split": "test",
+      "label": {
+        "en": "word list alone",
+        "es": "solo la lista de palabras"
+      }
+    },
+    "label": {
+      "en": "Safety filter accuracy (macro-F1, 6 kinds of message)",
+      "es": "Precisión del filtro de seguridad (macro-F1, 6 tipos de mensaje)"
+    },
+    "explain": {
+      "en": "Our trained classifier plus a reviewed word list, compared with the word list alone.",
+      "es": "Nuestro clasificador entrenado más una lista de palabras revisada, comparado con solo la lista."
+    }
+  },
+  {
+    "id": "redteam_attack_bank",
+    "lane": "redteam",
+    "metric": "attacks.match_rate",
+    "split": "attack_bank [fastembed]",
+    "format": "percent",
+    "better": "higher",
+    "label": {
+      "en": "Red-team attacks handled as expected",
+      "es": "Ataques manejados como se esperaba"
+    },
+    "explain": {
+      "en": "250 hand-written attacks the safety filter never trained on (encouraging harm, method questions, tricks to break character). Lower than its test score, and we show it anyway.",
+      "es": "250 ataques escritos a mano con los que el filtro nunca entrenó (animar a hacerse daño, preguntas de métodos, trucos). Es menor que su resultado de prueba y lo mostramos igual."
+    }
+  },
+  {
+    "id": "redteam_fuzz",
+    "lane": "redteam",
+    "metric": "fuzz.robustness",
+    "split": "guardian test split [fastembed]",
+    "format": "percent",
+    "better": "higher",
+    "label": {
+      "en": "Still right when messages are scrambled",
+      "es": "Sigue acertando con mensajes alterados"
+    },
+    "explain": {
+      "en": "Test messages rewritten the way teens and attackers type: l33t, s p a c e s, emoji, look-alike letters, typos, Spanglish, “jk”.",
+      "es": "Mensajes de prueba escritos como escriben los adolescentes y los atacantes: l33t, e s p a c i o s, emojis, letras parecidas, errores, spanglish, “jk”."
+    }
+  },
+  {
+    "id": "redteam_ask_in_chat",
+    "lane": "redteam",
+    "metric": "invariants.I6.violations",
+    "split": "attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed]",
+    "format": "count",
+    "better": "lower",
+    "label": {
+      "en": "Direct questions blocked mid-conversation",
+      "es": "Preguntas directas bloqueadas en la conversación"
+    },
+    "explain": {
+      "en": "Every way of asking “are you thinking about suicide?” in our data (English, Spanish, Spanglish), sent mid-chat in every scenario. n = messages sent.",
+      "es": "Cada forma de preguntar “¿estás pensando en suicidarte?” de nuestros datos (inglés, español, spanglish), enviada a mitad de la conversación. n = mensajes enviados."
     }
   },
   {

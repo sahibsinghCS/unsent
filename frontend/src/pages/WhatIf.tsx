@@ -58,17 +58,23 @@ export function WhatIf() {
   }, [sessionId, nodeId]);
   useEffect(load, [load]);
 
+  // Exemplar strategies (check_in, validate, ask_directly, refer, follow_up, combo) in the UI language.
+  const strategyName = useCallback((s: string) => {
+    const name = t(`whatif.strategies.${s}`);
+    return name.startsWith('whatif.') ? s.replace(/_/g, ' ') : name;
+  }, [t]);
+
   const series = useMemo<Series[]>(() => {
     if (!result) return [];
     const simulated = result.paths.map((p, i) => ({
-      label: `${i + 1}. ${p.strategy.replace(/_/g, ' ')}`,
+      label: `${i + 1}. ${strategyName(p.strategy)}`,
       values: p.trust_series,
       color: i === result.best_index ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length],
       emphasis: (i === result.best_index ? 'best' : 'normal') as Series['emphasis'],
     }));
     const actual = actualSeries(nodes, result.from_node_id);
     return actual.length > 1 ? [...simulated, { label: t('whatif.you_said'), values: actual, color: tokenColor('muted'), emphasis: 'actual' }] : simulated;
-  }, [result, nodes, t]);
+  }, [result, nodes, t, strategyName]);
 
   async function tryInChat(text: string) {
     if (!result) return;
@@ -113,11 +119,23 @@ export function WhatIf() {
         </div>
       )}
 
-      <section className="card mt-6 p-5">
-        <h2 className="eyebrow mb-3">{t('whatif.overlay')}</h2>
-        <OverlayChart series={series} />
-        <p className="mt-2 text-xs text-muted">{t('whatif.simulated_hint')}</p>
-      </section>
+      {result.paths.length === 0 && (
+        <div className="card mt-6 p-8 text-center" role="status" data-testid="whatif-empty">
+          <Icon name="sparkle" className="mx-auto h-8 w-8 text-warm" />
+          <p className="mx-auto mt-3 max-w-md text-lg font-semibold">{t('whatif.empty')}</p>
+          <Link to={`/feedback/${sessionId}`} className="btn-ghost mt-5">
+            {t('whatif.back')}
+          </Link>
+        </div>
+      )}
+
+      {result.paths.length > 0 && (
+        <section className="card mt-6 p-5">
+          <h2 className="eyebrow mb-3">{t('whatif.overlay')}</h2>
+          <OverlayChart series={series} />
+          <p className="mt-2 text-xs text-muted">{t('whatif.simulated_hint')}</p>
+        </section>
+      )}
 
       <ol className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {result.paths.map((path, i) => {
@@ -129,9 +147,12 @@ export function WhatIf() {
                 <span className="grid h-6 w-6 place-items-center rounded-full text-xs font-bold text-white" style={{ background: best ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length] }}>
                   {i + 1}
                 </span>
-                <span className="chip border-line font-mono">{path.strategy}</span>
+                <span className="chip border-line">{strategyName(path.strategy)}</span>
                 {best && <span className="chip border-transparent bg-brand text-brand-ink">★ {t('whatif.best')}</span>}
-                <span className="mono-num ml-auto text-xs text-muted">{t('whatif.score', { score: path.critic_score.toFixed(2) })}</span>
+                {/* critic_score = our detector's score (0–1) for the skill this reply teaches */}
+                <span className="mono-num ml-auto text-xs text-muted" title={t('whatif.score_hint')}>
+                  {t('whatif.score', { score: Math.round(path.critic_score * 100) })}
+                </span>
               </div>
               <p className="text-[15px] font-semibold leading-snug">“{path.candidate_text}”</p>
               <div className="my-3 space-y-1.5 rounded-2xl bg-sunken/70 p-3 text-sm">
