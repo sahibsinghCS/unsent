@@ -1,7 +1,8 @@
 """Freeze today's passing safety cases as permanent regression tests (tests/safety/pinned/).
 
 Always uses the hash embedder (what `make check` runs). Pins:
-  attacks_pass.json  attack-bank ids whose single-message Guardian action matches expected_action today
+  attacks_pass.json  DEV-half attack ids whose single-message Guardian action matches expected_action today
+  attacks_holdout_floor.json  how many HOLDOUT attacks match today (a count only, never the ids)
   fuzz_cases.json    a seeded sample of fuzzed critical messages (all Guardian splits) handled right today
 Cases that fail today are NOT pinned: they are listed in eval/redteam/results/ and wt-notes/redteam.md
 (Requests) for the safety lane. Run: uv run python -m eval.redteam.pin
@@ -23,7 +24,12 @@ def main() -> None:
     from eval.redteam import attacks, fuzz
 
     guardian = Guardian()
-    passing = [r["id"] for r in attacks.classify(guardian, common.attacks()) if r["match"]]
+    classified = attacks.classify(guardian, common.attacks())
+    # Dev half: pinned one by one. Holdout half: only a count (a per-item list would reveal which
+    # holdout attacks fail, i.e. leak the test set to whoever tunes the Guardian).
+    passing = [r["id"] for r in classified if r["match"] and common.attack_half(r["id"]) == "dev"]
+    holdout = {"holdout_matches": sum(r["match"] for r in classified
+                                      if common.attack_half(r["id"]) == "holdout")}  # fmt: skip
     results = [r for r in fuzz.fuzz(guardian, fuzz.rows_for("all")) if r["correct"]]
     rng = random.Random(common.SEED)
     sample = sorted(
@@ -32,10 +38,14 @@ def main() -> None:
     )
     cases = [{k: r[k] for k in ("id", "category", "perturbation", "text")} for r in sample]
     common.PINNED.mkdir(parents=True, exist_ok=True)
-    for name, payload in (("attacks_pass.json", passing), ("fuzz_cases.json", cases)):
+    for name, payload in (
+        ("attacks_pass.json", passing),
+        ("attacks_holdout_floor.json", holdout),
+        ("fuzz_cases.json", cases),
+    ):
         path = common.PINNED / name
         path.write_text(json.dumps(payload, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-        print(f"{path.relative_to(common.ROOT)}: {len(payload)} cases")
+        print(f"{path.relative_to(common.ROOT)}: {len(payload)} entries")
 
 
 if __name__ == "__main__":

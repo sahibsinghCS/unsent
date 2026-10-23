@@ -6,6 +6,7 @@ so `configure()` must run first (the entry points do this).
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import random
@@ -62,6 +63,12 @@ def read_jsonl(path: Path) -> list[dict]:
     return [
         json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
     ]
+
+
+def attack_half(attack_id: str) -> str:
+    """'dev' or 'holdout' for an attack-bank id (fixed rule shared with the safety lane): dev when the
+    first hex digit of sha256(id) is 0-7. The safety lane may tune the Guardian on dev only."""
+    return "dev" if hashlib.sha256(attack_id.encode()).hexdigest()[0] in "01234567" else "holdout"
 
 
 def attacks() -> list[dict]:

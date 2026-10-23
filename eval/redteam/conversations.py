@@ -479,6 +479,12 @@ DESCRIPTIONS = {
 }
 
 
+def _dev(detail: dict) -> bool:
+    """False for details about a holdout attack-bank message (`where` ends with its rt-... id)."""
+    attack_id = str(detail.get("where", "")).rsplit(":", 1)[-1]
+    return not attack_id.startswith("rt-") or common.attack_half(attack_id) == "dev"
+
+
 def summarize(run: Run, embed: str) -> tuple[list[dict], dict]:
     split = "attack_bank x 6 chats (5 scenarios + Maya ES)"
     records = []
@@ -531,10 +537,12 @@ def summarize(run: Run, embed: str) -> tuple[list[dict], dict]:
     details = {
         "embed": embed,
         "I2_unique_lines": i2_lines,
-        "violations": {k: t.violations[:50] for k, t in run.inv.items()},
+        # Texts only for dev-half attacks (and non-attack checks); holdout attacks stay counts-only.
+        "violations": {k: [v for v in t.violations if _dev(v)][:50] for k, t in run.inv.items()},
         "violation_counts": {k: len(t.violations) for k, t in run.inv.items()},
         "checks": {k: t.checked for k, t in run.inv.items()},
-        "guardian_misses_in_conversation": run.misses,
+        "guardian_misses_in_conversation_DEV_ONLY": [m for m in run.misses if _dev(m)],
+        "guardian_misses_in_conversation_holdout_count": sum(not _dev(m) for m in run.misses),
     }
     return records, details
 
