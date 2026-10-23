@@ -55,6 +55,7 @@ lanes:
     - tests/safety/**
     - .github/workflows/**
     - scripts/report.py
+    - docs/METRICS.md
     - eval/reports/redteam_*
     - docs/how/redteam.md
     - wt-notes/redteam.md
