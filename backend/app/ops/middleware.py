@@ -46,11 +46,14 @@ def client_hash(ip: str, day: str | None = None) -> str:
 
 def route_template(scope: Scope) -> str:
     """'/api/sessions/{session_id}/messages', never the real ID; static files collapse to 'static'."""
+    raw = scope.get("path", "")
     route = scope.get("route")
     path = getattr(route, "path", None)
     if isinstance(path, str) and path not in ("", "/"):
-        return path
-    raw = scope.get("path", "")
+        # A route from include_router(prefix="/api") reports "/health": put the prefix back.
+        raw_parts, tmpl_parts = raw.strip("/").split("/"), path.strip("/").split("/")
+        prefix = raw_parts[: max(0, len(raw_parts) - len(tmpl_parts))]
+        return "/" + "/".join([*prefix, *tmpl_parts])
     if raw.startswith("/api"):
         return "/api/<unmatched>"
     if raw in DOCS_PATHS or raw == "/openapi.json":

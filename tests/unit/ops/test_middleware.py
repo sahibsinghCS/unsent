@@ -201,3 +201,14 @@ def test_main_app_has_ops_installed():
     from backend.app.main import app
 
     assert any(m.cls.__name__ == "OpsMiddleware" for m in app.user_middleware)
+
+
+def test_route_template_keeps_router_prefix(caplog):
+    from backend.app.main import app
+
+    client = TestClient(app)
+    with caplog.at_level(logging.INFO, logger="firstreply.request"):
+        client.get("/api/sessions/s_nothere")
+    entry = json.loads(caplog.records[-1].getMessage())
+    assert entry["route"] == "/api/sessions/{session_id}"
+    assert entry["status"] == 404
