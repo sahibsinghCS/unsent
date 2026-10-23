@@ -2,128 +2,128 @@
  {
   "lane": "redteam",
   "metric": "fuzz.robustness",
-  "value": 0.9914,
-  "n": 10699,
+  "value": 0.9946,
+  "n": 10793,
   "split": "guardian all splits (train included) [hash]",
   "notes": "perturbed variants still correct, of messages correct unperturbed; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.accuracy",
-  "value": 0.9801,
+  "value": 0.9916,
   "n": 10831,
   "split": "guardian all splits (train included) [hash]",
   "notes": "perturbed variants correct (flag positives, pass negatives); embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.all_caps",
   "value": 1.0,
-  "n": 560,
+  "n": 565,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.dotted_letters",
   "value": 0.9982,
-  "n": 560,
+  "n": 565,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.emoji",
-  "value": 0.9705,
-  "n": 1120,
+  "value": 0.977,
+  "n": 1130,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.homoglyph",
   "value": 1.0,
-  "n": 1109,
+  "n": 1119,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.leetspeak",
-  "value": 0.9928,
-  "n": 1113,
+  "value": 0.9991,
+  "n": 1123,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.misspelling",
   "value": 0.9962,
-  "n": 1058,
+  "n": 1066,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.no_apostrophe",
   "value": 1.0,
-  "n": 148,
+  "n": 149,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.spaced_letters",
-  "value": 0.9929,
-  "n": 560,
+  "value": 0.9947,
+  "n": 565,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.spanglish",
-  "value": 0.9821,
-  "n": 1120,
+  "value": 0.9991,
+  "n": 1130,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.stretched",
-  "value": 0.9883,
-  "n": 1114,
+  "value": 0.9884,
+  "n": 1124,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.trailing_lol_jk",
   "value": 0.992,
-  "n": 1120,
+  "n": 1130,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.zero_width",
   "value": 1.0,
-  "n": 1117,
+  "n": 1127,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
@@ -132,43 +132,43 @@
   "n": 2668,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.harm_to_other",
-  "value": 0.965,
-  "n": 1087,
+  "value": 0.976,
+  "n": 1124,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.method_seeking",
-  "value": 0.9736,
+  "value": 0.9855,
   "n": 757,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.prompt_injection",
-  "value": 0.9799,
+  "value": 0.9879,
   "n": 746,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.self_risk",
-  "value": 0.994,
-  "n": 3187,
+  "value": 0.9966,
+  "n": 3244,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
@@ -177,88 +177,88 @@
   "n": 2254,
   "split": "guardian all splits (train included) [hash]",
   "notes": "by category; embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.right_tier",
-  "value": 0.9841,
-  "n": 5777,
+  "value": 0.9901,
+  "n": 5871,
   "split": "guardian all splits (train included) [hash]",
   "notes": "critical positives still in the right tier (crisis vs block); embed=hash",
-  "created": "2026-10-23T02:07:54+00:00"
+  "created": "2026-10-23T02:38:54+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness",
-  "value": 0.9869,
-  "n": 10774,
+  "value": 0.9935,
+  "n": 10793,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "perturbed variants still correct, of messages correct unperturbed; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.accuracy",
-  "value": 0.9826,
+  "value": 0.9909,
   "n": 10831,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "perturbed variants correct (flag positives, pass negatives); embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.all_caps",
   "value": 1.0,
-  "n": 564,
+  "n": 565,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.dotted_letters",
   "value": 0.9982,
-  "n": 564,
+  "n": 565,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.emoji",
-  "value": 0.9504,
-  "n": 1128,
+  "value": 0.9628,
+  "n": 1130,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.homoglyph",
   "value": 1.0,
-  "n": 1117,
+  "n": 1119,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.leetspeak",
-  "value": 0.9857,
-  "n": 1121,
+  "value": 1.0,
+  "n": 1123,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.misspelling",
-  "value": 0.9953,
-  "n": 1064,
+  "value": 0.9981,
+  "n": 1066,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
@@ -267,52 +267,52 @@
   "n": 149,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.spaced_letters",
-  "value": 0.9929,
-  "n": 564,
+  "value": 0.9965,
+  "n": 565,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.spanglish",
-  "value": 0.977,
-  "n": 1128,
+  "value": 0.9991,
+  "n": 1130,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.stretched",
-  "value": 0.9777,
-  "n": 1122,
+  "value": 0.9831,
+  "n": 1124,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.trailing_lol_jk",
-  "value": 0.9929,
-  "n": 1128,
+  "value": 0.9973,
+  "n": 1130,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.perturbation.zero_width",
   "value": 1.0,
-  "n": 1125,
+  "n": 1127,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
@@ -321,43 +321,43 @@
   "n": 2668,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.harm_to_other",
-  "value": 0.952,
+  "value": 0.9804,
   "n": 1124,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.method_seeking",
-  "value": 0.9498,
+  "value": 0.9683,
   "n": 757,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.prompt_injection",
-  "value": 0.9778,
+  "value": 0.9856,
   "n": 765,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.robustness.category.self_risk",
-  "value": 0.99,
-  "n": 3206,
+  "value": 0.996,
+  "n": 3225,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
@@ -366,15 +366,15 @@
   "n": 2254,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "by category; embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  },
  {
   "lane": "redteam",
   "metric": "fuzz.right_tier",
-  "value": 0.9718,
-  "n": 5852,
+  "value": 0.9881,
+  "n": 5871,
   "split": "guardian all splits (train included) [fastembed]",
   "notes": "critical positives still in the right tier (crisis vs block); embed=fastembed",
-  "created": "2026-10-23T02:12:46+00:00"
+  "created": "2026-10-23T02:43:42+00:00"
  }
 ]
