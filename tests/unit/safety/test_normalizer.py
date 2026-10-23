@@ -101,3 +101,7 @@ def test_squeeze_helper():
 def test_empty_and_unpacking():
     text, notes = normalize("")
     assert text == "" and notes == []
+
+
+def test_punctuation_only_tokens_are_kept_once():
+    assert normalize("{{system}} ### ok").text == "{{system}} ### ok"

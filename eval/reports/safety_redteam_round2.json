@@ -511,5 +511,203 @@
   "split": "test",
   "notes": "; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only",
   "created": "2026-10-23T02:04:07+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.harm_to_other.before",
+  "value": 0.9416,
+  "n": 1746,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.harm_to_other.after",
+  "value": 0.9811,
+  "n": 1746,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.method_seeking.before",
+  "value": 0.9319,
+  "n": 1263,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.method_seeking.after",
+  "value": 0.9739,
+  "n": 1263,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.prompt_injection.before",
+  "value": 0.9903,
+  "n": 1028,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.prompt_injection.after",
+  "value": 0.999,
+  "n": 1028,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.self_risk.before",
+  "value": 0.9822,
+  "n": 3494,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.self_risk.after",
+  "value": 0.9928,
+  "n": 3494,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.asking_friend.before",
+  "value": 1.0,
+  "n": 3414,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.asking_friend.after",
+  "value": 1.0,
+  "n": 3414,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.tricky_negative.before",
+  "value": 1.0,
+  "n": 2137,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_train.tricky_negative.after",
+  "value": 1.0,
+  "n": 2137,
+  "split": "train",
+  "notes": "tuning set; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_test.harm_to_other",
+  "value": 0.975,
+  "n": 280,
+  "split": "test",
+  "notes": "looked at ONCE after freezing; 2 failing test texts were quoted to us by the integrator; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_test.method_seeking",
+  "value": 0.9808,
+  "n": 208,
+  "split": "test",
+  "notes": "looked at ONCE after freezing; 2 failing test texts were quoted to us by the integrator; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_test.prompt_injection",
+  "value": 0.9577,
+  "n": 189,
+  "split": "test",
+  "notes": "looked at ONCE after freezing; 2 failing test texts were quoted to us by the integrator; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_test.self_risk",
+  "value": 0.99,
+  "n": 703,
+  "split": "test",
+  "notes": "looked at ONCE after freezing; 2 failing test texts were quoted to us by the integrator; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_test.asking_friend",
+  "value": 1.0,
+  "n": 704,
+  "split": "test",
+  "notes": "looked at ONCE after freezing; 2 failing test texts were quoted to us by the integrator; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_test.tricky_negative",
+  "value": 1.0,
+  "n": 460,
+  "split": "test",
+  "notes": "looked at ONCE after freezing; 2 failing test texts were quoted to us by the integrator; embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_false_flags.asking_friend",
+  "value": 0.0,
+  "n": 5057,
+  "split": "fuzz_all",
+  "notes": "embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.fuzz_false_flags.tricky_negative",
+  "value": 0.0,
+  "n": 3218,
+  "split": "fuzz_all",
+  "notes": "embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.attack_dev.match_rate",
+  "value": 0.9746,
+  "n": 118,
+  "split": "attack_bank_dev",
+  "notes": "embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
+ },
+ {
+  "lane": "safety",
+  "metric": "redteam_round4.attack_dev.unsafe_miss",
+  "value": 0.0,
+  "n": 79,
+  "split": "attack_bank_dev",
+  "notes": "embedder=paraphrase-multilingual-MiniLM-L12-v2; local only; red-team fuzz perturbations; concern excluded (red-team scorer counts flagged concern as wrong)",
+  "created": "2026-10-23T02:34:35+00:00"
  }
 ]

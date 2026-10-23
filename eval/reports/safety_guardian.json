@@ -6,7 +6,7 @@
   "n": 172,
   "split": "test",
   "notes": "6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -15,7 +15,7 @@
   "n": 37,
   "split": "test",
   "notes": "asking the friend flagged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -24,16 +24,16 @@
   "n": 37,
   "split": "test",
   "notes": "helper risk -> crisis",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "lexicon_only.macro_f1",
-  "value": 0.8596,
+  "value": 0.863,
   "n": 172,
   "split": "test",
   "notes": "6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -42,16 +42,16 @@
   "n": 37,
   "split": "test",
   "notes": "asking the friend flagged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "lexicon_only.self_risk_recall",
-  "value": 0.8649,
+  "value": 0.8919,
   "n": 37,
   "split": "test",
   "notes": "helper risk -> crisis",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -60,7 +60,7 @@
   "n": 172,
   "split": "test",
   "notes": "6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -69,7 +69,7 @@
   "n": 37,
   "split": "test",
   "notes": "asking the friend flagged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -78,7 +78,7 @@
   "n": 37,
   "split": "test",
   "notes": "helper risk -> crisis",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -87,7 +87,7 @@
   "n": 37,
   "split": "test",
   "notes": "HEADLINE, combined; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -96,7 +96,7 @@
   "n": 37,
   "split": "test",
   "notes": "HEADLINE, combined; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -105,7 +105,7 @@
   "n": 37,
   "split": "test",
   "notes": "crisis or other flag",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -114,7 +114,7 @@
   "n": 81,
   "split": "test",
   "notes": "asking+tricky+neutral",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -123,7 +123,7 @@
   "n": 21,
   "split": "test",
   "notes": "test rows from guardian/messages.jsonl",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -132,7 +132,7 @@
   "n": 26,
   "split": "test",
   "notes": "test rows from guardian/messages.jsonl",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -141,7 +141,7 @@
   "n": 105,
   "split": "test",
   "notes": "test rows from guardian/messages.jsonl",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -150,7 +150,7 @@
   "n": 16,
   "split": "test",
   "notes": "test rows from guardian_extra/messages.jsonl",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -159,7 +159,7 @@
   "n": 11,
   "split": "test",
   "notes": "test rows from guardian_extra/messages.jsonl",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -168,7 +168,7 @@
   "n": 67,
   "split": "test",
   "notes": "test rows from guardian_extra/messages.jsonl",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -177,7 +177,7 @@
   "n": 81,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -186,7 +186,7 @@
   "n": 81,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -195,7 +195,7 @@
   "n": 81,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -204,7 +204,7 @@
   "n": 17,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -213,7 +213,7 @@
   "n": 17,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -222,7 +222,7 @@
   "n": 17,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -231,7 +231,7 @@
   "n": 37,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -240,7 +240,7 @@
   "n": 37,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -249,7 +249,7 @@
   "n": 37,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -258,7 +258,7 @@
   "n": 16,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -267,7 +267,7 @@
   "n": 16,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -276,7 +276,7 @@
   "n": 16,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -285,7 +285,7 @@
   "n": 11,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -294,7 +294,7 @@
   "n": 11,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -303,7 +303,7 @@
   "n": 11,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -312,7 +312,7 @@
   "n": 10,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -321,7 +321,7 @@
   "n": 10,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -330,7 +330,7 @@
   "n": 10,
   "split": "test",
   "notes": "combined",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -339,7 +339,7 @@
   "n": 53,
   "split": "pairs",
   "notes": "",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -348,7 +348,7 @@
   "n": 53,
   "split": "pairs",
   "notes": "",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -357,7 +357,7 @@
   "n": 17,
   "split": "holdout",
   "notes": "written after freezing; never tuned on",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -366,7 +366,7 @@
   "n": 14,
   "split": "holdout",
   "notes": "written after freezing; never tuned on",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -375,16 +375,16 @@
   "n": 59,
   "split": "holdout",
   "notes": "written after freezing; never tuned on",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.leetspeak.with_normalizer",
-  "value": 0.9922,
+  "value": 1.0,
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -393,7 +393,7 @@
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -402,16 +402,16 @@
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.spacing.without_normalizer",
-  "value": 0.8125,
+  "value": 0.8281,
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -420,7 +420,7 @@
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -429,7 +429,7 @@
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -438,16 +438,16 @@
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "robustness.emoji.without_normalizer",
-  "value": 0.9609,
+  "value": 0.9688,
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -456,7 +456,7 @@
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -465,25 +465,25 @@
   "n": 128,
   "split": "test",
   "notes": "decisions unchanged",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "latency_ms_p50",
-  "value": 4.0721,
+  "value": 4.4737,
   "n": 516,
   "split": "test",
   "notes": "check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "latency_ms_p95",
-  "value": 5.6521,
+  "value": 6.3848,
   "n": 516,
   "split": "test",
   "notes": "target < 50 ms",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
@@ -492,15 +492,15 @@
   "n": 2668,
   "split": "scenarios+line_bank",
   "notes": "should be 0",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  },
  {
   "lane": "safety",
   "metric": "self_risk_average_precision",
-  "value": 0.9972,
+  "value": 0.9979,
   "n": 172,
   "split": "test",
   "notes": "classifier only, PR curve PNG",
-  "created": "2026-10-23T02:02:49+00:00"
+  "created": "2026-10-23T02:33:42+00:00"
  }
 ]

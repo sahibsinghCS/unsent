@@ -62,6 +62,18 @@
   - 13 new examples; retrained
   - DEV 97.5% (0 unsafe misses); own test split back to macro F1 0.994
 
+- **Red-team round 4:**
+  - fillers skipped by the phrase matcher
+  - punctuation-token normalizer bug fixed (`{{`, `###`)
+  - short all-leet tokens in leet messages are words
+  - "a p i r a t e" keeps the "a"
+  - Spanish object pronouns te/ti are weak
+  - "por que don't you…" counts as a command
+  - a few phrases (dejar de existir, no quiero seguir viviendo, ^es rapido$, injection: your name is now / reveal your / system prompts / act as my)
+  - 8 own examples with fillers; retrained
+  - Fuzz, train (tuned): harm .94→.98, method .93→.97, injection .990→.999, self .982→.993
+  - Fuzz, test (looked at once): harm .975, method .981, injection .958, self .990, asking/tricky 1.0
+
 ## In progress
 - Nothing. The lane is complete.
 

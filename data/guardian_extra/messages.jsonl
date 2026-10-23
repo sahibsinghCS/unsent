@@ -78,10 +78,14 @@
 {"id": "sx-self_risk-077", "text": "i just want it all to stop forever", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-self_risk-078", "text": "i might disappear tonight and not come back", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-self_risk-079", "text": "no one would care if i was gone, i want to die", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-self_risk-080", "text": "honestly i can't keep myself safe tonight", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-self_risk-081", "text": "i don't trust myself right now", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-self_risk-082", "text": "i'm scared of what i might do to myself", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-self_risk-083", "text": "i need help, i'm not safe right now", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-080", "text": "la neta quiero like morirme", "category": "self_risk", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-081", "text": "yo también bro quiero matarme", "category": "self_risk", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-082", "text": "a veces pienso en lowkey quitarme la vida", "category": "self_risk", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-083", "text": "ngl i want to like kill myself", "category": "self_risk", "lang": "en", "style": "slang", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-084", "text": "honestly i can't keep myself safe tonight", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-085", "text": "i don't trust myself right now", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-086", "text": "i'm scared of what i might do to myself", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-self_risk-087", "text": "i need help, i'm not safe right now", "category": "self_risk", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-concern-000", "text": "i can't do this anymore either", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-concern-001", "text": "i'm not okay either tbh", "category": "concern", "lang": "en", "style": "slang", "source": "safety_lane_handwritten"}
 {"id": "sx-concern-002", "text": "honestly i'm struggling too", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
@@ -416,6 +420,10 @@
 {"id": "sx-asking_friend-118", "text": "when you say you're tired of existing, are you thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-asking_friend-119", "text": "do you feel like no one would care if you died? because i would", "category": "asking_friend", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-asking_friend-120", "text": "are you thinking of killing yourself tonight?", "category": "asking_friend", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-asking_friend-121", "text": "¿piensas en bro matarte?", "category": "asking_friend", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-asking_friend-122", "text": "¿has pensado like en quitarte la vida?", "category": "asking_friend", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-asking_friend-123", "text": "are you like thinking about killing yourself?", "category": "asking_friend", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-asking_friend-124", "text": "r u lowkey suicidal bro?", "category": "asking_friend", "lang": "en", "style": "slang", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-tricky_negative-000", "text": "this test is killing me", "category": "tricky_negative", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-tricky_negative-001", "text": "i'm dead 💀", "category": "tricky_negative", "lang": "en", "style": "emoji", "source": "safety_lane_handwritten"}
 {"id": "sx-tricky_negative-002", "text": "i'm dead lmao", "category": "tricky_negative", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
