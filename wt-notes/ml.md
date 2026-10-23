@@ -20,9 +20,7 @@
 - Kappa CLI (`python -m backend.app.ml.kappa`), seeded 1,000-resample bootstrap CI.
 
 ## In progress
-- HOLD: retrain once when the data lane's ~80-row train-only batch (Spanish + English indirect
-  encouragement) is merged; probes already added ("no tienes que pasar por esto solo, aquí estoy" and
-  "you're not alone in this" → encouraged_help high, currently 0.30 / 0.20; almost-asked probes OK).
+- FINAL retrain done at 1992f84 (last ML change before freeze). Only kappa remains (needs counselor labels).
 - Done: /finish speed-up (see Numbers). No pipeline hook needed.
 - Later: kappa when counselor labels exist.
 
@@ -69,7 +67,7 @@
 - asked_directly rule terms were widened only from TRAIN misses (dying, not waking up, stay alive, done…
   with life); 0 labeled direct asks missed in any split, 0 non-asks matched.
 
-## Error analysis: top 10 test_freeform errors (most confident first, current model)
+## Error analysis: top 10 test_freeform errors (most confident first; model at e8a9a1f — the final model's top 10 is in eval/skills/results.json and is largely the same list)
 | id | text (short) | label | truth / p | why |
 |---|---|---|---|---|
 | f0471 | "i'd find a therapist if i were you" | encouraged_help | yes / 0.00 | encouragement phrased as personal advice; reads as advice_dump |
@@ -110,23 +108,24 @@ worth-affirming validation without feeling words; (3) agreement replies. No test
 - Under `FR_EMBED=hash` (tests, `make smoke`) the detector is the keyword stub; the real detector is
   covered by unit tests with a tiny hash-trained model.
 
-## Numbers (seed 0, fastembed, retrained at integration e8a9a1f, pooling adopted by rule)
-| macro-F1 | val (n=152) | composed test (n=133, optimistic) | **test_freeform (n=221, honest)** |
-|---|---|---|---|
-| keyword baseline | 0.551 | 0.561 | 0.490 |
-| Model A | 0.775 | 0.830 | 0.695 |
-| Model B | 0.896 | 0.966 | 0.752 |
-| **ensemble** | 0.951 | 0.969 | **0.822** |
-- Previous model (trained at 9f36790) on the SAME new splits: val 0.926 / test 0.963 / freeform 0.820.
-  Retrained whole-message model (same run, pooling off): val 0.946 / test 0.965 / freeform 0.841.
-- ECE before → after: val 0.130 → 0.010 · test 0.128 → 0.012 · freeform 0.124 → 0.012.
-  Brier: val 0.043 → 0.012 · test 0.032 → 0.007 · freeform 0.053 → 0.029.
-- Uncertain (band 0.20–0.80 tuned on val): flag rate per message val 13.8% / test 11.3% / freeform 29.9%;
-  error rate flagged vs unflagged: val 17% vs 1.2%, test 7% vs 0.6%, freeform 39% vs 2.9%.
-- Probes: 13/14 (miss: "can we talk to the counselor tomorrow? i'll go with you" → follow_up 0.67).
+## Numbers (FINAL: seed 0, fastembed, retrained at integration 1992f84, pooling adopted by the rule)
+| macro-F1 | val (n=152) | composed test (n=133, optimistic) | **test_freeform (n=221, honest)** | freeform ES (n=35) |
+|---|---|---|---|---|
+| keyword baseline | 0.551 | 0.561 | 0.490 | 0.111 |
+| Model A | 0.777 | 0.834 | 0.695 | 0.697 |
+| Model B | 0.894 | 0.968 | 0.759 | 0.685 |
+| **ensemble** | 0.953 | 0.974 | **0.836** | 0.790 |
+- Before → after (same eval sets, previous artifact trained at e8a9a1f): freeform 0.822 → 0.836, freeform ES
+  0.725 → 0.790, composed test 0.969 → 0.974, val 0.951 → 0.953.
+- Pooling rule (val OOF): whole 0.920 → pooled 0.932, ECE 0.012 → 0.008 → adopted. Info only: whole would
+  score 0.841 on freeform (pooled 0.836).
+- ECE before → after: val 0.131 → 0.010 · test 0.123 → 0.010 · freeform 0.121 → 0.011.
+  Brier: val 0.043 → 0.012 · test 0.032 → 0.007 · freeform 0.053 → 0.028.
+- Uncertain (band 0.30–0.70 tuned on val): flag rate per message val 9.2% / test 9.0% / freeform 14.5%;
+  error rate flagged vs unflagged: val 29% vs 1.2%, test 0% (n=12) vs 0.6%, freeform 54% vs 2.9%.
+- Probes: 17/18 (miss: "can we talk to the counselor tomorrow? i'll go with you" → follow_up 0.67). The Spanish
+  probe "no tienes que pasar por esto solo, aquí estoy" (0.88) is NOT independent (near-duplicate train row
+  added in 1992f84); Spanish is judged on the freeform ES slice instead.
+- Almost-asked: fires on the hinted probes, 0 flags on all labeled rows.
+- /finish p50 (fixed 6-message chat, 1 user): 0.24 s with 2 s think time; 1.66 s if finish is sent instantly.
 - Counselor kappa: not yet (no counselor labels).
-- /finish p50 on a fixed 6-message chat (fastembed, FR_LLM=0, 1 user, cold caches each run, n=5), after the
-  privacy fix (shared TTL'd per-text cache from embed.py + TTL'd explanation memo): before 2.42 s → 0.24 s with
-  a 2 s pause before finish / 1.66 s with finish sent immediately; /messages p50 ~150 ms. (My earlier private
-  batched LRU gave 0.09 / 0.94 s; the shared cache embeds misses one text at a time.) Output identical (unit test on a fixed conversation;
-  real-model API report compared field by field, 0 differences > 1e-6).
