@@ -18,7 +18,9 @@ from backend.app.safety.normalizer import Normalized, normalize, squeeze
 LEXICON_PATH = Path(__file__).with_name("lexicon.yaml")
 BOUNDARIES = {".", "!", "?", ";", "¿", "¡"}
 STRIP = "\"'()[]*:~"
-WEAK_FIRST = {"me", "my", "mi"}  # count only right before the phrase ("makes me want to die")
+# Object/possessive pronouns count only right before the phrase ("makes ME want to die");
+# further away they are not the speaker ("my friend told ME about...", "no TE lo habia dicho...").
+WEAK_FIRST = {"me", "my", "mi", "te", "ti"}
 # Commands that need a cue word ("just kms", "go end it"); alone they mean something else.
 CUE_ONLY = {("end", "it"), ("disappear",), ("desaparece",)}
 RISK_CATEGORIES = ("self_risk", "concern", "harm_to_other", "method_seeking", "prompt_injection")
@@ -53,6 +55,22 @@ class _Sentence:
     question: bool
 
 
+def _load_fillers(path: Path = LEXICON_PATH) -> frozenset[str]:
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    return frozenset(squeeze(w) for w in (data.get("speaker") or {}).get("fillers", []))
+
+
+# Filler words ("like", "bro", "pues") are skipped by the phrase matcher, in messages AND phrases,
+# so "pienso en like suicidarme" still matches "pienso en suicidarme". The classifier still sees
+# the full normalized text.
+FILLERS = _load_fillers()
+
+
+def drop_fillers(raw: list[str]) -> list[str]:
+    """Remove filler tokens before phrase matching."""
+    return [w for w in raw if squeeze(w.strip(STRIP)) not in FILLERS]
+
+
 class _Phrases:
     """Phrases normalised and indexed by their first (squeezed) word for fast lookup.
 
@@ -66,7 +84,9 @@ class _Phrases:
             raw = str(phrase).strip()
             start, end = raw.startswith("^"), raw.endswith("$")
             raw = raw.strip("^$")
-            words = tuple(squeeze(w.strip(STRIP)) for w in normalize(raw).text.split())
+            words = tuple(
+                squeeze(w.strip(STRIP)) for w in drop_fillers(normalize(raw).text.split())
+            )
             if words:
                 self.by_first.setdefault(words[0], []).append((words, start, end))
         for bucket in self.by_first.values():
@@ -146,7 +166,9 @@ class Lexicon:
         for j in range(max(sent.start, i - 3), i):
             if "," in sq[j:i]:
                 continue  # negation does not cross a comma ("i do not care, kill yourself")
-            if sq[max(0, j - 2) : j + 2] == ["why", "do", "not", "you"]:
+            if sq[max(0, j - 2) : j + 2] == ["why", "do", "not", "you"] or sq[
+                max(0, j - 3) : j + 2
+            ] == ["por", "que", "do", "not", "you"]:
                 continue  # "why don't you just ..." is a rhetorical command, not a negation
             if sq[j] in self.negators and not any(w in self.breakers for w in sq[j + 1 : i]):
                 return True
@@ -178,7 +200,7 @@ class Lexicon:
     def scan(self, norm: Normalized | str) -> LexiconResult:
         """Scan a HELPER message: risk hits plus allowed (asking / tricky / reflection) matches."""
         norm = normalize(norm) if isinstance(norm, str) else norm
-        raw = norm.text.split()
+        raw = drop_fillers(norm.text.split())
         sq = [squeeze(w.strip(STRIP)) for w in raw]
         res = LexiconResult()
         helping = bool(self.p["harm_to_other.help_words"].find(sq))
@@ -325,7 +347,7 @@ class Lexicon:
     def scan_friend(self, norm: Normalized | str) -> LexiconResult:
         """Scan a FRIEND line: plans, encouragement, graphic detail, means, persona breaks, harm."""
         norm = normalize(norm) if isinstance(norm, str) else norm
-        raw = norm.text.split()
+        raw = drop_fillers(norm.text.split())
         sq = [squeeze(w.strip(STRIP)) for w in raw]
         res = LexiconResult()
         for sent in self._sentences(raw):

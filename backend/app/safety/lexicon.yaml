@@ -55,6 +55,7 @@ self_risk:
     - me quiero morir
     - no quiero vivir
     - ya no quiero vivir
+    - no quiero seguir viviendo
     - me quiero matar
     - quiero matarme
     - me voy a matar
@@ -111,6 +112,8 @@ self_risk:
     - want everything to stop
     - disappearing tonight
     - disappear tonight
+    - disappear esta noche
+    - dejar de existir
     - can not keep myself safe
     - do not trust myself
     - scared of what i might do
@@ -242,6 +245,7 @@ harm_to_other:
     - no one wants you here
     - nobody wants you
     - why are you even still here
+    - por que are you even still here
     - why are you still here
     - happier if you left
     - better off without you
@@ -270,6 +274,9 @@ harm_to_other:
     - permanent peace
     - permanent solution
     - you deserve peace
+    - it would solve your problems
+    - get lost and do not come back
+    - y desaparece
     - then it would be over
     - at least it would be over
     - it is a solution
@@ -286,7 +293,7 @@ harm_to_other:
     - end it
     - disappear
     - desaparece
-  imperative_cues: [just, go, should, then, please, better, already, honestly, literally, bro, lol]
+  imperative_cues: [just, go, should, then, please, better, already]
   # Urging the friend on ("just do it", "i dare you"). Cancelled when the same message points to
   # help: "just do it, text the counselor" is GOOD advice.
   do_it:
@@ -306,6 +313,10 @@ harm_to_other:
     - dare you
     - help you do it
     - you seem ready
+    - you look ready
+    - deberias hacerlo
+    - just be gone
+    - be gone already
     - hazlo ya
     - hazlo
   help_words:
@@ -341,6 +352,8 @@ harm_to_other:
   # Count unless the speaker is "i" ("i feel like no one would care" is the helper's own pain).
   framed:
     - no one would care
+    - nobody would be sad
+    - no one would be sad
     - no one would notice
   # Insults aimed at the friend: count when "you" is the subject of a statement (not a question,
   # not "you feel like ..." reflecting their words, not "you are NOT a burden").
@@ -425,6 +438,12 @@ method_seeking:
     # question forms about how it would go ("^" = starts the sentence, "$" = ends it)
     - ^does it hurt$
     - ^is it quick$
+    - ^is it fast$
+    - ^es rapido$
+    - be painless
+    - where would you even get
+    - thinking of doing it
+    - what time were you
     - ^will it hurt$
     - ^would it hurt$
     - is it painless
@@ -533,6 +552,11 @@ prompt_injection:
     - output json
     - language model
     - your new name is
+    - your name is now
+    - reveal your
+    - training data
+    - system prompts
+    - act as my
     - answer anything
     - from now on respond
     - from now on answer
@@ -555,6 +579,7 @@ prompt_injection:
     - system:
   # Code or control strings, matched anywhere in the text
   substrings:
+    - "###"
     - jndi
     - <script
     - "{{"
@@ -835,3 +860,6 @@ speaker:
     - yo tambien
     - igual yo
     - yo igual
+  # Filler words skipped by the phrase matcher (English and Spanish texting fillers). They carry no
+  # meaning for safety: "dónde like lo harías" is still "dónde lo harías".
+  fillers: [like, bro, literally, lowkey, ngl, fr, tbh, honestly, lol, lmao, jk, osea, pues, neta, sabes, wey, kinda]

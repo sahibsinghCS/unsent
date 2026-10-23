@@ -662,6 +662,10 @@ done with life fr
 i just want it all to stop forever
 i might disappear tonight and not come back
 no one would care if i was gone, i want to die
+la neta quiero like morirme
+yo también bro quiero matarme
+a veces pienso en lowkey quitarme la vida
+ngl i want to like kill myself
 honestly i can't keep myself safe tonight
 i don't trust myself right now
 i'm scared of what i might do to myself
@@ -673,6 +677,10 @@ are you thinking about disappearing for good, like suicide?
 when you say you're tired of existing, are you thinking about killing yourself?
 do you feel like no one would care if you died? because i would
 are you thinking of killing yourself tonight?
+¿piensas en bro matarte?
+¿has pensado like en quitarte la vida?
+are you like thinking about killing yourself?
+r u lowkey suicidal bro?
 """,
     "neutral": """
 just do it, text the counselor right now

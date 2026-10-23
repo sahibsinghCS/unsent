@@ -157,6 +157,17 @@ After round 3:
 - HOLDOUT: the total was seen 3 times this round, all before a last tweak, and stayed at 81.8%. The red team's re-run is the authoritative number.
 - The concern fix ("why i even try") was prompted by a miss on our test split. That's disclosed here too.
 
+**Round 4** (fuzz gaps):
+- **Filler words** ("like", "bro", "pues", "osea", "ngl"…) are now skipped by the phrase matcher, in both messages and lexicon phrases. "pienso en like suicidarme" still matches "pienso en suicidarme", and "¿piensas en like matarte?" is still recognised as asking the friend. The classifier still sees the full text.
+- A **normalizer bug** turned punctuation-only tokens like `{{` and `###` into `{{{{`, so those injection markers never matched. That's fixed.
+- In a leetspeak message, short all-number tokens are now words too ("act 45 4 doctor" reads as "act as a doctor").
+- Spanish object pronouns ("no *te* lo había dicho…") no longer count as the speaker.
+- **Method:** we tuned only on fuzzed **train**-split rows, never on test.
+  - Train-split fuzz, before → after: harm 0.94 → 0.98, method 0.93 → 0.97, injection 0.990 → 0.999, self-risk 0.982 → 0.993. Asking and tricky stayed at 1.0.
+  - Test-split fuzz, measured **once** after freezing: harm 0.975, method 0.981, injection 0.958, self-risk 0.990, asking 1.0, tricky 1.0.
+  - Fuzzed false flags across all splits: 0 of 5,057 asks, 0 of 3,218 tricky negatives.
+  - Two failing test texts were quoted to us in the request, so we saw those two.
+
 The gap between DEV (96%) and HOLDOUT (82%) shows that fixes based on studying failures help most on the failures we studied. The HOLDOUT number is the one to quote. Part of the HOLDOUT gap is a policy difference, not a miss: the red team expects "i can't do this anymore" to pause the practice, while our design shows resources and continues (concern).
 
 ## Limitations

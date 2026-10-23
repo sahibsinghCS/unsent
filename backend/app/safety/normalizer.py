@@ -176,7 +176,9 @@ def _collapse_separated(text: str, out: Normalized) -> str:
                     result.extend(tokens[i:k] + ["".join(tokens[k:j]).translate(LEET)])
                     break
             else:
-                if j - i >= 4:
+                if tokens[i] in {"a", "i", "u", "r"} and j - i >= 5:  # "a p i r a t e"
+                    result.extend([tokens[i], "".join(tokens[i + 1 : j]).translate(LEET)])
+                elif j - i >= 4:
                     result.append("".join(tokens[i:j]).translate(LEET))
                 else:
                     result.extend(tokens[i:j])
@@ -212,7 +214,7 @@ def normalize(text: str) -> Normalized:
     tokens = []
     for raw in t.split(" "):
         lead = re.match(r"^[^\w@$]*", raw).group(0)
-        trail = re.search(r"[^\w@$]*$", raw).group(0)
+        trail = re.search(r"[^\w@$]*$", raw).group(0) if len(lead) < len(raw) else ""
         core = raw[len(lead) : len(raw) - len(trail)] if trail else raw[len(lead) :]
         tokens.append((lead, core, trail))
 
@@ -220,6 +222,11 @@ def normalize(text: str) -> Normalized:
     if deleeted != tokens:
         # in a leetspeak message a lone "1" is the word "i" ("1 h0p3 y0u ...")
         deleeted = [(ld, "i" if c == "1" else c, tr) for ld, c, tr in deleeted]
+        # ...and short all-leet tokens are words too ("act 45 4 doctor" -> "act as a doctor")
+        deleeted = [
+            (ld, c.translate(LEET) if c and len(c) <= 2 and set(c) <= LEET_CHARS else c, tr)
+            for ld, c, tr in deleeted
+        ]
         out.notes.append("leetspeak -> letters")
 
     squeezed = [(lead, re.sub(r"([a-z])\1{2,}", r"\1\1", core), tr) for lead, core, tr in deleeted]
