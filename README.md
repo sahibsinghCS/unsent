@@ -66,9 +66,9 @@ Every number comes from our own tests on data the models never trained on, with 
 | Unsafe friend lines shown under attack | **0** |  | 9737 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Practicer's own crisis caught | **100.0%** |  | 37 | test |
 | Places still holding your words after the session expires | **0** |  | 1 | full conversation incl. finish, what-if, rewind [fastembed] |
-| Skill scoring on replies it never saw (macro-F1) | **0.822** | 0.49 (keyword matching) | 221 | test_freeform |
-| Wrong when it says “unsure” | **39.2%** | 2.9% (when it isn't flagged) | 74 | test_freeform |
-| Confidence error (ECE, lower is better) | **0.012** | 0.124 (before calibration) | 221 | test_freeform |
+| Skill scoring on replies it never saw (macro-F1) | **0.836** | 0.49 (keyword matching) | 221 | test_freeform |
+| Wrong when it says “unsure” | **54.3%** | 2.9% (when it isn't flagged) | 35 | test_freeform |
+| Confidence error (ECE, lower is better) | **0.011** | 0.12 (before calibration) | 221 | test_freeform |
 | Messages for a great helper to reach a guarded friend | **5 messages** |  | 3 | scripted_labels |
 | AI replies leaking a locked secret: caught | **96.0%** |  | 43 | leak_set_test |
 | Safety filter accuracy (macro-F1, 6 kinds of message) | **0.994** | 0.863 (word list alone) | 172 | test |

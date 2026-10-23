@@ -340,6 +340,8 @@ Two exceptions, on purpose:
 
 ### 8. The LLM voice (voice.py, prompts/actor.md)
 - **What the LLM is given:** the persona and texting style, the situation, **only the facts unlocked at the current level** (locked facts are simply not in the prompt, so it can't reveal what it doesn't know), the reaction the engine chose with guidance for it (e.g. ASKED_DIRECTLY at level 2: "you are not ready to say yes"), 3-5 reviewed bank lines for that level and reaction as style examples, and the last 6 messages.
+- **Where the friend stands:** each level comes with a one-line stance that says what the friend is *not* ready for yet, without naming any secret. For example, at level 3: "you've just shared the hardest part and you're scared; not ready yet to accept help, agree to a plan, or say you feel relieved." This came from the first live test: at level 3, warm helper messages pulled out level-4 feelings ("glad you asked", "feel lighter"), which the verifier correctly rejected 3 times.
+- **Sounding like a real teen** (also from reading the live transcripts): one emotional tone per reply (no "all good haha" followed by something heavy); hard things said indirectly and casually like the bank examples ("i think about not being here sometimes"), never in textbook words like "thoughts of suicide"; facts are an adult's notes about the friend, never copied word for word; usually 1-2 bubbles under 80 characters; varied openers and at most one emoji every other message.
 - **Hard rules in the prompt:** no methods, means or plans; never encourage harm; stay in character; never give advice or hotlines (that's the helper's job, and the skill being practised); 1-3 short bubbles; JSON only.
 - **Everything goes through `backend/app/llm.py`:** cached (same conversation → same request → same answer, using a seed hashed from the conversation; on disk in development, memory-only in production), budgeted per day, and faked in tests. Unit tests never call the API.
 - **Tiers:** (a) LLM reply that passes the verifier → `source="llm"`; if it fails, one retry with the rejection reason added to the prompt; (b) on `LLMUnavailable` or two rejections, the bank line chosen exactly as in section 7 → `"bank"`; (c) the scenario fallback line → `"fallback"`. The phone UI can show which voice answered (`Node.voice`).
@@ -499,8 +501,8 @@ our model verifies.** The summary is fill-in-the-blank templates.
 - **Uncertain:** we flag a label only when the two models land on **opposite sides** of 0.5 (one says
   yes, the other no) **and** the final calibrated probability is in a middle band. The band is
   picked on the validation set: the band where flagged decisions are clearly more error-prone, with at
-  most 15% of messages flagged. It's 0.20–0.80 for the current model. On the free-form test, flagged
-  decisions were wrong 39% of the time and unflagged ones 2.9%, so the flag really means "check this
+  most 15% of messages flagged. It's 0.30–0.70 for the current model. On the free-form test, flagged
+  decisions were wrong 54% of the time and unflagged ones 2.9%, so the flag really means "check this
   one".
 
 **ML + a rule from the label definition.** The label guide says `asked_directly` needs an *explicit*
@@ -512,6 +514,16 @@ directly" would unlock the friend's deepest level, so we added the definition as
 counts. If none of the explicit terms is present, `asked_directly` is capped at 0.2. The rule can only
 lower that one probability, never raise anything. On our labeled data it never blocks a real direct ask
 (0 of 178 missed) and none of the 647 other replies contain a term. Test F1 stayed at 1.00.
+
+**"Almost asked": coaching without bending the rule.** "be honest, are you having thoughts of ending
+it?" is close, but it isn't the explicit question, so the rule above keeps `asked_directly` low and the
+friend doesn't open up the deepest level. That moment shouldn't be silent, though. When both models read
+an ask, there's no explicit word, and we recognise the hint ("ending it", "end it", "disappear",
+"acabar con todo"…), the report says: *"Close: you hinted at it (“ending it”). Next time say it
+plainly: “are you thinking about killing yourself?” Saying the word shows you can handle the answer."*
+The suggested rewrite is then an explicit ask. It never changes a probability or the friend's
+reaction. All three conditions are needed so the note is never false: on all 1,330 labeled replies it
+fires 0 times, including on look-alikes like "are you thinking about moving back?".
 
 **Highlights (occlusion).** We delete a phrase (1–5 neighbouring words that don't cross punctuation)
 and re-score the message. If deleting "killing yourself" makes `asked_directly` much less likely, that
@@ -567,7 +579,7 @@ helper's best message. "Listen" counts only when that message validates *and* do
 lecture. "No secrecy" breaks if any message promises secrecy.
 
 **Training** (`make train`): seeded, fits A and B on **train** and the stackers on **val**, and only
-*scores* **test**. It saves `models/skill_detector.joblib` (0.65 MB) and a `.meta.json` with the data
+*scores* **test**. It saves `models/skill_detector.joblib` (0.70 MB) and a `.meta.json` with the data
 hash, row counts, date, metrics and the embedder name. The app refuses to load an artifact trained
 with a different embedder, because its numbers would be meaningless.
 
@@ -602,19 +614,19 @@ the same output" matters more to us than a fraction of a second.
  (and what we considered instead)
 - **Why not keywords?** A keyword list misses "have you thought about not being around anymore" and
   fires on "lol" in a kind message. On the free-form test, keywords score macro-F1 0.49 and the
-  ensemble scores 0.82.
+  ensemble scores 0.84.
 - **Why two models?** They make *different* mistakes. Meaning-based A handles paraphrases and Spanish.
-  Spelling-based B handles slang and typos. On the free-form test, A alone gets 0.70, B alone 0.75,
-  and together 0.82. When they disagree, that's an honest "we're not sure" signal.
+  Spelling-based B handles slang and typos. On the free-form test, A alone gets 0.70, B alone 0.76,
+  and together 0.84. When they disagree, that's an honest "we're not sure" signal.
 - **Why not a big neural network or an LLM?** It has to be free, fast (about 60 ms per message on a
   laptop CPU), offline, deterministic and explainable. Also, an LLM would make this an "AI wrapper".
   Logistic regression is the standard tool when you have about 800 examples.
 - **Why calibrate?** The engine and X-ray mode treat the numbers as probabilities. Uncalibrated models
   are overconfident. Calibration cut the average gap between "what it says" and "how often it's right"
-  from 0.124 to 0.012 on the free-form test.
+  from 0.121 to 0.011 on the free-form test.
 
 ## How we measured it (real numbers, with n and the split)
-Data: the data lane's splits. Train 824, val 152, composed test 133, free-form test 221, all
+Data: the data lane's final splits. Train 904, val 152, composed test 133, free-form test 221, all
 human-agreed labels, grouped by conversation so no friend context appears in two splits. Embedder:
 fastembed MiniLM. Threshold 0.5, seed 0. Model A and B are fitted on train. The stacker, the uncertain
 band and the pooling decision are fitted on val. Both test sets are only scored.
@@ -629,49 +641,62 @@ are in `eval/skills/results.json`. Charts: `eval/skills/f1_comparison*.png`, `re
   trained on, 0% phrase overlap with training. It's the best estimate of how the detector does on
   real teen messages.
 
-| macro-F1 | val (n=152) | Composed test (n=133) | **Free-form test (n=221)** |
-|---|---|---|---|
-| Keyword baseline (the stub) | 0.551 | 0.561 | 0.490 |
-| Model A (embeddings + LR) | 0.775 | 0.830 | 0.695 |
-| Model B (char/word TF-IDF + LR) | 0.896 | 0.966 | 0.752 |
-| **Stacked + calibrated ensemble** | **0.951** | **0.969** | **0.822** |
+| macro-F1 | val (n=152) | Composed test (n=133) | **Free-form test (n=221)** | Free-form, Spanish only (n=35) |
+|---|---|---|---|---|
+| Keyword baseline (the stub) | 0.551 | 0.561 | 0.490 | 0.111 |
+| Model A (embeddings + LR) | 0.777 | 0.834 | 0.695 | 0.697 |
+| Model B (char/word TF-IDF + LR) | 0.894 | 0.968 | 0.759 | 0.685 |
+| **Stacked + calibrated ensemble** | **0.953** | **0.974** | **0.836** | **0.790** |
+
+The Spanish column is a slice of the same free-form test (its 35 Spanish replies), so it's small:
+treat it as a rough check. It shows the multilingual embeddings (Model A) carrying Spanish where
+keywords fail completely.
 
 | Ensemble per label, free-form test | precision | recall | F1 | positives | keyword F1 |
 |---|---|---|---|---|---|
 | checked_in | 0.80 | 0.57 | 0.67 | 28 | 0.40 |
-| validated | 0.83 | 0.63 | 0.72 | 46 | 0.32 |
+| validated | 0.84 | 0.70 | 0.76 | 46 | 0.32 |
 | asked_directly | 1.00 | 1.00 | 1.00 | 18 | 0.50 |
-| encouraged_help | 0.90 | 0.56 | 0.69 | 16 | 0.12 |
+| encouraged_help | 0.83 | 0.63 | 0.71 | 16 | 0.12 |
 | referred_adult | 1.00 | 0.94 | 0.97 | 35 | 0.79 |
 | referred_988 | 1.00 | 0.92 | 0.96 | 26 | 1.00 |
-| follow_up | 0.89 | 0.72 | 0.80 | 46 | 0.29 |
-| dismissed | 0.80 | 0.76 | 0.78 | 21 | 0.63 |
-| advice_dump | 0.68 | 0.81 | 0.74 | 21 | 0.25 |
+| follow_up | 0.89 | 0.74 | 0.81 | 46 | 0.29 |
+| dismissed | 0.83 | 0.71 | 0.77 | 21 | 0.63 |
+| advice_dump | 0.81 | 0.81 | 0.81 | 21 | 0.25 |
 | promised_secrecy | 0.82 | 1.00 | 0.90 | 9 | 0.62 |
 
 **Calibration** (lower is better; the stacker was fitted on val):
 
 | | ECE before → after | Brier before → after |
 |---|---|---|
-| val (n=152) | 0.130 → 0.010 | 0.043 → 0.012 |
-| composed test (n=133) | 0.128 → 0.012 | 0.032 → 0.007 |
-| free-form test (n=221) | 0.124 → 0.012 | 0.053 → 0.029 |
+| val (n=152) | 0.131 → 0.010 | 0.043 → 0.012 |
+| composed test (n=133) | 0.123 → 0.010 | 0.032 → 0.007 |
+| free-form test (n=221) | 0.121 → 0.011 | 0.053 → 0.028 |
 
-**Uncertain flag** (band 0.20–0.80, chosen on val):
+**Uncertain flag** (band 0.30–0.70, chosen on val):
 
 | | messages with a flag | error rate, flagged decisions | error rate, unflagged |
 |---|---|---|---|
-| val | 13.8% | 17% (n=23) | 1.2% (n=1,497) |
-| composed test | 11.3% | 7% (n=15) | 0.6% (n=1,315) |
-| free-form test | 29.9% | 39% (n=74) | 2.9% (n=2,136) |
+| val | 9.2% | 29% (n=14) | 1.2% (n=1,506) |
+| composed test | 9.0% | 0% (n=12) | 0.6% (n=1,318) |
+| free-form test | 14.5% | 54% (n=35) | 2.9% (n=2,175) |
+
+On the composed test the few flagged decisions all happened to be right. On the realistic free-form
+test, flagged decisions are wrong about 19 times as often as unflagged ones.
+
+**How the final model compares with the previous one** (same val and test sets; the previous model
+had 80 fewer Spanish/indirect-encouragement training rows): free-form 0.822 → **0.836**, Spanish
+free-form 0.725 → **0.790**, composed test 0.969 → 0.974.
 
 - **Explicit-term rule for `asked_directly`:** included in the ensemble numbers above. Free-form F1
   1.00. The rule never blocks a labeled direct ask in any split.
-- **Probes** (hand-written sentences from reviewers, not a test set): 13 of 14 behave as expected.
-  "you seemed off at lunch" → follow_up 0.06. "talk later maybe" → 0.11. "lots of people feel like
-  that, you'll be fine" → dismissed 0.98, validated 0.30, advice 0.14. Still wrong: "can we talk to the
-  counselor tomorrow? i'll go with you" → follow_up 0.67. By the label guide a referral with "i'll go
-  with you" isn't a follow-up.
+- **Probes** (hand-written sentences from reviewers, not a test set): 17 of 18 behave as expected,
+  including the "almost asked" coaching on "be honest, are you having thoughts of ending it?" and
+  "you're not alone in this" → encouraged_help 0.99. One caveat: the Spanish probe "no tienes que pasar
+  por esto solo, aquí estoy" (0.88) is no longer an independent check, because a near-identical row was
+  later added to training. We judge Spanish on the free-form Spanish slice above instead. Still wrong:
+  "can we talk to the counselor tomorrow? i'll go with you" → follow_up 0.67. By the label guide a
+  referral with "i'll go with you" isn't a follow-up.
 - **Counselor agreement (kappa):** the tool is ready (`python -m backend.app.ml.kappa`). The
   counselor sheet hasn't come back yet.
 
@@ -699,25 +724,26 @@ on|off` overrides it). Results (`eval/reports/ml_pooling.json`):
 | Data version | val macro-F1, whole → pooled | val ECE, whole → pooled | Decision | free-form macro-F1, whole → pooled (info only) |
 |---|---|---|---|---|
 | first splits (train 615) | 0.921 → 0.916 | 0.013 → 0.011 | not adopted | 0.818 → 0.802 |
-| current splits (train 824) | 0.923 → 0.931 | 0.011 → 0.010 | **adopted** | 0.841 → 0.822 |
+| train 824 | 0.923 → 0.931 | 0.011 → 0.010 | **adopted** | 0.841 → 0.822 |
+| final splits (train 904) | 0.920 → 0.932 | 0.012 → 0.008 | **adopted** | 0.841 → 0.836 |
 
 In plain words:
 - **We pre-registered the rule.** We wrote down "adopt pooling only if validation improves without
   hurting calibration" *before* running the experiment.
 - **The rule chose pooling, on validation data only.** With more training data, pooling started helping
   on validation (0.923 → 0.931) and fixed one more reviewer probe (13 of 14 vs 12 of 14).
-- **The whole-message model would have scored 0.841 on the free-form test; the pooled one scores 0.822.
-  We kept the rule anyway.** Switching after seeing the test score would quietly turn the test set into
+- **The whole-message model would have scored 0.841 on the free-form test; the pooled one scored 0.822
+  (0.836 after the final data batch). We kept the rule anyway.** Switching after seeing the test score would quietly turn the test set into
   a second validation set. Then 0.822 (or 0.841) would no longer be an honest estimate of how the model
   does on new messages. With n=221 the 0.02 gap is within noise anyway.
 
-The cost we accept: pooled scores flag more messages as "uncertain" on free-form text (30% vs 17%).
+The cost we accept: free-form F1 a hair lower than whole-message (0.836 vs 0.841, within noise).
 
 ## Limitations
-- **Real messages are harder.** Composed test 0.97 vs free-form 0.82. The free-form number is the one to
+- **Real messages are harder.** Composed test 0.97 vs free-form 0.84. The free-form number is the one to
   quote. Real teens may be messier still. A real-survey set would be the next check.
-- **Implicit skills are hardest.** Free-form recall is lowest for encouraged_help (0.56), checked_in
-  (0.57) and validated (0.63). People check in or brush off feelings in many indirect ways ("almorzar sola
+- **Implicit skills are hardest.** Free-form recall is lowest for checked_in (0.57), encouraged_help
+  (0.63) and validated (0.70). Spanish is weaker than English (0.79 vs 0.84, on only 35 Spanish replies). People check in or brush off feelings in many indirect ways ("almorzar sola
   cansa" validates without any "that sounds…").
 - **Replies that only make sense with context.** "yes. let's go right now" is a referral only because
   the friend just agreed to see the counselor. The model sees the friend's last message, but these
@@ -736,7 +762,7 @@ The cost we accept: pooled scores flag more messages as "uncertain" on free-form
    optional rewrite *suggestions*, and our detector decides whether to show them.
 2. **"Your F1 is 0.96. Isn't that too good?"** Yes, for the composed test, and we say so: 21% of those
    replies reuse training phrases. That's why we built a second, free-form test set written in people's
-   own words with zero overlap. There the ensemble scores 0.82, against 0.49 for keyword matching. 0.82
+   own words with zero overlap. There the ensemble scores 0.84, against 0.49 for keyword matching. 0.84
    is the number we stand behind.
 3. **"How do you know which words mattered?"** Occlusion. We delete phrases and measure how much the
    odds fall, so the highlight is an actual measurement of the model, not a guess. The tests check that
@@ -746,9 +772,9 @@ The cost we accept: pooled scores flag more messages as "uncertain" on free-form
    least 0.2 according to our own detector, and the Guardian must pass it. If nothing passes both
    checks, we show none.
 5. **"Why trust the probabilities?"** They're calibrated on data the base models never saw. The
-   reliability diagram shows that predicted and observed rates line up (calibration error 0.012 on the
+   reliability diagram shows that predicted and observed rates line up (calibration error 0.011 on the
    free-form test). When our two models disagree and the answer is close, we say "uncertain". Those
-   flagged decisions really are wrong far more often (39% vs 2.9%), so the flag is earned.
+   flagged decisions really are wrong far more often (54% vs 2.9%), so the flag is earned.
 
 
 ---
@@ -941,7 +967,7 @@ The frontend is everything you see and tap. It's a website that works like a pho
 | Landing | `/` | A phone mockup, the one-line pitch, three feature cards, the CDC "1 in 5" stat |
 | Scenario picker | `/practice` | Five friends to text (name, age, situation, "open" or "guarded"). Picking one shows a **content warning** first |
 | Chat | `/chat/:id` | iMessage-style texting with typing dots, several bubbles in a row, **"Seen"** when trust falls too far, a live **trust graph**, the **disclosure ladder** (0 surface → 4 open to help) and **skill chips** |
-| X-ray mode | toggle in the chat | Under each of your messages: the Guardian's decision and **latency in ms**, the skill detector's probabilities as bars, and **the trust math** (`+12 validated · −2 decay = +10`). Under the friend's: **who wrote the words** ("AI, verified ✓", "Reviewed line" or "Fallback"), the reaction and the line id |
+| X-ray mode | toggle in the chat | Under each of your messages: the Guardian's decision and **latency in ms**, the skill detector's probabilities as bars, and **the trust math** (`+12 validated · −2 decay = +10`). Under the friend's: **who wrote the words** ("AI wording · checked by our verifier" or "Reviewed line"), the reaction and the line id |
 | Feedback | `/feedback/:id` | 7-skill **radar chart**, summary, **"This is where you lost them"**, missed opportunities, every message with **green/red word highlights**, "uncertain" tags and a **verified rewrite** |
 | Rewind + branches | in the chat | Tap one of your messages → **Rewind to here**. The branch drawer shows every attempt as a tree with trust at each step |
 | What-if | `/whatif/:id` | Better replies simulated forward, side by side, with an overlay chart and a clear **Simulated** label |
@@ -968,7 +994,7 @@ test/        vitest tests
 
 **A turn in the chat, step by step:**
 1. You press Enter. Your bubble appears right away (faded) and the typing dots start.
-2. The app sends `POST /api/sessions/{id}/messages`. The server runs Guardian → skill detector → state engine → friend voice (OpenAI wording, or a reviewed bank line) → verifier and returns a `TurnResponse`. An AI-worded reply can take 1–3 seconds, so the typing dots stay on for the whole request.
+2. The app sends `POST /api/sessions/{id}/messages`. The server runs Guardian → skill detector → state engine → friend voice (OpenAI wording, or a reviewed bank line) → verifier and returns a `TurnResponse`. An AI-worded reply takes about 2–5 seconds (p95 4.9 s), so the typing dots stay on and Send stays disabled for the whole request (checked by `npm run test:slow`).
 3. The app adds your message and the friend's reply to the conversation. The friend's bubbles appear **one at a time**, each after a typing delay of `clamp(400 + 35 × characters, 800, 3500)` ms. That's long enough to feel like a person, but never slow. If your device asks for reduced motion, the delay is 0.
 4. If the friend left you on read (`seen_no_reply`), "Seen" appears under your message instead.
 5. The trust graph adds a point (`state_after.trust`), colored by the strongest skill detected. The ladder and the skill chips update.
@@ -1000,8 +1026,10 @@ test/        vitest tests
 ## How we measured it (real numbers, with n and the split)
 
 - **Unit tests:** 61 vitest tests in 10 files (`npm run test`), covering the typing delay formula and its edges, highlight span rendering, trust-math formatting, API error handling (404/422/network down/non-JSON), the Real-mode offline fallback, EN/ES key parity, the crisis card not being skippable, the check-in, the X-ray voice chip, and the tree/graph helpers.
-- **End-to-end:** `npm run screenshots` drives the whole journey in real Chromium against `make dev-stub`, on a phone (390×844) and a desktop (1440×900). It fails if any step breaks, if the crisis card can be skipped, if the X-ray trust math is missing, if there's any console error, or if the page scrolls sideways. Result: 29 screens × 2 sizes = 58 screenshots in `frontend/screenshots/`. The current set was taken against the **real** backend (`FR_EMBED=fastembed FR_LLM=0`: real Guardian, trained skill detector, tuned engine and critic; what-if real since 20afbfe). The same script also passes against `make dev-stub`.
-- **Accessibility:** every text/background token pair was checked against WCAG AA (4.5:1). The lowest pairs after tuning: white on the coral button 4.98, green on green-soft 5.36, white on the dark-mode bubble 5.93.
+- **End-to-end:** `npm run screenshots` drives the whole journey in real Chromium against `make dev-stub`, on a phone (390×844) and a desktop (1440×900). It fails if any step breaks, if the crisis card can be skipped, if the X-ray trust math is missing, if there's any console error, or if the page scrolls sideways. Result: 33 screens × 2 sizes, plus a slow-error shot = 67 screenshots, in English and Spanish, light and dark in `frontend/screenshots/`. The current set was taken against the **real** backend (`FR_EMBED=fastembed FR_LLM=0`: real Guardian, trained skill detector, tuned engine and critic; what-if real since 20afbfe). The same script also passes against `make dev-stub`.
+- **Accessibility (axe-core):** `npm run test:a11y` runs axe with the WCAG 2.0/2.1 A + AA rules on 9 pages (landing, practice, chat with X-ray on, feedback, what-if, real mode, how, privacy, 404) in light and dark mode: **0 violations of any impact on all 18 runs**. The final pass fixed 4 serious contrast issues: muted text on the teal stat band, label-colored numbers in the X-ray trust math (now a colored dot next to high-contrast text), faded status-chip text, and the faded "sending" bubble. The same script drives the chat by keyboard only: Tab to the message box, Enter to send, focus returns to the box, Shift+Tab to your message, Enter opens it, Tab to "Rewind to here", and Space toggles X-ray.
+- **Slow AI replies:** `npm run test:slow` adds 4.5 s of latency in the test harness (Playwright routing; app code untouched). It checks that the typing dots show for the whole wait, Send is disabled, a second Enter or click never sends twice (exactly one request), a draft typed during the wait is kept, a slow 503 shows the error, restores the draft and re-enables Send, and a retry clears the error. The app also guards sending with a synchronous flag, so a fast double-click can't slip through either.
+- **Contrast tokens:** every text/background token pair was checked against WCAG AA (4.5:1). The lowest pairs after tuning: white on the coral button 4.98, green on green-soft 5.36, white on the dark-mode bubble 5.93.
 - **Size:** about 86 KB gzipped app code + 63 KB gzipped charts (loaded as a separate cached chunk) + 7 KB CSS.
 
 ## Limitations
@@ -1014,7 +1042,7 @@ test/        vitest tests
 
 ## Questions a judge might ask (with answers)
 
-1. **"Is the friend just ChatGPT?"** No. The AI is only the voice. Our state engine decides what the friend is ready to reveal, our Guardian and verifier decide whether a reply is safe, and our trained models do all the scoring. OpenAI only words the reply inside those limits, and every AI reply is checked before it's shown. Without the AI, the friend uses pre-written, reviewed lines. X-ray mode labels every friend reply ("AI, verified ✓", "Reviewed line" or "Fallback") and shows every number behind it. The Transparency page shows the AI's live status and today's spending.
+1. **"Is the friend just ChatGPT?"** No. The AI is only the voice. Our state engine decides what the friend is ready to reveal, our Guardian and verifier decide whether a reply is safe, and our trained models do all the scoring. OpenAI only words the reply inside those limits, and every AI reply is checked before it's shown. Without the AI, the friend uses pre-written, reviewed lines. X-ray mode labels every friend reply ("AI wording · checked by our verifier" or "Reviewed line") and shows every number behind it. The Transparency page shows the AI's live status and today's spending.
 2. **"What happens if a student types something that suggests *they're* not okay?"** The Guardian checks every message before anything else runs. If it detects risk, the practice pauses and a card shows 988 and "talk to a trusted adult." It can't be closed until the student confirms they've seen the resources. On the Transparency page you can watch "kms" get caught while "are you thinking about killing yourself?" (the *right* question to ask a friend) is allowed.
 3. **"Does it work for someone in a real crisis if your server is down?"** Yes. Real mode's text and helplines are bundled into the app at build time. If the server doesn't answer, it shows that saved copy and says so. The 988 call and text buttons are plain phone links.
 4. **"How do you know the trust graph isn't faked?"** Every point is the engine's real `trust` value after that message, straight from the API. The X-ray equation always adds up to the engine's real change, and any part we can't attribute to a skill is labeled "other" instead of being hidden.
