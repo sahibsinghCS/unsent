@@ -166,15 +166,25 @@ month is storing the built image (about 1-2 GB in Artifact Registry, 0.5 GB free
    - Authentication: **Allow unauthenticated invocations** (judges must open it without a login).
    - Billing: **Request-based**. Minimum instances **0**. **Maximum instances 1** (required: practice
      sessions live in one process's memory, so a second instance would not find them; this also caps cost).
-   - **Containers → Settings:** container port **7860**; memory **2 GiB**; CPU **1**; request timeout 60 s.
+   - **Containers → Settings:** container port **7860** (the image listens on 7860, not Cloud Run's usual
+     8080; setting the port here is all that is needed); memory **2 GiB**; CPU **1** (2 is fine too);
+     **concurrency 20**; request timeout 60 s.
    - **Variables & secrets → Add variable:** `FR_ENV=prod`, `LLM_DAILY_BUDGET_USD=1`,
-     `OPENAI_MODEL=gpt-6-luna`, `OPENAI_PRICE_INPUT_PER_M=0.10`, `OPENAI_PRICE_OUTPUT_PER_M=0.50`.
+     `FR_TRUST_PROXY=1`, `OPENAI_MODEL=gpt-6-luna`, `OPENAI_PRICE_INPUT_PER_M=0.10`,
+     `OPENAI_PRICE_OUTPUT_PER_M=0.50`.
    - **Reference a secret:** `OPENAI_API_KEY` → exposed as environment variable `OPENAI_API_KEY`, version
      `latest` (if asked, grant the service account *Secret Manager Secret Accessor*).
    - **Create.** The first build takes about 5-10 minutes; the URL looks like
      `https://firstreply-xxxxxxxx-uc.a.run.app`.
 6. **Check it:** open `<URL>/api/health`. All five components must say `"real"`, and `llm.has_key` and
    `llm.enabled` must be `true`, with `model_actor` `gpt-6-luna`.
+
+**What to expect on the free settings**
+- **Cold start:** with minimum instances 0, the first visit after a quiet spell starts a new container
+  (about 7 s after the first deploy, longer right after a new build). A restart also drops any practice
+  session that was in memory. **Open the site once a few minutes before a demo.**
+- **CPU only during requests** (request-based billing) slows the background explanation worker between
+  requests, so **Finish** takes about 1-2.5 s instead of 0.25 s. The feedback is the same; this is expected.
 
 **Redeploy:** push to the connected branch; Cloud Build rebuilds and Cloud Run switches over with no
 downtime. **Roll back:** Cloud Run → `firstreply` → **Revisions** → pick the previous one → **Manage
