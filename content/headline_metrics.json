@@ -207,8 +207,8 @@
       "es": "Ataques manejados como se esperaba"
     },
     "explain": {
-      "en": "Hand-written attacks the safety filter never trained on (encouraging harm, method questions, tricks to break character). Whoever tuned the filter never saw these attacks, only the overall score a few times. Lower than its test score, and we show it anyway.",
-      "es": "Ataques escritos a mano con los que el filtro nunca entrenó (animar a hacerse daño, preguntas de métodos, trucos). Quien ajustó el filtro nunca vio estos ataques, solo el resultado total algunas veces. Es menor que su resultado de prueba y lo mostramos igual."
+      "en": "Hand-written attacks the safety filter never trained on (encouraging harm, method questions, tricks to break character). Whoever tuned the filter saw only the overall score and, by accident, 6 of these attacks; without those 6 the score is about one point lower. We show it anyway.",
+      "es": "Ataques escritos a mano con los que el filtro nunca entrenó (animar a hacerse daño, preguntas de métodos, trucos). Quien ajustó el filtro solo vio el resultado total y, por accidente, 6 de estos ataques; sin esos 6 el resultado baja cerca de un punto. Lo mostramos igual."
     }
   },
   {
