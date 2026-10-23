@@ -108,7 +108,11 @@ def write_report(name: str, records: Iterable[dict], embed: str, extra: dict | N
             ]
         except (json.JSONDecodeError, KeyError, TypeError):
             kept = []
-    rows = [{**r, "notes": f"{r['notes']}; {tag}".strip("; ")} for r in records]
+    # The embedder goes into the split too, so (lane, metric, split) names exactly one record.
+    rows = [
+        {**r, "split": f"{r['split']} [{embed}]", "notes": f"{r['notes']}; {tag}".strip("; ")}
+        for r in records
+    ]
     path.write_text(json.dumps(kept + rows, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     if extra is not None:
         details = DETAILS / f"{name}.{embed}.json"

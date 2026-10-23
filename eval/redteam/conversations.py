@@ -154,7 +154,9 @@ def check_friend_node(run: Run, node: dict, scenario, bank: dict, where: str) ->
             if list(line.bubbles) != list(bubbles):
                 problems.append("bubbles differ from the reviewed bank line")
     elif voice == "fallback":
+        # English: the scenario's fallback lines; other languages: a reviewed bank line <= level.
         allowed = {t for lvl, ts in scenario.fallback_lines.items() if lvl <= level for t in ts}
+        allowed |= {b for ln in bank.values() if ln.level <= level for b in ln.bubbles}
         problems += [f"not a fallback line <= level {level}" for b in bubbles if b not in allowed]
     elif voice == "llm":
         problems += fact_leaks(bubbles, scenario, level)

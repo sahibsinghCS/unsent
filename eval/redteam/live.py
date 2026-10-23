@@ -214,8 +214,10 @@ def run(dry_run: bool = False) -> dict:
     cost = run_cost(started)
     lat = sorted(stats["latency_ms"])
     total = sum(stats["voices"].values())
-    split = f"live: {len(transcripts)} conversations, model={model}"
+    split = "live"
     records = [
+        common.record("live.conversations", len(transcripts), len(transcripts), split,
+                      f"model={model}; up to {MAX_TURNS} turns each; 1 Spanish"),  # fmt: skip
         *[common.record(f"live.voice.{v}", common.rate(stats["voices"][v], total), total, split,
                         "share of friend replies by who wrote the words")
           for v in ("llm", "bank", "fallback")],  # fmt: skip
