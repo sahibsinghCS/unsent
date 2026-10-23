@@ -46,7 +46,7 @@ In the Space, click **Settings**, scroll to **Variables and secrets**.
 | Name | Value | Why |
 |---|---|---|
 | `LLM_DAILY_BUDGET_USD` | `1` | App-side daily cap on OpenAI spend |
-| `OPENAI_MODEL` | `gpt-5-mini` | The model for the friend's wording (`make models` lists what your key can use) |
+| `OPENAI_MODEL` | `gpt-6-luna` | The model for the friend's wording (`make models` lists what your key can use) |
 | `FR_ENV` | `prod` | Already set in the image; set here too so it is visible |
 
 Optional: `OPENAI_PRICE_INPUT_PER_M` / `OPENAI_PRICE_OUTPUT_PER_M` (your model's real prices, used by
