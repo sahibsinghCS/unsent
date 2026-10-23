@@ -115,3 +115,90 @@ def test_dev_usage_log_adds_to_todays_file_total(monkeypatch, tmp_path):
     assert log.exists() and len(log.read_text().splitlines()) == 2
     assert abs(llm.spent_today_usd() - 0.05) < 1e-9
     llm._spent.clear()
+
+
+class _FakeCompletions:
+    """Stands in for client.chat.completions: replays scripted results and records each request."""
+
+    def __init__(self, results):
+        self.results = list(results)
+        self.calls: list[dict] = []
+
+    def create(self, **kwargs):
+        self.calls.append(kwargs)
+        result = self.results.pop(0)
+        if isinstance(result, Exception):
+            raise result
+        return result
+
+
+def _response(content: str, finish: str = "stop", tokens_out: int = 20):
+    from types import SimpleNamespace as NS
+
+    return NS(
+        choices=[NS(message=NS(content=content), finish_reason=finish)],
+        usage=NS(prompt_tokens=100, completion_tokens=tokens_out),
+    )
+
+
+def _bad_request(text: str):
+    import httpx
+    import openai
+
+    request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
+    return openai.BadRequestError(text, response=httpx.Response(400, request=request), body=None)
+
+
+@pytest.fixture
+def real_call(monkeypatch, tmp_path):
+    """Pretend a real call is allowed, with a scripted fake client and a throwaway usage log."""
+    from types import SimpleNamespace as NS
+
+    monkeypatch.setenv("FR_FAKE_LLM", "0")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    monkeypatch.setenv("FR_LLM_CACHE", "off")
+    monkeypatch.setattr(llm, "USAGE_LOG", tmp_path / "usage.jsonl")
+    llm._spent.clear()
+
+    def install(results):
+        fake = _FakeCompletions(results)
+        monkeypatch.setattr(llm, "_openai_client", lambda: NS(chat=NS(completions=fake)))
+        return fake
+
+    yield install
+    llm._spent.clear()
+
+
+def test_reasoning_models_are_asked_for_minimal_reasoning(real_call):
+    fake = real_call([_response('{"bubbles": ["hey"]}')])
+    assert llm.chat_json("actor", [{"role": "user", "content": "hi"}], Reply).bubbles == ["hey"]
+    assert fake.calls[0]["reasoning_effort"] == "minimal"
+
+
+def test_models_without_reasoning_effort_get_the_request_without_it(real_call):
+    fake = real_call(
+        [
+            _bad_request("Unrecognized request argument: reasoning_effort"),
+            _response('{"bubbles": ["ok"]}'),
+        ]
+    )
+    assert llm.chat_json("actor", [{"role": "user", "content": "hi"}], Reply).bubbles == ["ok"]
+    assert "reasoning_effort" in fake.calls[0] and "reasoning_effort" not in fake.calls[1]
+
+
+def test_empty_reply_cut_off_by_length_is_retried_with_more_room(real_call):
+    fake = real_call(
+        [_response("", finish="length", tokens_out=400), _response('{"bubbles": ["yo"]}')]
+    )
+    assert llm.chat_json(
+        "actor", [{"role": "user", "content": "hi"}], Reply, max_tokens=400
+    ).bubbles == ["yo"]
+    assert [c["max_completion_tokens"] for c in fake.calls] == [400, 1200]
+    assert len(llm.USAGE_LOG.read_text().splitlines()) == 2, "both calls count toward the budget"
+
+
+def test_reasoning_effort_can_be_turned_off(real_call, monkeypatch):
+    monkeypatch.setenv("OPENAI_REASONING_EFFORT", "off")
+    fake = real_call([_response('{"bubbles": ["hi"]}')])
+    llm.chat_json("actor", [{"role": "user", "content": "hi"}], Reply)
+    assert "reasoning_effort" not in fake.calls[0]
