@@ -6,7 +6,7 @@
   "n": 152,
   "split": "val",
   "notes": "share of rows whose every word 5-gram also occurs in train (lower is better)",
-  "created": "2026-10-23T00:27:36+00:00"
+  "created": "2026-10-23T05:23:20+00:00"
  },
  {
   "lane": "data",
@@ -15,7 +15,7 @@
   "n": 133,
   "split": "test",
   "notes": "share of rows whose every word 5-gram also occurs in train (lower is better)",
-  "created": "2026-10-23T00:27:36+00:00"
+  "created": "2026-10-23T05:23:20+00:00"
  },
  {
   "lane": "data",
@@ -24,6 +24,6 @@
   "n": 221,
   "split": "test_freeform",
   "notes": "share of rows whose every word 5-gram also occurs in train (lower is better)",
-  "created": "2026-10-23T00:27:36+00:00"
+  "created": "2026-10-23T05:23:20+00:00"
  }
 ]
