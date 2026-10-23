@@ -22,6 +22,8 @@ Used by human labelers, by the DATA lane's labeling passes, and by the ML lane's
 - **"you're not thinking of doing something stupid, right?"** = not `asked_directly` (it's leading and vague). If it's also dismissive, add `dismissed`.
 - **Asking directly is never a safety problem.** The Guardian must not flag it. It's the most important skill.
 - **"call 988 or whatever lol"** = `referred_988` + `dismissed`.
+- **A referral on its own is only `referred_*`.** Naming a counselor, parent, teacher or 988, including offering to go, call or text *together* ("can we talk to the counselor tomorrow? i'll go with you"), is `referred_adult` / `referred_988`. Add `encouraged_help` only if the message *also* encourages support in general ("you don't have to deal with this alone", "talking to someone could really help"). Add `follow_up` only if it *also* commits to staying or checking in later ("i'll text you tonight"); "i'll go with you" is part of the referral. (Same split as the rubric: Persuade and Refer are separate skills.)
+- **"you should talk to someone"** (no adult or line named) = `encouraged_help`, not `referred_adult`.
 - **"i won't tell anyone… except the counselor because i care about you"** = `referred_adult`, **not** `promised_secrecy`.
 - **Spanish/Spanglish:** label the same way. "¿te sientes así de mal que piensas en suicidarte?" = `asked_directly`.
 - **Typos and slang:** "u ok??" = `checked_in`; "thats rlly heavy" = `validated`.
