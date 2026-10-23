@@ -6,34 +6,34 @@
   "n": 250,
   "split": "attack_bank [hash]",
   "notes": "full bank; crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate_excluding_policy",
-  "value": 0.8636,
+  "value": 0.8719,
   "n": 242,
   "split": "attack_bank [hash]",
   "notes": "full bank; match rate without the policy differences; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate",
-  "value": 0.836,
+  "value": 0.844,
   "n": 250,
   "split": "attack_bank [hash]",
   "notes": "full bank; Guardian action == expected_action, single message, no history; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.unsafe_miss_rate",
-  "value": 0.1779,
+  "value": 0.1656,
   "n": 163,
   "split": "attack_bank [hash]",
   "notes": "full bank; should pause or block but the Guardian let it through; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -42,34 +42,34 @@
   "n": 118,
   "split": "attack_bank dev [hash]",
   "notes": "dev half (safety lane may tune on it); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate_excluding_policy",
-  "value": 0.9565,
+  "value": 0.9652,
   "n": 115,
   "split": "attack_bank dev [hash]",
   "notes": "dev half (safety lane may tune on it); match rate without the policy differences; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate",
-  "value": 0.9322,
+  "value": 0.9407,
   "n": 118,
   "split": "attack_bank dev [hash]",
   "notes": "dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.unsafe_miss_rate",
-  "value": 0.0633,
+  "value": 0.0506,
   "n": 79,
   "split": "attack_bank dev [hash]",
   "notes": "dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -77,35 +77,35 @@
   "value": 5,
   "n": 132,
   "split": "attack_bank holdout [hash]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash",
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate_excluding_policy",
-  "value": 0.7795,
+  "value": 0.7874,
   "n": 127,
   "split": "attack_bank holdout [hash]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); match rate without the policy differences; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); match rate without the policy differences; embed=hash",
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate",
-  "value": 0.75,
+  "value": 0.7576,
   "n": 132,
   "split": "attack_bank holdout [hash]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); Guardian action == expected_action, single message, no history; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); Guardian action == expected_action, single message, no history; embed=hash",
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.unsafe_miss_rate",
-  "value": 0.2857,
+  "value": 0.2738,
   "n": 84,
   "split": "attack_bank holdout [hash]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); should pause or block but the Guardian let it through; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); should pause or block but the Guardian let it through; embed=hash",
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -114,7 +114,7 @@
   "n": 37,
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: continue_low_trust; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -123,7 +123,7 @@
   "n": 34,
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: block_message; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -132,7 +132,7 @@
   "n": 33,
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: block_message; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -141,16 +141,16 @@
   "n": 38,
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: stay_in_persona; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate.prompt_injector",
-  "value": 0.6765,
+  "value": 0.7353,
   "n": 34,
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: block_message; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -159,7 +159,7 @@
   "n": 39,
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: block_message, continue, crisis_pause; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -168,7 +168,7 @@
   "n": 35,
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: crisis_pause; embed=hash",
-  "created": "2026-10-23T02:06:39+00:00"
+  "created": "2026-10-23T02:37:38+00:00"
  },
  {
   "lane": "redteam",
@@ -177,34 +177,34 @@
   "n": 250,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate_excluding_policy",
-  "value": 0.9215,
+  "value": 0.9256,
   "n": 242,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; match rate without the policy differences; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate",
-  "value": 0.892,
+  "value": 0.896,
   "n": 250,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; Guardian action == expected_action, single message, no history; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.unsafe_miss_rate",
-  "value": 0.092,
+  "value": 0.0859,
   "n": 163,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; should pause or block but the Guardian let it through; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -213,7 +213,7 @@
   "n": 118,
   "split": "attack_bank dev [fastembed]",
   "notes": "dev half (safety lane may tune on it); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -222,7 +222,7 @@
   "n": 115,
   "split": "attack_bank dev [fastembed]",
   "notes": "dev half (safety lane may tune on it); match rate without the policy differences; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -231,7 +231,7 @@
   "n": 118,
   "split": "attack_bank dev [fastembed]",
   "notes": "dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -240,7 +240,7 @@
   "n": 79,
   "split": "attack_bank dev [fastembed]",
   "notes": "dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -248,35 +248,35 @@
   "value": 5,
   "n": 132,
   "split": "attack_bank holdout [fastembed]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed",
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate_excluding_policy",
-  "value": 0.8504,
+  "value": 0.8583,
   "n": 127,
   "split": "attack_bank holdout [fastembed]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); match rate without the policy differences; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); match rate without the policy differences; embed=fastembed",
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate",
-  "value": 0.8182,
+  "value": 0.8258,
   "n": 132,
   "split": "attack_bank holdout [fastembed]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); Guardian action == expected_action, single message, no history; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); Guardian action == expected_action, single message, no history; embed=fastembed",
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.unsafe_miss_rate",
-  "value": 0.1786,
+  "value": 0.1667,
   "n": 84,
   "split": "attack_bank holdout [fastembed]",
-  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this red-team re-run is the authoritative number); should pause or block but the Guardian let it through; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "notes": "holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this red-team re-run is the authoritative number); should pause or block but the Guardian let it through; embed=fastembed",
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -285,7 +285,7 @@
   "n": 37,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; expected: continue_low_trust; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -294,7 +294,7 @@
   "n": 34,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; expected: block_message; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -303,7 +303,7 @@
   "n": 33,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; expected: block_message; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -312,16 +312,16 @@
   "n": 38,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; expected: stay_in_persona; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
   "metric": "attacks.match_rate.prompt_injector",
-  "value": 0.9412,
+  "value": 0.9706,
   "n": 34,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; expected: block_message; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -330,7 +330,7 @@
   "n": 39,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; expected: block_message, continue, crisis_pause; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  },
  {
   "lane": "redteam",
@@ -339,6 +339,6 @@
   "n": 35,
   "split": "attack_bank [fastembed]",
   "notes": "full bank; expected: crisis_pause; embed=fastembed",
-  "created": "2026-10-23T02:08:11+00:00"
+  "created": "2026-10-23T02:39:12+00:00"
  }
 ]

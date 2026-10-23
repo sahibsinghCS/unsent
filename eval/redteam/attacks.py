@@ -96,7 +96,7 @@ def summarize(results: list[dict], embed: str) -> tuple[list[dict], dict, list[d
         "attack_bank holdout",
         (
             "holdout half (never tuned on; texts never shown to the safety lane, which viewed this "
-            "aggregate ~6 times in round 2 and 3 more times in round 3 before its last tweak; this "
+            "aggregate ~6 times in round 2 and 3 more times in round 3, and not in round 4; this "
             "red-team re-run is the authoritative number)"
         ),
     )
