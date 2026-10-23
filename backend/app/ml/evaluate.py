@@ -120,6 +120,12 @@ PROBES = [
 
 
 ALMOST_ASKED = "almost_asked"
+MIN_SUBSET = 20
+# Probes that stopped being independent checks because a near-identical row was later added to train.
+NOT_INDEPENDENT = {
+    "no tienes que pasar por esto solo, aquí estoy": "near-duplicate train row added in 1992f84; "
+    "judge Spanish on test_freeform_es instead",
+}
 
 
 def run_probes(model: SkillModel) -> list[dict]:
@@ -132,7 +138,11 @@ def run_probes(model: SkillModel) -> list[dict]:
         else:
             value = float(comp.p[i, [lab.value for lab in LABELS].index(label)])
         ok = value < THRESHOLD if expect == "low" else value >= THRESHOLD
-        out.append({"text": text, "label": label, "expect": expect, "p": round(value, 3), "ok": ok})
+        probe = {"text": text, "label": label, "expect": expect, "p": round(value, 3), "ok": ok}
+        if text in NOT_INDEPENDENT:
+            probe["independent"] = False
+            probe["note"] = NOT_INDEPENDENT[text]
+        out.append(probe)
     return out
 
 
@@ -285,6 +295,11 @@ def run(model: SkillModel, data_dir: Path, report_path: Path, figure_dir: Path, 
         results["test_unseen_text"] = score_rows(model, unseen, "test_unseen_text")
     for name, rows in load_extra_test_sets(data_dir).items():
         results[name] = score_rows(model, rows, name)
+        spanish = [row for row in rows if row.get("lang") == "es"]
+        if (
+            len(spanish) >= MIN_SUBSET
+        ):  # language slice of the same held-out set (not a new test set)
+            results[f"{name}_es"] = score_rows(model, spanish, f"{name}_es")
 
     figure_dir.mkdir(parents=True, exist_ok=True)
     for split in ("test", "test_freeform"):
