@@ -38,6 +38,7 @@ from backend.app.engine.service import Engine
 from backend.app.engine.state import active_labels
 from backend.app.pipeline import friend_context
 from backend.app.whatif import candidates as cands
+from backend.app.whatif.cache import cached_embeddings
 
 IMPLEMENTED = True
 
@@ -334,6 +335,10 @@ class WhatIf:
         )
 
     def simulate(self, session: Session, path: list[Node], node_id: str) -> WhatIfResult:
+        with cached_embeddings():
+            return self._simulate(session, path, node_id)
+
+    def _simulate(self, session: Session, path: list[Node], node_id: str) -> WhatIfResult:
         sim = self.simulator(session)
         base, original, _ = split_at(path, node_id)
         before = base[-1].state_after
