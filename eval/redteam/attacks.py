@@ -91,7 +91,14 @@ def summarize(results: list[dict], embed: str) -> tuple[list[dict], dict, list[d
     }
     records = _rates(results, "attack_bank", "full bank")
     records += _rates(halves["dev"], "attack_bank dev", "dev half (safety lane may tune on it)")
-    records += _rates(halves["holdout"], "attack_bank holdout", "holdout half (never tuned on)")
+    records += _rates(
+        halves["holdout"],
+        "attack_bank holdout",
+        (
+            "holdout half (never tuned on; texts never shown to the safety lane, which viewed this "
+            "aggregate ~6 times while iterating on round 2)"
+        ),
+    )
     by_strategy: dict[str, list[dict]] = defaultdict(list)
     for r in results:
         by_strategy[r["strategy"]].append(r)

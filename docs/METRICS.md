@@ -32,8 +32,8 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | What | Result | n | Split | Notes |
 |---|---|---|---|---|
-| Attack bank, holdout half: Guardian did the expected thing | **81.8%** | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on); Guardian action == expected_action, single message, no history; embed=fastembed |
-| Attack bank, holdout half: should be stopped but got through | **17.9%** | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on); should pause or block but the Guardian let it through; embed=fastembed |
+| Attack bank, holdout half: Guardian did the expected thing | **81.8%** | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times wh... |
+| Attack bank, holdout half: should be stopped but got through | **17.9%** | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times wh... |
 | Attack bank, all 250: Guardian did the expected thing | **88.4%** | 250 | attack_bank [fastembed] | full bank; Guardian action == expected_action, single message, no history; embed=fastembed |
 | Fuzzed messages still handled right | **98.7%** | 1636 | guardian test split [fastembed] | perturbed variants still correct, of messages correct unperturbed; embed=fastembed |
 | I1 unsafe friend lines shown | **0** | 9735 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
@@ -198,10 +198,10 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `attacks.match_rate_excluding_policy` | 0.948 | 115 | attack_bank dev [hash] | dev half (safety lane may tune on it); match rate without the policy differences; embed=hash |
 | `attacks.match_rate` | 0.924 | 118 | attack_bank dev [hash] | dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=hash |
 | `attacks.unsafe_miss_rate` | 0.063 | 79 | attack_bank dev [hash] | dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=hash |
-| `attacks.policy_differences` | 6 | 132 | attack_bank holdout [hash] | holdout half (never tuned on); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash |
-| `attacks.match_rate_excluding_policy` | 0.786 | 126 | attack_bank holdout [hash] | holdout half (never tuned on); match rate without the policy differences; embed=hash |
-| `attacks.match_rate` | 0.75 | 132 | attack_bank holdout [hash] | holdout half (never tuned on); Guardian action == expected_action, single message, no history; embed=hash |
-| `attacks.unsafe_miss_rate` | 0.274 | 84 | attack_bank holdout [hash] | holdout half (never tuned on); should pause or block but the Guardian let it through; embed=hash |
+| `attacks.policy_differences` | 6 | 132 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=hash |
+| `attacks.match_rate_excluding_policy` | 0.786 | 126 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); match rate without the policy differences; embed=hash |
+| `attacks.match_rate` | 0.75 | 132 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); Guardian action == expected_action, single message, no history; embed=hash |
+| `attacks.unsafe_miss_rate` | 0.274 | 84 | attack_bank holdout [hash] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); should pause or block but the Guardian let it through; embed=hash |
 | `attacks.match_rate.dismissive` | 0.973 | 37 | attack_bank [hash] | full bank; expected: continue_low_trust; embed=hash |
 | `attacks.match_rate.encourager` | 0.765 | 34 | attack_bank [hash] | full bank; expected: block_message; embed=hash |
 | `attacks.match_rate.method_seeking` | 0.818 | 33 | attack_bank [hash] | full bank; expected: block_message; embed=hash |
@@ -217,10 +217,10 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `attacks.match_rate_excluding_policy` | 0.974 | 116 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); match rate without the policy differences; embed=fastembed |
 | `attacks.match_rate` | 0.958 | 118 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=fastembed |
 | `attacks.unsafe_miss_rate` | 0.013 | 79 | attack_bank dev [fastembed] | dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=fastembed |
-| `attacks.policy_differences` | 5 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
-| `attacks.match_rate_excluding_policy` | 0.85 | 127 | attack_bank holdout [fastembed] | holdout half (never tuned on); match rate without the policy differences; embed=fastembed |
-| `attacks.match_rate` | 0.818 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on); Guardian action == expected_action, single message, no history; embed=fastembed |
-| `attacks.unsafe_miss_rate` | 0.179 | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on); should pause or block but the Guardian let it through; embed=fastembed |
+| `attacks.policy_differences` | 5 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); crisis expected, concern given, message ambiguous under the contract; counted as mismatches in match_rate, listed separately here; embed=fastembed |
+| `attacks.match_rate_excluding_policy` | 0.85 | 127 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); match rate without the policy differences; embed=fastembed |
+| `attacks.match_rate` | 0.818 | 132 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); Guardian action == expected_action, single message, no history; embed=fastembed |
+| `attacks.unsafe_miss_rate` | 0.179 | 84 | attack_bank holdout [fastembed] | holdout half (never tuned on; texts never shown to the safety lane, which viewed this aggregate ~6 times while iterating on round 2); should pause or block but the Guardian let it through; embed=fastembed |
 | `attacks.match_rate.dismissive` | 0.946 | 37 | attack_bank [fastembed] | full bank; expected: continue_low_trust; embed=fastembed |
 | `attacks.match_rate.encourager` | 0.794 | 34 | attack_bank [fastembed] | full bank; expected: block_message; embed=fastembed |
 | `attacks.match_rate.method_seeking` | 0.909 | 33 | attack_bank [fastembed] | full bank; expected: block_message; embed=fastembed |
