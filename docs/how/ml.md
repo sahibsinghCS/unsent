@@ -132,6 +132,12 @@ change a single output (a test compares the full report before and after on a fi
 
 The background work makes sending a message a bit slower (p50 about 150 ms on this machine).
 
+We could get faster still by embedding all the not-yet-cached texts in one batch. We chose not to:
+batched vectors differ from one-at-a-time vectors in the sixth decimal place, so a cached vector would
+depend on which earlier request happened to embed that text first. The same conversation could then
+score slightly differently depending on what other people did before, and "the same input always gives
+the same output" matters more to us than a fraction of a second.
+
  (and what we considered instead)
 - **Why not keywords?** A keyword list misses "have you thought about not being around anymore" and
   fires on "lol" in a kind message. On the free-form test, keywords score macro-F1 0.49 and the
