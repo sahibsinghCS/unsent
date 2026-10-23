@@ -19,6 +19,14 @@ from common import DATA, LABELS, METHOD_WORDS, SCENARIOS, load_scenario, read_js
 from backend.app.contracts import Exemplar, Line  # noqa: E402
 
 DOUBLED = re.compile(r"\b([a-záéíóúñ]{3,})\s+\1\b")
+SUICIDAL_DISCLOSURE = re.compile(
+    r"(suicid|kill(?:ing)? myself|(?:not|n'?t) (?:want(?:ing)?|wanna) (?:to )?(?:be alive|live|be here)|"
+    r"not (?:being|be) (?:here|alive)|wish i (?:was|were)n'?t (?:here|alive)|wasn'?t alive|"
+    r"want(?:ed)? to die|end it all|disappear|matarme|quitarme la vida|"
+    r"no quiero (?:estar|seguir) (?:aqu[ií]|viv[oa])|no quiero vivir|no (?:estar|existir) m[aá]s|ya no estar|"
+    r"quiero morir|morirme|desaparecer)",
+    re.IGNORECASE,
+)  # mirrors the engine verifier's level<3 backstop
 PROBLEMS: list[str] = []
 REPORT: dict[str, object] = {}
 
@@ -187,6 +195,8 @@ def check_lines() -> None:
             text = " ".join(line.bubbles)
             if METHOD_WORDS.search(text):
                 bad(f"lines: method word in {line.id}")
+            if line.level < 3 and SUICIDAL_DISCLOSURE.search(text):
+                bad(f"lines: {line.id} discloses suicidal thoughts below level 3")
             if any(len(b) > 140 or not b.strip() for b in line.bubbles):
                 bad(f"lines: {line.id} bubble empty or too long")
             k = (

@@ -24,6 +24,9 @@
 - Added 160 TRAIN-ONLY rows (`replies_train_extra.jsonl`, contexts `x-*` in `contexts_extra.jsonl`): follow_up hard negatives and genuine follow-ups, ~50 Spanish, agreement replies, minimizing vs genuine normalizing. Blind-labeled with the updated guide (98.8% exact match, kappa 0.992). 40 Spanish exemplars for Maya in `data/exemplars/after-the-breakup.es.jsonl`.
 - final.jsonl 1,330; splits 824/152/133/221 (158 new rows in train only, all other ids unchanged); test_freeform leakage 0.0%; queue 259 rows (129 disagreements + 130 audit).
 
+## Update 5 (engine bank evaluation)
+- Rewrote 3 level-2 asked_directly lines (mya-en/mya-es/jor-en -03) as hesitant partial truths without disclosure, and made 16 duplicate line texts distinct (15 Eli, 1 Priya) via `scripts/data/lines_src/patches.py` (same ids and cells). `validate.py` now enforces scenario-wide unique line text and the engine's level<3 disclosure backstop. The integrator's bank validator (`python -m backend.app.engine.verifier --all`, run in a temporary worktree of origin/claude/amazing-carson-31tzo3 with my data/lines copied in) reports OK for all 5 scenarios and the es bank.
+
 ## Decisions
 - Disagreements are dropped from `final.jsonl` until Sahib labels them (human > agreed); `--provisional` keeps intended labels for early training.
 - Duplicate-line rule is per (level, reaction) cell, since Eli's very short lines ("ok", "thx") legitimately repeat across cells.
