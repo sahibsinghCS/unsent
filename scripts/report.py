@@ -101,7 +101,7 @@ def fmt(value, style: str = "auto") -> str:
     if not isinstance(value, int | float):
         return cell(str(value))
     if style == "percent":
-        return f"{value * 100:.1f}%"
+        return f"{value * 100 + 1e-9:.1f}%"  # 0.2515 -> 25.2%, not float-rounded down
     if style == "ms":
         return f"{value:.0f} ms" if value >= 10 else f"{value:.1f} ms"
     if style == "usd":
