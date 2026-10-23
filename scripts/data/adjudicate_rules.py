@@ -31,7 +31,7 @@ LINE = re.compile(
 GENERAL = re.compile(
     r"\balone\b|deserve (some |actual )?support|talk(ing)? to someone|ask(ing)? for help|reach(ing)? out|"
     r"get(ting)? (you )?(some )?help|let (more )?people in|people who (want|can) to? ?help|sin apoyo|buscar (ayuda|apoyo)|"
-    r"pedir ayuda|hablar con alguien|(cargu|pas[ae]|enfrent|hacer|est[eé]s|estar)\w* [\w ]{0,20}\bsol[oa]\b|merece[sn]? apoyo|not weak|isn't weak|de valientes",
+    r"could (really )?(help|make)|take (some )?weight|lighter|pedir ayuda|hablar con alguien|(cargu|pas[ae]|enfrent|hacer|est[eé]s|estar)\w* [\w ]{0,20}\bsol[oa]\b|merece[sn]? apoyo|not weak|isn't weak|de valientes",
     re.I,
 )
 NEAR_ADULT = re.compile(

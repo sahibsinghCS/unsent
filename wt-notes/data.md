@@ -14,7 +14,7 @@
 - Added `replies_freeform.jsonl` (443 hand-written replies incl. asked_directly/follow_up hard negatives), fixed composed joins and Guardian doubled words, re-ran ONE blind pass (1,299 rows). Agreement: composed 85.9% exact / mean kappa 0.949; free-form 77.9% / 0.887.
 - New splits incl. `test_freeform.jsonl` (197, incl. 26 test-only referred_988/near-miss rows; 0.0% 5-gram leakage vs train; composed test 21.0%). `eval/reports/data_leakage.json`. No normalized text in more than one split.
 - Did NOT merge origin/claude/amazing-carson-31tzo3 (AGENTS rule: never merge; integrator said skip).
-- queue.jsonl now 259 rows (129 disagreements + 130 audit); final.jsonl 1,330 rows until Sahib labels them.
+- queue.jsonl now 259 rows (129 disagreements + 130 audit); final.jsonl 1,410 rows until Sahib labels them.
 
 ## Update 3 (rule adjudication)
 - `adjudicate_rules.py` settles disagreements using only the explicit LABEL_GUIDE rules (referral alone = referred_* only; "i'll go with you" is part of the referral; named adult / 988 / explicit ask). 94 of 221 adjudicated (`adjudicated_labels.jsonl`, source `adjudicated_rule`); 127 judgment calls + 120 audit remain in `queue.jsonl` (259 rows) for Sahib. Priority: human > adjudicated_rule > agreed.
@@ -26,6 +26,10 @@
 
 ## Update 5 (engine bank evaluation)
 - Rewrote 3 level-2 asked_directly lines (mya-en/mya-es/jor-en -03) as hesitant partial truths without disclosure, and made 16 duplicate line texts distinct (15 Eli, 1 Priya) via `scripts/data/lines_src/patches.py` (same ids and cells). `validate.py` now enforces scenario-wide unique line text and the engine's level<3 disclosure backstop. The integrator's bank validator (`python -m backend.app.engine.verifier --all`, run in a temporary worktree of origin/claude/amazing-carson-31tzo3 with my data/lines copied in) reports OK for all 5 scenarios and the es bank.
+
+## Update 6 (final train-only batch)
+- +80 TRAIN-ONLY rows (t0161-t0240, contexts `y-*`): ~50 Spanish/Spanglish encouragement/follow-up/referral/validation and ~30 English indirect encouragement (with ultimatum hard negatives). Blind agreement on the 240 train-only rows: 97.9% exact, kappa 0.989. `adjudicate_rules.py` also treats "could really help / take weight off" as general encouragement (R-ENC-GEN).
+- final.jsonl 1,410; splits 904/152/133/221 (only additions to train; val/test/test_freeform ids identical); test_freeform leakage 0.0%; queue 259 (129 + 130 audit).
 
 ## Decisions
 - Disagreements are dropped from `final.jsonl` until Sahib labels them (human > agreed); `--provisional` keeps intended labels for early training.

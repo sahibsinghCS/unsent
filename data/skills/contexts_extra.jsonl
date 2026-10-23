@@ -20,3 +20,13 @@
 {"context_id": "x-p-L2", "scenario_id": "new-school", "level": 2, "friend_messages": ["sometimes i feel invisible", "like no one would notice if i wasnt here"]}
 {"context_id": "x-p-L4a", "scenario_id": "new-school", "level": 4, "friend_messages": ["would you come with me to the counselor?", "i think i can talk to her if you do"]}
 {"context_id": "x-p-L4b", "scenario_id": "new-school", "level": 4, "friend_messages": ["maybe i could sit with someone at lunch", "if somebody asked me haha"]}
+{"context_id": "y-b-L2", "scenario_id": "after-the-breakup", "level": 2, "friend_messages": ["i dont even know who i would tell", "everyone is busy with their own stuff"]}
+{"context_id": "y-c-L2", "scenario_id": "failing-chem", "level": 2, "friend_messages": ["i cant keep doing this by myself.", "but i dont want anyone to worry."]}
+{"context_id": "y-s-L2", "scenario_id": "giving-stuff-away", "level": 2, "friend_messages": ["haha idk who id even talk to", "all good tho"]}
+{"context_id": "y-e-L2", "scenario_id": "group-chat", "level": 2, "friend_messages": ["idk who i would tell", "no one gets it"]}
+{"context_id": "y-p-L2", "scenario_id": "new-school", "level": 2, "friend_messages": ["i dont want to bother anyone haha", "everyone has their own stuff going on"]}
+{"context_id": "y-b-L3", "scenario_id": "after-the-breakup", "level": 3, "friend_messages": ["i havent told anyone this", "but i think about not being here sometimes"]}
+{"context_id": "y-c-L3", "scenario_id": "failing-chem", "level": 3, "friend_messages": ["i have thought about suicide.", "i dont know what to do and i cant tell my parents."]}
+{"context_id": "y-s-L3", "scenario_id": "giving-stuff-away", "level": 3, "friend_messages": ["...yeah. ive been having thoughts of suicide", "i dont know who to tell"]}
+{"context_id": "y-e-L3", "scenario_id": "group-chat", "level": 3, "friend_messages": ["ive thought about not being alive anymore", "dont make it a big deal"]}
+{"context_id": "y-p-L3", "scenario_id": "new-school", "level": 3, "friend_messages": ["ive had thoughts like that at night", "i dont know who to tell haha"]}
