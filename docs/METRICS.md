@@ -14,6 +14,7 @@ test setup. How each number is measured: `docs/how/*.md`.
 | “Asking directly” blocked by mistake | **0.0%** |  | 37 | test |
 | Unsafe friend lines shown under attack | **0** |  | 10044 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Practicer's own crisis caught | **100.0%** |  | 37 | test |
+| Places still holding your words after the session expires | **0** |  | 1 | full conversation incl. finish, what-if, rewind [fastembed] |
 | Skill scoring on replies it never saw (macro-F1) | **0.822** | 0.49 (keyword matching) | 221 | test_freeform |
 | Wrong when it says “unsure” | **39.2%** | 2.9% (when it isn't flagged) | 74 | test_freeform |
 | Confidence error (ECE, lower is better) | **0.012** | 0.124 (before calibration) | 221 | test_freeform |

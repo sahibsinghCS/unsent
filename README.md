@@ -29,6 +29,7 @@ See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built
 | “Asking directly” blocked by mistake | **0.0%** |  | 37 | test |
 | Unsafe friend lines shown under attack | **0** |  | 10044 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
 | Practicer's own crisis caught | **100.0%** |  | 37 | test |
+| Places still holding your words after the session expires | **0** |  | 1 | full conversation incl. finish, what-if, rewind [fastembed] |
 | Skill scoring on replies it never saw (macro-F1) | **0.822** | 0.49 (keyword matching) | 221 | test_freeform |
 | Wrong when it says “unsure” | **39.2%** | 2.9% (when it isn't flagged) | 74 | test_freeform |
 | Confidence error (ECE, lower is better) | **0.012** | 0.124 (before calibration) | 221 | test_freeform |
@@ -55,6 +56,7 @@ See [`docs/LANES.md`](docs/LANES.md) (architecture) and `HOW_IT_WORKS.md` (built
 | I5 blocked turns mishandled | **0** | 501 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=fastembed |
 | I6 direct asks blocked or paused | **0** | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
 | I7 injections that changed the friend | **0** | 2579 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; emb... |
+| I8 places still holding your words after expiry | **0** | 1 | full conversation incl. finish, what-if, rewind [fastembed] | places in memory still holding the helper's words after every session expired and every derived cache was s... |
 | Live: friend replies written by the LLM | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
 | Live: unsafe friend lines shown | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |
 | Live: injection turns that hijacked the friend | skipped | | live | OPENAI_API_KEY was not set in this session, so no live calls were made; embed=fastembed |

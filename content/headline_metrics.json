@@ -48,6 +48,22 @@
     }
   },
   {
+    "id": "privacy_nothing_remembered",
+    "lane": "redteam",
+    "metric": "invariants.I8.violations",
+    "split": "full conversation incl. finish, what-if, rewind [fastembed]",
+    "format": "count",
+    "better": "lower",
+    "label": {
+      "en": "Places still holding your words after the session expires",
+      "es": "Lugares que guardan tus palabras después de que expira la sesión"
+    },
+    "explain": {
+      "en": "We chat with a secret marker word, let the session expire, then scan the server's whole memory for that word. A control check proves the scan finds it while the chat is still open.",
+      "es": "Chateamos con una palabra secreta, dejamos que la sesión expire y buscamos esa palabra en toda la memoria del servidor. Una prueba de control demuestra que la búsqueda la encuentra mientras el chat sigue abierto."
+    }
+  },
+  {
     "id": "skills_unseen",
     "lane": "ml",
     "metric": "macro_f1_ensemble",
