@@ -233,7 +233,7 @@
     "simulated": "Simulado",
     "simulated_hint": "Son simulaciones, no personas reales. Muestran cómo reacciona el modelo.",
     "best": "Mejor camino",
-    "score": "Puntaje del crítico {score}",
+    "score": "Coincidencia con la habilidad {score}%",
     "overlay": "Todos los caminos, confianza en el tiempo",
     "you_said": "Lo que dijiste",
     "start": "Inicio",
@@ -241,7 +241,17 @@
     "error": "No se pudo ejecutar la simulación.",
     "back": "Volver a los comentarios",
     "try_this": "Probar esto en el chat",
-    "trust_end": "Confianza {from} → {to}"
+    "trust_end": "Confianza {from} → {to}",
+    "score_hint": "Qué tan claramente nuestro detector ve la habilidad que enseña esta respuesta.",
+    "empty": "No encontramos una respuesta mejor verificada para este mensaje. Prueba con otro.",
+    "strategies": {
+      "check_in": "preguntar cómo está",
+      "validate": "validar",
+      "ask_directly": "preguntar directo",
+      "refer": "derivar",
+      "follow_up": "dar seguimiento",
+      "combo": "combinación"
+    }
   },
   "real": {
     "country": "¿Dónde estás?",
