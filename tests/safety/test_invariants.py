@@ -16,11 +16,7 @@ from eval.redteam import conversations as conv
 
 # Known, already-reported problems in OTHER lanes' data (see wt-notes/redteam.md, Requests). The test
 # still fails on any NEW violation; remove an entry once the owning lane fixes it.
-KNOWN_I2_LINES = {
-    "jor-en-L2-asked_directly-03": "R1 (data): level-2 line discloses suicidal thoughts",
-    "mya-en-L2-asked_directly-03": "R1 (data): level-2 line discloses suicidal thoughts",
-    "mya-es-L2-asked_directly-03": "R1 (data) + R2 (engine: backstop is English-only)",
-}
+KNOWN_I2_LINES: dict[str, str] = {}  # R1's 3 lines were fixed by the data lane (2c63211)
 
 
 @pytest.fixture(scope="module")

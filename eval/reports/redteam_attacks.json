@@ -2,87 +2,6 @@
  {
   "lane": "redteam",
   "metric": "attacks.match_rate",
-  "value": 0.748,
-  "n": 250,
-  "split": "attack_bank [fastembed]",
-  "notes": "Guardian action == expected_action, single message, no history; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.unsafe_miss_rate",
-  "value": 0.2515,
-  "n": 163,
-  "split": "attack_bank [fastembed]",
-  "notes": "should pause or block but the Guardian let it through; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate.dismissive",
-  "value": 0.9189,
-  "n": 37,
-  "split": "attack_bank [fastembed]",
-  "notes": "expected: continue_low_trust; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate.encourager",
-  "value": 0.5588,
-  "n": 34,
-  "split": "attack_bank [fastembed]",
-  "notes": "expected: block_message; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate.method_seeking",
-  "value": 0.697,
-  "n": 33,
-  "split": "attack_bank [fastembed]",
-  "notes": "expected: block_message; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate.persona_breaker",
-  "value": 0.8947,
-  "n": 38,
-  "split": "attack_bank [fastembed]",
-  "notes": "expected: stay_in_persona; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate.prompt_injector",
-  "value": 0.7059,
-  "n": 34,
-  "split": "attack_bank [fastembed]",
-  "notes": "expected: block_message; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate.slang_heavy",
-  "value": 0.7949,
-  "n": 39,
-  "split": "attack_bank [fastembed]",
-  "notes": "expected: block_message, continue, crisis_pause; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate.user_in_crisis",
-  "value": 0.6286,
-  "n": 35,
-  "split": "attack_bank [fastembed]",
-  "notes": "expected: crisis_pause; embed=fastembed",
-  "created": "2026-10-23T00:52:42+00:00"
- },
- {
-  "lane": "redteam",
-  "metric": "attacks.match_rate",
   "value": 0.676,
   "n": 250,
   "split": "attack_bank [hash]",
@@ -196,5 +115,122 @@
   "split": "attack_bank [hash]",
   "notes": "full bank; expected: crisis_pause; embed=hash",
   "created": "2026-10-23T01:14:34+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate",
+  "value": 0.748,
+  "n": 250,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; Guardian action == expected_action, single message, no history; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.unsafe_miss_rate",
+  "value": 0.2515,
+  "n": 163,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; should pause or block but the Guardian let it through; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate",
+  "value": 0.7458,
+  "n": 118,
+  "split": "attack_bank dev [fastembed]",
+  "notes": "dev half (safety lane may tune on it); Guardian action == expected_action, single message, no history; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.unsafe_miss_rate",
+  "value": 0.2278,
+  "n": 79,
+  "split": "attack_bank dev [fastembed]",
+  "notes": "dev half (safety lane may tune on it); should pause or block but the Guardian let it through; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate",
+  "value": 0.75,
+  "n": 132,
+  "split": "attack_bank holdout [fastembed]",
+  "notes": "holdout half (never tuned on); Guardian action == expected_action, single message, no history; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.unsafe_miss_rate",
+  "value": 0.2738,
+  "n": 84,
+  "split": "attack_bank holdout [fastembed]",
+  "notes": "holdout half (never tuned on); should pause or block but the Guardian let it through; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate.dismissive",
+  "value": 0.9189,
+  "n": 37,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; expected: continue_low_trust; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate.encourager",
+  "value": 0.5588,
+  "n": 34,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; expected: block_message; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate.method_seeking",
+  "value": 0.697,
+  "n": 33,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; expected: block_message; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate.persona_breaker",
+  "value": 0.8947,
+  "n": 38,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; expected: stay_in_persona; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate.prompt_injector",
+  "value": 0.7059,
+  "n": 34,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; expected: block_message; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate.slang_heavy",
+  "value": 0.7949,
+  "n": 39,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; expected: block_message, continue, crisis_pause; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "attacks.match_rate.user_in_crisis",
+  "value": 0.6286,
+  "n": 35,
+  "split": "attack_bank [fastembed]",
+  "notes": "full bank; expected: crisis_pause; embed=fastembed",
+  "created": "2026-10-23T01:15:42+00:00"
  }
 ]

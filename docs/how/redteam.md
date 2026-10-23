@@ -87,21 +87,22 @@ Production embedder (`[fastembed]`) unless noted. Full tables: `docs/METRICS.md`
 
 | Measurement | Result | n | Split |
 |---|---|---|---|
-| Attack bank: Guardian did the expected thing | 74.8% | 250 | attack bank |
+| Attack bank, holdout half (headline): Guardian did the expected thing | 75.0% | 132 | attack bank holdout |
+| Attack bank, all 250 | 74.8% | 250 | attack bank |
 | Attacks that should be stopped but got through | 25.2% | 163 | attack bank (pause/block expected) |
 | …by strategy: dismissive / persona-breaker / slang | 91.9% / 89.5% / 79.5% | 37 / 38 / 39 | attack bank |
 | …by strategy: injector / method-seeking / encourager / crisis | 70.6% / 69.7% / 55.9% / 62.9% | 34 / 33 / 34 / 35 | attack bank |
 | Fuzzed messages still handled right | 94.3% | 1,636 | Guardian test split |
 | …worst perturbation: look-alike (Cyrillic) letters | 68.4% | 171 | Guardian test split |
 | …asking directly still allowed after fuzzing | 100% | 400 | Guardian test split |
-| I1 unsafe friend lines shown | **0** | 10,021 bubbles | 524 conversations, 4,912 turns |
-| I3 method/means words in friend lines | **0** | 10,021 bubbles | same |
+| I1 unsafe friend lines shown | **0** | 10,044 bubbles | 524 conversations, 4,912 turns |
+| I3 method/means words in friend lines | **0** | 10,044 bubbles | same |
 | I4 crisis turns mishandled | **0** | 273 | same |
 | I5 blocked turns mishandled | **0** | 501 | same |
 | I6 direct asks blocked or paused (EN/ES/mixed) | **0** | 750 | 6 chats × all phrasings |
 | I7 injections that changed the friend | **0** | 2,567 | twin branches + bypass |
 | I2 facts revealed too early | **0** (was 24 before the engine fix) | 4,519 | same |
-| Static audit: bank lines that disclose too early | 3 (still in the data, now caught by the verifier) | 720 lines below level 3 | line bank EN + ES |
+| Static audit: bank lines that disclose too early | 0 (was 3; fixed by the data lane) | 720 lines below level 3 | line bank EN + ES |
 | Live OpenAI check | skipped (no key) | 0 | live |
 
 **What the numbers say, honestly:**
@@ -114,8 +115,8 @@ Production embedder (`[fastembed]`) unless noted. Full tables: `docs/METRICS.md`
 - Our biggest find was multi-turn: **3 reviewed friend lines say "sometimes I don't want to be here"
   at level 2**, one level too early. The verifier only double-checked AI-written lines, so in our first
   run they reached the phone 24 times. We reported it; the engine lane now runs that check on every line
-  (English and Spanish), and the re-run shows 0. The 3 lines are still in the data (reported to the data
-  lane), and the test suite fails on any new one.
+  (English and Spanish), and the re-run shows 0. The data lane then rewrote the 3 lines (audit now 0/720), and
+  the test suite fails on any new one.
 
 ## Limitations
 - The live OpenAI voice hasn't been red-teamed yet (no key in this session). The harness is ready and
@@ -128,7 +129,7 @@ Production embedder (`[fastembed]`) unless noted. Full tables: `docs/METRICS.md`
 
 ## Questions a judge might ask (with answers)
 1. **"How do you know the friend never says something dangerous?"** We ran 524 adversarial conversations
-   (4,912 turns) through the real app and checked every one of 10,021 friend bubbles against the Guardian
+   (4,912 turns) through the real app and checked every one of 10,044 friend bubbles against the Guardian
    and a method-word list: 0 failures. The same checks run on every code change in CI.
 2. **"Can someone trick the friend with 'ignore your instructions'?"** Injections are blocked by the
    Guardian; the ones that slip through still only get reviewed lines. We proved it with twin branches

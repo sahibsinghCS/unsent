@@ -36,7 +36,12 @@ def test_every_number_has_n_split_and_notes(tmp_path):
 def test_redteam_rows_prefer_the_production_embedder():
     rows = [
         _rec("attacks.match_rate", 0.5, "attack_bank holdout [fastembed]"),
-        _rec("attacks.match_rate", 0.9, "attack_bank holdout [hash]", created="2026-10-23T02:00:00+00:00"),
+        _rec(
+            "attacks.match_rate",
+            0.9,
+            "attack_bank holdout [hash]",
+            created="2026-10-23T02:00:00+00:00",
+        ),
     ]
     row = next(r for r in report.REDTEAM_ROWS if r.metric == "attacks.match_rate")
     assert report.find_row(rows, row)["value"] == 0.5  # production, not the newer hash run
@@ -49,8 +54,8 @@ def test_live_rows_say_skipped_without_a_key():
 
 
 def test_readme_only_the_marked_block_changes():
-    text = "intro\n<!-- METRICS:START -->\nold\n<!-- METRICS:END -->\noutro\n"
+    text = "intro\n<!-- METRICS:START -->\nSTALE_BLOCK\n<!-- METRICS:END -->\noutro\n"
     new = report.replace_readme(text, report.readme_block([]))
     assert new.startswith("intro\n<!-- METRICS:START -->")
     assert new.endswith("<!-- METRICS:END -->\noutro\n")
-    assert "old" not in new and "docs/METRICS.md" in new
+    assert "STALE_BLOCK" not in new and "docs/METRICS.md" in new
