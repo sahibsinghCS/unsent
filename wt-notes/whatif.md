@@ -9,6 +9,8 @@
 - 19 tests in `tests/unit/whatif` (faithfulness incl. Seen + blocked messages + the naive-copy pitfall, determinism, Guardian/gain filters, critic rewrite = #1, value/best_index, safety, Spanish fixture, API). `make check` and `make smoke` pass.
 - `docs/how/whatif.md`.
 
+- Merged `claude/amazing-carson-31tzo3` @ e8a9a1f (Maya's Spanish exemplars, deploy lane). Rollout fallback now reuses `pipeline._fallback_bubbles` (chat-language fallback) and calls `engine.verify` exactly as the pipeline does. Eval adds a Spanish split and a wrong-language bubble count.
+
 ## In progress
 - Nothing.
 
@@ -22,7 +24,6 @@
 ## Requests
 - **frontend:** handle `paths: []` (no verified better reply in this language / at this point) with a short message instead of an empty grid.
 - **deploy:** optional warm-up: `backend.app.whatif.cache.warm([ex.text for ex in content.load_exemplars(sid, loc)])` per scenario/locale at startup removes the first-click cost (a cold first call per scenario is ~1 s).
-- **data:** Maya's Spanish exemplars (`data/exemplars/after-the-breakup.es.jsonl`): Spanish what-if lights up automatically once they land (tested with a fixture). Re-run `python -m backend.app.whatif.evaluate` after.
 
 ## Known issues
 - Evaluation weak points are scripted with weak continuations, so "beats actual" is an easy bar (the textbook comparison is the harder one).
@@ -32,5 +33,6 @@
 ## Numbers (FR_EMBED=fastembed, trained detector, FR_LLM=0; split "scripted", n = 90 weak points)
 - 3 diverse paths 100%; best beats actual (value) 100%, (final trust) 100%; mean trust gain +76.2.
 - best ≥ textbook continuation 100%, mean value +57.5 over it; best path success 100%.
-- latency p50 0.49 s, p95 0.58 s; deterministic 100%.
-- unsafe candidates 0 / 885 helper messages; unsafe friend lines 0 / 2,183 bubbles.
+- latency p50 0.49 s, p95 0.64 s; deterministic 100%.
+- unsafe candidates 0 / 885 helper messages; unsafe friend lines 0 / 2,183 bubbles; wrong-language bubbles 0 / 3,068.
+- Spanish (split "scripted_es", Maya, n = 18): 3 diverse paths 100%, best beats actual 100%, trust gain +71.2, ≥ textbook 100% (+65.9), success 100%, p50/p95 0.55/0.68 s, deterministic 100%, unsafe 0/190 and 0/502, wrong language 0/692.

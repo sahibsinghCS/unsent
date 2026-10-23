@@ -100,10 +100,16 @@ conversations × 5 friends = **90 weak points**. Each script has one weak messag
 | best path ≥ a hand-written "textbook" continuation (validate → ask → refer → follow up) | 100% | 90 |
 | mean value over that textbook continuation | +57.5 | 90 |
 | best paths where the friend accepts help within the horizon | 100% | 90 |
-| latency p50 / p95 (warm process, this box) | 0.49 s / 0.58 s | 90 |
+| latency p50 / p95 (warm process, this box) | 0.49 s / 0.64 s | 90 |
 | two runs identical | 100% | 90 |
 | candidate messages the Guardian would block | 0 | 885 messages |
 | friend bubbles failing `check_friend` | 0 | 2,183 bubbles |
+| bubbles in the wrong language | 0 | 3,068 bubbles |
+
+**Spanish** (split "scripted_es": the same 18 scripts translated, Maya only, n = 18): 3 diverse paths
+100%, best beats what was said 100%, mean trust gain +71.2, best ≥ the Spanish textbook continuation
+100% (mean value +65.9), success 100%, p50 / p95 0.55 s / 0.68 s, deterministic 100%, 0 / 190 unsafe
+candidates, 0 / 502 unsafe friend bubbles, 0 / 692 bubbles in the wrong language.
 
 **Read these honestly:** the scripted continuations are deliberately weak, so "beats what was said" is an
 easy bar. The textbook comparison is the harder one; the search wins mostly because exemplars often
@@ -118,8 +124,8 @@ engine rewards each skill.
   good as the best exemplar for that moment. If no exemplar beats your message on the skill it teaches,
   fewer than 3 cards (or none) appear; we never invent one.
 - **Greedy look-ahead:** each later message is the best *next step*, not the best 3-step plan.
-- **Spanish** works only where the friend has Spanish exemplars (the data lane is adding Maya's). A chat
-  never mixes languages, so a Spanish chat without Spanish exemplars gets no cards rather than English ones.
+- **Spanish** works only where the friend has Spanish exemplars (today: Maya). A chat never mixes
+  languages, so a Spanish chat without Spanish exemplars would get no cards rather than English ones.
 - The evaluation uses scripted weak points, not real users' chats.
 
 ## Questions a judge might ask (with answers)

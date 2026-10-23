@@ -36,7 +36,7 @@ from backend.app.contracts import (
 )
 from backend.app.engine.service import Engine
 from backend.app.engine.state import active_labels
-from backend.app.pipeline import friend_context
+from backend.app.pipeline import _fallback_bubbles, friend_context
 from backend.app.whatif import candidates as cands
 from backend.app.whatif.cache import cached_embeddings
 
@@ -99,11 +99,11 @@ class Rollout:
 class Simulator:
     """Plays helper messages forward through the real engine with the bank voice only."""
 
-    def __init__(self, scenario: Scenario, locale: str, engine: Engine, detector, guardian) -> None:
-        self.scenario, self.locale = scenario, locale
+    def __init__(self, session: Session, engine: Engine, detector, guardian) -> None:
+        self.session, self.locale = session, session.locale
+        self.scenario: Scenario = content.get_scenario(session.scenario_id)
         self.engine, self.detector, self.guardian = engine, detector, guardian
         self.threshold = engine.cfg.event_threshold
-        self.bank = engine.bank(scenario.id, locale)
 
     def predict(self, texts: list[str], context: list[str]) -> list[SkillProbs]:
         if hasattr(self.detector, "predict_many"):
@@ -162,7 +162,7 @@ class Simulator:
             )
             return node, False
         output = self.engine.generate(self.scenario, state, history, text, events, self.locale)
-        verified = self.engine.verify(output, self.scenario, state, self.bank).ok
+        verified = self.engine.verify(output, self.scenario, state).ok  # as the pipeline calls it
         safe = all(self.guardian.check_friend(b).level == "none" for b in output.bubbles)
         if verified and safe and output.bubbles:
             node = Node(
@@ -174,20 +174,15 @@ class Simulator:
                 voice=output.source,
             )
             return node, False
-        fallback = (
-            self.scenario.fallback_lines.get(state.level)
-            or self.scenario.fallback_lines.get(0)
-            or ["..."]
-        )
-        line = fallback[state.turn % len(fallback)]
+        bubbles = _fallback_bubbles(self.session, self.scenario, state)  # in the chat's language
         node = Node(
             **common,
-            bubbles=[line],
+            bubbles=bubbles,
             state_after=state,
             reaction=Reaction.NEUTRAL,
             voice="fallback",
         )
-        return node, self.guardian.check_friend(line).level != "none"
+        return node, any(self.guardian.check_friend(b).level != "none" for b in bubbles)
 
     def replay(self, base_path: list[Node], texts: Sequence[str], prefix: str) -> Rollout:
         """Play fixed helper messages forward from the end of `base_path` (used for tests and eval)."""
@@ -325,10 +320,8 @@ class WhatIf:
         return content.load_exemplars(scenario_id, locale)
 
     def simulator(self, session: Session) -> Simulator:
-        scenario = content.get_scenario(session.scenario_id)
         return Simulator(
-            scenario,
-            session.locale,
+            session,
             self._engine or bank_engine(),
             self._detector or services.skills(),
             self._guardian or services.guardian(),
