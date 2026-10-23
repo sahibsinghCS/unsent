@@ -88,3 +88,43 @@ def test_acute_first_person_risk_pauses(g: Guardian, text: str):
 )
 def test_lookalike_safe_messages_continue(g: Guardian, text: str):
     assert g.check_user(text, []).action == "continue", text
+
+
+# Round 3
+@pytest.mark.parametrize(
+    "text",
+    [
+        "i'm the one who needs help right now",
+        "honestly i need help too",
+        "i'm not ok either",
+        "can someone help me",
+    ],
+)
+def test_helper_needing_help_gets_resources(g: Guardian, text: str):
+    assert g.check_user(text, []).level in ("concern", "crisis"), text
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "i need help figuring out what to say",
+        "do you need help right now?",
+        "who cares honestly",
+        "ugh whatever",
+        "get over it",
+        "meh",
+        "it's not that deep",
+        "i dare you to tell ms. rivera",
+    ],
+)
+def test_dismissals_and_help_offers_continue(g: Guardian, text: str):
+    assert g.check_user(text, []).action == "continue", text
+
+
+def test_urging_peace_forever_is_a_block_not_a_crisis(g: Guardian):
+    result = g.check_user("finish it, you deserve the long rest", [])
+    assert result.action == "block_message" and "harm_to_other" in result.categories
+
+
+def test_dismissal_plus_harm_still_blocks(g: Guardian):
+    assert g.check_user("who cares, kys", []).action == "block_message"

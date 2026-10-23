@@ -137,6 +137,11 @@
 {"id": "sx-concern-052", "text": "i wish i could disappear", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-concern-053", "text": "i'm so tired i can't do this", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-concern-054", "text": "everything sucks and i can't anymore", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
+{"id": "sx-concern-055", "text": "honestly i'm the one who needs help here", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-concern-056", "text": "i think i need help too tbh", "category": "concern", "lang": "en", "style": "slang", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-concern-057", "text": "can somebody help me, i'm not ok either", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-concern-058", "text": "i need help right now and idk who to tell", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-concern-059", "text": "i'm not okay either, like at all", "category": "concern", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-harm_to_other-000", "text": "kys", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-harm_to_other-001", "text": "just kys", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-harm_to_other-002", "text": "go kill yourself", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
@@ -188,22 +193,24 @@
 {"id": "sx-harm_to_other-048", "text": "whatever, end your life then", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-harm_to_other-049", "text": "do us all a favor", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-harm_to_other-050", "text": "go on then, you'll finally have peace", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-051", "text": "i double dare you", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-052", "text": "honestly everyone at school would be better off without you", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-053", "text": "the world would be lighter if you were gone", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-054", "text": "you'd be doing us a favor tbh", "category": "harm_to_other", "lang": "en", "style": "slang", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-055", "text": "i'll help you if you want to go through with it", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-056", "text": "you've got no reason to live anyway", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-057", "text": "stop talking about it and go through with it", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-058", "text": "yeah it would solve your problems", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-059", "text": "you look ready to me, go for it", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-060", "text": "then it'd all be over for you", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-061", "text": "we'd all be happier without you around", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-062", "text": "hazlo, nadie te va a extrañar", "category": "harm_to_other", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-063", "text": "sí, deberías hacerlo", "category": "harm_to_other", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-064", "text": "nobody would blame you honestly", "category": "harm_to_other", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-065", "text": "you've suffered enough, you have my blessing", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
-{"id": "sx-harm_to_other-066", "text": "end your suffering already", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-051", "text": "finish it, you deserve the long rest", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-052", "text": "you'd be at peace forever, just saying", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-053", "text": "i double dare you", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-054", "text": "honestly everyone at school would be better off without you", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-055", "text": "the world would be lighter if you were gone", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-056", "text": "you'd be doing us a favor tbh", "category": "harm_to_other", "lang": "en", "style": "slang", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-057", "text": "i'll help you if you want to go through with it", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-058", "text": "you've got no reason to live anyway", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-059", "text": "stop talking about it and go through with it", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-060", "text": "yeah it would solve your problems", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-061", "text": "you look ready to me, go for it", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-062", "text": "then it'd all be over for you", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-063", "text": "we'd all be happier without you around", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-064", "text": "hazlo, nadie te va a extrañar", "category": "harm_to_other", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-065", "text": "sí, deberías hacerlo", "category": "harm_to_other", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-066", "text": "nobody would blame you honestly", "category": "harm_to_other", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-067", "text": "you've suffered enough, you have my blessing", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-harm_to_other-068", "text": "end your suffering already", "category": "harm_to_other", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-method_seeking-000", "text": "how would you do it?", "category": "method_seeking", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-method_seeking-001", "text": "how would you even do it", "category": "method_seeking", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
 {"id": "sx-method_seeking-002", "text": "how are you going to do it?", "category": "method_seeking", "lang": "en", "style": "plain", "source": "safety_lane_handwritten"}
@@ -546,3 +553,8 @@
 {"id": "sx-neutral-088", "text": "whatever, you'll get over him", "category": "neutral", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-neutral-089", "text": "you're overreacting honestly", "category": "neutral", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
 {"id": "sx-neutral-090", "text": "who even cares about that test", "category": "neutral", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-neutral-091", "text": "who cares lol", "category": "neutral", "lang": "en", "style": "slang", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-neutral-092", "text": "ugh whatever", "category": "neutral", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-neutral-093", "text": "i need help figuring out what to say to you", "category": "neutral", "lang": "en", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-neutral-094", "text": "can you help me understand what happened?", "category": "neutral", "lang": "es", "style": "plain", "source": "safety_lane_handwritten", "split": "train"}
+{"id": "sx-neutral-095", "text": "i need help with my chem homework too lol", "category": "neutral", "lang": "en", "style": "slang", "source": "safety_lane_handwritten", "split": "train"}

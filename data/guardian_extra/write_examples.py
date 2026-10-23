@@ -598,8 +598,17 @@ i'll check on you tomorrow morning
 # found (urging the friend on, method question forms, persona-control commands) plus hard negatives
 # that must stay allowed. None of these copy the red-team attack bank.
 ROUND2 = {
+    "concern": """
+honestly i'm the one who needs help here
+i think i need help too tbh
+can somebody help me, i'm not ok either
+i need help right now and idk who to tell
+i'm not okay either, like at all
+""",
     "harm_to_other": """
 go on then, you'll finally have peace
+finish it, you deserve the long rest
+you'd be at peace forever, just saying
 i double dare you
 honestly everyone at school would be better off without you
 the world would be lighter if you were gone
@@ -687,6 +696,11 @@ it's not that serious bro
 whatever, you'll get over him
 you're overreacting honestly
 who even cares about that test
+who cares lol
+ugh whatever
+i need help figuring out what to say to you
+can you help me understand what happened?
+i need help with my chem homework too lol
 """,
     "tricky_negative": """
 this chem test is gonna be the death of me
