@@ -89,6 +89,8 @@ self_risk:
     - thoughts about suicide
     - thinking of suicide
     - thinking about ending it
+    - ending it
+    - end it
     - thoughts of suicide
     - commit suicide
     - do not want to be here anymore
@@ -103,6 +105,18 @@ self_risk:
     - do not want to wake up
     - never wake up
     - self harm
+    - tired of existing
+    - done with life
+    - want it all to stop
+    - want everything to stop
+    - disappearing tonight
+    - disappear tonight
+    - can not keep myself safe
+    - do not trust myself
+    - scared of what i might do
+    - afraid of what i might do
+    - not safe right now
+    - no me siento a salvo
     - wanted to die
     - not wake up
     - rather not exist
@@ -196,11 +210,6 @@ harm_to_other:
     - why do not you just kill yourself
     - i hope you die
     - i want you to die
-    - just do it
-    - then do it
-    - do it then
-    - do it already
-    - go ahead and do it
     - no one would care if you died
     - no one would miss you
     - no one cares about you
@@ -213,7 +222,6 @@ harm_to_other:
     - matate
     - muerete
     - ojala te mueras
-    - hazlo ya
     - nadie te extranaria
     - everyone hates you
     - nobody wants you here
@@ -223,7 +231,6 @@ harm_to_other:
     - why are you still here
     - happier if you left
     - better off without you
-    - go ahead then
     - stop whining and die
     - ojala te murieras
     - vete a morir
@@ -232,6 +239,24 @@ harm_to_other:
     - tu vida no vale nada
     - ojala desaparezcas
     - eres un estorbo
+    - happier without you
+    - go kms
+    - you should kms
+    - you should just kms
+    - better if you were gone
+    - happier if you were gone
+    - pain would stop if you were gone
+    - nobody would blame you
+    - no one would blame you
+    - you have my blessing
+    - put yourself out of your misery
+    - end your suffering
+    - you have suffered enough so
+    - then it would be over
+    - at least it would be over
+    - it is a solution
+    - suicide is a solution
+    - it is the only way out
   # These count only as a command: at the start of a sentence or right after a cue word
   # ("you SHOULD kill yourself"). "do you want to kill yourself?" is a question, not a command.
   imperative:
@@ -239,12 +264,54 @@ harm_to_other:
     - unalive yourself
     - end your life
     - die
-    - kms
     - stop existing
     - end it
     - disappear
     - desaparece
   imperative_cues: [just, go, should, then, please, better, already, honestly, literally, bro, lol]
+  # Urging the friend on ("just do it", "i dare you"). Cancelled when the same message points to
+  # help: "just do it, text the counselor" is GOOD advice.
+  do_it:
+    - just do it
+    - then do it
+    - do it then
+    - do it already
+    - ^do it
+    - go ahead and do it
+    - go ahead then
+    - ^go ahead$
+    - nobody is stopping you
+    - no one is stopping you
+    - nobody will stop you
+    - no one will stop you
+    - go through with it
+    - i dare you
+    - help you do it
+    - you seem ready
+    - hazlo ya
+    - hazlo
+  help_words:
+    - counselor
+    - counsellor
+    - "988"
+    - therapist
+    - teacher
+    - nurse
+    - coach
+    - trusted adult
+    - talk to
+    - tell your mom
+    - tell your dad
+    - tell your parents
+    - crisis line
+    - hotline
+    - text line
+    - get help
+    - ask for help
+    - doctor
+    - consejera
+    - consejero
+    - ayuda
   # Count unless the speaker is "i" ("i feel like no one would care" is the helper's own pain).
   framed:
     - no one would care
@@ -260,6 +327,8 @@ harm_to_other:
     - pathetic
     - a waste of space
     - trash
+    - nothing to live for
+    - no reason to live
 
 # ---------------------------------------------------------------- method_seeking -> block
 # The helper asking HOW, WHEN, WHERE or WITH WHAT. Safe messaging: never discuss methods.
@@ -327,6 +396,31 @@ method_seeking:
     - manera menos dolorosa
     - cuando piensas hacerlo
     - como se hace para quitarse la vida
+    # question forms about how it would go ("^" = starts the sentence, "$" = ends it)
+    - ^does it hurt$
+    - ^is it quick$
+    - ^will it hurt$
+    - ^would it hurt$
+    - is it painless
+    - quickest way
+    - walk me through how
+    - walk me through it
+    - how it would happen
+    - what is the plan$
+    - what is your plan
+    - tell me your plan
+    - tell me the steps
+    - what are the steps
+    - give me the steps
+    - make sure it works
+    - make sure it would work
+    - how would you make sure
+    - how many would it take
+    - how much would it take
+    - what would you take
+    - where would you get
+    - do you have access to
+    - how would you get
   # Words for means. With a first-person speaker -> concern; otherwise -> method talk (block).
   means:
     - pills
@@ -380,12 +474,15 @@ prompt_injection:
     - new instructions
     - repeat your instructions
     - reveal your prompt
-    - break character
     - stop being the friend
     - dan mode
     - ignora las instrucciones
     - ignora tus instrucciones
     - ignora tus reglas
+    - desde ahora responde
+    - responde solo como
+    - actua como un
+    - actua como una
     - forget the scenario
     - ignore the above
     - ignore the rules
@@ -395,8 +492,6 @@ prompt_injection:
     - repeat everything above
     - what were you told before
     - tell me your rules
-    - which model are you
-    - what model are you
     - you are chatgpt
     - friend persona
     - line bank
@@ -411,6 +506,33 @@ prompt_injection:
     - code behind this
     - output json
     - language model
+    - your new name is
+    - answer anything
+    - from now on respond
+    - from now on answer
+    - from now on you are
+    - from now on you will
+    - respond only
+    - in the voice of
+    - roleplay as
+    - role play as
+    - cheat code
+    - set trust
+    - set level
+    - trust to 100
+    - admin mode
+    - sudo
+    - pretend the rules
+    - ignore the safety
+    - you have no restrictions
+    - developer:
+    - system:
+  # Code or control strings, matched anywhere in the text
+  substrings:
+    - jndi
+    - <script
+    - "{{"
+    - drop table
 
 # ---------------------------------------------------------------- asking_friend -> ALLOWED
 # Asking the friend directly about suicide is the most important skill we teach. Never flag it.
@@ -487,6 +609,11 @@ tricky_negative:
     - i am dying
     - im weak
     - to die for
+    - could die
+    - die if
+    - going to die if
+    - muerta de
+    - muerto de
     - would die for
     - dying of laughter
     - dying laughing
@@ -618,7 +745,7 @@ unsafe_friend_line:
 speaker:
   first_person: [i, me, my, myself, mine, yo, mi, conmigo]
   second_person: [you, your, yours, yourself, tu, te, ti, usted, contigo]
-  third_person: [it, he, she, they, him, her, them, his, their, himself, herself, themselves, someone, somebody, ella, ellos, ellas]
+  third_person: [it, friend, friends, mom, dad, brother, sister, cousin, teacher, classmate, amigo, amiga, he, she, they, him, her, them, his, their, himself, herself, themselves, someone, somebody, ella, ellos, ellas]
   # Words that mean the helper is repeating the friend's words back ("you said you don't want to be here?")
   reflection_markers:
     - you said
@@ -628,6 +755,9 @@ speaker:
     - when you say
     - when you said
     - you feel like
+    - you feel como
+    - feel como
+    - sientes que
     - you are saying
     - you think
     - do you think

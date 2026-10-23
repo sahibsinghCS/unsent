@@ -127,6 +127,10 @@ def decide(lex: LexiconResult | None, probs: dict[str, float] | None, th: Thresh
                 d.sources.append("classifier")
 
     found = set(lex_cats) | ({clf_cat} if clf_cat else set())
+    lex_block = set(lex_cats) & set(BLOCK_CLASSES)
+    if clf_cat == "self_risk" and lex_block and "self_risk" not in lex_cats and clf_score < th.veto:
+        # "go kms" is aimed at the friend: a lexicon block outranks a classifier-only crisis guess
+        found.discard("self_risk")
     if "self_risk" in found:
         d.level, d.action = "crisis", "pause_roleplay"
         take("self_risk", "self_risk" in lex_cats)

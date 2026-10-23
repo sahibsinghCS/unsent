@@ -85,7 +85,7 @@ def choose_thresholds(rows: list[dict], lex: list, probs: list[dict]) -> tuple[T
     grid = itertools.product(
         np.arange(0.20, 0.95, 0.05),  # crisis
         np.arange(0.40, 0.96, 0.05),  # block
-        np.arange(0.30, 0.95, 0.05),  # concern
+        np.arange(0.50, 0.95, 0.05),  # concern: the classifier alone needs at least even odds
         (0.90, 0.95, 0.99),  # veto
     )
     for crisis, block, concern, veto in grid:

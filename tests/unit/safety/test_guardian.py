@@ -49,6 +49,8 @@ def test_tricky_negatives_pass(g: Guardian, text: str):
         "please don't kill yourself, i care about you",
         "i would never kill myself",
         "are you safe right now?",
+        "honestly i'm ending it with him tonight",
+        "you should just end it with her, she's toxic",
     ],
 )
 def test_ordinary_helper_messages_pass(g: Guardian, text: str):

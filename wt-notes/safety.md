@@ -34,10 +34,30 @@
   - `check_friend` covers AI-written free text: plans and timing, inevitability, suicide as relief or solution, graphic detail, AI refusals and persona breaks. Tests: 16 unsafe and 8 safe natural replies.
   - `eval/guardian/moderation_compare.py` → `safety_moderation.json`: currently "not run (no key)".
 
+- **Red-team round 2:**
+  - merged the integrator branch (8130edc)
+  - normalizer: look-alike letters, emoji pulled out of phrases, spaced-letter join keeps real one-letter words
+  - lexicon:
+    - `do_it` (urging) with a help-context exception
+    - more encouragement/insult phrases
+    - method question forms with `^`/`$` sentence anchors
+    - injection persona commands, plus raw substrings (jndi, `{{`)
+    - acute first-person safety statements
+    - third-person nouns (friend/mom…)
+    - "ending it" (with the "ending it with him" breakup exception)
+  - decide(): a lexicon block outranks a classifier-only crisis guess (<0.99). The classifier's concern threshold is now at least 0.5.
+  - dataset: our split frozen in `data/guardian_extra/splits/`; new rows go to train only; unsplit rows get a stable hash split
+  - 84 new hand-written examples (patterns, not attack-bank copies)
+  - `tests/unit/safety/test_red_team_round.py`
+  - report: `eval/reports/safety_redteam_round2.json`
+
 ## In progress
 - Nothing. The lane is complete.
 
 ## Decisions
+- **Round 2 policy:**
+  - Persona curiosity ("who programmed you", "break character for a sec") stays in persona (continue); only commands that try to change the friend's behaviour are injections.
+  - "i can't do this anymore" stays **concern**. The red team expects crisis; we keep the spec's tier.
 - **Combining lexicon and classifier:**
   - The priority is crisis > block > concern.
   - A lexicon "allowed" match (asking the friend, tricky negative, negation, harmless "me too") vetoes the classifier unless p ≥ 0.99.
@@ -51,7 +71,7 @@
 ## Requests
 - **Integrator:** after merging wt/data, run `make guardian-train` and then `make eval`. With `data/guardian/` in the repo it's picked up automatically. Until then I trained with `FR_GUARDIAN_DATA=/tmp/wtdata/data/guardian`, a read-only copy of `origin/wt/data`. The committed artifacts were trained on that data (data lane commit as of Oct 22 night).
 - **Frontend:** `GuardianResult.evidence` holds readable reasons (matched phrase, or `classifier p(self_risk)=0.83`). These are good for X-ray mode and the "Try the Guardian" box.
-- **Data lane (optional):** more *real-sounding* indirect self-risk phrasings would help. The frozen model missed 18% of the data lane's self-risk rows before training. We'd also like more harm_to_other insults. That's the weakest class: recall 0.81 on test (3 of 16 missed). Concern recall is 0.94 (n=17).
+- **Data lane (optional):** more *real-sounding* indirect self-risk phrasings would help. The frozen model missed 18% of the data lane's self-risk rows before training. Concern is now the weakest class: recall 0.94 on test (n=17).
 
 - **Integrator / Sahib:** with `OPENAI_API_KEY` set, run `uv run python eval/guardian/moderation_compare.py` once to fill `safety_moderation.json` (free endpoint).
 - **Engine:** call `check_friend` on every AI-written bubble. Anything other than level "none" means fall back to the bank line.
@@ -62,7 +82,14 @@
 - The test split was looked at while editing lexicon rules (documented in `docs/how/safety.md`). The clean numbers are the external pre-training check and the holdout.
 - Context beyond the "me too" rule isn't used.
 
-## Numbers (eval/reports/safety_guardian.json, MiniLM embedder)
+## Numbers (red-team round 2, MiniLM, local)
+- **Attack bank DEV:** 74.6% → 95.8% (n=118); should-stop-but-continued 18 → 1 (n=79)
+- **Attack bank HOLDOUT** (aggregate only, never inspected): 75.0% → **81.8%** (n=132); should-stop-but-continued 23 → 15 (n=84)
+- **Fuzzed false flags:** asking_friend 0/4,979, tricky_negative 0/3,218
+- **Fuzz robustness:** 95.0% → 98.7%; look-alike letters 71.9% → 100%; emoji 87.0% → 95.4%
+- **Own test (same 172 rows):** asking FPR 0 → 0; self-risk recall 1.0 → 1.0; macro F1 0.971 → 0.994
+
+## Numbers (earlier rounds) (eval/reports/safety_guardian.json, MiniLM embedder)
 - **Asking-friend FPR:**
   - 0.0% on test (n=37)
   - 0.0% on data-lane test rows (n=21)

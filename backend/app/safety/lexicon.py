@@ -20,7 +20,7 @@ BOUNDARIES = {".", "!", "?", ";", "¿", "¡"}
 STRIP = "\"'()[]*:~"
 WEAK_FIRST = {"me", "my", "mi"}  # count only right before the phrase ("makes me want to die")
 # Commands that need a cue word ("just kms", "go end it"); alone they mean something else.
-CUE_ONLY = {("kms",), ("end", "it"), ("disappear",), ("desaparece",)}
+CUE_ONLY = {("end", "it"), ("disappear",), ("desaparece",)}
 RISK_CATEGORIES = ("self_risk", "concern", "harm_to_other", "method_seeking", "prompt_injection")
 
 
@@ -54,24 +54,34 @@ class _Sentence:
 
 
 class _Phrases:
-    """Phrases normalised and indexed by their first (squeezed) word for fast lookup."""
+    """Phrases normalised and indexed by their first (squeezed) word for fast lookup.
+
+    A phrase may start with "^" (must start its sentence) or end with "$" (must end its sentence):
+    "^does it hurt$" is a method question on its own, but not inside "does it hurt when you see him".
+    """
 
     def __init__(self, phrases: list[str]) -> None:
-        self.by_first: dict[str, list[tuple[str, ...]]] = {}
+        self.by_first: dict[str, list[tuple[tuple[str, ...], bool, bool]]] = {}
         for phrase in phrases or []:
-            words = tuple(squeeze(w.strip(STRIP)) for w in normalize(str(phrase)).text.split())
+            raw = str(phrase).strip()
+            start, end = raw.startswith("^"), raw.endswith("$")
+            raw = raw.strip("^$")
+            words = tuple(squeeze(w.strip(STRIP)) for w in normalize(raw).text.split())
             if words:
-                self.by_first.setdefault(words[0], []).append(words)
+                self.by_first.setdefault(words[0], []).append((words, start, end))
         for bucket in self.by_first.values():
-            bucket.sort(key=len, reverse=True)
+            bucket.sort(key=lambda item: len(item[0]), reverse=True)
 
     def find(self, sq: list[str]) -> list[tuple[int, int]]:
         """All (start, end) word spans that match a phrase, longest first at each position."""
         spans = []
         for i, word in enumerate(sq):
-            for phrase in self.by_first.get(word, ()):
-                if tuple(sq[i : i + len(phrase)]) == phrase:
-                    spans.append((i, i + len(phrase)))
+            for phrase, start, end in self.by_first.get(word, ()):
+                j = i + len(phrase)
+                if (start and i != 0) or (end and j != len(sq)):
+                    continue
+                if tuple(sq[i:j]) == phrase:
+                    spans.append((i, j))
                     break
         return spans
 
@@ -86,7 +96,16 @@ class Lexicon:
         self.p = {
             f"{cat}.{kind}": _Phrases(sec.get(cat, {}).get(kind, []))
             for cat in (*RISK_CATEGORIES, "asking_friend", "tricky_negative", "unsafe_friend_line")
-            for kind in ("explicit", "framed", "framed_second", "imperative", "means", "topics")
+            for kind in (
+                "explicit",
+                "framed",
+                "framed_second",
+                "imperative",
+                "means",
+                "topics",
+                "do_it",
+                "help_words",
+            )
         }
         sp = sec["speaker"]
         self.first = {squeeze(w) for w in sp["first_person"]}
@@ -98,6 +117,9 @@ class Lexicon:
         self.cues = set(sec["harm_to_other"].get("imperative_cues", []))
         self.reflection = _Phrases(sp["reflection_markers"])
         self.agreement = {normalize(a).text for a in sp["agreement"]}
+        self.substrings = [
+            normalize(x).text for x in sec["prompt_injection"].get("substrings", []) if x
+        ]
 
     # ------------------------------------------------------------------ speaker rules
     def _speaker(self, sq: list[str], sent: _Sentence, i: int) -> str | None:
@@ -118,6 +140,8 @@ class Lexicon:
         for j in range(max(sent.start, i - 3), i):
             if "," in sq[j:i]:
                 continue  # negation does not cross a comma ("i do not care, kill yourself")
+            if sq[max(0, j - 2) : j + 2] == ["why", "do", "not", "you"]:
+                continue  # "why don't you just ..." is a rhetorical command, not a negation
             if sq[j] in self.negators and not any(w in self.breakers for w in sq[j + 1 : i]):
                 return True
         return False
@@ -139,7 +163,8 @@ class Lexicon:
         for i, tok in enumerate(raw + ["."]):
             if tok in BOUNDARIES or i == len(raw):
                 if i > start:
-                    out.append(_Sentence(start, i, tok == "?"))
+                    question = tok == "?" or (i + 1 < len(raw) and raw[i + 1] == "?")
+                    out.append(_Sentence(start, i, question))
                 start = i + 1
         return out
 
@@ -150,9 +175,18 @@ class Lexicon:
         raw = norm.text.split()
         sq = [squeeze(w.strip(STRIP)) for w in raw]
         res = LexiconResult()
+        helping = bool(self.p["harm_to_other.help_words"].find(sq))
         for sent in self._sentences(raw):
             words = sq[sent.start : sent.end]
             self._scan_sentence(raw, sq, words, sent, res)
+            for a, b in self._spans("harm_to_other.do_it", words, sent):
+                if helping:  # "just do it, text the counselor" is encouragement to get help
+                    res.allowed.append(Hit("helping", " ".join(raw[a:b]), "points to help"))
+                elif not self._negated(sq, sent, a) and not self._reflected(raw, sq, sent, a):
+                    res.hits.append(Hit("harm_to_other", " ".join(raw[a:b]), "urges the friend on"))
+        for marker in self.substrings:
+            if marker in norm.text:
+                res.hits.append(Hit("prompt_injection", marker, "code / control string"))
         return res
 
     def _spans(self, key: str, words: list[str], sent: _Sentence):
@@ -192,6 +226,18 @@ class Lexicon:
                 who = self._speaker(sq, sent, a)
                 if b < sent.end and sq[b] in self.second:
                     continue  # "unalive yourself" is about the friend, handled as harm/asking
+                if sq[b - 1] == "it" and b < sent.end and sq[b] == "with":
+                    res.allowed.append(Hit("tricky_negative", text(a, b + 1), "breakup"))
+                    continue  # "i'm ending it with him" is a breakup
+                if who is None and cat == "self_risk" and a > sent.start:
+                    if sq[a - 1] in {
+                        "and",
+                        "go",
+                        "should",
+                        "then",
+                    }:  # "...a favor and disappear forever"
+                        res.hits.append(Hit("harm_to_other", text(a, b), "command"))
+                        continue
                 if who == "first" or (who is None and not sent.question):
                     res.hits.append(Hit(cat, text(a, b), "first person"))
                 elif who == "second" or (who is None and sent.question):
@@ -200,7 +246,11 @@ class Lexicon:
         for a, b in self._spans("harm_to_other.explicit", words, sent):
             if self._speaker(sq, sent, a) == "first" and sq[a] not in self.first:
                 continue  # "i wish i could just die" is the helper's own pain, scanned above
-            if not self._negated(sq, sent, a) and not self._reflected(raw, sq, sent, a):
+            if self._reflected(raw, sq, sent, a):
+                res.allowed.append(Hit("asking_friend", text(a, b), "reflection"))
+            elif self._negated(sq, sent, a):
+                res.allowed.append(Hit("negated", text(a, b), "negated"))
+            else:
                 res.hits.append(Hit("harm_to_other", text(a, b), "aimed at the friend"))
         for a, b in self._spans("harm_to_other.imperative", words, sent):
             if self._negated(sq, sent, a) or self._reflected(raw, sq, sent, a):
@@ -212,9 +262,14 @@ class Lexicon:
             if clause_start or any(w in self.cues for w in before):
                 res.hits.append(Hit("harm_to_other", text(a, b), "command"))
         for a, b in self._spans("harm_to_other.framed", words, sent):
-            if self._negated(sq, sent, a) or self._reflected(raw, sq, sent, a):
+            if self._reflected(raw, sq, sent, a):
+                res.allowed.append(Hit("asking_friend", text(a, b), "reflection"))
                 continue
-            if self._speaker(sq, sent, a) != "first":
+            if self._negated(sq, sent, a):
+                continue
+            if "i" in sq[b : b + 3]:  # "no one would care if i ..." is about the helper
+                res.hits.append(Hit("concern", text(a, b), "first person"))
+            elif self._speaker(sq, sent, a) != "first":
                 res.hits.append(Hit("harm_to_other", text(a, b), "aimed at the friend"))
             else:
                 res.hits.append(Hit("concern", text(a, b), "first person"))

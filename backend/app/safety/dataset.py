@@ -4,16 +4,15 @@ Sources (read-only):
   - data/guardian/messages.jsonl           written by the DATA lane (when present)
   - data/guardian_extra/messages.jsonl     hand-written hard cases from the SAFETY lane
   - $FR_GUARDIAN_DATA/messages.jsonl       optional extra directory (e.g. a read-only copy of wt/data)
-The split is seeded and stratified by category, so the same rows always land in the same split.
+Splits are frozen per row (see split_rows), so the same rows always land in the same split.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
-
-from sklearn.model_selection import train_test_split
 
 from backend.app.config import DATA_DIR
 
@@ -73,15 +72,14 @@ def _preset_splits(messages: Path) -> dict[str, str]:
 
 
 def split_rows(rows: list[dict], seed: int = SEED) -> dict[str, list[dict]]:
-    """Rows keep a split their source already assigned; the rest get a stratified 70/15/15."""
-    fixed = {k: [r for r in rows if r.get("split") == k] for k in ("train", "val", "test")}
-    free = [r for r in rows if r.get("split") not in fixed]
-    labels = [r["category"] for r in free]
-    train, rest = train_test_split(free, test_size=0.30, stratify=labels, random_state=seed)
-    rest_labels = [r["category"] for r in rest]
-    val, test = train_test_split(rest, test_size=0.50, stratify=rest_labels, random_state=seed)
-    return {
-        "train": fixed["train"] + train,
-        "val": fixed["val"] + val,
-        "test": fixed["test"] + test,
-    }
+    """Rows keep a split their source already assigned (data lane splits, our frozen splits);
+    any other row gets a stable 70/15/15 split from a hash of its id, so adding rows never
+    reshuffles the rows that were already split."""
+    out: dict[str, list[dict]] = {"train": [], "val": [], "test": []}
+    for row in rows:
+        split = row.get("split")
+        if split not in out:
+            bucket = int(hashlib.sha256(f"{seed}:{row['id']}".encode()).hexdigest(), 16) % 100
+            split = "train" if bucket < 70 else "val" if bucket < 85 else "test"
+        out[split].append(row)
+    return out
