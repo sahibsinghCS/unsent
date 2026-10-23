@@ -112,20 +112,23 @@ with a different embedder, because its numbers would be meaningless.
 message, which made the end-of-chat report slow (2.4 s on a 6-message chat). Three fixes, none of which
 change a single output (a test compares the full report before and after on a fixed conversation):
 1. **Embedding cache.** The shortened copies share most of their sentences, and every copy shares the
-   friend's message, so each text is embedded once and remembered (LRU, 20,000 texts).
+   friend's message, so each text is embedded once and reused. We use the app's shared per-text cache
+   (`embed.cached_scope()`), which forgets anything unused for 60 minutes, just like conversations.
 2. **One matrix product** computes all 10 labels' logistic regressions at once, instead of 10 separate
    calls per model.
 3. **Explain while the chat happens.** When a message is scored during the chat, its highlights start
    computing on one background worker. At the end the report just reuses them. If it's asked for before
-   they're done, it waits for that same computation rather than starting over.
-   (`FR_PREWARM_EXPLAIN=0` turns this off.)
+   they're done, it waits for that same computation rather than starting over. These remembered
+   explanations also expire after 60 minutes unused: the session cleanup sweeps them, so no text from a
+   conversation outlives it. (`FR_PREWARM_EXPLAIN=0` turns this off.)
 
 | `/finish` on a 6-message chat (fastembed, 1 user) | p50 |
 |---|---|
 | before | 2.42 s |
-| cache + matrix product only | 1.21 s |
-| all three, user pauses 2 s before finishing | **0.09 s** |
-| all three, "finish" sent the instant the last message returns | 0.94 s |
+| all three, user pauses 2 s before finishing | **0.24 s** |
+| all three, "finish" sent the instant the last message returns | 1.66 s |
+
+The background work makes sending a message a bit slower (p50 about 150 ms on this machine).
 
  (and what we considered instead)
 - **Why not keywords?** A keyword list misses "have you thought about not being around anymore" and

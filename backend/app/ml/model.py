@@ -5,8 +5,6 @@ per-label stacker. This object is what `train.py` saves with joblib and `skill_d
 from __future__ import annotations
 
 import re
-import threading
-from collections import OrderedDict
 from dataclasses import dataclass, field
 
 import numpy as np
@@ -16,7 +14,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import FeatureUnion
 
 from backend.app.contracts import POSITIVE_LABELS, SkillLabel
-from backend.app.embed import embed, get_embedder
+from backend.app.embed import embed
 from backend.app.ml.calibrate import Stacker
 from backend.app.ml.rules import gate_asked_directly
 from backend.app.ml.uncertainty import DEFAULT_BAND
@@ -101,53 +99,11 @@ def sentences(text: str) -> list[str]:
     return parts if len(parts) >= 2 else []
 
 
-class EmbeddingCache:
-    """LRU cache of sentence embeddings keyed by (embedder, text).
-
-    Explanations and pooling re-score many near-identical texts (the same sentence with one phrase
-    removed, the same friend message for every variant), so most embeddings are repeats.
-    """
-
-    def __init__(self, max_items: int = 20000) -> None:
-        self.max_items = max_items
-        self._items: OrderedDict[tuple[str, str], np.ndarray] = OrderedDict()
-        self._lock = threading.Lock()
-
-    def embed(self, texts: list[str]) -> np.ndarray:
-        name = get_embedder().name
-        with self._lock:
-            missing = sorted({t for t in texts if (name, t) not in self._items})
-        if missing:
-            vectors = embed(missing)
-            with self._lock:
-                for text, vector in zip(missing, vectors, strict=True):
-                    self._items[(name, text)] = vector
-                while len(self._items) > self.max_items:
-                    self._items.popitem(last=False)
-        with self._lock:
-            out = []
-            for text in texts:
-                vector = self._items.get((name, text))
-                if vector is None:  # evicted in between (tiny cache): embed directly
-                    vector = embed([text])[0]
-                else:
-                    self._items.move_to_end((name, text))
-                out.append(vector)
-        return np.array(out, dtype=np.float32).reshape(len(texts), -1)
-
-    def clear(self) -> None:
-        with self._lock:
-            self._items.clear()
-
-
-EMBEDDINGS = EmbeddingCache()
-
-
 def embed_features(texts: list[str], contexts: list[str]) -> np.ndarray:
     """Model A features: embed(reply) ⊕ embed(friend's last message); an empty context is a zero vector."""
-    reply = EMBEDDINGS.embed(texts)
+    reply = embed(texts)
     unique = sorted({c for c in contexts if c})
-    lookup = dict(zip(unique, EMBEDDINGS.embed(unique), strict=True)) if unique else {}
+    lookup = dict(zip(unique, embed(unique), strict=True)) if unique else {}
     ctx = np.zeros_like(reply)
     for row, context in enumerate(contexts):
         if context:
