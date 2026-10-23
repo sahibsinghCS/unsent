@@ -35,7 +35,7 @@ T = TypeVar("T", bound=BaseModel)
 CACHE_DIR = ROOT / ".cache" / "llm"
 USAGE_LOG = ROOT / "eval" / "logs" / "llm_usage.jsonl"
 MODERATION_MODEL = "omni-moderation-latest"
-DEFAULT_MODEL = "gpt-5-mini"
+DEFAULT_MODEL = "gpt-6-luna"  # verified live (eval/reports/redteam_live.json)
 
 
 class LLMUnavailable(RuntimeError):
@@ -70,9 +70,17 @@ def daily_budget_usd() -> float:
 def _prices() -> tuple[float, float]:
     """(input, output) USD per 1M tokens, used only for the budget estimate. Set them to your model's prices."""
     return (
-        float(os.getenv("OPENAI_PRICE_INPUT_PER_M", "0.25")),
-        float(os.getenv("OPENAI_PRICE_OUTPUT_PER_M", "2.00")),
+        float(os.getenv("OPENAI_PRICE_INPUT_PER_M", "0.10")),
+        float(os.getenv("OPENAI_PRICE_OUTPUT_PER_M", "0.50")),
     )
+
+
+def reasoning_effort() -> str | None:
+    """Reasoning models spend output tokens "thinking" before they answer. A friend's text message needs
+    almost none, so ask for the least (OPENAI_REASONING_EFFORT, default "minimal"; "off" sends nothing).
+    Models that don't accept the parameter get the request without it."""
+    value = os.getenv("OPENAI_REASONING_EFFORT", "minimal").strip().lower()
+    return None if value in {"", "off", "none"} else value
 
 
 # ---------------------------------------------------------------- fakes (tests and offline demos)
@@ -269,10 +277,40 @@ def chat_json(
             except ValidationError:
                 pass
 
+    response = _timed_completion(
+        role, prompt_name, model, messages, schema, temperature, max_tokens, seed
+    )
+    content = response.choices[0].message.content or ""
+    if not content.strip() and getattr(response.choices[0], "finish_reason", None) == "length":
+        # A reasoning model used the whole allowance thinking and wrote nothing: retry once with more room.
+        response = _timed_completion(
+            role, prompt_name, model, messages, schema, temperature, max_tokens * 3, seed
+        )
+        content = response.choices[0].message.content or ""
+    try:
+        data = json.loads(content)
+        parsed = schema.model_validate(data)
+    except (json.JSONDecodeError, ValidationError) as exc:
+        raise LLMUnavailable(f"LLM returned invalid JSON for {schema.__name__}") from exc
+    if use_cache:
+        _cache_put(key, data)
+    return parsed
+
+
+def _timed_completion(
+    role: str,
+    prompt_name: str,
+    model: str,
+    messages: list[dict[str, str]],
+    schema: type[BaseModel],
+    temperature: float | None,
+    max_tokens: int,
+    seed: int | None,
+) -> Any:
+    """One API call, with its token counts and estimated cost added to the usage log (never the text)."""
     started = time.perf_counter()
     response = _create_completion(model, messages, schema, temperature, max_tokens, seed)
     latency_ms = (time.perf_counter() - started) * 1000
-    content = response.choices[0].message.content or ""
     usage = getattr(response, "usage", None)
     tokens_in = getattr(usage, "prompt_tokens", 0) or 0
     tokens_out = getattr(usage, "completion_tokens", 0) or 0
@@ -289,14 +327,7 @@ def chat_json(
             "latency_ms": round(latency_ms),
         }
     )
-    try:
-        data = json.loads(content)
-        parsed = schema.model_validate(data)
-    except (json.JSONDecodeError, ValidationError) as exc:
-        raise LLMUnavailable(f"LLM returned invalid JSON for {schema.__name__}") from exc
-    if use_cache:
-        _cache_put(key, data)
-    return parsed
+    return response
 
 
 def _create_completion(
@@ -323,12 +354,17 @@ def _create_completion(
         kwargs["temperature"] = temperature
     if seed is not None:
         kwargs["seed"] = seed
-    for _ in range(4):
+    effort = reasoning_effort()
+    if effort is not None:
+        kwargs["reasoning_effort"] = effort
+    for _ in range(5):
         try:
             return _openai_client().chat.completions.create(**kwargs)
         except openai.BadRequestError as exc:
             text = str(exc).lower()
-            if "temperature" in text and "temperature" in kwargs:
+            if "reasoning_effort" in text and "reasoning_effort" in kwargs:
+                kwargs.pop("reasoning_effort")
+            elif "temperature" in text and "temperature" in kwargs:
                 kwargs.pop("temperature")
             elif "seed" in text and "seed" in kwargs:
                 kwargs.pop("seed")
