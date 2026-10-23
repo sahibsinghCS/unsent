@@ -110,6 +110,15 @@ def exemplar_skills(exemplar: Exemplar) -> list[str]:
     return list(dict.fromkeys(skills)) or ["listen"]
 
 
+def card_skill(exemplar: Exemplar, wanted: str) -> str:
+    """The skill a card shows for this exemplar: `wanted` if the exemplar was written for it (or is a
+    combo carrying it), otherwise the exemplar's own strategy. The critic may pick an exemplar only
+    because of a secondary label (e.g. an ask_directly reply that also validates); its chip must still
+    say what the reply mainly does."""
+    skills = exemplar_skills(exemplar)
+    return wanted if wanted in skills else skills[0]
+
+
 def find_targets(
     original: SkillProbs, before: State, first: bool, scored: list[SkillProbs]
 ) -> Targets:
@@ -185,6 +194,7 @@ def select(
     chosen: list[Candidate] = []
     if rewrite is not None:
         exemplar, skill = rewrite
+        skill = card_skill(exemplar, skill)
         probs = predict([exemplar.text])[0]
         score = skill_score(probs, skill)
         chosen.append(
