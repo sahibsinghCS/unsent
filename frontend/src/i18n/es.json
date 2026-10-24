@@ -218,7 +218,7 @@
     "uncertain": "incierto: {labels}",
     "uncertain_hint": "Nuestros dos modelos no estuvieron de acuerdo aquí; toma este puntaje con cautela.",
     "try_instead": "Prueba mejor",
-    "gain": "{skill} {gain}",
+    "gain": "suma: {skill}",
     "try_again": "Intentar de nuevo desde aquí",
     "what_if": "¿Y si…?",
     "new_scenario": "Practicar con otro amigo",
@@ -234,7 +234,9 @@
     "story_title": "Cómo fue",
     "lost_here": "aquí lo perdiste",
     "you_said": "Dijiste",
-    "would_have_worked": "Lo que habría funcionado"
+    "would_have_worked": "Lo que habría funcionado",
+    "gain_generic": "mejor verificada",
+    "gain_hint": "Nuestro detector de habilidades puntúa esta respuesta {gain} puntos más alto en la habilidad que faltó."
   },
   "whatif": {
     "title": "¿Y si hubieras dicho otra cosa?",
@@ -432,5 +434,14 @@
   "langs": {
     "en": "inglés",
     "es": "español"
+  },
+  "skills_verb": {
+    "check_in": "preguntar cómo está",
+    "listen": "escuchar",
+    "ask_directly": "preguntar directo",
+    "no_secrecy": "sin secretos",
+    "persuade": "animar a pedir ayuda",
+    "refer": "un adulto de confianza o el 988",
+    "follow_up": "dar seguimiento"
   }
 }

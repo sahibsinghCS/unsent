@@ -63,3 +63,13 @@ describe('<HighlightedText>', () => {
     expect(screen.getByTestId('highlighted')).toHaveTextContent(/^hey are you ok \(checked in, strong signal\)\? lol \(dismissed, strong signal\)$/);
   });
 });
+
+describe('rewrite gain wording', () => {
+  it('names the skill a rewrite adds, never a bare percentage', async () => {
+    const { translate } = await import('../i18n');
+    const chip = translate('en', 'feedback.gain', { skill: translate('en', 'skills_verb.listen') });
+    expect(chip).toBe('adds: listening');
+    expect(chip).not.toMatch(/%/);
+    expect(translate('es', 'feedback.gain', { skill: translate('es', 'skills_verb.listen') })).toBe('suma: escuchar');
+  });
+});

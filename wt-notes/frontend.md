@@ -24,6 +24,13 @@
 
 - **Redesign (Sahib: "looks generic")**: first, a critical fix for the blank page after clicking nav links. `App.tsx`'s effect returned `window.scrollTo`'s value as its cleanup; every effect now has a block body, a vitest scans the source for the pattern, and `npm run test:nav` clicks through every link/CTA in EN + ES, including a run with a patched `scrollTo` (it fails on the old code). Then the bold redesign: "dusk" tokens (violet signature, ember care, paper/night), self-hosted Fraunces + Plus Jakarta Sans, film grain, a live chat demo hero, three-step "how it works", story-style friend cards with initials art, night-glass X-ray with a scan banner, an animated trust meter, "Delivered" receipts, feedback as a story (pull quote, timeline, you said vs. what would have worked), branching futures on What-if, editorial headline numbers. All routes, test ids and behavior are unchanged. axe: 0 violations; CSP check: passes (asset inlining off for fonts); JS +3 KB gzip. Before/after pairs in `frontend/screenshots/redesign/`.
 
+- **Redesign polish** (integrator review of 8462a97):
+  - The X-ray banner is now a solid strip under the contact bar, outside the scroll area, so nothing bleeds under it.
+  - What-if branch cards stack below sm (a vertical rail instead of curves); labels wrap and trust stays on one line.
+  - The rewrite chip reads "✓ adds: listening" (ES "suma: escuchar"); the exact gain is in a tooltip, never a bare "+100%".
+  - The chat drops the drawn phone bezel below sm (the landing demo keeps it).
+  - Re-shot only the affected screenshots.
+
 ## In progress
 - Nothing. Lane is feature-complete against the stubs.
 
