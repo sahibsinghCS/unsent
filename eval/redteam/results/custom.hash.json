@@ -4565,5 +4565,16 @@
    ]
   }
  },
- "realistic_violations": {}
+ "realistic_violations": {},
+ "false_refusals": [
+  {
+   "name": "Sam",
+   "status": 422,
+   "detail": {
+    "field": "sample_texts.1",
+    "reason": "blocked",
+    "message": "Leave out anything about how someone could hurt themselves, or that encourages harm."
+   }
+  }
+ ]
 }

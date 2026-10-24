@@ -1,4 +1,6 @@
 {
  "embed": "fastembed",
- "leaks": []
+ "leaks": [],
+ "custom_leaks": [],
+ "custom_friend_expired": true
 }
