@@ -22,6 +22,8 @@
 
 - **Final quality pass** (51e87a9): full journey on the real backend in EN + ES, light + dark, mobile + desktop (new ES shots: blocked, crisis, feedback, real mode). axe-core on 9 pages × 2 themes reports 0 violations after fixing 4 serious contrast issues. A keyboard-only chat test passes. The slow-backend harness (4.5 s latency, slow 503) checks the typing dots, disabled Send, a single request, kept drafts, the error state and retry. Added a synchronous double-send guard in Chat. X-ray voice now reads "AI wording · checked by our verifier" / "Reviewed line" (EN + ES). Screenshots all re-shot; feedback shows real verified rewrites and what-if the real rollouts.
 
+- **Redesign (Sahib: "looks generic")**: first, a critical fix for the blank page after clicking nav links. `App.tsx`'s effect returned `window.scrollTo`'s value as its cleanup; every effect now has a block body, a vitest scans the source for the pattern, and `npm run test:nav` clicks through every link/CTA in EN + ES, including a run with a patched `scrollTo` (it fails on the old code). Then the bold redesign: "dusk" tokens (violet signature, ember care, paper/night), self-hosted Fraunces + Plus Jakarta Sans, film grain, a live chat demo hero, three-step "how it works", story-style friend cards with initials art, night-glass X-ray with a scan banner, an animated trust meter, "Delivered" receipts, feedback as a story (pull quote, timeline, you said vs. what would have worked), branching futures on What-if, editorial headline numbers. All routes, test ids and behavior are unchanged. axe: 0 violations; CSP check: passes (asset inlining off for fonts); JS +3 KB gzip. Before/after pairs in `frontend/screenshots/redesign/`.
+
 ## In progress
 - Nothing. Lane is feature-complete against the stubs.
 
@@ -48,5 +50,5 @@
 ## Numbers
 - vitest: 61/61 passing (10 files).
 - E2E journey: passes on mobile + desktop; 50 screenshots.
-- Bundle: app 264 KB (86 KB gzip), charts 179 KB (63 KB gzip, separate chunk), CSS 36 KB (7 KB gzip).
+- Bundle: app 291 KB (94 KB gzip), charts 179 KB (63 KB gzip, separate chunk), CSS 51 KB (10 KB gzip); fonts are self-hosted woff2 (Latin subsets downloaded on demand).
 - Lowest AA contrast pair: 4.98 (white on coral button, light mode).
