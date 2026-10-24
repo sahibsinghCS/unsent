@@ -1,41 +1,51 @@
+/* Sahib's type system (same as sahibs.dev), self-hosted (CSP font-src 'self'), Latin subsets only. */
+@import '@fontsource/syne/latin-700.css';
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /*
- * FirstReply design tokens: "it looks like your phone".
- * The moment this app is about happens in a text thread, so the design language is a messaging
- * app's: system neutrals, ONE action color (the blue of a sent bubble), green/red only for
- * helped/hurt annotations, and a separate red only for "I need help now", 988 and the crisis card.
- * No gradients, glows, grain or decorative colors. Every text pair meets WCAG AA (see DESIGN.md).
- * Values are "R G B" so Tailwind can add opacity.
+ * FirstReply design tokens: "late night". The same type and dark style as Sahib's site (Syne display,
+ * IBM Plex Sans/Mono, near-black canvas, hairline cards), calmer because the topic is a crisis.
+ * ONE accent (--brand, the iMessage blue): primary buttons, links, focus, "Best", your bubbles. To
+ * re-brand (e.g. #FF4FD8), change --brand / --brand-deep only. Help red only for help/988/crisis;
+ * green/red only for helped/hurt. No glass, glows, grain or gradients on text or buttons.
+ * Values are "R G B" so Tailwind can add opacity. Every text pair meets WCAG AA (see DESIGN.md).
  */
 @layer base {
   :root {
-    --bg: 242 242 247;          /* grouped background #F2F2F7 */
-    --surface: 255 255 255;     /* cells, cards */
-    --sunken: 229 229 234;      /* #E5E5EA fills, separators-as-fill */
-    --ink: 0 0 0;
-    --muted: 99 99 104;         /* secondary label (#3C3C43 at ~60%, darkened to pass AA) */
-    --line: 198 198 200;        /* hairline separator */
-    --brand: 0 113 235;         /* the action color = sent-bubble blue, used as a fill */
-    --brand-deep: 0 98 204;     /* the action color as text/links (AA on #F2F2F7 too) */
+    --bg: 247 246 250;          /* canvas #F7F6FA */
+    --raised: 240 239 245;      /* bands, panel backgrounds */
+    --surface: 255 255 255;     /* cards */
+    --sunken: 238 236 244;      /* fills: chips, inputs, hover */
+    --ink: 11 11 18;            /* #0B0B12 */
+    --muted: 94 90 110;         /* #5E5A6E */
+    --line: 230 228 238;        /* hairline #E6E4EE */
+    --line-strong: 200 197 212; /* hover border */
+    --brand: 0 113 235;         /* accent fill (white text passes AA) */
+    --brand-deep: 0 98 204;     /* accent as text/links */
     --brand-soft: 230 240 255;
     --brand-ink: 255 255 255;
-    --warm: 196 18 48;          /* help red: only "I need help now", 988, crisis */
+    --warm: 196 18 48;          /* help red */
     --warm-soft: 255 233 236;
     --glow: 0 113 235;
-    --good: 27 117 50;          /* iOS green #248A3D darkened to #1B7532 for AA, helped */
+    --good: 27 117 50;
     --good-soft: 230 245 234;
-    --bad: 215 0 21;            /* #D70015, hurt */
+    --bad: 215 0 21;
     --bad-soft: 255 233 235;
     --bubble-me: 0 113 235;
     --bubble-them: 233 233 235;
-    /* X-ray inset: plain dark gray in both themes (it's a debug view). */
-    --night: 28 28 30;
-    --night-ink: 255 255 255;
-    --night-muted: 174 174 178;
-    --night-line: 58 58 60;
+    /* The "1 in 5" band and the X-ray panel are night in both themes. */
+    --night: 16 16 23;
+    --night-ink: 246 244 250;
+    --night-muted: 163 159 179;
+    --night-line: 36 36 46;
     --im-bg: 255 255 255;
     --im-bar: 247 247 248;
     --im-sent: 0 113 235;
@@ -45,29 +55,31 @@
     color-scheme: light;
   }
   .dark {
-    --bg: 0 0 0;
-    --surface: 28 28 30;        /* #1C1C1E */
-    --sunken: 44 44 46;         /* #2C2C2E */
-    --ink: 255 255 255;
-    --muted: 160 160 167;       /* #EBEBF5 at ~60% on black, solid for AA */
-    --line: 56 56 58;
-    --brand: 10 110 240;        /* fills (white text on it passes AA) */
-    --brand-deep: 77 163 255;   /* links/text on black */
-    --brand-soft: 16 38 66;
+    --bg: 7 7 11;               /* canvas #07070B */
+    --raised: 16 16 23;         /* #101017 */
+    --surface: 20 20 28;        /* card #14141C */
+    --sunken: 28 28 38;
+    --ink: 246 244 250;         /* #F6F4FA */
+    --muted: 163 159 179;       /* #A39FB3 */
+    --line: 36 36 46;           /* hairline #24242E */
+    --line-strong: 62 62 76;
+    --brand: 10 110 240;
+    --brand-deep: 77 163 255;
+    --brand-soft: 14 30 56;
     --brand-ink: 255 255 255;
-    --warm: 255 105 97;         /* help red on black (dark text on it) */
-    --warm-soft: 64 20 22;
+    --warm: 255 105 97;         /* help red on near-black (dark text on it) */
+    --warm-soft: 52 18 22;
     --glow: 10 110 240;
     --good: 48 209 88;
-    --good-soft: 14 48 24;
+    --good-soft: 12 40 22;
     --bad: 255 105 97;
-    --bad-soft: 64 20 22;
+    --bad-soft: 52 18 22;
     --bubble-me: 10 110 240;
     --bubble-them: 38 38 41;
-    --night: 28 28 30;
-    --night-ink: 255 255 255;
-    --night-muted: 174 174 178;
-    --night-line: 58 58 60;
+    --night: 16 16 23;
+    --night-ink: 246 244 250;
+    --night-muted: 163 159 179;
+    --night-line: 36 36 46;
     --im-bg: 0 0 0;
     --im-bar: 18 18 20;
     --im-sent: 10 110 240;
@@ -79,29 +91,36 @@
 
   html { -webkit-text-size-adjust: 100%; }
   body { @apply bg-bg font-sans text-ink antialiased; }
-  /* One visible, consistent focus ring for keyboard users everywhere (the action blue). */
+  /* One visible, consistent focus ring for keyboard users everywhere (the accent). */
   :focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-bg; }
-  /* iOS "large title" style hierarchy: size and weight only. */
-  h1, h2, h3 { @apply font-bold tracking-tight; }
+  /* Syne for headings: bold, big, tight, sentence case. */
+  h1, h2, h3 { @apply font-display font-bold tracking-tight; }
+  h1 { letter-spacing: -0.03em; }
   a { color: inherit; }
-  ::selection { background: rgb(var(--brand) / 0.25); }
+  ::selection { background: rgb(var(--brand) / 0.3); }
 }
 
 @layer components {
-  /* Inset grouped section, like a settings list: modest radius, hairline, no shadow. */
-  .card { @apply rounded-xl border border-line/70 bg-surface; }
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-[15px] font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50; }
+  /* Hairline card, 16px radius. `.card-lift` adds the hover lift used on clickable cards. */
+  .card { @apply rounded-2xl border border-line bg-surface; }
+  .card-lift { @apply transition duration-200 ease-out hover:-translate-y-0.5 hover:border-line-strong motion-reduce:hover:translate-y-0; }
+  /* Pill buttons with a subtle press state. */
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-semibold transition duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100; }
   .btn-primary { @apply btn bg-brand text-brand-ink hover:bg-brand/90; }
-  .btn-ghost { @apply btn border border-line bg-surface text-ink hover:bg-sunken; }
+  .btn-ghost { @apply btn border border-line-strong bg-transparent text-ink hover:border-ink/50 hover:bg-sunken/60; }
   .btn-warm { @apply btn bg-warm text-white hover:bg-warm/90 dark:text-black; }
   .link { @apply font-semibold text-brand-deep underline-offset-4 hover:underline; }
-  .chip { @apply inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium; }
-  /* A small plain label (sentence case; no uppercase tracking). */
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium; }
   .small-label { @apply text-[13px] font-semibold text-muted; }
+  /* Mono meta label (years/tags style). Use sparingly, never above every heading. */
+  .meta-label { @apply font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted; }
   .mono-num { @apply font-mono tabular-nums; }
-  .numeral { @apply font-bold tabular-nums tracking-tight; }
-  /* X-ray inset: plain dark gray with hairlines (a debug view, no grid or glow). */
-  .night-panel { @apply rounded-xl border border-night-line bg-night text-night-ink; }
+  .numeral { @apply font-display font-bold tabular-nums tracking-tight; }
+  /* X-ray: a solid dark panel with mono data (no grid, glow or blur). */
+  .night-panel { @apply rounded-2xl border border-night-line bg-night text-night-ink; }
+  .section-rule { @apply border-t border-line; }
+  /* The one background moment: a very soft vignette behind the landing hero, dark mode only. */
+  .dark .hero-vignette { background: radial-gradient(48rem 28rem at 78% 18%, rgb(var(--brand) / 0.09), transparent 70%); }
 }
 
 

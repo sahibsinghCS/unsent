@@ -26,11 +26,11 @@
     "offline": "Can't reach the FirstReply server right now."
   },
   "landing": {
-    "title": "Practice what to text a friend who isn't okay.",
+    "title": "Practice the text that could save a friend's life.",
     "sub": "You text a simulated friend who is having a hard time. Our own models check every reply for safety, score it, and show where they stopped trusting you and what would have helped.",
     "start": "Pick a friend to text",
     "how": "See how it works",
-    "stat": "1 in 5 US high schoolers seriously considered suicide in the past year.",
+    "stat": "US high schoolers seriously considered suicide in the past year.",
     "stat_source": "CDC Youth Risk Behavior Survey, 2023 (20.4%)",
     "stat_kicker": "When teens tell someone about suicidal thoughts, it's most often a friend.",
     "safety_title": "If this is real right now",
@@ -55,6 +55,25 @@
       "bank": "Her replies are reviewed lines from our bank, not AI wording.",
       "note": "A real run of the app with our reviewed lines (no AI wording). Every number is what the engine computed.",
       "not_ready": "She isn't ready to say it yet. Our engine decides what she's ready to share."
+    },
+    "stat_big": "1 in 5",
+    "features_title": "Nobody teaches us what to say. So practice it.",
+    "steps_title": [
+      "Text a friend who's struggling",
+      "See inside, live",
+      "Learn what brings them back"
+    ],
+    "steps_body": [
+      "Five friends, each with a story. They open up only if you listen, validate and ask directly.",
+      "X-ray mode shows the safety check, the skills our models heard and exactly how trust moved.",
+      "Find the moment you lost them, then replay better replies and watch a different ending."
+    ],
+    "snip": {
+      "guardian": "Safety check",
+      "heard": "Skill heard",
+      "trust": "Trust",
+      "lost": "You said",
+      "back": "What brought her back"
     }
   },
   "practice": {

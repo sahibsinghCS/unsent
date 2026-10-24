@@ -30,11 +30,11 @@
     "offline": "No se puede conectar con el servidor de FirstReply ahora."
   },
   "landing": {
-    "title": "Practica qué escribirle a un amigo que no está bien.",
+    "title": "Practica el mensaje que podría salvar la vida de un amigo.",
     "sub": "Le escribes a un amigo simulado que la está pasando mal. Nuestros propios modelos revisan la seguridad de cada respuesta, la evalúan y te muestran dónde dejó de confiar en ti y qué habría ayudado.",
     "start": "Elige a un amigo para escribirle",
     "how": "Ver cómo funciona",
-    "stat": "1 de cada 5 estudiantes de secundaria en EE. UU. consideró seriamente el suicidio en el último año.",
+    "stat": "estudiantes de secundaria en EE. UU. consideró seriamente el suicidio en el último año.",
     "stat_source": "Encuesta YRBS de los CDC, 2023 (20.4%)",
     "stat_kicker": "Cuando los adolescentes le cuentan a alguien que tienen pensamientos suicidas, casi siempre es a un amigo.",
     "safety_title": "Si esto está pasando de verdad ahora",
@@ -59,6 +59,25 @@
       "bank": "Sus respuestas son frases revisadas de nuestro banco, no texto de IA.",
       "note": "Una conversación real en la app con nuestras frases revisadas (sin texto de IA). Cada número es el que calculó el motor.",
       "not_ready": "Todavía no está lista para decirlo. Nuestro motor decide qué está lista para contar."
+    },
+    "stat_big": "1 de cada 5",
+    "features_title": "Nadie nos enseña qué decir. Así que practícalo.",
+    "steps_title": [
+      "Escríbele a un amigo que está mal",
+      "Mira por dentro, en vivo",
+      "Aprende qué lo hace volver"
+    ],
+    "steps_body": [
+      "Cinco amigos, cada uno con su historia. Solo se abren si escuchas, validas y preguntas directamente.",
+      "El modo rayos X muestra la revisión de seguridad, las habilidades que detectaron nuestros modelos y cómo cambió la confianza.",
+      "Encuentra el momento en que lo perdiste, repite con mejores respuestas y mira otro final."
+    ],
+    "snip": {
+      "guardian": "Revisión de seguridad",
+      "heard": "Habilidad detectada",
+      "trust": "Confianza",
+      "lost": "Dijiste",
+      "back": "Lo que la hizo volver"
     }
   },
   "practice": {

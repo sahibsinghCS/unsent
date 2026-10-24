@@ -1,4 +1,4 @@
-// Scenario picker: cards from /api/scenarios. Choosing one opens the content warning first.
+// Scenario picker: story cards from /api/scenarios. Choosing one opens the content warning first.
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ApiError, api } from '../api/client';
@@ -52,12 +52,12 @@ export function Practice() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <h1 className="text-4xl sm:text-5xl">{t('practice.title')}</h1>
-      <p className="mt-3 max-w-2xl text-lg text-muted">{t('practice.sub')}</p>
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 md:py-16">
+      <h1 className="text-5xl sm:text-6xl">{t('practice.title')}</h1>
+      <p className="mt-4 max-w-2xl text-lg text-muted">{t('practice.sub')}</p>
 
       {expired && (
-        <div role="alert" className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface p-4" data-testid="friend-expired">
+        <div role="alert" className="card mt-6 flex flex-wrap items-center justify-between gap-3 p-4" data-testid="friend-expired">
           <p className="font-medium">{t('friends.expired')}</p>
           <Link to="/practice/new" className="btn-primary">
             {t('friends.create_again')}
@@ -67,49 +67,52 @@ export function Practice() {
       {error && <ErrorBox message={`${t('practice.error')} ${error}`} onRetry={load} />}
       {!error && !scenarios && <Spinner />}
       {scenarios && (
-        <ul className="card mt-8 divide-y divide-line/70 overflow-hidden" data-testid="scenarios">
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-testid="scenarios">
           {[...(friend ? [friend] : []), ...scenarios].map((s) => (
             <li key={s.id}>
-              <button type="button" onClick={() => setChosen(s)} className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-sunken/60">
-                <Avatar name={s.persona_name} size="md" />
-                <span className="min-w-0 flex-1">
-                  <span className="flex flex-wrap items-baseline gap-x-2">
-                    <span className="text-[17px] font-semibold">{s.persona_name}</span>
-                    <span className="text-sm text-muted">
-                      {t('practice.age', { age: s.persona_age })} · {isCustomId(s.id) ? t('friends.yours') : s.title}
+              <button type="button" onClick={() => setChosen(s)} className="card card-lift group flex h-full w-full flex-col p-6 text-left">
+                <span className="flex items-center gap-4">
+                  <Avatar name={s.persona_name} size="lg" tone />
+                  <span className="min-w-0 flex-1">
+                    {isCustomId(s.id) && <span className="meta-label block">{t('friends.yours')}</span>}
+                    <span className="block font-display text-[1.7rem] font-bold leading-tight tracking-tight">{s.persona_name}</span>
+                    <span className="block truncate text-sm text-muted">
+                      {t('practice.age', { age: s.persona_age })} · {s.title}
                     </span>
                   </span>
-                  <span className="mt-0.5 block truncate text-[15px] text-muted">{s.situation}</span>
-                  <span className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                    <span className="chip border-line text-muted">{s.guardedness === 'guarded' ? t('practice.guarded') : t('practice.open')}</span>
-                    <span className="chip border-line uppercase text-muted">{(s.locales ?? ['en']).join(' · ')}</span>
-                    {isCustomId(s.id) && (
-                      <span className="chip border-line text-muted" data-testid="custom-chip">
-                        {t('friends.custom_chip')}
-                      </span>
-                    )}
-                    {!isCustomId(s.id) && !supportsLang(s, lang) && (
-                      <span className="chip border-line text-muted" data-testid="lang-only">
-                        {t('practice.only_lang', { lang: t('langs.en') })}
-                      </span>
-                    )}
-                  </span>
                 </span>
-                <span className="sr-only">{t('practice.start', { name: s.persona_name })}</span>
-                <Icon name="chevron" className="h-5 w-5 shrink-0 rotate-180 text-muted" />
+                <span className="mt-4 line-clamp-3 flex-1 text-[15px] leading-relaxed">{s.situation}</span>
+                <span className="mt-5 flex flex-wrap items-center gap-1.5">
+                  <span className="chip border-line text-muted">{s.guardedness === 'guarded' ? t('practice.guarded') : t('practice.open')}</span>
+                  <span className="chip border-line font-mono uppercase text-muted">{(s.locales ?? ['en']).join(' · ')}</span>
+                  {isCustomId(s.id) && (
+                    <span className="chip border-line text-muted" data-testid="custom-chip">
+                      {t('friends.custom_chip')}
+                    </span>
+                  )}
+                  {!isCustomId(s.id) && !supportsLang(s, lang) && (
+                    <span className="chip border-line text-muted" data-testid="lang-only">
+                      {t('practice.only_lang', { lang: t('langs.en') })}
+                    </span>
+                  )}
+                </span>
+                <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-line-strong px-4 py-2 text-sm font-semibold transition group-hover:border-brand group-hover:bg-brand group-hover:text-brand-ink">
+                  {t('practice.start', { name: s.persona_name })}
+                </span>
               </button>
             </li>
           ))}
           <li>
-            <Link to="/practice/new" className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-sunken/60" data-testid="add-friend">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-dashed border-line text-brand-deep" aria-hidden="true">
-                <Icon name="plus" className="h-5 w-5" />
+            <Link
+              to="/practice/new"
+              className="card-lift flex h-full min-h-[16rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-line-strong p-6 text-center hover:border-brand"
+              data-testid="add-friend"
+            >
+              <span className="grid h-14 w-14 place-items-center rounded-full border border-line-strong text-brand-deep" aria-hidden="true">
+                <Icon name="plus" className="h-6 w-6" />
               </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[17px] font-semibold text-brand-deep">{t('friends.add_card')}</span>
-                <span className="block text-[15px] text-muted">{t('friends.add_card_sub')}</span>
-              </span>
-              <Icon name="chevron" className="h-5 w-5 shrink-0 rotate-180 text-muted" />
+              <span className="font-display text-2xl font-bold tracking-tight">{t('friends.add_card')}</span>
+              <span className="max-w-[16rem] text-sm text-muted">{t('friends.add_card_sub')}</span>
             </Link>
           </li>
         </ul>

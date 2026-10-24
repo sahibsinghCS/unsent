@@ -12,9 +12,10 @@ export default {
         bg: token('bg'),
         surface: token('surface'),
         sunken: token('sunken'),
+        raised: token('raised'),
         ink: token('ink'),
         muted: token('muted'),
-        line: token('line'),
+        line: { DEFAULT: token('line'), strong: token('line-strong') },
         brand: { DEFAULT: token('brand'), soft: token('brand-soft'), ink: token('brand-ink'), deep: token('brand-deep') },
         warm: { DEFAULT: token('warm'), soft: token('warm-soft') },
         glow: token('glow'),
@@ -25,10 +26,10 @@ export default {
         night: { DEFAULT: token('night'), ink: token('night-ink'), muted: token('night-muted'), line: token('night-line') },
       },
       fontFamily: {
-        // The device's own UI font: the vernacular of a messaging app (no web fonts to download).
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"Segoe UI"', 'Roboto', 'system-ui', 'sans-serif'],
-        display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', 'system-ui', 'sans-serif'],
-        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+        // Sahib's type system (sahibs.dev): Syne display, IBM Plex Sans UI, IBM Plex Mono for data.
+        sans: ['"IBM Plex Sans"', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        display: ['Syne', '"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       borderRadius: { bubble: '1.35rem', xl2: '1.75rem' },
       boxShadow: {
