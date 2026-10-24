@@ -10,6 +10,7 @@ injected instruction). The situation is exempt: echoing "got cut from the team" 
 from __future__ import annotations
 
 import re
+import unicodedata
 from collections.abc import Sequence
 
 from backend.app.content import is_custom
@@ -21,6 +22,31 @@ COPY_NGRAM = 4
 SITUATION_RUN = 6
 SITUATION_SHARE = 0.6
 _WORD = re.compile(r"[\w']+")
+# Look-alike letters (Cyrillic/Greek) and leetspeak, mapped back to plain letters for matching only.
+_LOOKALIKE = str.maketrans("аеорсхуіοαԁ0134578@$", "aeopcxyioadoieastbas")
+_SENTENCE = re.compile(r"[.!?;|\n]+")
+
+
+def strip_invisible(text: str) -> str:
+    """NFKC, then delete invisible format characters (zero-width spaces, joiners, direction marks).
+    Applied to every LLM reply before it is checked or shown; the words themselves stay as they are."""
+    text = unicodedata.normalize("NFKC", text)
+    return "".join(ch for ch in text if unicodedata.category(ch) != "Cf")
+
+
+def canonical(text: str) -> str:
+    """Text reduced to plain lowercase words for comparing: invisible characters removed, look-alike
+    letters and leetspeak mapped back, stretched letters ("sooo") shortened, and spaced-out letters
+    ("l e v e l") joined back into a word."""
+    text = strip_invisible(text).lower().translate(_LOOKALIKE)
+    text = re.sub(r"(\w)\1{2,}", r"\1", text)
+    return re.sub(
+        r"\b\w(?: \w){2,}\b", lambda m: m.group(0).replace(" ", ""), " ".join(text.split())
+    )
+
+
+def _words(text: str) -> list[str]:
+    return _WORD.findall(canonical(text))
 
 
 def profile_parts(scenario: Scenario) -> tuple[str, list[str]]:
@@ -34,7 +60,7 @@ def profile_parts(scenario: Scenario) -> tuple[str, list[str]]:
 
 
 def _ngrams(text: str, n: int = COPY_NGRAM) -> set[tuple[str, ...]]:
-    words = _WORD.findall(text.lower())
+    words = _words(text)
     return {tuple(words[i : i + n]) for i in range(len(words) - n + 1)}
 
 
@@ -51,27 +77,34 @@ def _longest_run(a: list[str], b: list[str]) -> int:
     return best
 
 
+def _units(text: str) -> list[list[str]]:
+    """Sentences (or example texts) of 3+ words, as canonical word lists."""
+    return [w for part in _SENTENCE.split(text) if len(w := _words(part)) >= COPY_NGRAM - 1]
+
+
 def copied_from_profile(bubbles: Sequence[str], scenario: Scenario) -> str | None:
-    """Why a reply looks copied from the helper-written profile, or None:
-    - a run of 4+ words from the personality or an example text (minus runs also in the situation),
-      or a whole 3-word example text;
-    - most of the situation replayed (a run of >= 6 words covering >= 60% of it): mentioning what
-      happened ("got cut from the team") is natural, reciting the student's sentence is not."""
+    """Why a reply looks copied from the helper-written profile, or None. Compared after `canonical`
+    (so zero-width characters, look-alike letters, leetspeak and spaced letters don't hide a copy):
+    - a run of 4+ words from the personality or an example text (minus runs also in the situation);
+    - a whole example text, or a whole sentence of the personality or situation, of 3+ words
+      ("are you a real person?");
+    - most of the situation replayed (a run of >= 6 words covering >= 60% of it).
+    Mentioning what happened in your own words ("i got cut from the team") still passes."""
     if not is_custom(scenario.id):
         return None
     personality, samples = profile_parts(scenario)
-    reply_text = " ".join(bubbles)
-    reply_words = _WORD.findall(reply_text.lower())
+    reply_words = _words(" ".join(bubbles))
     profile = set().union(*(_ngrams(text) for text in [personality, *samples]))
     profile -= _ngrams(scenario.situation)
-    shared = sorted(set().union(*(_ngrams(b) for b in bubbles)) & profile) if bubbles else []
+    reply_grams = {tuple(reply_words[i : i + COPY_NGRAM]) for i in range(len(reply_words))}
+    shared = sorted(reply_grams & profile)
     if shared:
         return " ".join(shared[0])
-    for text in [personality, *samples]:
-        words = _WORD.findall(text.lower())
-        if len(words) == COPY_NGRAM - 1 and _longest_run(words, reply_words) == len(words):
-            return text
-    situation = _WORD.findall(scenario.situation.lower())
+    for text in [personality, *samples, scenario.situation]:
+        for unit in _units(text):
+            if _longest_run(unit, reply_words) == len(unit):
+                return " ".join(unit)
+    situation = _words(scenario.situation)
     run = _longest_run(situation, reply_words)
     if run >= SITUATION_RUN and run >= SITUATION_SHARE * len(situation):
         return f"{run} words of the situation"
