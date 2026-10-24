@@ -34,3 +34,7 @@ def warm_up() -> None:
             texts = [ex.text for ex in content.load_exemplars(scenario.id, locale)]
             if texts:
                 warm(texts)
+    for locale in ("en", "es"):  # the shared bank behind every custom friend
+        texts = [ex.text for ex in content.load_exemplars(content.CUSTOM_BANK, locale)]
+        if texts:
+            warm(texts)

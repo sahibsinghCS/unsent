@@ -5,15 +5,24 @@ real-mode steps, crisis lines and evaluation reports. Nothing here calls the net
 from __future__ import annotations
 
 import json
+import threading
+import time
 from functools import lru_cache
 from pathlib import Path
 
-from backend.app.config import CONTENT_DIR, DATA_DIR, EVAL_REPORTS_DIR
+from backend.app.config import CONTENT_DIR, DATA_DIR, EVAL_REPORTS_DIR, session_ttl_seconds
 from backend.app.contracts import Exemplar, Line, Scenario, ScenarioText
 
 SCENARIO_DIR = DATA_DIR / "scenarios"
 LINES_DIR = DATA_DIR / "lines"
 EXEMPLARS_DIR = DATA_DIR / "exemplars"
+
+# Friends a helper writes themselves ("Add your own friend") live only in memory, like sessions.
+CUSTOM_PREFIX = "custom-"
+CUSTOM_BANK = "_custom"  # their reviewed, situation-neutral line bank and exemplars
+MAX_CUSTOM = 500
+_custom: dict[str, tuple[Scenario, float]] = {}
+_custom_lock = threading.Lock()
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -40,14 +49,64 @@ def load_scenarios() -> dict[str, Scenario]:
 
 
 def get_scenario(scenario_id: str) -> Scenario:
-    """Scenario by id; raises KeyError if unknown."""
+    """Scenario by id (a repo scenario or a live custom friend); raises KeyError if unknown."""
+    if is_custom(scenario_id):
+        with _custom_lock:
+            item = _custom.get(scenario_id)
+            if item is None or time.time() - item[1] > session_ttl_seconds():
+                _custom.pop(scenario_id, None)
+                raise KeyError(scenario_id)
+            _custom[scenario_id] = (item[0], time.time())  # in use: expires with its session
+            return item[0]
     return load_scenarios()[scenario_id]
+
+
+def is_custom(scenario_id: str) -> bool:
+    return scenario_id.startswith(CUSTOM_PREFIX)
+
+
+def bank_id(scenario_id: str) -> str:
+    """Which line bank / exemplar files a scenario uses (custom friends share one neutral bank)."""
+    return CUSTOM_BANK if is_custom(scenario_id) else scenario_id
+
+
+@lru_cache(maxsize=1)
+def custom_template() -> Scenario:
+    """data/scenarios/_custom.json: the fixed levels, facts and safe lines every custom friend uses."""
+    return Scenario.model_validate_json((SCENARIO_DIR / "_custom.json").read_text(encoding="utf-8"))
+
+
+def register_custom(scenario: Scenario) -> None:
+    """Keep a custom friend in memory until it goes unused for one session TTL."""
+    with _custom_lock:
+        _drop_expired_custom_locked()
+        while len(_custom) >= MAX_CUSTOM:  # oldest first: memory stays bounded
+            _custom.pop(min(_custom, key=lambda key: _custom[key][1]))
+        _custom[scenario.id] = (scenario, time.time())
+
+
+def purge_custom() -> int:
+    """Drop custom friends unused for longer than the session TTL. Returns the count."""
+    with _custom_lock:
+        return _drop_expired_custom_locked()
+
+
+def _drop_expired_custom_locked() -> int:
+    cutoff = time.time() - session_ttl_seconds()
+    stale = [key for key, (_, seen) in _custom.items() if seen < cutoff]
+    for key in stale:
+        del _custom[key]
+    return len(stale)
 
 
 def scenario_locales(scenario: Scenario) -> list[str]:
     """Languages a scenario fully supports: English, plus every language that has both the scenario's
     translated text (Scenario.i18n) and a friend line bank. A chat never mixes languages."""
     extra = [loc for loc in sorted(scenario.i18n) if loc != "en" and load_lines(scenario.id, loc)]
+    if (
+        is_custom(scenario.id) and scenario.i18n
+    ):  # written in one language: offered in that one only
+        return extra or ["en"]
     return ["en", *extra]
 
 
@@ -63,18 +122,26 @@ def scenario_text(scenario: Scenario, locale: str) -> ScenarioText:
     )
 
 
-@lru_cache(maxsize=64)
 def load_lines(scenario_id: str, locale: str = "en") -> tuple[Line, ...]:
     """Friend line bank for a scenario (empty until the DATA lane writes data/lines/<id>.<locale>.jsonl)."""
+    return _load_lines(bank_id(scenario_id), locale)
+
+
+@lru_cache(maxsize=64)
+def _load_lines(scenario_id: str, locale: str) -> tuple[Line, ...]:
     path = LINES_DIR / f"{scenario_id}.{locale}.jsonl"
     if not path.exists():
         return ()
     return tuple(Line.model_validate(row) for row in read_jsonl(path))
 
 
-@lru_cache(maxsize=64)
 def load_exemplars(scenario_id: str, locale: str = "en") -> tuple[Exemplar, ...]:
     """Exemplar helper replies for a scenario (empty until the DATA lane writes them)."""
+    return _load_exemplars(bank_id(scenario_id), locale)
+
+
+@lru_cache(maxsize=64)
+def _load_exemplars(scenario_id: str, locale: str) -> tuple[Exemplar, ...]:
     path = EXEMPLARS_DIR / f"{scenario_id}.{locale}.jsonl"
     if not path.exists():
         return ()
@@ -171,5 +238,6 @@ def resolve_headline(records: list[dict]) -> list[dict]:
 
 def clear_caches() -> None:
     load_scenarios.cache_clear()
-    load_lines.cache_clear()
-    load_exemplars.cache_clear()
+    _load_lines.cache_clear()
+    _load_exemplars.cache_clear()
+    custom_template.cache_clear()

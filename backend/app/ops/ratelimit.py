@@ -59,6 +59,8 @@ def default_rules() -> list[Rule]:
               Limit("message/day", env_int("FR_RL_MESSAGES_PER_DAY", 300), DAY))),
         Rule("whatif", "POST", re.compile(session + r"/whatif/?"),
              (per_min("whatif", "FR_RL_WHATIF_PER_MIN", 6),)),
+        Rule("friend_create", "POST", re.compile(r"/api/friends/?"),
+             (per_min("friend_create", "FR_RL_FRIENDS_PER_MIN", 10),)),
         Rule("guardian", "POST", re.compile(r"/api/guardian/check/?"),
              (per_min("guardian", "FR_RL_GUARDIAN_PER_MIN", 30),)),
         Rule("api", "*", re.compile(r"/api/.*"), (per_min("api", "FR_RL_API_PER_MIN", 240),)),

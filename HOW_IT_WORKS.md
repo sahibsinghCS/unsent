@@ -26,6 +26,15 @@ At the end, the **critic** scores the conversation, and **"What if"** plays bett
 - **One message at a time**: each chat has its own lock, so a double-click or a second tab can't
   run two turns at once and tangle the tree. Blocked and crisis messages never reach the AI, are
   never scored by the critic, and a crisis message has no "What if" (it isn't a mistake).
+- **Add your own friend** (`custom_friend.py`): the helper writes a friend's name, age, personality,
+  what happened and a few example texts. Only those words change. The five disclosure levels, the
+  facts behind them (including the suicidal thoughts at level 3), the safe fallback lines and the
+  reviewed line bank all come from a fixed template (`data/scenarios/_custom.json`), so nobody can
+  script a friend to describe methods. Every field goes through the Guardian first (instructions
+  to the AI and harmful details are refused), line breaks and `#` are removed so the text can't
+  reshape the AI's instructions, and the friend lives only in memory and expires after 60 unused
+  minutes, like a session. If the story sounds like a real friend at risk (or the helper themself),
+  the app shows real help first.
 - **One language per chat**: a friend is offered in a language only when its translated scenario text *and* its reviewed line bank exist (`content.scenario_locales`). Today: every friend in English, and Maya in Spanish. The server falls back to English otherwise, so a chat never mixes languages.
 - **Headline numbers** are defined once (`content/headline_metrics.json`, English and Spanish) and filled in from the evaluation reports. The How page, the README and `docs/METRICS.md` all read that file, so they always agree.
 - **Privacy**: sessions live only in server memory and are deleted after 60 minutes of inactivity. Everything derived from a conversation (cached embeddings, the AI cache, the critic's explanations) is registered with the same purge and expires with the session. There are no accounts, no database, no analytics, and nothing is written to disk in production.
@@ -47,6 +56,10 @@ Parallel development needs fixed interfaces. Stubs let the frontend and every la
 - *Why not store conversations?* This is a mental-health topic and users are minors. Nothing is stored, and the privacy test proves nothing lingers in memory after a session expires.
 - *What happens if a part breaks or OpenAI is down?* Every AI reply is optional: the engine still decides, and the reviewed line bank speaks instead. The app fully works with `FR_LLM=0`.
 - *How did several agents build this without breaking each other?* Frozen contracts, a stub for every part, file ownership per lane (`ownership.yaml`, checked automatically) and one integration branch where every merge must pass about 700 tests.
+- *Can't someone use "Add your own friend" to make the AI say something harmful?* Their words only
+  set the name, personality and situation. What the friend reveals, and when, comes from our fixed
+  template; every field is screened first; and every reply still passes the verifier and the
+  Guardian before it's shown, exactly as for our own friends.
 - *Why only one language per chat?* A Spanish-speaking teen should never get an English reply halfway through. So a language only appears when every line in it has been written and reviewed.
 - *How do you know your numbers are honest?* Each number comes with n and the split. The headline uses data the models never trained on, and the red team's holdout attacks were never shown to whoever tunes the safety filter.
 
@@ -1005,7 +1018,7 @@ test/        vitest tests
 
 **The trust math in X-ray mode.** The engine sends its own breakdown of every trust change (`state_after.last_breakdown`): one term per detected skill plus engine terms such as `decay`, `diminishing` or `secrecy_broken`, and these add up to the real change (`last_delta`). X-ray shows exactly those numbers, rounded to one decimal, with friendly names (diminishing → "repeated", decay → "time", referral_after_disclosure → "referred after they opened up"): `+8.4 validated · −4.2 repeated · −2 time = +2.2`. `last_delta` is the raw change *before* trust is clamped to 0–100, so when the real change is different X-ray adds a note, e.g. "(trust can't go below 0, actual change −5)". If an engine doesn't send a breakdown (the stub doesn't), X-ray shows only the total. We never guess how a change splits.
 
-**Word highlights.** The critic sends character positions (`start`, `end`) for the words that pushed each skill's score up. `lib/highlight.ts` cuts the message into plain and highlighted pieces: green for helping skills, red for `dismissed`, `advice_dump` and `promised_secrecy`. It's tested so that overlapping or out-of-range spans never drop or duplicate a letter. The critic's `delta` is a log-odds drop (roughly 1–15), which only means something compared with the other spans in the same message. So the app computes intensity = delta ÷ the strongest delta in that message and shows only words: a solid underline for a **strong** signal (≥ 60% of the strongest) and a dotted one for **some** signal. The raw number is never shown. Rewrite gains are a probability gain on the missing skill, shown as percentage points ("Listen +100%"). When the critic finds no turning point, the red card becomes a green "You never lost their trust".
+**Word highlights.** The critic sends character positions (`start`, `end`) for the words that pushed each skill's score up. `lib/highlight.ts` cuts the message into plain and highlighted pieces: green for helping skills, red for `dismissed`, `advice_dump` and `promised_secrecy`. It's tested so that overlapping or out-of-range spans never drop or duplicate a letter. The critic's `delta` is a log-odds drop (roughly 1–15), which only means something compared with the other spans in the same message. So the app computes intensity = delta ÷ the strongest delta in that message and shows only words: a solid underline for a **strong** signal (≥ 60% of the strongest) and a dotted one for **some** signal. The raw number is never shown. Rewrite gains are a probability gain on the missing skill. The chip names what the rewrite adds ("✓ adds: listening"), and the exact number of points is in its tooltip. When the critic finds no turning point, the red card becomes a green "You never lost their trust".
 
 **Real mode offline.** At build time a script copies the fixed crisis text into the app. Real mode shows that copy instantly, then tries the server. If the server is down, it keeps the bundled copy and says so.
 
@@ -1017,13 +1030,29 @@ test/        vitest tests
 
 **Rewind.** The server keeps the whole conversation as a tree. "Rewind to here" moves the head back to the friend's message before yours and puts your old text in the input box so you can edit it. The branch drawer draws the tree: straight runs stay in one column, and only real forks are indented, so it stays readable on a phone.
 
+## Design: why it looks like this
+
+The redesign's brief was "a real product, designed with care, made for teens," not a dashboard template. The ideas, in one line each (Sahib can repeat these to judges):
+
+- **It's about a text at the moment it matters, usually late at night.** So the palette is "dusk": an electric violet as the signature color (it's the color of *your* sent bubble), a warm ember for care and for "I need help now," warm paper in light mode and a deep night in dark mode.
+- **Editorial meets messaging.** Headlines use *Fraunces*, an expressive soft serif with a warm italic ("save a friend's life"), so the app feels written by a person. Everything you tap uses *Plus Jakarta Sans*, a clean, friendly UI face. Both are self-hosted, because our security policy blocks outside fonts.
+- **Show the product in 3 seconds.** The landing hero is a live demo: a friend's message arrives, "you" type a reply, the skill detector's chip pops up and the trust meter ticks up. Then "how it works" in three steps, not walls of text.
+- **Friends, not form fields.** The scenario picker looks like a contacts/stories screen: initials art with a story ring (a different gradient per friend), the name in italic, the situation in a short preview, and chips for open/guarded and languages.
+- **X-ray feels like seeing inside.** In X-ray mode the panels turn into "night glass" with a faint grid and a violet glow, in both light and dark themes, plus a scanning banner, so it's obvious you're looking at the models, not the conversation.
+- **Feedback tells a story.** It opens with the critic's summary as a pull quote, then a timeline of your messages with trust at each step, then "This is where you lost them" with *what you said* next to *what would have worked*. The radar and charts come after, because numbers are the evidence, not the headline.
+- **What-if shows branching futures.** Your message forks into each simulated reply, each branch ending at the trust it reached. The best future glows, and what really happened is the dashed line.
+- **Safety stays calm.** Crisis pause, the help button and Real mode keep the highest priority and the simplest styling. Ember for action, plenty of space, nothing playful.
+- **Details with restraint.** A faint film grain and soft glow give depth. Motion is short and purposeful (bubbles pop in, the meter counts up, the demo loops) and turns off with the system's reduced-motion setting. Every color pair still passes WCAG AA, and axe reports 0 violations in both themes.
+
+Everything lives in tokens: colors in `src/index.css` (`:root` and `.dark`), fonts and motion in `tailwind.config.js`. Changing the signature color is one line.
+
 ## Why this approach (and what we considered instead)
 
 - **One source of truth.** The chat always draws exactly the path the server returns (root → head). We never keep a separate copy that could drift, so rewinding, reloading and crisis pauses all just work.
 - **Types generated from the API** (`npm run gen:api`). If the backend changes a field, TypeScript points to every screen that breaks. The alternative was hand-written types, which go stale silently.
 - **Tailwind + CSS variables** for the design system. Every color is a token in `src/index.css` with a light and a dark value, so dark mode is one class on `<html>`, and restyling the app means editing one block. We considered a component library, but it would look generic and add weight.
 - **Chart.js** for the trust graph and radar: small, accessible and well known. Charts get their own chunk so the landing page loads fast.
-- **A calm, warm palette** (teal for trust, coral for care, cream paper instead of clinical white): not clinical, not childish. System fonts only, so nothing loads from outside and text looks native on every phone.
+- **A "dusk" design identity** instead of a generic template: see *Design: why it looks like this* below.
 - **Safety UX is structural, not optional.** The help button lives in the layout, so no page can forget it. The crisis card is a non-dismissible dialog with a required checkbox. Real mode doesn't depend on the server.
 
 ## How we measured it (real numbers, with n and the split)
@@ -1033,7 +1062,9 @@ test/        vitest tests
 - **Accessibility (axe-core):** `npm run test:a11y` runs axe with the WCAG 2.0/2.1 A + AA rules on 9 pages (landing, practice, chat with X-ray on, feedback, what-if, real mode, how, privacy, 404) in light and dark mode: **0 violations of any impact on all 18 runs**. The final pass fixed 4 serious contrast issues: muted text on the teal stat band, label-colored numbers in the X-ray trust math (now a colored dot next to high-contrast text), faded status-chip text, and the faded "sending" bubble. The same script drives the chat by keyboard only: Tab to the message box, Enter to send, focus returns to the box, Shift+Tab to your message, Enter opens it, Tab to "Rewind to here", and Space toggles X-ray.
 - **Slow AI replies:** `npm run test:slow` adds 4.5 s of latency in the test harness (Playwright routing; app code untouched). It checks that the typing dots show for the whole wait, Send is disabled, a second Enter or click never sends twice (exactly one request), a draft typed during the wait is kept, a slow 503 shows the error, restores the draft and re-enables Send, and a retry clears the error. The app also guards sending with a synchronous flag, so a fast double-click can't slip through either.
 - **Contrast tokens:** every text/background token pair was checked against WCAG AA (4.5:1). The lowest pairs after tuning: white on the coral button 4.98, green on green-soft 5.36, white on the dark-mode bubble 5.93.
-- **Size:** about 86 KB gzipped app code + 63 KB gzipped charts (loaded as a separate cached chunk) + 7 KB CSS.
+- **Size:** about 94 KB gzipped app code + 63 KB gzipped charts (a separate cached chunk) + 10 KB CSS. The redesign added only ~3 KB of JS (no animation library; all motion is CSS or a few lines of React). The fonts are self-hosted woff2 files, and the browser only downloads the Latin subsets it needs.
+- **Navigation by clicking:** `npm run test:nav` moves between every page by clicking header/footer links, the logo, the help button and the CTAs, in English and Spanish, plus a run where `window.scrollTo` is patched to return a value (as some browser extensions do). This guards the fixed "blank page until refresh" bug: an effect returned `scrollTo`'s value as its cleanup. A vitest (`effects.test.ts`) scans the source so no effect can return a non-function again, and it failed on the old code.
+- **Production CSP:** `node deploy/csp_check.mjs` passes with zero violations. Vite's asset inlining is turned off, because it had turned small font files into `data:` URIs that `font-src 'self'` blocks.
 
 ## Limitations
 
