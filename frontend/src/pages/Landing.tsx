@@ -7,31 +7,31 @@ import { LiveDemo } from '../components/LiveDemo';
 import { Bubble } from '../components/Phone';
 import { Call988 } from '../components/Safety';
 import { usePrefs } from '../i18n';
-import { DEMO_RECORDED_AT, demoRun, turnSummary, type DemoTurn } from '../lib/demoTranscript';
+import { demoRun, turnSummary, type DemoTurn } from '../lib/demoTranscript';
 
-/** The note beside one recorded turn: Guardian time, skills heard, trust change, and how Maya replied. */
-function turnNote(turn: DemoTurn, first: boolean, t: (k: string, v?: Record<string, string | number>) => string) {
+/** The note beside one recorded turn, generated from the data: Guardian time, skills, trust, reply. */
+function turnNote(turn: DemoTurn, prevLevel: number | null, first: boolean, t: (k: string, v?: Record<string, string | number>) => string) {
   const sum = turnSummary(turn);
-  const parts = [t('landing.run.safety', { ms: Math.round(turn.guardian.ms) })];
+  const asked = turn.skills.includes('asked_directly');
+  const parts = [t('landing.run.safety', { ms: Math.round(turn.guardian_ms) })];
+  if (asked) parts.push(t('landing.run.direct'));
   parts.push(
     turn.skills.length
       ? t('landing.run.heard', { labels: turn.skills.map((s) => `“${t(`labels.${s}`)}”`).join(', ') })
       : t('landing.run.heard_none'),
   );
-  if (turn.skills.includes('asked_directly')) parts.push(t('landing.run.direct'));
   parts.push(t(sum.up ? 'landing.run.up' : 'landing.run.down', { from: sum.from, to: sum.to }));
-  if (turn.friend?.seen) parts.push(t('landing.run.read'));
-  else if (turn.status === 'ended_success') parts.push(t('landing.run.success'));
-  else if (turn.level_after > turn.level_before) parts.push(t('landing.run.level_up', { level: turn.level_after }));
-  else if (turn.skills.includes('asked_directly')) parts.push(t('landing.run.level_same', { level: turn.level_after }));
-  if (first && turn.friend?.voice === 'bank') parts.push(t('landing.run.bank'));
+  if (turn.seen) parts.push(t('landing.run.read'));
+  else if (asked) parts.push(t('landing.run.not_ready'));
+  else if (prevLevel !== null && turn.level_after > prevLevel) parts.push(t('landing.run.level_up', { level: turn.level_after }));
+  if (first) parts.push(t('landing.run.bank'));
   return parts.join(' ');
 }
 
 function AnnotatedExample() {
   const { t, lang } = usePrefs();
   const run = demoRun(lang);
-  const firstReply = run.turns.findIndex((x) => x.friend?.voice === 'bank');
+  const firstReply = run.turns.findIndex((x) => x.line_id);
   return (
     <ol className="im-screen divide-y divide-line/70 overflow-hidden rounded-xl border border-line/70" data-testid="annotated-example">
       <Row
@@ -41,7 +41,7 @@ function AnnotatedExample() {
           </Bubble>
         ))}
         label={t('landing.run.label_friend')}
-        note={t('landing.run.opening', { trust: Math.round(run.trust_start) })}
+        note={t('landing.run.opening', { trust: Math.round(run.turns[0]?.trust_before ?? 0) })}
       />
       {run.turns.map((turn, i) => (
         <Row
@@ -49,12 +49,12 @@ function AnnotatedExample() {
           testid="example-turn"
           thread={
             <>
-              <Bubble me>{turn.text}</Bubble>
-              {turn.friend?.seen ? (
+              <Bubble me>{turn.you}</Bubble>
+              {turn.seen ? (
                 <p className="im-meta pr-3 text-right">{t('chat.read_at', { time: '9:42 PM' })}</p>
               ) : (
-                turn.friend?.bubbles.map((b, j) => (
-                  <Bubble key={j} tail={j === turn.friend!.bubbles.length - 1}>
+                turn.friend.map((b, j) => (
+                  <Bubble key={j} tail={j === turn.friend.length - 1}>
                     {b}
                   </Bubble>
                 ))
@@ -62,7 +62,7 @@ function AnnotatedExample() {
             </>
           }
           label={t('landing.run.label_you', { n: i + 1 })}
-          note={turnNote(turn, i === firstReply, t)}
+          note={turnNote(turn, i > 0 ? run.turns[i - 1].level_after : null, i === firstReply, t)}
         />
       ))}
     </ol>
@@ -115,7 +115,7 @@ export function Landing() {
           <AnnotatedExample />
         </div>
         <p className="mt-3 text-sm text-muted" data-testid="real-run-note">
-          {t('landing.run.note', { date: DEMO_RECORDED_AT })}
+          {t('landing.run.note')}
         </p>
         <div className="mt-6">
           <Link to="/practice" className="btn-primary">

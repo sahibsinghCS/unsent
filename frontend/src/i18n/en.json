@@ -47,15 +47,14 @@
       "safety": "Safety check: fine, {ms} ms.",
       "heard": "The skill detector hears {labels}.",
       "heard_none": "The skill detector hears no skill.",
-      "direct": "Asking directly is the right move, so it is never blocked.",
+      "direct": "Asking directly is never blocked.",
       "up": "Trust rises from {from} to {to}.",
       "down": "Trust drops from {from} to {to}.",
-      "read": "She leaves you on Read: that much lost trust makes her go quiet.",
-      "level_up": "She shares more (disclosure level {level}).",
-      "level_same": "Her disclosure level stays at {level}, so she doesn't answer yet.",
-      "success": "She agrees to get help, so the practice ends as a success.",
+      "read": "She left you on Read.",
+      "level_up": "She shares more (disclosure level {level}). Our engine decides what she's ready to share.",
       "bank": "Her replies are reviewed lines from our bank, not AI wording.",
-      "note": "A real run of the app (no AI wording); numbers are what the engine computed. Recorded {date}."
+      "note": "A real run of the app with our reviewed lines (no AI wording). Every number is what the engine computed.",
+      "not_ready": "She isn't ready to say it yet. Our engine decides what she's ready to share."
     }
   },
   "practice": {

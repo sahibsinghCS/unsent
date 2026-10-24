@@ -51,15 +51,14 @@
       "safety": "Revisión de seguridad: bien, {ms} ms.",
       "heard": "El detector de habilidades escucha {labels}.",
       "heard_none": "El detector de habilidades no escucha ninguna habilidad.",
-      "direct": "Preguntar directamente es lo correcto, así que nunca se bloquea.",
+      "direct": "Preguntar directamente nunca se bloquea.",
       "up": "La confianza sube de {from} a {to}.",
       "down": "La confianza baja de {from} a {to}.",
-      "read": "Te deja en Leído: con tanta confianza perdida, se queda callada.",
-      "level_up": "Cuenta más (nivel de apertura {level}).",
-      "level_same": "Su nivel de apertura sigue en {level}, así que todavía no responde.",
-      "success": "Acepta buscar ayuda, así que la práctica termina con éxito.",
+      "read": "Te dejó en Leído.",
+      "level_up": "Cuenta más (nivel de apertura {level}). Nuestro motor decide qué está lista para contar.",
       "bank": "Sus respuestas son frases revisadas de nuestro banco, no texto de IA.",
-      "note": "Una conversación real en la app (sin texto de IA); los números son los que calculó el motor. Grabada el {date}."
+      "note": "Una conversación real en la app con nuestras frases revisadas (sin texto de IA). Cada número es el que calculó el motor.",
+      "not_ready": "Todavía no está lista para decirlo. Nuestro motor decide qué está lista para contar."
     }
   },
   "practice": {
