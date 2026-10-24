@@ -27,7 +27,7 @@ and it protects that public server:
      header was written by the visitor, so anyone could fake it to dodge the limits.
   2. **Rate limit** with *token buckets* (`ratelimit.py`). Picture a bucket of 30 tokens per visitor
      for messages: each message takes one, and the bucket refills at 30 per minute. Empty bucket →
-     HTTP 429 "slow down" with a `Retry-After` time. Limits: 10 new sessions/min, 30 messages/min
+     HTTP 429 "slow down" with a `Retry-After` time. Limits: 10 new sessions/min, 10 custom friends/min, 30 messages/min
      and 300/day, 6 what-ifs/min, 30 Guardian checks/min. The health check is never limited. Old
      buckets are thrown away so memory doesn't grow.
   3. **Body limit:** any request over 32 KB is refused (413) before the app reads it.

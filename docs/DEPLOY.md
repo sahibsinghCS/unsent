@@ -193,8 +193,8 @@ traffic** â†’ 100%. **Off switch for OpenAI:** **Edit & deploy new revision** â†
 
 ## What the container does for safety
 
-- **Rate limits per visitor:** 10 new sessions/min, 30 messages/min and 300/day, 6 what-ifs/min,
-  30 Guardian checks/min, 240 other API calls/min (`/api/health` exempt). Over the limit: HTTP 429
+- **Rate limits per visitor:** 10 new sessions/min, 10 custom friends/min ("Add your own friend"),
+  30 messages/min and 300/day, 6 what-ifs/min, 30 Guardian checks/min, 240 other API calls/min (`/api/health` exempt). Over the limit: HTTP 429
   with `Retry-After`. All are environment variables (`FR_RL_*`), see `backend/app/ops/ratelimit.py`.
   The visitor is the `FR_PROXY_HOPS`-th `X-Forwarded-For` entry counted from the right (default 1:
   the address the host's own proxy saw; the left entries can be faked by the client). If a host

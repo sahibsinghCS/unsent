@@ -2,7 +2,7 @@
 
 ## Done
 - `backend/app/ops` **IMPLEMENTED** (`install(app)` + `on_startup()`), 27 tests in `tests/unit/ops/`:
-  - `ratelimit.py`: per-client token buckets. Defaults (env): `FR_RL_SESSIONS_PER_MIN=10`, `FR_RL_MESSAGES_PER_MIN=30`, `FR_RL_MESSAGES_PER_DAY=300`, `FR_RL_WHATIF_PER_MIN=6`, `FR_RL_GUARDIAN_PER_MIN=30`, `FR_RL_API_PER_MIN=240` (other `/api/*`); `/api/health` exempt. On by default only in prod (`FR_RATE_LIMIT=0/1` overrides) so dev/tests are unaffected. 429 → `{detail, retry_after}` + `Retry-After`. Refused requests take no token. Idle buckets are dropped.
+  - `ratelimit.py`: per-client token buckets. Defaults (env): `FR_RL_SESSIONS_PER_MIN=10`, `FR_RL_FRIENDS_PER_MIN=10` (POST /api/friends, added by the integrator in 816723b), `FR_RL_MESSAGES_PER_MIN=30`, `FR_RL_MESSAGES_PER_DAY=300`, `FR_RL_WHATIF_PER_MIN=6`, `FR_RL_GUARDIAN_PER_MIN=30`, `FR_RL_API_PER_MIN=240` (other `/api/*`); `/api/health` exempt. On by default only in prod (`FR_RATE_LIMIT=0/1` overrides) so dev/tests are unaffected. 429 → `{detail, retry_after}` + `Retry-After`. Refused requests take no token. Idle buckets are dropped.
   - Client = the `FR_PROXY_HOPS`-th `X-Forwarded-For` entry from the right (default 1: the hop our proxy appended; entries further left are client-written and forgeable) only when `FR_TRUST_PROXY=1`, else `request.client.host`.
   - `headers.py`: CSP (`default-src 'self'`, script-src `'self'` + SHA-256 of each inline script in the built `index.html`, `style-src 'self'`, `img-src 'self' data:`, `connect-src 'self'`, `object-src 'none'`, `base-uri`/`form-action 'self'`, `frame-ancestors 'self' https://huggingface.co https://*.hf.space`), nosniff, `Referrer-Policy: no-referrer`, Permissions-Policy, HSTS 30 days, COOP; no X-Frame-Options; `server` header stripped. `/docs` + `/redoc` get a looser CSP (CDN) so the API docs still work.
   - `middleware.py`: one pure-ASGI middleware: rate limit → body limit (`FR_MAX_BODY_BYTES`, 32 KB; Content-Length checked up front, chunked bodies read with a cap) → headers → one JSON log line `{evt, method, route template, status, ms, client}`; client = HMAC(per-process random salt, day|ip)[:12].
@@ -32,6 +32,7 @@
 3. ~~platform: .env.example knobs~~, 4. ~~Makefile loadtest/csp-check~~, 6. ~~usage log in memory in prod~~: **done** in 836baaa.
 5. **redteam (CI):** after `docker run`, wait for `/api/health`, then run `node deploy/csp_check.mjs http://127.0.0.1:7860` and check that `docker inspect` shows `User: user`.
 7. **whatif:** `POST /whatif` is now the heaviest endpoint: ~0.7 s CPU per call (p50 0.72 s at 1 user; 9.7 s p50 at 20 users with think time, 13.5 s in burst). Worth profiling or caching rollouts per turning point; the 6/min per-visitor limit already bounds abuse.
+8. **platform (`.env.example`):** add `FR_RL_FRIENDS_PER_MIN=10` under `FR_RL_SESSIONS_PER_MIN` (`.env.example` is outside the deploy lane).
 
 ## Known issues
 - No Docker daemon in this sandbox: the real `docker build` is first run by the red-team CI job.
