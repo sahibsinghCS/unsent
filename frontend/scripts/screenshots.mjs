@@ -53,6 +53,7 @@ async function run(device) {
   // 1. Landing
   await page.goto(BASE + '/');
   await page.getByTestId('start-practicing').waitFor();
+  await page.waitForTimeout(7400); // let the live demo reach its final frame (friend opens up)
   await shot('01-landing', { full: true });
 
   // 2. Scenario picker + content warning

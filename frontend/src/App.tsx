@@ -14,7 +14,11 @@ import { WhatIf } from './pages/WhatIf';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  // Block body on purpose: an effect may only return a cleanup function or nothing. Returning
+  // scrollTo's value broke navigation when a browser extension patched scrollTo (blank page).
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return null;
 }
 

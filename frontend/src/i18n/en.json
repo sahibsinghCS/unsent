@@ -35,27 +35,28 @@
     "stat_source": "CDC Youth Risk Behavior Survey, 2023",
     "stat_kicker": "The first person they tell is usually a friend.",
     "features_title": "Nobody teaches us what to say. So practice it.",
-    "features": {
-      "practice": {
-        "title": "Practice",
-        "body": "Text a realistic friend who opens up in layers, but only if you listen, validate and ask directly."
-      },
-      "feedback": {
-        "title": "Feedback",
-        "body": "See your trust graph, the exact words that helped or hurt, and better replies that were checked before you see them."
-      },
-      "safety": {
-        "title": "Safety first",
-        "body": "Every message is checked by our Guardian first. Real help is one tap away on every screen, and nothing is stored."
-      }
-    },
     "demo": {
       "friend1": "honestly idk why i even bother anymore",
       "you1": "that sounds really heavy. are you thinking about killing yourself?",
       "friend2": "…yeah. sometimes",
       "you2": "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
       "trust": "Trust"
-    }
+    },
+    "title_a": "Practice the text that could",
+    "title_em": "save a friend's life.",
+    "steps_eyebrow": "How it works",
+    "steps_title": [
+      "Text a friend who's struggling",
+      "See inside, live",
+      "Learn what would have worked"
+    ],
+    "steps_body": [
+      "Five friends, each with a story. They open up only if you listen, validate and ask directly.",
+      "X-ray mode shows the safety check, the skills our models heard and exactly how trust moved.",
+      "Find the moment you lost them, then replay better replies and watch a different ending."
+    ],
+    "safety_title": "Real help, one tap away",
+    "safety_body": "Every message passes our safety check first. If you're the one who's struggling, we pause and show real resources. No accounts, nothing stored."
   },
   "practice": {
     "title": "Choose a friend to text",
@@ -136,7 +137,10 @@
     },
     "concern": "If any of this feels close to home, you can call or text 988 any time.",
     "empty_reply": "(no reply)",
-    "practice_in": "Practice in {lang}"
+    "practice_in": "Practice in {lang}",
+    "delivered": "Delivered",
+    "xray_banner": "X-ray on: you're seeing what our models see",
+    "trust_hint": "How safe they feel opening up to you. It moves with every message."
   },
   "tree": {
     "title": "Conversation branches",
@@ -221,7 +225,12 @@
     "rewrite_exemplar": "From our exemplar bank",
     "strength_strong": "strong signal",
     "strength_some": "some signal",
-    "legend_strong": "solid underline = strong, dotted = some"
+    "legend_strong": "solid underline = strong, dotted = some",
+    "story_with": "Your conversation with {name}",
+    "story_title": "How it went",
+    "lost_here": "lost them here",
+    "you_said": "You said",
+    "would_have_worked": "What would have worked"
   },
   "whatif": {
     "title": "What if you'd said something else?",
@@ -247,7 +256,8 @@
       "refer": "refer",
       "follow_up": "follow up",
       "combo": "combination"
-    }
+    },
+    "futures": "Branching futures"
   },
   "real": {
     "country": "Where are you?",

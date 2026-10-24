@@ -9,6 +9,7 @@ import { ApiError, api } from '../api/client';
 import type { Node, WhatIfPath, WhatIfResult } from '../api/models';
 import { Icon } from '../components/Icon';
 import { OverlayChart, type Series } from '../components/OverlayChart';
+import { BranchMap, type Branch } from '../components/BranchMap';
 import { Bubble } from '../components/Phone';
 import { ErrorBox, Spinner } from '../components/Status';
 import { TrustChart } from '../components/TrustChart';
@@ -56,7 +57,9 @@ export function WhatIf() {
       (e: ApiError) => setError(e),
     );
   }, [sessionId, nodeId]);
-  useEffect(load, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   // Exemplar strategies (check_in, validate, ask_directly, refer, follow_up, combo) in the UI language.
   const strategyName = useCallback((s: string) => {
@@ -74,6 +77,23 @@ export function WhatIf() {
     }));
     const actual = actualSeries(nodes, result.from_node_id);
     return actual.length > 1 ? [...simulated, { label: t('whatif.you_said'), values: actual, color: tokenColor('muted'), emphasis: 'actual' }] : simulated;
+  }, [result, nodes, t, strategyName]);
+
+  // The same data as the overlay chart, as branching futures (best first, what really happened last).
+  const branches = useMemo<Branch[]>(() => {
+    if (!result) return [];
+    const sims = result.paths.map((p, i) => ({
+      label: strategyName(p.strategy),
+      from: p.trust_series[0] ?? 0,
+      to: p.trust_series[p.trust_series.length - 1] ?? 0,
+      color: i === result.best_index ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length],
+      best: i === result.best_index,
+    }));
+    sims.sort((a, b) => Number(!!b.best) - Number(!!a.best));
+    const actual = actualSeries(nodes, result.from_node_id);
+    return actual.length > 1
+      ? [...sims, { label: t('whatif.you_said'), from: actual[0], to: actual[actual.length - 1], color: tokenColor('muted'), actual: true }]
+      : sims;
   }, [result, nodes, t, strategyName]);
 
   async function tryInChat(text: string) {
@@ -101,7 +121,7 @@ export function WhatIf() {
       </Link>
       <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
         <div className="max-w-2xl">
-          <h1 className="text-3xl font-bold sm:text-4xl">{t('whatif.title')}</h1>
+          <h1 className="text-4xl font-semibold sm:text-5xl">{t('whatif.title')}</h1>
           <p className="mt-2 text-muted">{t('whatif.sub')}</p>
         </div>
         {result.simulated && (
@@ -112,11 +132,11 @@ export function WhatIf() {
         )}
       </div>
 
-      {original && (
-        <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl bg-sunken p-4">
-          <span className="eyebrow">{t('whatif.you_said')}</span>
-          <span className="rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] text-white line-through decoration-white/50">{original.bubbles.join(' ')}</span>
-        </div>
+      {original && result.paths.length > 0 && (
+        <section className="card mt-6 p-4 sm:p-6">
+          <h2 className="mb-4 text-2xl font-semibold">{t('whatif.futures')}</h2>
+          <BranchMap origin={original.bubbles.join(' ')} branches={branches} />
+        </section>
       )}
 
       {result.paths.length === 0 && (
@@ -144,7 +164,7 @@ export function WhatIf() {
           return (
             <li key={i} className={`card flex flex-col p-4 ${best ? 'ring-2 ring-brand' : ''}`} data-testid="whatif-path">
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="grid h-6 w-6 place-items-center rounded-full text-xs font-bold text-white" style={{ background: best ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length] }}>
+                <span className="grid h-7 w-7 place-items-center rounded-full border-2 bg-surface text-xs font-bold text-ink" style={{ borderColor: best ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length] }}>
                   {i + 1}
                 </span>
                 <span className="chip border-line">{strategyName(path.strategy)}</span>

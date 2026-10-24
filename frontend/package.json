@@ -14,9 +14,12 @@
     "prebuild": "node scripts/sync-content.mjs",
     "pretest": "node scripts/sync-content.mjs",
     "test:slow": "node scripts/slow.mjs",
-    "test:a11y": "node scripts/a11y.mjs"
+    "test:a11y": "node scripts/a11y.mjs",
+    "test:nav": "node scripts/clicknav.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "chart.js": "^4.4.6",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",

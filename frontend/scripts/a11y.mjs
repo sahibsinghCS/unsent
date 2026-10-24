@@ -79,6 +79,8 @@ await page.keyboard.type('hey are you ok? you seemed off today');
 await page.keyboard.press('Enter');
 await page.waitForFunction(() => document.querySelectorAll('[data-testid="messages"] .bg-them').length >= 3, null, { timeout: 30000 });
 if ((await focusedTestId()) !== 'composer') throw new Error('keyboard: focus should return to the message box after sending');
+// Your message becomes interactive (rewindable) once the friend's reply has finished arriving.
+await page.locator('button[aria-label^="You:"]:enabled').first().waitFor({ timeout: 30000 });
 // Shift+Tab back to the sent bubble, open it, rewind with Enter
 let onBubble = false;
 for (let i = 0; i < 10 && !onBubble; i++) {

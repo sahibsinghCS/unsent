@@ -1,12 +1,13 @@
 // The phone mockup and iMessage-style message pieces, shared by Landing, Chat and What-if.
 import type { ReactNode } from 'react';
+import { Avatar } from './Avatar';
 
 /** A phone-shaped frame. `header` is the contact bar; children scroll inside the screen. */
 export function PhoneFrame({ header, children, footer, className = '' }: { header?: ReactNode; children: ReactNode; footer?: ReactNode; className?: string }) {
   return (
-    <div className={`relative flex flex-col overflow-hidden rounded-[2.25rem] border-[6px] border-[#1d2427] bg-surface shadow-phone dark:border-[#05090a] ${className}`}>
-      <div className="pointer-events-none absolute left-1/2 top-1.5 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-[#1d2427] dark:bg-[#05090a]" aria-hidden="true" />
-      {header && <div className="border-b border-line bg-surface/95 px-4 pb-2.5 pt-8">{header}</div>}
+    <div className={`relative flex flex-col overflow-hidden rounded-[2.6rem] border-[7px] border-[#17121f] bg-surface shadow-phone ring-1 ring-white/10 dark:border-[#05030b] ${className}`}>
+      <div className="pointer-events-none absolute left-1/2 top-2 z-10 h-6 w-28 -translate-x-1/2 rounded-full bg-[#17121f] dark:bg-[#05030b]" aria-hidden="true" />
+      {header && <div className="border-b border-line/70 bg-surface/90 px-4 pb-2.5 pt-9 backdrop-blur">{header}</div>}
       <div className="flex-1 overflow-hidden">{children}</div>
       {footer}
     </div>
@@ -17,9 +18,7 @@ export function PhoneFrame({ header, children, footer, className = '' }: { heade
 export function ContactHeader({ name, sub, right }: { name: string; sub?: ReactNode; right?: ReactNode }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-warm to-brand text-sm font-bold text-white" aria-hidden="true">
-        {name.slice(0, 1).toUpperCase()}
-      </div>
+      <Avatar name={name} size="sm" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold leading-tight">{name}</p>
         {sub && <p className="truncate text-xs text-muted">{sub}</p>}
@@ -35,7 +34,7 @@ export function Bubble({ me, children, tail = true, className = '' }: { me?: boo
     <div className={`flex ${me ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`max-w-[80%] whitespace-pre-wrap break-words px-3.5 py-2 text-[15px] leading-snug animate-pop-in ${
-          me ? 'bg-me text-white' : 'bg-them text-ink'
+          me ? 'bg-me text-white shadow-[0_6px_16px_-10px_rgb(var(--bubble-me))]' : 'bg-them text-ink'
         } rounded-bubble ${tail ? (me ? 'rounded-br-md' : 'rounded-bl-md') : ''} ${className}`}
       >
         {children}

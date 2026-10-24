@@ -4,11 +4,14 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import { usePrefs, type Lang } from '../i18n';
 import { Icon } from './Icon';
 
+/** Wordmark: the bubble mark plus "First" in the UI face and an italic display "Reply". */
 export function Logo({ className = '' }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-2 font-extrabold tracking-tight ${className}`}>
-      <img src="/favicon.svg" alt="" className="h-7 w-7" />
-      FirstReply
+    <span className={`inline-flex items-center gap-2 ${className}`}>
+      <img src="/favicon.svg" alt="" className="h-8 w-8 drop-shadow-[0_4px_10px_rgb(var(--brand)/0.35)]" />
+      <span className="text-[1.15rem] font-extrabold tracking-tight">
+        First<span className="font-display font-semibold italic text-brand">Reply</span>
+      </span>
     </span>
   );
 }
@@ -16,7 +19,7 @@ export function Logo({ className = '' }: { className?: string }) {
 function LangToggle() {
   const { lang, setLang, t } = usePrefs();
   return (
-    <div role="group" aria-label={t('app.language')} className="flex rounded-full border border-line bg-surface p-0.5 text-xs font-semibold">
+    <div role="group" aria-label={t('app.language')} className="flex rounded-full border border-line bg-surface/80 p-0.5 text-xs font-semibold">
       {(['en', 'es'] as Lang[]).map((code) => (
         <button
           key={code}
@@ -52,7 +55,7 @@ export function Layout() {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2">
         {t('app.skip')}
       </a>
-      <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-line/60 bg-bg/75 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:px-5">
           <Link to="/" className="mr-1 rounded-lg text-lg" aria-label="FirstReply home">
             <Logo />
@@ -93,12 +96,12 @@ export function Layout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-line bg-sunken/60">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p className="max-w-2xl">
-            <Icon name="shield" className="mr-1.5 inline h-4 w-4 align-[-3px] text-brand" />
-            {t('app.footer')}
-          </p>
+      <footer className="mt-10 border-t border-line/70 bg-surface/60 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex max-w-2xl items-start gap-3">
+            <Logo className="shrink-0 scale-90" />
+            <p className="border-l border-line pl-3">{t('app.footer')}</p>
+          </div>
           <nav className="flex gap-4" aria-label="Footer">
             <Link className="hover:text-ink underline-offset-4 hover:underline" to="/real">{t('app.footer_links.real')}</Link>
             <Link className="hover:text-ink underline-offset-4 hover:underline" to="/how">{t('app.footer_links.how')}</Link>
