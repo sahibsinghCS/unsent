@@ -10,7 +10,7 @@ export function Privacy() {
       <ul className="mt-8 space-y-3">
         {tl('privacy.points').map((point, i) => (
           <li key={i} className="card flex gap-3 p-4 leading-relaxed">
-            <Icon name="lock" className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+            <Icon name="lock" className="mt-0.5 h-5 w-5 shrink-0 text-brand-deep" />
             {point}
           </li>
         ))}

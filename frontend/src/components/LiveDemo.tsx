@@ -1,15 +1,13 @@
 /**
  * The landing page's live demo: a scripted, looping mini-conversation in a phone. A friend's text
- * arrives, "you" type a reply, it sends, the skill detector's chip pops up and the trust meter ticks
- * up, then the friend opens up. Pure React state + CSS; reduced motion shows the final frame.
+ * arrives, "you" type a reply, it sends, a small note says what the skill detector heard and how trust
+ * moved, then the friend opens up. Pure React state + CSS; reduced motion shows the final frame.
  */
 import { useEffect, useState } from 'react';
 import { usePrefs } from '../i18n';
-import { LABEL_COLOR } from '../lib/labels';
 import { prefersReducedMotion } from '../lib/typingDelay';
 import { Icon } from './Icon';
 import { Bubble, MessagesHeader, PhoneFrame, TypingDots } from './Phone';
-import { TrustMeter } from './TrustMeter';
 
 // Timeline in ms. Phase n is active from STEPS[n] until STEPS[n+1].
 const STEPS = [0, 1300, 2300, 4900, 5600, 7200, 11500];
@@ -42,10 +40,8 @@ export function LiveDemo() {
   }, [reply]);
 
   const sent = phase >= 3;
-  const trust = sent ? 54 : 30;
   return (
     <div className="relative mx-auto w-full max-w-[20rem]" aria-hidden="true">
-      <div className="absolute -inset-10 -z-10 rounded-full bg-gradient-to-tr from-brand/30 via-glow/25 to-transparent blur-3xl" />
       <PhoneFrame
         header={<MessagesHeader name="Maya" sub={phase === 0 || phase === 4 ? t('chat.typing', { name: 'Maya' }) : undefined} left={<Icon name="chevron" className="h-6 w-6 text-[rgb(var(--im-sent))]" />} />}
         className="h-[31rem]"
@@ -56,9 +52,8 @@ export function LiveDemo() {
           {sent && <Bubble me>{reply}</Bubble>}
           {sent && (
             <div className="flex justify-end animate-pop-in">
-              <span className="chip border-transparent bg-good-soft text-good">
-                <span className="h-1.5 w-1.5 rounded-full" style={{ background: LABEL_COLOR.asked_directly }} />
-                {t('labels.asked_directly')} +15
+              <span className="text-xs font-medium text-good">
+                {t('landing.demo_note')}
               </span>
             </div>
           )}
@@ -80,10 +75,6 @@ export function LiveDemo() {
             <Icon name="up" className="h-3.5 w-3.5" />
           </span>
         </span>
-      </div>
-      <div className="card absolute -left-4 top-24 hidden p-3 pb-2 sm:-left-20 sm:block">
-        <p className="eyebrow text-center">{t('landing.demo.trust')}</p>
-        <TrustMeter value={trust} delta={sent ? 24 : undefined} label={t('landing.demo.trust')} size="sm" />
       </div>
     </div>
   );

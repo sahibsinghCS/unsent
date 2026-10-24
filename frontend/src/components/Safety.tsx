@@ -39,7 +39,7 @@ export function CrisisModal({ open, message, onAcknowledge }: { open: boolean; m
         <Call988 />
         <ul className="space-y-2 text-sm">
           <li className="flex gap-2">
-            <Icon name="heart" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+            <Icon name="heart" className="mt-0.5 h-4 w-4 shrink-0 text-brand-deep" />
             {t('chat.crisis.adult')}
           </li>
           <li className="flex gap-2">
@@ -93,7 +93,7 @@ export function ContentWarningModal({
 }) {
   const { t, tl } = usePrefs();
   return (
-    <Modal open={!!scenario} title={t('cw.title')} onClose={onCancel} icon={<Icon name="shield" className="mt-1 h-6 w-6 shrink-0 text-brand" />}>
+    <Modal open={!!scenario} title={t('cw.title')} onClose={onCancel} icon={<Icon name="shield" className="mt-1 h-6 w-6 shrink-0 text-brand-deep" />}>
       {scenario && (
         <div className="space-y-4" data-testid="content-warning">
           <div className="rounded-xl bg-sunken p-3.5">
@@ -103,7 +103,7 @@ export function ContentWarningModal({
           <ul className="space-y-2.5 text-sm leading-relaxed">
             {tl('cw.points').map((point, i) => (
               <li key={i} className="flex gap-2.5">
-                <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-brand-deep" />
                 {point}
               </li>
             ))}
@@ -159,7 +159,7 @@ export function CheckInModal({ open, onClose }: { open: boolean; onClose: () => 
           <div className="space-y-3 rounded-2xl border border-warm/40 bg-warm-soft/50 p-4 animate-pop-in" data-testid="checkin-resources">
             <p className="text-sm leading-relaxed">{t('checkin.low_body')}</p>
             <Call988 compact />
-            <Link to="/real" className="block text-center text-sm font-semibold text-brand underline underline-offset-4">
+            <Link to="/real" className="block text-center text-sm font-semibold text-brand-deep underline underline-offset-4">
               {t('chat.crisis.real')}
             </Link>
           </div>

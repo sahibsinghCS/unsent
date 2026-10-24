@@ -79,7 +79,7 @@ export function Practice() {
                 <div className="flex items-center gap-4">
                   <Avatar name={s.persona_name} size="lg" ring />
                   <div className="min-w-0 flex-1">
-                    {isCustomId(s.id) && <p className="eyebrow text-brand">{t('friends.yours')}</p>}
+                    {isCustomId(s.id) && <p className="eyebrow text-brand-deep">{t('friends.yours')}</p>}
                     <p className="font-display text-2xl font-semibold italic leading-tight">{s.persona_name}</p>
                     <p className="truncate text-sm text-muted">
                       {t('practice.age', { age: s.persona_age })} · {s.title}

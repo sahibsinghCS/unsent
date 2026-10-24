@@ -115,7 +115,7 @@ export function WhatIf() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <Link to={`/feedback/${sessionId}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand">
+      <Link to={`/feedback/${sessionId}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep">
         <Icon name="back" className="h-4 w-4" />
         {t('whatif.back')}
       </Link>

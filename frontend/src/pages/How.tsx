@@ -24,7 +24,7 @@ function HeadlineCard({ item }: { item: HeadlineMetric }) {
   const base = item.baseline && item.baseline.value !== null ? item.baseline : null;
   return (
     <li className="card flex flex-col p-5" data-testid="headline-card">
-      <p className="numeral text-5xl text-brand">
+      <p className="numeral text-5xl text-brand-deep">
         {formatMetric(item.value, item.format)}
         {item.format === 'messages' && <span className="ml-1.5 text-base font-semibold text-muted">{t('how.unit_messages')}</span>}
       </p>
@@ -120,7 +120,7 @@ function MetricsSection({ metrics, failed }: { metrics: Metrics | null; failed: 
                     {rows.map((r, i) => (
                       <tr key={i} className="border-t border-line/50" title={r.notes ?? undefined}>
                         <td className="break-all px-3 py-1.5 font-mono text-xs">{r.metric}</td>
-                        <td className="mono-num px-3 py-1.5 font-bold text-brand">{formatValue(r.value)}</td>
+                        <td className="mono-num px-3 py-1.5 font-bold text-brand-deep">{formatValue(r.value)}</td>
                         <td className="mono-num px-3 py-1.5 text-muted">{r.n ?? '—'}</td>
                         <td className="px-3 py-1.5 text-xs text-muted">{r.split ?? '—'}</td>
                       </tr>
@@ -273,7 +273,7 @@ function VoiceSection({ health, failed }: { health: Health | null; failed: boole
           <ul className="mt-2 space-y-2 text-sm leading-relaxed">
             {tl('how.voice_code').map((item, i) => (
               <li key={i} className="flex gap-2">
-                <Icon name="shield" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                <Icon name="shield" className="mt-0.5 h-4 w-4 shrink-0 text-brand-deep" />
                 {item}
               </li>
             ))}
@@ -360,7 +360,7 @@ export function How() {
 
       <section className="card mt-5 p-5">
         <h2 className="flex items-center gap-2 text-lg font-bold">
-          <Icon name="lock" className="h-5 w-5 text-brand" />
+          <Icon name="lock" className="h-5 w-5 text-brand-deep" />
           {t('how.privacy_title')}
         </h2>
         <ul className="mt-3 grid gap-3 md:grid-cols-3">

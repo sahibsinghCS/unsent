@@ -4,7 +4,7 @@
  * the change. Also used (with several series) for the What-if overlay.
  */
 import { Line } from 'react-chartjs-2';
-import type { ChartOptions, ScriptableContext } from 'chart.js';
+import type { ChartOptions } from 'chart.js';
 import '../lib/chart';
 import { tokenColor } from '../lib/chart';
 import { usePrefs } from '../i18n';
@@ -30,16 +30,8 @@ export function TrustChart({ points, height = 170 }: { points: TrustPoint[]; hei
         data: points.map((p) => p.trust),
         borderColor: brand,
         borderWidth: 2.5,
-        tension: 0.35,
-        fill: true,
-        backgroundColor: (ctx: ScriptableContext<'line'>) => {
-          const { chartArea, ctx: c } = ctx.chart;
-          if (!chartArea) return tokenColor('brand', 0.12);
-          const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          gradient.addColorStop(0, tokenColor('brand', 0.28));
-          gradient.addColorStop(1, tokenColor('brand', 0));
-          return gradient;
-        },
+        tension: 0.25,
+        fill: false,
         pointBackgroundColor: points.map((_, i) => color(i)),
         pointBorderColor: tokenColor('surface'),
         pointBorderWidth: 2,

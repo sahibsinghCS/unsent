@@ -20,7 +20,7 @@ export function ProbBars({ probs, compact = false }: { probs: SkillProbs; compac
             <span className="relative h-1.5 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
               <span
                 className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-700"
-                style={{ width: `${Math.round(p * 100)}%`, background: on ? LABEL_COLOR[label] : 'rgb(var(--night-muted) / 0.45)', boxShadow: on ? `0 0 10px ${LABEL_COLOR[label]}` : undefined }}
+                style={{ width: `${Math.round(p * 100)}%`, background: on ? LABEL_COLOR[label] : 'rgb(var(--night-muted) / 0.45)' }}
               />
               <span className="absolute inset-y-0 w-px bg-white/40" style={{ left: `${EVENT_THRESHOLD * 100}%` }} />
             </span>

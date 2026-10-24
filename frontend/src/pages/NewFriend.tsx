@@ -104,7 +104,7 @@ export function NewFriend() {
   return (
     <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
       <div>
-        <Link to="/practice" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand">
+        <Link to="/practice" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep">
           <Icon name="back" className="h-4 w-4" />
           {t('friends.back')}
         </Link>
@@ -114,7 +114,7 @@ export function NewFriend() {
 
         <div className="mt-6 space-y-3">
           <p className="flex gap-3 rounded-2xl border border-brand/20 bg-brand-soft/60 p-4 text-sm leading-relaxed" data-testid="friend-privacy">
-            <Icon name="lock" className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+            <Icon name="lock" className="mt-0.5 h-5 w-5 shrink-0 text-brand-deep" />
             {t('friends.privacy')}
           </p>
           <p className="flex flex-wrap items-start gap-3 rounded-2xl border border-warm/30 bg-warm-soft/60 p-4 text-sm leading-relaxed" data-testid="friend-safety">

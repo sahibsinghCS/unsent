@@ -1,49 +1,41 @@
-/* Self-hosted variable fonts (no Google Fonts: the production CSP only allows our own origin). */
-@import '@fontsource-variable/fraunces/wght.css';
-@import '@fontsource-variable/fraunces/wght-italic.css';
-@import '@fontsource-variable/plus-jakarta-sans/wght.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /*
- * FirstReply design tokens: "dusk".
- * The moment this app is about usually happens late at night, on a phone. So:
- *   - signature color: an electric dusk violet (our "sent bubble"), not a clinical teal;
- *   - a warm ember for care and for the "I need help now" button;
- *   - warm paper in light mode, deep night in dark mode, with a faint film grain.
- * Every text/background pair used meets WCAG AA. Values are "R G B" so Tailwind can add opacity.
- * Change the whole look here.
+ * FirstReply design tokens: "it looks like your phone".
+ * The moment this app is about happens in a text thread, so the design language is a messaging
+ * app's: system neutrals, ONE action color (the blue of a sent bubble), green/red only for
+ * helped/hurt annotations, and a separate red only for "I need help now", 988 and the crisis card.
+ * No gradients, glows, grain or decorative colors. Every text pair meets WCAG AA (see DESIGN.md).
+ * Values are "R G B" so Tailwind can add opacity.
  */
 @layer base {
   :root {
-    --bg: 247 243 237;
-    --surface: 255 253 249;
-    --sunken: 240 234 226;
-    --ink: 26 19 38;
-    --muted: 88 79 101;
-    --line: 226 218 208;
-    --brand: 88 56 238;
-    --brand-deep: 58 31 176;
-    --brand-soft: 235 230 255;
+    --bg: 242 242 247;          /* grouped background #F2F2F7 */
+    --surface: 255 255 255;     /* cells, cards */
+    --sunken: 229 229 234;      /* #E5E5EA fills, separators-as-fill */
+    --ink: 0 0 0;
+    --muted: 99 99 104;         /* secondary label (#3C3C43 at ~60%, darkened to pass AA) */
+    --line: 198 198 200;        /* hairline separator */
+    --brand: 0 113 235;         /* the action color = sent-bubble blue, used as a fill */
+    --brand-deep: 0 98 204;     /* the action color as text/links (AA on #F2F2F7 too) */
+    --brand-soft: 230 240 255;
     --brand-ink: 255 255 255;
-    --warm: 190 54 32;
-    --warm-soft: 255 229 218;
-    --glow: 255 158 120;
-    --good: 20 112 54;
-    --good-soft: 220 245 228;
-    --bad: 186 36 36;
-    --bad-soft: 253 226 226;
-    --bubble-me: 88 56 238;
-    --bubble-them: 236 230 222;
-    /* "Inside the machine" surfaces (X-ray) stay night-dark in both themes. */
-    --night: 22 16 38;
-    --night-ink: 238 234 250;
-    --night-muted: 178 170 204;
-    --night-line: 66 56 100;
-    /* Messages-style chat (light): iOS-like colors, nudged just enough to pass WCAG AA.
-       Exact iOS blue #007AFF is 4.0:1 with white text; #0071EB is 4.6:1 and looks the same. */
+    --warm: 196 18 48;          /* help red: only "I need help now", 988, crisis */
+    --warm-soft: 255 233 236;
+    --glow: 0 113 235;
+    --good: 27 117 50;          /* iOS green #248A3D darkened to #1B7532 for AA, helped */
+    --good-soft: 230 245 234;
+    --bad: 215 0 21;            /* #D70015, hurt */
+    --bad-soft: 255 233 235;
+    --bubble-me: 0 113 235;
+    --bubble-them: 233 233 235;
+    /* X-ray inset: plain dark gray in both themes (it's a debug view). */
+    --night: 28 28 30;
+    --night-ink: 255 255 255;
+    --night-muted: 174 174 178;
+    --night-line: 58 58 60;
     --im-bg: 255 255 255;
     --im-bar: 247 247 248;
     --im-sent: 0 113 235;
@@ -53,30 +45,29 @@
     color-scheme: light;
   }
   .dark {
-    --bg: 14 11 24;
-    --surface: 24 19 38;
-    --sunken: 19 15 31;
-    --ink: 241 237 248;
-    --muted: 172 164 192;
-    --line: 52 44 74;
-    --brand: 160 140 255;
-    --brand-deep: 126 102 255;
-    --brand-soft: 44 36 84;
-    --brand-ink: 18 10 44;
-    --warm: 255 142 114;
-    --warm-soft: 74 35 30;
-    --glow: 255 150 110;
-    --good: 74 222 128;
-    --good-soft: 20 60 38;
-    --bad: 248 113 113;
-    --bad-soft: 74 26 28;
-    --bubble-me: 96 66 246;
-    --bubble-them: 40 33 61;
-    --night: 9 7 18;
-    --night-ink: 238 234 250;
-    --night-muted: 178 170 204;
-    --night-line: 62 52 96;
-    /* Messages-style chat (dark): pure black, #262629 received, blue sent (#0A84FF → #0A6EF0 for AA). */
+    --bg: 0 0 0;
+    --surface: 28 28 30;        /* #1C1C1E */
+    --sunken: 44 44 46;         /* #2C2C2E */
+    --ink: 255 255 255;
+    --muted: 160 160 167;       /* #EBEBF5 at ~60% on black, solid for AA */
+    --line: 56 56 58;
+    --brand: 10 110 240;        /* fills (white text on it passes AA) */
+    --brand-deep: 77 163 255;   /* links/text on black */
+    --brand-soft: 16 38 66;
+    --brand-ink: 255 255 255;
+    --warm: 255 105 97;         /* help red on black (dark text on it) */
+    --warm-soft: 64 20 22;
+    --glow: 10 110 240;
+    --good: 48 209 88;
+    --good-soft: 14 48 24;
+    --bad: 255 105 97;
+    --bad-soft: 64 20 22;
+    --bubble-me: 10 110 240;
+    --bubble-them: 38 38 41;
+    --night: 28 28 30;
+    --night-ink: 255 255 255;
+    --night-muted: 174 174 178;
+    --night-line: 58 58 60;
     --im-bg: 0 0 0;
     --im-bar: 18 18 20;
     --im-sent: 10 110 240;
@@ -87,56 +78,32 @@
   }
 
   html { -webkit-text-size-adjust: 100%; }
-  body {
-    @apply bg-bg font-sans text-ink antialiased;
-    /* Dusk glow behind everything: a violet and an ember light source. */
-    background-image:
-      radial-gradient(60rem 40rem at 110% -10%, rgb(var(--brand) / 0.10), transparent 60%),
-      radial-gradient(50rem 30rem at -20% 10%, rgb(var(--glow) / 0.14), transparent 60%);
-  }
-  /* Film grain: a tiny SVG noise tile (data: URI, allowed by the CSP's img-src). Decorative only. */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  .dark body::before { opacity: 0.09; }
-  #root { position: relative; z-index: 1; }
-
-  /* One visible, consistent focus ring for keyboard users everywhere. */
+  body { @apply bg-bg font-sans text-ink antialiased; }
+  /* One visible, consistent focus ring for keyboard users everywhere (the action blue). */
   :focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-bg; }
-  h1, h2 { @apply font-display tracking-tight; font-optical-sizing: auto; }
-  h3 { @apply tracking-tight; }
+  /* iOS "large title" style hierarchy: size and weight only. */
+  h1, h2, h3 { @apply font-bold tracking-tight; }
+  a { color: inherit; }
   ::selection { background: rgb(var(--brand) / 0.25); }
 }
 
 @layer components {
-  .card { @apply rounded-[1.5rem] border border-line/80 bg-surface shadow-card; }
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-50; }
-  .btn-primary { @apply btn bg-brand text-brand-ink shadow-[0_8px_24px_-10px_rgb(var(--brand)/0.8)] hover:-translate-y-px hover:brightness-110 active:translate-y-0; }
-  .btn-ghost { @apply btn border border-line bg-surface text-ink hover:-translate-y-px hover:border-ink/25; }
-  .btn-warm { @apply btn bg-warm text-white shadow-[0_8px_22px_-12px_rgb(var(--warm)/0.9)] hover:brightness-110 dark:text-[rgb(40_10_6)]; }
-  .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium; }
-  .eyebrow { @apply font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-muted; }
+  /* Inset grouped section, like a settings list: modest radius, hairline, no shadow. */
+  .card { @apply rounded-xl border border-line/70 bg-surface; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-[15px] font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-brand text-brand-ink hover:bg-brand/90; }
+  .btn-ghost { @apply btn border border-line bg-surface text-ink hover:bg-sunken; }
+  .btn-warm { @apply btn bg-warm text-white hover:bg-warm/90 dark:text-black; }
+  .link { @apply font-semibold text-brand-deep underline-offset-4 hover:underline; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium; }
+  /* A small plain label (sentence case; no uppercase tracking). */
+  .eyebrow { @apply text-[13px] font-semibold text-muted; }
   .mono-num { @apply font-mono tabular-nums; }
-  /* Big editorial numbers (stat band, headline cards, trust meter). */
-  .numeral { @apply font-display font-semibold tabular-nums tracking-tight; }
-  /* Signature gradient text: dusk violet → ember. Used sparingly for emphasis words. */
-  .ink-gradient { @apply bg-gradient-to-r from-brand via-brand-deep to-warm bg-clip-text text-transparent; }
-  /* Night glass panel for X-ray ("seeing inside the models"). */
-  .night-panel {
-    @apply rounded-2xl border border-night-line bg-night text-night-ink;
-    background-image:
-      linear-gradient(rgb(var(--night-line) / 0.35) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--night-line) / 0.35) 1px, transparent 1px);
-    background-size: 14px 14px;
-    box-shadow: 0 0 0 1px rgb(var(--brand) / 0.25), 0 12px 30px -16px rgb(var(--brand) / 0.7);
-  }
+  .numeral { @apply font-bold tabular-nums tracking-tight; }
+  /* X-ray inset: plain dark gray with hairlines (a debug view, no grid or glow). */
+  .night-panel { @apply rounded-xl border border-night-line bg-night text-night-ink; }
 }
+
 
 /* ---------------------------------------------------------------- Messages-style chat
  * Used by the chat, the landing demo and the What-if transcripts. The tail on the last bubble of a
