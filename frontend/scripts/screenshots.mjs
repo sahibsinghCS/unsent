@@ -247,6 +247,7 @@ async function run(device) {
   await page.goto(`${BASE}/`);
   await page.locator('button:visible:text-is("es")').first().click();
   await page.locator('button:visible[aria-label*="oscuro"]').first().click();
+  await page.waitForTimeout(19500); // same replay point as 01-landing
   await shot('22-landing-es-dark', { full: true });
 
   // Transparency in Spanish (headline labels and explanations come from the API in ES)

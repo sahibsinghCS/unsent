@@ -17,11 +17,11 @@ type Step = { kind: 'type' | 'sent' | 'typing' | 'read' | 'friend'; turn: number
 function timeline(turns: DemoTurn[]): Step[] {
   return turns.flatMap((t, i) => {
     const steps: Step[] = [
-      { kind: 'type', turn: i, ms: Math.min(2600, 38 * t.text.length) + 400 },
+      { kind: 'type', turn: i, ms: Math.min(2600, 38 * t.you.length) + 400 },
       { kind: 'sent', turn: i, ms: 1100 },
     ];
-    if (t.friend?.seen) steps.push({ kind: 'read', turn: i, ms: 2400 });
-    else if (t.friend) steps.push({ kind: 'typing', turn: i, ms: 1300 }, { kind: 'friend', turn: i, ms: 1500 + 450 * t.friend.bubbles.length });
+    if (t.seen) steps.push({ kind: 'read', turn: i, ms: 2400 });
+    else if (t.friend.length) steps.push({ kind: 'typing', turn: i, ms: 1300 }, { kind: 'friend', turn: i, ms: 1500 + 450 * t.friend.length });
     return steps;
   });
 }
@@ -47,7 +47,7 @@ export function LiveDemo() {
       steps.forEach((s, i) => {
         timers.push(setTimeout(() => setStep(i), at));
         if (s.kind === 'type') {
-          const text = run.turns[s.turn].text;
+          const text = run.turns[s.turn].you;
           const span = s.ms - 400;
           for (let c = 0; c <= text.length; c++) timers.push(setTimeout(() => setTyped(c), at + (span * c) / text.length));
         }
@@ -84,7 +84,7 @@ export function LiveDemo() {
               const sum = turnSummary(turn);
               return (
                 <div key={i} className="shrink-0 space-y-1">
-                  <Bubble me>{turn.text}</Bubble>
+                  <Bubble me>{turn.you}</Bubble>
                   <p className={`animate-pop-in pr-2 text-right text-xs font-medium ${sum.up ? 'text-good' : 'text-bad'}`}>
                     {sum.skill ? `${t(`labels.${sum.skill}`)} · ` : ''}
                     {t('landing.run.trust_short', { from: sum.from, to: sum.to })}
@@ -100,9 +100,9 @@ export function LiveDemo() {
               );
             }
             if (s.kind === 'typing') return i === step ? <TypingDots key={i} label="" /> : null;
-            if (s.kind === 'friend' && turn.friend) {
-              return turn.friend.bubbles.map((b, j) => (
-                <Bubble key={`${i}-${j}`} tail={j === turn.friend!.bubbles.length - 1}>
+            if (s.kind === 'friend') {
+              return turn.friend.map((b, j) => (
+                <Bubble key={`${i}-${j}`} tail={j === turn.friend.length - 1}>
                   {b}
                 </Bubble>
               ));
@@ -119,7 +119,7 @@ export function LiveDemo() {
         </span>
         <span className="im flex min-w-0 flex-1 items-center gap-2 rounded-full border border-[rgb(var(--im-meta)/0.4)] bg-[rgb(var(--im-bg))] py-1 pl-3 pr-1 !text-[14px]">
           <span className="min-w-0 flex-1 truncate text-ink">
-            {current?.kind === 'type' ? run.turns[current.turn].text.slice(0, typed) : <span className="text-[rgb(var(--im-meta))]">{t('chat.placeholder', { name: 'Maya' })}</span>}
+            {current?.kind === 'type' ? run.turns[current.turn].you.slice(0, typed) : <span className="text-[rgb(var(--im-meta))]">{t('chat.placeholder', { name: 'Maya' })}</span>}
             {current?.kind === 'type' && <span className="ml-px inline-block h-4 w-px translate-y-0.5 animate-caret bg-[rgb(var(--im-sent))]" />}
           </span>
           <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full ${current?.kind === 'type' ? 'bg-[rgb(var(--im-sent))] text-white' : 'bg-[rgb(var(--im-recv))] text-[rgb(var(--im-meta))]'}`}>

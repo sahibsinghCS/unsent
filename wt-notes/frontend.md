@@ -42,7 +42,7 @@
   - **Landing:** an annotated conversation, plus corrected sourced facts (CDC YRBS 2023 20.4% "in the past year"; Fox et al. 2021 friend disclosure).
   - **Pages:** Practice is a contact list; Feedback leads with your annotated transcript; What-if is a split thread with "Best".
   - **Proof:** before/after pairs in `screenshots/deslop/`.
-- **Landing from a real run** (integrator must-fix): `npm run demo:transcript` plays 9 fixed messages (EN + ES) through the real API (FR_EMBED=fastembed, FR_LLM=0) and writes `src/content/demo-transcript.json`. The hero phone replays it (starting with "Today 9:41 PM" and Maya's opening bubbles, no empty area) and the annotated conversation renders every turn from it, with notes built from the real labels, trust and Guardian ms. Story: check in, dismissive reply (34 → 12, left on Read), apology, validation, a direct question she deflects, reassurance, asking again (she opens up), counselor, 988 → success. Re-recording is identical except Guardian ms. A vitest checks every rendered row against the JSON.
+- **Landing from a real run** (integrator must-fix): the hero phone and the annotated conversation render only from the integrator's `content/demo_transcript.json` (`make demo-transcript`, FR_LLM=0), copied into `src/content/` by `sync-content.mjs`. The hero starts with "Today 9:41 PM" and Maya's opening bubbles (no empty area) and replays every turn. Notes are generated from the data (Guardian ms, skills, trust, Read, disclosure). Every turn is shown and no number is changed. A vitest checks every rendered row against the JSON. (My own recorder from 882e094 was removed in favor of the canonical file.)
 
 ## In progress
 - Nothing. Lane is feature-complete against the stubs.
