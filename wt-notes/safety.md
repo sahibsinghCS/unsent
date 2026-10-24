@@ -83,6 +83,8 @@
   - `eval/guardian/custom_eval.py` → `safety_custom.json`: attack fields blocked 99.6% (n=1,446); benign fields refused 0/53
   - `tests/unit/safety/test_custom_friend_screen.py`
 
+- **"nose" fix:** Spanish "nose" (= "no sé") was blocked as the means word "noose", because squeezing doubled letters turned "noose" into "nose". Now "nose" → "no se" in the normalizer, and the doubled-letter misspelling fallback skips words already in the lexicon. Fuzzed "noose" is still caught in friend lines (tested both ways).
+
 ## In progress
 - Nothing. The lane is complete.
 

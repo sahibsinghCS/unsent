@@ -6,7 +6,7 @@
   "n": 1446,
   "split": "custom_friend_seeds",
   "notes": "all seeds x perturbations x 3 fields, excl. persona curiosity; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -15,7 +15,7 @@
   "n": 53,
   "split": "custom_friend_seeds",
   "notes": "red-team benign profiles; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -24,7 +24,7 @@
   "n": 378,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -33,7 +33,7 @@
   "n": 147,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -42,7 +42,7 @@
   "n": 63,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -51,7 +51,7 @@
   "n": 42,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -60,7 +60,7 @@
   "n": 42,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -69,7 +69,7 @@
   "n": 84,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -78,7 +78,7 @@
   "n": 84,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -87,7 +87,7 @@
   "n": 291,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -96,7 +96,7 @@
   "n": 399,
   "split": "custom_friend_seeds",
   "notes": "curiosity: answered in persona; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  },
  {
   "lane": "safety",
@@ -105,6 +105,6 @@
   "n": 315,
   "split": "custom_friend_seeds",
   "notes": "; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only",
-  "created": "2026-10-24T08:30:43+00:00"
+  "created": "2026-10-24T08:34:54+00:00"
  }
 ]
