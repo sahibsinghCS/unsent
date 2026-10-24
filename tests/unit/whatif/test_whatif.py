@@ -243,3 +243,45 @@ def test_api_returns_real_paths():
     body = client.post(f"/api/sessions/{sid}/whatif", json={}).json()
     assert len(body["paths"]) == 3 and body["simulated"] is True
     assert {p["strategy"] for p in body["paths"]} <= set(cands.SKILL_STRATEGY.values())
+
+
+def test_custom_friend_gets_a_valid_result():
+    """'Add your own friend': what-if uses the shared custom bank (no exemplars yet means no cards)."""
+    client = TestClient(app)
+    friend = client.post(
+        "/api/friends",
+        json={"name": "Sam", "situation": "my friend has been really quiet since moving here"},
+    ).json()["friend"]
+    sid = client.post("/api/sessions", json={"scenario_id": friend["id"], "locale": "en"}).json()[
+        "session_id"
+    ]
+    for text in WEAK_CHAT:
+        client.post(f"/api/sessions/{sid}/messages", json={"text": text})
+    response = client.post(f"/api/sessions/{sid}/whatif", json={})
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body["paths"]) <= 3 and body["simulated"] is True
+    guardian = services.guardian()
+    for p in body["paths"]:
+        for node in p["nodes"]:
+            if node["role"] == "friend":
+                assert all(guardian.check_friend(b).level == "none" for b in node["bubbles"])
+
+
+def test_custom_friend_rollout_with_exemplars():
+    """With exemplars in the shared custom bank, a custom friend gets real simulated paths."""
+    from backend.app.content import custom_template, load_exemplars, register_custom
+
+    scenario = custom_template().model_copy(update={"id": "custom-test-whatif"})
+    register_custom(scenario)
+    session = new_session(scenario.id)
+    path = play(session, WEAK_CHAT)
+    stand_in = lambda _sid, loc: load_exemplars("new-school", loc)  # noqa: E731
+    node_id = services.engine().turning_point(path).node_id
+    result = WhatIf(exemplars=stand_in).simulate(session, path, node_id)
+    assert result.paths
+    guardian = services.guardian()
+    for p in result.paths:
+        for node in p.nodes:
+            if node.role == "friend":
+                assert all(guardian.check_friend(b).level == "none" for b in node.bubbles)
