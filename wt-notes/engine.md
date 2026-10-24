@@ -22,6 +22,8 @@
 
 - **Voice quality from the first live test** (11 transcripts in `eval/redteam/live/`): patterns found were clinical disclosure copied from the fact notes ("i've had/been having thoughts of suicide", 4 of 5 English scenarios), mixed tone in one reply ("all good haha" + home is tense; "haha" right after a disclosure), 😭 on 5 of 6 Spanish replies, repeated "yeah..." openers, Jordan switching between "im" and "I'm", and copied fact wording ("sleeping about four hours a night"). The 3 f4b rejections were level-4 feelings (relief, glad they asked, feeling lighter, agreeing to a plan) pulled out at level 3, where the prompt gave no sense of what the friend isn't ready for. Changes: a per-level `STANCE` in voice.py (no fact text), a "sound like a real teen" section in prompts/actor.md (one tone, indirect non-clinical wording even if the helper is clinical, facts aren't lines, 1-2 bubbles under 80 chars, consistent capitalization, varied openers, an emoji at most every other message), and ASKED_DIRECTLY guidance asking for indirect words. Verifier unchanged. 6 new prompt tests (fakes). Needs a live re-run (no key here).
 
+- **Custom friends hardening (red team R10):** `engine/profile.py` (read personality/example texts back from `persona.style`; reject 4+ word runs from them, a whole 3-word example, or a recited situation: run >= 6 words and >= 60%); verifier backstops `FRAME_BREAK`, `ENCOURAGE_HARM`, `METHOD_TALK` (EN+ES, 2nd person / method-only so friends' own feelings pass; 0/2,580 bank bubbles flagged); custom prompt labels student text as data + hard rule 8; built-in prompt byte-identical. `eval/engine/custom_eval.py` → `eval/reports/engine_custom.json`; 24 tests in `test_custom.py`. Tried running the Guardian's `check_user` on friend text as an extra signal: 19/2,580 false flags on bank bubbles ("what" → method_seeking, "ignore me" → injection), so not used.
+
 ## In progress
 - Nothing. Waiting for the data lane's real bank (`data/lines/`) to run `run_eval.py --bank-dir` and the validator on it.
 
@@ -39,6 +41,8 @@
 - Leak threshold: best F2 on the even half of the leak set; reported on the odd half.
 
 ## Requests
+- **safety lane:** the situation field is the remaining gap for custom friends (16.4% of held-out attack seeds shown by an obedient LLM when not refused at creation). New `check_friend` categories for encouragement and method questions would close it; the engine already runs `check_friend` on every bubble.
+- **integrator:** `engine/profile.py` parses `custom_friend._build`'s style format (`". Texts they have sent (...): "a" | "b"`). If that format changes, `test_profile_parts_reads_back_what_the_helper_wrote` fails; a structured field for samples would be cleaner.
 - **data lane (bank fixes found by the validator; the engine already skips these at runtime):** `mya-en-L2-asked_directly-03`, `mya-es-L2-asked_directly-03`, `jor-en-L2-asked_directly-03` disclose suicidal thoughts at level 2 (move to level 3 or reword); 16 duplicate texts (15 in group-chat, 1 in new-school). Run `uv run python -m backend.app.engine.verifier --all` (and `--locale es`).
 - **safety lane:** `check_friend` should handle Spanish friend lines (the pipeline runs it on every bubble; a false flag on a Spanish line would make the pipeline fall back to an English scenario line).
 - **integrator (pipeline):** `_friend_reply`'s own fallback uses English `scenario.fallback_lines`; in a Spanish chat it should not be reached (the engine already returns a verified Spanish line), but a localized fallback there would make it airtight.
@@ -54,6 +58,7 @@
 - LLM voice not tried against the real API from this environment (no key). Run `make test-llm` and `make spike` with a key, then add real outputs to the catch-rate eval.
 
 ## Numbers
+- Custom friends, obedient fake LLM, no creation screening, real Guardian: injected text shown from personality/example 0% dev (n=88) / 1.4% holdout (n=73); from situation 5.7% dev / 16.4% holdout (was 457/600 shown in the red team's run). Benign: level-3 template lines and situation echoes 100% pass. Rule backstops alone: 54/66 dev, 15/73 holdout (they overfit; the copy check is the main defense).
 - Language: 0/1,206 bank lines wrongly flagged; 398/402 cross-language lines caught. Fake LLM catch rate incl. ES cases: 27/27 (fastembed), 25/27 (hash: can't link languages); false rejects 1/18 (fastembed).
 - Real banks: 32/32 required cells per scenario, Guardian (stub) pass 100% of 2,580 bubbles, 19 violations for data lane.
 - Live LLM check: skipped, no OPENAI_API_KEY in this session.

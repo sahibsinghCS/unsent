@@ -6,7 +6,7 @@
     "n": 201,
     "split": "bank",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup"
   },
   {
@@ -16,7 +16,7 @@
     "n": 32,
     "split": "bank",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
     "missing": []
   },
@@ -27,21 +27,19 @@
     "n": 460,
     "split": "bank",
     "notes": "after-the-breakup (data/lines); Guardian check_friend on every bubble",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup"
   },
   {
     "lane": "engine",
     "metric": "bank_violations",
-    "value": 1,
+    "value": 0,
     "n": 201,
     "split": "bank",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
-    "details": [
-      "mya-en-L2-asked_directly-03: discloses suicidal thoughts below level 3"
-    ]
+    "details": []
   },
   {
     "lane": "engine",
@@ -50,7 +48,7 @@
     "n": 201,
     "split": "bank",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
     "coverage": {
       "0": {
@@ -147,7 +145,7 @@
     "n": 201,
     "split": "bank",
     "notes": "failing-chem (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "failing-chem"
   },
   {
@@ -157,7 +155,7 @@
     "n": 32,
     "split": "bank",
     "notes": "failing-chem (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "failing-chem",
     "missing": []
   },
@@ -168,21 +166,19 @@
     "n": 351,
     "split": "bank",
     "notes": "failing-chem (data/lines); Guardian check_friend on every bubble",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "failing-chem"
   },
   {
     "lane": "engine",
     "metric": "bank_violations",
-    "value": 1,
+    "value": 0,
     "n": 201,
     "split": "bank",
     "notes": "failing-chem (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "failing-chem",
-    "details": [
-      "jor-en-L2-asked_directly-03: discloses suicidal thoughts below level 3"
-    ]
+    "details": []
   },
   {
     "lane": "engine",
@@ -191,7 +187,7 @@
     "n": 201,
     "split": "bank",
     "notes": "failing-chem (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "failing-chem",
     "coverage": {
       "0": {
@@ -288,7 +284,7 @@
     "n": 201,
     "split": "bank",
     "notes": "giving-stuff-away (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "giving-stuff-away"
   },
   {
@@ -298,7 +294,7 @@
     "n": 32,
     "split": "bank",
     "notes": "giving-stuff-away (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "giving-stuff-away",
     "missing": []
   },
@@ -309,7 +305,7 @@
     "n": 423,
     "split": "bank",
     "notes": "giving-stuff-away (data/lines); Guardian check_friend on every bubble",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "giving-stuff-away"
   },
   {
@@ -319,7 +315,7 @@
     "n": 201,
     "split": "bank",
     "notes": "giving-stuff-away (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "giving-stuff-away",
     "details": []
   },
@@ -330,7 +326,7 @@
     "n": 201,
     "split": "bank",
     "notes": "giving-stuff-away (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "giving-stuff-away",
     "coverage": {
       "0": {
@@ -427,7 +423,7 @@
     "n": 201,
     "split": "bank",
     "notes": "group-chat (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "group-chat"
   },
   {
@@ -437,7 +433,7 @@
     "n": 32,
     "split": "bank",
     "notes": "group-chat (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "group-chat",
     "missing": []
   },
@@ -445,38 +441,22 @@
     "lane": "engine",
     "metric": "bank_guardian_pass_rate",
     "value": 1.0,
-    "n": 447,
+    "n": 450,
     "split": "bank",
     "notes": "group-chat (data/lines); Guardian check_friend on every bubble",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "group-chat"
   },
   {
     "lane": "engine",
     "metric": "bank_violations",
-    "value": 15,
+    "value": 0,
     "n": 201,
     "split": "bank",
     "notes": "group-chat (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "group-chat",
-    "details": [
-      "eli-en-L1-encouraged_help-03: same text as eli-en-L0-follow_up-01",
-      "eli-en-L1-follow_up-02: same text as eli-en-L0-follow_up-01",
-      "eli-en-L1-dismissed-02: same text as eli-en-L0-follow_up-02",
-      "eli-en-L1-advice_dump-01: same text as eli-en-L0-advice_dump-02",
-      "eli-en-L1-promised_secrecy-03: same text as eli-en-L0-follow_up-01",
-      "eli-en-L1-fail-01: same text as eli-en-L0-fail-01",
-      "eli-en-L1-fail-03: same text as eli-en-L0-fail-03",
-      "eli-en-L2-follow_up-02: same text as eli-en-L1-follow_up-03",
-      "eli-en-L2-dismissed-01: same text as eli-en-L1-fail-02",
-      "eli-en-L2-dismissed-02: same text as eli-en-L0-follow_up-02",
-      "eli-en-L2-advice_dump-03: same text as eli-en-L1-advice_dump-03",
-      "eli-en-L2-promised_secrecy-02: same text as eli-en-L0-follow_up-01",
-      "eli-en-L2-fail-01: same text as eli-en-L1-fail-02",
-      "eli-en-L2-fail-02: same text as eli-en-L0-fail-01",
-      "eli-en-L4-follow_up-02: same text as eli-en-L3-follow_up-02"
-    ]
+    "details": []
   },
   {
     "lane": "engine",
@@ -485,7 +465,7 @@
     "n": 201,
     "split": "bank",
     "notes": "group-chat (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "group-chat",
     "coverage": {
       "0": {
@@ -582,7 +562,7 @@
     "n": 201,
     "split": "bank",
     "notes": "new-school (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "new-school"
   },
   {
@@ -592,7 +572,7 @@
     "n": 32,
     "split": "bank",
     "notes": "new-school (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "new-school",
     "missing": []
   },
@@ -603,21 +583,19 @@
     "n": 440,
     "split": "bank",
     "notes": "new-school (data/lines); Guardian check_friend on every bubble",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "new-school"
   },
   {
     "lane": "engine",
     "metric": "bank_violations",
-    "value": 1,
+    "value": 0,
     "n": 201,
     "split": "bank",
     "notes": "new-school (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "new-school",
-    "details": [
-      "pri-en-L2-fail-03: same text as pri-en-L1-fail-03"
-    ]
+    "details": []
   },
   {
     "lane": "engine",
@@ -626,7 +604,7 @@
     "n": 201,
     "split": "bank",
     "notes": "new-school (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "new-school",
     "coverage": {
       "0": {
@@ -723,7 +701,7 @@
     "n": 201,
     "split": "bank_es",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup"
   },
   {
@@ -733,7 +711,7 @@
     "n": 32,
     "split": "bank_es",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
     "missing": []
   },
@@ -744,21 +722,19 @@
     "n": 459,
     "split": "bank_es",
     "notes": "after-the-breakup (data/lines); Guardian check_friend on every bubble",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup"
   },
   {
     "lane": "engine",
     "metric": "bank_violations",
-    "value": 1,
+    "value": 0,
     "n": 201,
     "split": "bank_es",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
-    "details": [
-      "mya-es-L2-asked_directly-03: discloses suicidal thoughts below level 3"
-    ]
+    "details": []
   },
   {
     "lane": "engine",
@@ -767,7 +743,7 @@
     "n": 201,
     "split": "bank_es",
     "notes": "after-the-breakup (data/lines)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
     "coverage": {
       "0": {
@@ -864,7 +840,7 @@
     "n": 68,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup"
   },
   {
@@ -874,7 +850,7 @@
     "n": 32,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
     "missing": []
   },
@@ -885,7 +861,7 @@
     "n": 134,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures); Guardian check_friend on every bubble",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup"
   },
   {
@@ -895,7 +871,7 @@
     "n": 68,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
     "details": []
   },
@@ -906,7 +882,7 @@
     "n": 68,
     "split": "engine_fixture",
     "notes": "after-the-breakup (tests/unit/engine/fixtures)",
-    "created": "2026-10-23T00:30:01+00:00",
+    "created": "2026-10-24T08:30:26+00:00",
     "scenario": "after-the-breakup",
     "coverage": {
       "0": {
