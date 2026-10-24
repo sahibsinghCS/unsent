@@ -107,8 +107,8 @@ export function Feedback() {
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="eyebrow">{name}</p>
-          <h1 className="text-3xl font-bold sm:text-4xl">{t('feedback.title')}</h1>
+          <p className="eyebrow">{t('feedback.story_with', { name })}</p>
+          <h1 className="mt-1 text-4xl font-semibold sm:text-5xl">{t('feedback.title')}</h1>
         </div>
         <div className="flex gap-2">
           <Link to={`/chat/${sessionId}`} className="btn-ghost">
@@ -121,50 +121,107 @@ export function Feedback() {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-2">
-        <section className="card p-5">
-          <h2 className="eyebrow">{t('feedback.skills_title')}</h2>
-          <SkillRadar summary={report.skill_summary} />
+      {/* The critic's summary as an editorial pull quote */}
+      <figure className="relative mt-8 overflow-hidden rounded-[1.75rem] bg-night p-6 text-night-ink sm:p-8">
+        <span className="absolute -right-10 -top-16 h-56 w-56 rounded-full bg-[rgb(var(--brand)/0.35)] blur-3xl" aria-hidden="true" />
+        <span className="absolute -bottom-20 left-10 h-48 w-48 rounded-full bg-[rgb(var(--glow)/0.25)] blur-3xl" aria-hidden="true" />
+        <p className="relative font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-night-muted">{t('feedback.summary_title')}</p>
+        <blockquote className="relative mt-3 font-display text-2xl leading-snug sm:text-[1.9rem]" data-testid="summary">
+          “{report.summary_text}”
+        </blockquote>
+      </figure>
+
+      <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_1.15fr]">
+        {/* The story: every helper message on a timeline, with trust after it */}
+        <section className="card p-5 sm:p-6" aria-labelledby="story-title">
+          <h2 id="story-title" className="text-2xl font-semibold">{t('feedback.story_title')}</h2>
+          <ol className="relative mt-5 space-y-4 before:absolute before:bottom-2 before:left-[0.95rem] before:top-2 before:w-px before:bg-line">
+            {report.per_message.map((score, i) => {
+              const node = byId.get(score.node_id);
+              if (!node) return null;
+              const delta = node.state_after.last_delta ?? 0;
+              const lost = score.node_id === turning?.node_id;
+              return (
+                <li key={score.node_id} className="relative flex gap-3">
+                  <span
+                    className={`relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full text-[11px] font-bold ring-4 ring-surface ${
+                      lost ? 'bg-warm text-white dark:text-[rgb(40_10_6)]' : delta >= 0 ? 'bg-good-soft text-good' : 'bg-bad-soft text-bad'
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0 flex-1 pt-1">
+                    <p className="line-clamp-2 text-[15px] leading-snug">{node.bubbles.join(' ')}</p>
+                    <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted">
+                      <span className={`mono-num font-semibold ${delta > 0 ? 'text-good' : delta < 0 ? 'text-bad' : ''}`}>{signed(delta)}</span>
+                      <span>
+                        {t('chat.trust')} {Math.round(node.state_after.trust)}
+                      </span>
+                      {lost && <span className="chip border-transparent bg-warm-soft px-2 py-0.5 font-semibold text-ink">{t('feedback.lost_here')}</span>}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
         </section>
-        <section className="card flex flex-col p-5">
-          <h2 className="eyebrow">{t('feedback.summary_title')}</h2>
-          <p className="mt-2 text-lg leading-relaxed" data-testid="summary">
-            {report.summary_text}
-          </p>
-          {points.length > 1 && (
-            <div className="mt-auto pt-4">
-              <TrustChart points={points} height={140} />
+
+        {/* The moment you lost them, and what would have worked instead */}
+        <section
+          className={`relative overflow-hidden rounded-[1.5rem] border p-5 sm:p-6 ${turning ? 'border-warm/40 bg-warm-soft/50' : 'border-good/30 bg-good-soft/50'}`}
+          data-testid="turning-point"
+        >
+          <h2 className="flex items-center gap-2 text-2xl font-semibold">
+            <Icon name={turning ? 'flag' : 'check'} className={`h-5 w-5 shrink-0 ${turning ? 'text-warm' : 'text-good'}`} />
+            {turning ? t('feedback.lost_title') : t('feedback.no_lost')}
+          </h2>
+          {turning && turningNode && (
+            <div className="mt-5 space-y-4">
+              <div>
+                <p className="eyebrow mb-2">{t('feedback.you_said')}</p>
+                <div className="inline-block max-w-full rounded-bubble rounded-br-md bg-surface px-4 py-2.5 text-[15px] shadow-card">
+                  <HighlightedText text={turningNode.bubbles.join(' ')} highlights={turningScore?.highlights} />
+                </div>
+                <p className="mt-2 text-sm">
+                  <span className="chip mono-num mr-2 border-transparent bg-bad-soft text-bad">
+                    {t('chat.trust')} {signed(-turning.trust_drop)}
+                  </span>
+                  {turning.reason || t('feedback.lost_body', { drop: Math.round(turning.trust_drop) })}
+                </p>
+              </div>
+              {turningScore?.rewrite && (
+                <div>
+                  <p className="eyebrow mb-2 text-good">{t('feedback.would_have_worked')}</p>
+                  <div className="inline-block max-w-full rounded-bubble rounded-br-md bg-me px-4 py-2.5 text-[15px] text-white shadow-[0_10px_24px_-12px_rgb(var(--bubble-me))]">
+                    {turningScore.rewrite}
+                  </div>
+                </div>
+              )}
+              {actions(turning.node_id)}
             </div>
           )}
         </section>
       </div>
 
-      <section className={`mt-5 overflow-hidden rounded-2xl border-2 ${turning ? 'border-warm/60 bg-warm-soft/40' : 'border-good/40 bg-good-soft/40'} p-5`} data-testid="turning-point">
-        <h2 className="flex items-center gap-2 text-xl font-bold">
-          <Icon name={turning ? 'flag' : 'check'} className={`h-5 w-5 ${turning ? 'text-warm' : 'text-good'}`} />
-          {turning ? t('feedback.lost_title') : t('feedback.no_lost')}
-        </h2>
-        {turning && turningNode && (
-          <div className="mt-4 grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
-            <div>
-              <div className="inline-block max-w-full rounded-bubble rounded-br-md bg-surface px-4 py-2.5 text-[15px] shadow-card">
-                <HighlightedText text={turningNode.bubbles.join(' ')} highlights={turningScore?.highlights} />
-              </div>
-              <p className="mt-3 text-sm">
-                <span className="chip mono-num mr-2 border-transparent bg-bad-soft text-bad">
-                  {t('chat.trust')} {signed(-turning.trust_drop)}
-                </span>
-                {turning.reason || t('feedback.lost_body', { drop: Math.round(turning.trust_drop) })}
-              </p>
+      {/* The numbers, secondary */}
+      <div className="mt-5 grid gap-5 md:grid-cols-2">
+        <section className="card p-5">
+          <h2 className="eyebrow">{t('feedback.skills_title')}</h2>
+          <SkillRadar summary={report.skill_summary} />
+        </section>
+        <section className="card flex flex-col p-5">
+          <h2 className="eyebrow">{t('chat.trust_graph')}</h2>
+          {points.length > 1 && (
+            <div className="mt-4 flex-1">
+              <TrustChart points={points} height={250} />
             </div>
-            {actions(turning.node_id)}
-          </div>
-        )}
-      </section>
+          )}
+        </section>
+      </div>
 
       {(report.missed_opportunities?.length ?? 0) > 0 && (
         <section className="card mt-5 p-5">
-          <h2 className="text-lg font-bold">{t('feedback.missed_title')}</h2>
+          <h2 className="text-2xl font-semibold">{t('feedback.missed_title')}</h2>
           <ul className="mt-3 space-y-2">
             {report.missed_opportunities!.map((m, i) => (
               <li key={i} className="flex gap-2.5 leading-relaxed">
@@ -176,9 +233,9 @@ export function Feedback() {
         </section>
       )}
 
-      <section className="mt-10">
+      <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-2xl font-bold">{t('feedback.messages_title')}</h2>
+          <h2 className="text-3xl font-semibold">{t('feedback.messages_title')}</h2>
           <div className="flex gap-3 text-xs">
             <span className="chip border-transparent bg-good-soft text-good">{t('feedback.legend_good')}</span>
             <span className="chip border-transparent bg-bad-soft text-bad">{t('feedback.legend_bad')}</span>

@@ -39,27 +39,28 @@
     "stat_source": "Encuesta YRBS de los CDC, 2023",
     "stat_kicker": "La primera persona a quien se lo cuentan suele ser un amigo.",
     "features_title": "Nadie nos enseña qué decir. Así que practícalo.",
-    "features": {
-      "practice": {
-        "title": "Practica",
-        "body": "Escríbele a un amigo realista que se abre poco a poco, pero solo si escuchas, validas y preguntas directamente."
-      },
-      "feedback": {
-        "title": "Comentarios",
-        "body": "Mira tu gráfica de confianza, las palabras exactas que ayudaron o dañaron y mejores respuestas verificadas."
-      },
-      "safety": {
-        "title": "La seguridad primero",
-        "body": "Nuestro Guardián revisa cada mensaje primero. La ayuda real está a un toque en cada pantalla y no se guarda nada."
-      }
-    },
     "demo": {
       "friend1": "la verdad no sé ni para qué me esfuerzo ya",
       "you1": "suena muy pesado. ¿estás pensando en suicidarte?",
       "friend2": "…sí. a veces",
       "you2": "me alegra mucho que me lo contaras. ¿hablamos mañana con el consejero? yo voy contigo",
       "trust": "Confianza"
-    }
+    },
+    "title_a": "Practica el mensaje que podría",
+    "title_em": "salvar la vida de un amigo.",
+    "steps_eyebrow": "Cómo funciona",
+    "steps_title": [
+      "Escríbele a un amigo que está mal",
+      "Mira por dentro, en vivo",
+      "Aprende qué habría funcionado"
+    ],
+    "steps_body": [
+      "Cinco amigos, cada uno con su historia. Solo se abren si escuchas, validas y preguntas directamente.",
+      "El modo rayos X muestra la revisión de seguridad, las habilidades que detectaron nuestros modelos y cómo cambió la confianza.",
+      "Encuentra el momento en que lo perdiste, repite con mejores respuestas y mira otro final."
+    ],
+    "safety_title": "Ayuda real, a un toque",
+    "safety_body": "Cada mensaje pasa primero por nuestra revisión de seguridad. Si eres tú quien está mal, pausamos y mostramos recursos reales. Sin cuentas, sin guardar nada."
   },
   "practice": {
     "title": "Elige a un amigo para escribirle",
@@ -140,7 +141,10 @@
     },
     "concern": "Si algo de esto te toca de cerca, puedes llamar o escribir al 988 a cualquier hora.",
     "empty_reply": "(sin respuesta)",
-    "practice_in": "Práctica en {lang}"
+    "practice_in": "Práctica en {lang}",
+    "delivered": "Entregado",
+    "xray_banner": "Rayos X activado: ves lo que ven nuestros modelos",
+    "trust_hint": "Qué tan seguro se siente para abrirse contigo. Cambia con cada mensaje."
   },
   "tree": {
     "title": "Ramas de la conversación",
@@ -225,7 +229,12 @@
     "rewrite_exemplar": "De nuestro banco de ejemplos",
     "strength_strong": "señal fuerte",
     "strength_some": "algo de señal",
-    "legend_strong": "subrayado sólido = fuerte, punteado = algo"
+    "legend_strong": "subrayado sólido = fuerte, punteado = algo",
+    "story_with": "Tu conversación con {name}",
+    "story_title": "Cómo fue",
+    "lost_here": "aquí lo perdiste",
+    "you_said": "Dijiste",
+    "would_have_worked": "Lo que habría funcionado"
   },
   "whatif": {
     "title": "¿Y si hubieras dicho otra cosa?",
@@ -251,7 +260,8 @@
       "refer": "derivar",
       "follow_up": "dar seguimiento",
       "combo": "combinación"
-    }
+    },
+    "futures": "Futuros posibles"
   },
   "real": {
     "country": "¿Dónde estás?",

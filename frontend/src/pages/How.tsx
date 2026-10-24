@@ -24,7 +24,7 @@ function HeadlineCard({ item }: { item: HeadlineMetric }) {
   const base = item.baseline && item.baseline.value !== null ? item.baseline : null;
   return (
     <li className="card flex flex-col p-5" data-testid="headline-card">
-      <p className="mono-num text-4xl font-extrabold tracking-tight text-brand">
+      <p className="numeral text-5xl text-brand">
         {formatMetric(item.value, item.format)}
         {item.format === 'messages' && <span className="ml-1.5 text-base font-semibold text-muted">{t('how.unit_messages')}</span>}
       </p>
@@ -317,7 +317,7 @@ export function How() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold sm:text-4xl">{t('how.title')}</h1>
+      <h1 className="text-4xl font-semibold sm:text-5xl">{t('how.title')}</h1>
       <p className="mt-3 max-w-3xl text-lg leading-relaxed text-muted">{t('how.sub')}</p>
 
       <section className="card mt-8 p-5 sm:p-6">

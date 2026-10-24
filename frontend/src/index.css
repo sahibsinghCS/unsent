@@ -1,70 +1,126 @@
+/* Self-hosted variable fonts (no Google Fonts: the production CSP only allows our own origin). */
+@import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/plus-jakarta-sans/wght.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /*
- * Design tokens. Calm teal for trust, a warm coral accent for care, cream paper instead of clinical
- * white. Every pair used for text meets WCAG AA contrast. Values are "R G B" so Tailwind can add
- * opacity (bg-brand/10). Change the look of the whole app here.
+ * FirstReply design tokens: "dusk".
+ * The moment this app is about usually happens late at night, on a phone. So:
+ *   - signature color: an electric dusk violet (our "sent bubble"), not a clinical teal;
+ *   - a warm ember for care and for the "I need help now" button;
+ *   - warm paper in light mode, deep night in dark mode, with a faint film grain.
+ * Every text/background pair used meets WCAG AA. Values are "R G B" so Tailwind can add opacity.
+ * Change the whole look here.
  */
 @layer base {
   :root {
-    --bg: 251 248 243;
-    --surface: 255 255 255;
-    --sunken: 243 238 230;
-    --ink: 28 37 41;
-    --muted: 87 99 104;
-    --line: 226 219 208;
-    --brand: 15 118 110;
-    --brand-soft: 213 238 233;
+    --bg: 247 243 237;
+    --surface: 255 253 249;
+    --sunken: 240 234 226;
+    --ink: 26 19 38;
+    --muted: 88 79 101;
+    --line: 226 218 208;
+    --brand: 88 56 238;
+    --brand-deep: 58 31 176;
+    --brand-soft: 235 230 255;
     --brand-ink: 255 255 255;
-    --warm: 194 70 50;
-    --warm-soft: 252 228 220;
+    --warm: 190 54 32;
+    --warm-soft: 255 229 218;
+    --glow: 255 158 120;
     --good: 20 112 54;
     --good-soft: 220 245 228;
-    --bad: 190 40 40;
+    --bad: 186 36 36;
     --bad-soft: 253 226 226;
-    --bubble-me: 15 118 110;
-    --bubble-them: 236 231 223;
+    --bubble-me: 88 56 238;
+    --bubble-them: 236 230 222;
+    /* "Inside the machine" surfaces (X-ray) stay night-dark in both themes. */
+    --night: 22 16 38;
+    --night-ink: 238 234 250;
+    --night-muted: 178 170 204;
+    --night-line: 66 56 100;
     color-scheme: light;
   }
   .dark {
-    --bg: 14 22 24;
-    --surface: 22 32 35;
-    --sunken: 17 26 28;
-    --ink: 232 238 236;
-    --muted: 160 175 176;
-    --line: 44 58 61;
-    --brand: 45 190 170;
-    --brand-soft: 20 60 56;
-    --brand-ink: 6 30 28;
-    --warm: 244 140 118;
-    --warm-soft: 70 36 30;
+    --bg: 14 11 24;
+    --surface: 24 19 38;
+    --sunken: 19 15 31;
+    --ink: 241 237 248;
+    --muted: 172 164 192;
+    --line: 52 44 74;
+    --brand: 160 140 255;
+    --brand-deep: 126 102 255;
+    --brand-soft: 44 36 84;
+    --brand-ink: 18 10 44;
+    --warm: 255 142 114;
+    --warm-soft: 74 35 30;
+    --glow: 255 150 110;
     --good: 74 222 128;
     --good-soft: 20 60 38;
     --bad: 248 113 113;
-    --bad-soft: 72 26 26;
-    --bubble-me: 16 112 104;
-    --bubble-them: 38 50 53;
+    --bad-soft: 74 26 28;
+    --bubble-me: 96 66 246;
+    --bubble-them: 40 33 61;
+    --night: 9 7 18;
+    --night-ink: 238 234 250;
+    --night-muted: 178 170 204;
+    --night-line: 62 52 96;
     color-scheme: dark;
   }
 
   html { -webkit-text-size-adjust: 100%; }
-  body { @apply bg-bg text-ink font-sans antialiased; }
+  body {
+    @apply bg-bg font-sans text-ink antialiased;
+    /* Dusk glow behind everything: a violet and an ember light source. */
+    background-image:
+      radial-gradient(60rem 40rem at 110% -10%, rgb(var(--brand) / 0.10), transparent 60%),
+      radial-gradient(50rem 30rem at -20% 10%, rgb(var(--glow) / 0.14), transparent 60%);
+  }
+  /* Film grain: a tiny SVG noise tile (data: URI, allowed by the CSP's img-src). Decorative only. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .dark body::before { opacity: 0.09; }
+  #root { position: relative; z-index: 1; }
+
   /* One visible, consistent focus ring for keyboard users everywhere. */
   :focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-bg; }
-  h1, h2, h3 { @apply tracking-tight; }
+  h1, h2 { @apply font-display tracking-tight; font-optical-sizing: auto; }
+  h3 { @apply tracking-tight; }
+  ::selection { background: rgb(var(--brand) / 0.25); }
 }
 
 @layer components {
-  .card { @apply rounded-2xl border border-line bg-surface shadow-card; }
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50; }
-  .btn-primary { @apply btn bg-brand text-brand-ink hover:brightness-110 active:brightness-95; }
-  .btn-ghost { @apply btn border border-line bg-surface text-ink hover:bg-sunken; }
-  .btn-warm { @apply btn bg-warm text-white hover:brightness-110 dark:text-[rgb(40_10_6)]; }
+  .card { @apply rounded-[1.5rem] border border-line/80 bg-surface shadow-card; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-brand text-brand-ink shadow-[0_8px_24px_-10px_rgb(var(--brand)/0.8)] hover:-translate-y-px hover:brightness-110 active:translate-y-0; }
+  .btn-ghost { @apply btn border border-line bg-surface text-ink hover:-translate-y-px hover:border-ink/25; }
+  .btn-warm { @apply btn bg-warm text-white shadow-[0_8px_22px_-12px_rgb(var(--warm)/0.9)] hover:brightness-110 dark:text-[rgb(40_10_6)]; }
   .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium; }
-  .eyebrow { @apply text-xs font-semibold uppercase tracking-wider text-muted; }
+  .eyebrow { @apply font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-muted; }
   .mono-num { @apply font-mono tabular-nums; }
+  /* Big editorial numbers (stat band, headline cards, trust meter). */
+  .numeral { @apply font-display font-semibold tabular-nums tracking-tight; }
+  /* Signature gradient text: dusk violet → ember. Used sparingly for emphasis words. */
+  .ink-gradient { @apply bg-gradient-to-r from-brand via-brand-deep to-warm bg-clip-text text-transparent; }
+  /* Night glass panel for X-ray ("seeing inside the models"). */
+  .night-panel {
+    @apply rounded-2xl border border-night-line bg-night text-night-ink;
+    background-image:
+      linear-gradient(rgb(var(--night-line) / 0.35) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--night-line) / 0.35) 1px, transparent 1px);
+    background-size: 14px 14px;
+    box-shadow: 0 0 0 1px rgb(var(--brand) / 0.25), 0 12px 30px -16px rgb(var(--brand) / 0.7);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

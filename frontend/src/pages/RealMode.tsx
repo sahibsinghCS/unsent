@@ -68,7 +68,7 @@ export function RealMode() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6" data-testid="realmode">
-      <h1 className="text-3xl font-extrabold sm:text-4xl">{data.title}</h1>
+      <h1 className="text-4xl font-semibold sm:text-5xl">{data.title}</h1>
       <p className="mt-3 text-lg leading-relaxed text-muted">{data.intro}</p>
 
       <fieldset className="mt-6">

@@ -14,12 +14,12 @@ import { BlockedCard, CrisisModal } from '../components/Safety';
 import { ErrorBox, Spinner } from '../components/Status';
 import { TreeDrawer } from '../components/TreeDrawer';
 import { TrustChart } from '../components/TrustChart';
+import { TrustMeter } from '../components/TrustMeter';
 import { XrayFriend, XrayHelper } from '../components/Xray';
 import { usePrefs } from '../i18n';
 import { isEnded, labelsSeen, trustPoints } from '../lib/conversation';
 import { scenarioById } from '../lib/scenarios';
 import { load, save } from '../lib/storage';
-import { signed } from '../lib/trustMath';
 import { prefersReducedMotion, typingDelay } from '../lib/typingDelay';
 
 const MAX_CHARS = 500;
@@ -367,12 +367,24 @@ export function Chat() {
         </div>
         <PhoneFrame header={header} footer={composer} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
           <div ref={scroller} className="h-full space-y-2.5 overflow-y-auto overscroll-contain bg-surface px-3 py-4" aria-live="polite" aria-relevant="additions" data-testid="messages">
+            {xray && (
+              <div className="night-panel relative sticky top-0 z-10 -mx-1 mb-1 overflow-hidden px-3 py-2 text-[11px] font-semibold" role="note" data-testid="xray-banner">
+                <span className="pointer-events-none absolute inset-x-0 top-0 h-full animate-scan bg-gradient-to-b from-transparent via-[rgb(var(--brand)/0.25)] to-transparent" aria-hidden="true" />
+                <span className="relative flex items-center gap-2">
+                  <Icon name="eye" className="h-3.5 w-3.5 text-[rgb(var(--glow))]" />
+                  {t('chat.xray_banner')}
+                </span>
+              </div>
+            )}
             {nodes.map((node, idx) => (
               <Fragment key={node.id}>{renderNode(node, idx)}</Fragment>
             ))}
             {pendingText && (
-              <div className="flex justify-end" aria-busy="true">
-                <div className="max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] leading-snug text-white">{pendingText}</div>
+              <div className="space-y-1" aria-busy="true">
+                <div className="flex justify-end">
+                  <div className="max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] leading-snug text-white">{pendingText}</div>
+                </div>
+                <p className="pr-1 text-right text-[11px] font-medium text-muted">{t('chat.delivered')}</p>
               </div>
             )}
             {typing && <TypingDots label={t('chat.typing', { name: friendName })} />}
@@ -395,19 +407,14 @@ export function Chat() {
 
       <aside className="space-y-4" aria-label={t('chat.panel_title')}>
         <section className="card p-4">
-          <div className="mb-2 flex items-end justify-between">
+          <div className="mb-3 flex items-center justify-between gap-4">
             <div>
               <h2 className="eyebrow">{t('chat.trust_graph')}</h2>
-              <p className="mono-num text-3xl font-extrabold" data-testid="trust-now">
-                {Math.round(trustNow)}
-                <span className="text-base font-semibold text-muted">/100</span>
-              </p>
+              <p className="mt-1 max-w-[12rem] text-sm text-muted">{t('chat.trust_hint')}</p>
             </div>
-            {points.length > 1 && (
-              <span className={`chip mono-num border-transparent text-sm ${lastDelta > 0 ? 'bg-good-soft text-good' : lastDelta < 0 ? 'bg-bad-soft text-bad' : 'bg-sunken text-muted'}`}>
-                {signed(lastDelta)}
-              </span>
-            )}
+            <div data-testid="trust-now">
+              <TrustMeter value={trustNow} delta={points.length > 1 ? lastDelta : undefined} label={t('chat.trust')} />
+            </div>
           </div>
           <TrustChart points={points} />
         </section>
