@@ -121,13 +121,18 @@ def _screen(name: str, personality: str, situation: str, samples: list[str], wor
     """The Guardian checks every field before anything reaches the AI. Returns whether to show real
     help first: the helper may be writing about a real friend at risk, or about themself."""
     guardian = services.guardian()
+    # The real Guardian has profile rules; the stub (FR_STUB=1) only has its chat rules.
+    screen = getattr(guardian, "screen_profile", None) or (
+        lambda text: guardian.check_user(text, [])
+    )
     real_help = False
     fields = [("name", name), ("personality", personality), ("situation", situation)]
     fields += [(f"sample_texts.{i}", text) for i, text in enumerate(samples)]
     for field, text in fields:
         if not text:
             continue
-        result = guardian.check_user(text, [])
+        # Profile rules, not chat rules: this is a story about a friend, written in the third person.
+        result = screen(text)
         if result.action == "block_message":
             injection = "prompt_injection" in result.categories
             raise FriendProblem(
@@ -137,8 +142,9 @@ def _screen(name: str, personality: str, situation: str, samples: list[str], wor
             # The friend's own words: sadness is realistic, but never method details or encouragement.
             if guardian.check_friend(text).level != "none":
                 raise FriendProblem(field, "blocked", words["unsafe_sample"])
-        elif result.action == "pause_roleplay":
-            real_help = True
+            continue
+        if result.level != "none" or guardian.check_user(text, []).action == "pause_roleplay":
+            real_help = True  # a real friend at risk, or the helper themself: real help first
     return real_help or any(_REAL_RISK.search(text) for _, text in fields)
 
 
