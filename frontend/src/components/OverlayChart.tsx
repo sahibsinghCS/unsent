@@ -44,7 +44,7 @@ export function OverlayChart({ series, height = 260 }: { series: Series[]; heigh
   };
   return (
     <div style={{ height }}>
-      <Line key={theme} data={data} options={options} role="img" aria-label={series.map((s) => `${s.label}: ${s.values.map(Math.round).join(' → ')}`).join('; ')} />
+      <Line key={theme} data={data} options={options} role="img" aria-label={series.map((s) => `${s.label}: ${s.values.map(Math.round).join(', ')}`).join('; ')} />
     </div>
   );
 }

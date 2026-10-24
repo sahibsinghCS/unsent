@@ -27,7 +27,7 @@ export function PhoneFrame({
     <div className={`im-screen relative flex flex-col overflow-hidden ${bezel} ring-1 ring-white/10 ${className}`}>
       <div className={`pointer-events-none absolute left-1/2 top-2 z-10 h-6 w-28 -translate-x-1/2 rounded-full bg-[#17121f] dark:bg-[#05030b] ${bezelOnMobile ? '' : 'hidden sm:block'}`} aria-hidden="true" />
       {header && (
-        <div className={`border-b border-line/60 bg-[rgb(var(--im-bar)/0.92)] px-3 pb-2 backdrop-blur ${bezelOnMobile ? 'pt-9' : 'pt-3 sm:pt-9'}`}>{header}</div>
+        <div className={`border-b border-line/60 bg-[rgb(var(--im-bar))] px-3 pb-2 ${bezelOnMobile ? 'pt-9' : 'pt-3 sm:pt-9'}`}>{header}</div>
       )}
       <div className="flex-1 overflow-hidden">{children}</div>
       {footer}

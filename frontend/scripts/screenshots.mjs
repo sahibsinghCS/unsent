@@ -160,7 +160,7 @@ async function run(device) {
 
   // 10. "Try again from here" (rewind) from the feedback page
   await page.goto(`${BASE}/feedback/${sessionId}`);
-  await page.getByTestId('turning-point').getByRole('button', { name: /Try again from here/ }).click();
+  await page.getByTestId('turning-point').getByRole('button', { name: /Try a different reply/ }).click();
   await page.waitForURL(/\/chat\//);
   await page.getByTestId('composer').waitFor();
   await shot('15-chat-rewound');

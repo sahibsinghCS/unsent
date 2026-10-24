@@ -75,19 +75,17 @@ test/        vitest tests
 
 ## Design: why it looks like this
 
-The redesign's brief was "a real product, designed with care, made for teens," not a dashboard template. The ideas, in one line each (Sahib can repeat these to judges):
+**In one sentence for a judge: it looks like your phone, because that's where this happens.** When a friend texts you something scary, it's late, it's on your phone, and it's in a text thread. So FirstReply uses the look of a messaging app plus a teacher's honest notes, not a startup landing page. The full rules are in `frontend/DESIGN.md`.
 
-- **It's about a text at the moment it matters, usually late at night.** So the palette is "dusk": an electric violet as the signature color (it's the color of *your* sent bubble), a warm ember for care and for "I need help now," warm paper in light mode and a deep night in dark mode.
-- **Editorial meets messaging.** Headlines use *Fraunces*, an expressive soft serif with a warm italic ("save a friend's life"), so the app feels written by a person. Everything you tap uses *Plus Jakarta Sans*, a clean, friendly UI face. Both are self-hosted, because our security policy blocks outside fonts.
-- **Show the product in 3 seconds.** The landing hero is a live demo: a friend's message arrives, "you" type a reply, the skill detector's chip pops up and the trust meter ticks up. Then "how it works" in three steps, not walls of text.
-- **Friends, not form fields.** The scenario picker looks like a contacts/stories screen: initials art with a story ring (a different gradient per friend), the name in italic, the situation in a short preview, and chips for open/guarded and languages.
-- **X-ray feels like seeing inside.** In X-ray mode the panels turn into "night glass" with a faint grid and a violet glow, in both light and dark themes, plus a scanning banner, so it's obvious you're looking at the models, not the conversation.
-- **Feedback tells a story.** It opens with the critic's summary as a pull quote, then a timeline of your messages with trust at each step, then "This is where you lost them" with *what you said* next to *what would have worked*. The radar and charts come after, because numbers are the evidence, not the headline.
-- **What-if shows branching futures.** Your message forks into each simulated reply, each branch ending at the trust it reached. The best future glows, and what really happened is the dashed line.
-- **Safety stays calm.** Crisis pause, the help button and Real mode keep the highest priority and the simplest styling. Ember for action, plenty of space, nothing playful.
-- **Details with restraint.** A faint film grain and soft glow give depth. Motion is short and purposeful (bubbles pop in, the meter counts up, the demo loops) and turns off with the system's reduced-motion setting. Every color pair still passes WCAG AA, and axe reports 0 violations in both themes.
-
-Everything lives in tokens: colors in `src/index.css` (`:root` and `.dark`), fonts and motion in `tailwind.config.js`. Changing the signature color is one line.
+- **Four colors, each with one job.** Phone-style grays for everything; one blue for anything you can tap (the same blue as your sent texts); green and red only to mark what helped or hurt; and a separate red only for "I need help now", 988 and the crisis card. If something is red, it's about safety.
+- **The phone's own font.** No downloaded fonts: the app uses the system font your phone already uses for texting. Headlines are just bigger and bolder, like iPhone titles. No fancy italics, no gradient text, no tiny uppercase labels.
+- **The landing page shows a real conversation, not feature cards.** Next to the headline is the conversation itself. Below it, an example chat with Maya where every message has a short note saying what the app did: "The skill detector hears 'dismissed'. Trust drops from 30 to 8." That's X-ray mode as a picture, and it explains the whole app in one glance.
+- **Facts come with their source.** "1 in 5 US high schoolers seriously considered suicide in the past year (CDC Youth Risk Behavior Survey, 2023, 20.4%)" and "When teens tell someone about suicidal thoughts, it's most often a friend (Fox et al., 2021)". They're sentences, not giant stat banners.
+- **Lists like Settings, chat like Messages.** Friends are a contact list. The chat has bubbles with tails, "Delivered" and "Read". Sections are plain grouped boxes with thin lines, not floating cards with shadows.
+- **Feedback starts with your own words.** The page opens with your conversation, marked up like a teacher's notes: green and red underlines, a note beside each message, the spot where you lost them, and a better reply right underneath. A simple trust line comes after that. There's no radar chart, because it looked impressive but didn't teach anything.
+- **What-if is a thread that splits.** Your message branches into the replies you could have sent. The best one is labeled with the word "Best", not with a glow.
+- **Only motion that means something.** Typing dots, a bubble sliding in, the trust number changing. Nothing fades in just to look fancy, and it all switches off with the phone's reduced-motion setting.
+- **Checked, not guessed.** Every color pair passes the WCAG AA contrast test; axe reports 0 problems on every page in light and dark mode. (iPhone's exact blue and green are slightly too light for small text, so we use a hair darker shade of each.)
 
 ## Why this approach (and what we considered instead)
 

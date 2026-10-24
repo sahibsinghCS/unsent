@@ -97,7 +97,7 @@ export function XrayHelper({ node, before }: { node: Node; before: State | null 
       {node.guardian && <GuardianRow g={node.guardian} />}
       {node.events && (
         <div>
-          <p className="mb-1.5 font-semibold uppercase tracking-[0.12em] text-night-muted">{t('xray.skills')}</p>
+          <p className="mb-1.5 font-semibold text-night-muted">{t('xray.skills')}</p>
           <ProbBars probs={node.events} compact />
         </div>
       )}
@@ -106,7 +106,7 @@ export function XrayHelper({ node, before }: { node: Node; before: State | null 
   );
 }
 
-// Night pills, like the rest of X-ray. The AI voice gets a violet edge so it stands out honestly.
+// Night pills, like the rest of X-ray. The AI voice gets a blue edge so it stands out honestly.
 const VOICE_STYLE: Record<string, string> = {
   llm: 'border-[rgb(var(--brand))] bg-night text-night-ink',
   bank: 'border-night-line bg-night text-[#86efac]',
@@ -119,7 +119,7 @@ export function VoiceChip({ voice }: { voice?: string | null }) {
   if (!voice) return null;
   return (
     <span className={`chip font-semibold ${VOICE_STYLE[voice] ?? VOICE_STYLE.fallback}`} data-testid="voice-chip" title={t('xray.voice.label')}>
-      <Icon name={voice === 'llm' ? 'sparkle' : 'check'} className="h-3 w-3" />
+      <Icon name={voice === 'llm' ? 'message' : 'check'} className="h-3 w-3" />
       {t(`xray.voice.${voice}`)}
     </span>
   );

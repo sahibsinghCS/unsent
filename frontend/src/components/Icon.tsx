@@ -15,7 +15,6 @@ const PATHS: Record<string, string> = {
   eye: 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
   arrow: 'M5 12h14m-6-6 6 6-6 6',
   back: 'M19 12H5m6 6-6-6 6-6',
-  sparkle: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zm7 12 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z',
   globe: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm0 0c2.5-2.7 4-6.2 4-10s-1.5-7.3-4-10m0 20c-2.5-2.7-4-6.2-4-10s1.5-7.3 4-10M2 12h20',
   lock: 'M6 11h12v10H6V11zm2 0V7a4 4 0 1 1 8 0v4',
   flag: 'M5 21V4m0 0h11l-2 4 2 4H5',
@@ -27,7 +26,7 @@ const PATHS: Record<string, string> = {
 export type IconName = keyof typeof PATHS;
 
 export function Icon({ name, className = 'h-5 w-5', label }: { name: IconName; className?: string; label?: string }) {
-  const filled = name === 'heart' || name === 'phone' || name === 'rewind' || name === 'sparkle';
+  const filled = name === 'heart' || name === 'phone' || name === 'rewind';
   return (
     <svg
       viewBox="0 0 24 24"

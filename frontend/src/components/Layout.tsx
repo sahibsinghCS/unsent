@@ -4,14 +4,12 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import { usePrefs, type Lang } from '../i18n';
 import { Icon } from './Icon';
 
-/** Wordmark: the bubble mark plus "First" in the UI face and an italic display "Reply". */
+/** Wordmark: the app icon plus the name in the system font. */
 export function Logo({ className = '' }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
-      <img src="/favicon.svg" alt="" className="h-8 w-8 drop-shadow-[0_4px_10px_rgb(var(--brand)/0.35)]" />
-      <span className="text-[1.15rem] font-extrabold tracking-tight">
-        First<span className="font-display font-semibold italic text-brand">Reply</span>
-      </span>
+      <img src="/favicon.svg" alt="" className="h-7 w-7" />
+      <span className="text-[1.1rem] font-bold tracking-tight">FirstReply</span>
     </span>
   );
 }
@@ -19,14 +17,14 @@ export function Logo({ className = '' }: { className?: string }) {
 function LangToggle() {
   const { lang, setLang, t } = usePrefs();
   return (
-    <div role="group" aria-label={t('app.language')} className="flex rounded-full border border-line bg-surface/80 p-0.5 text-xs font-semibold">
+    <div role="group" aria-label={t('app.language')} className="flex rounded-lg bg-sunken p-0.5 text-xs font-semibold">
       {(['en', 'es'] as Lang[]).map((code) => (
         <button
           key={code}
           type="button"
           onClick={() => setLang(code)}
           aria-pressed={lang === code}
-          className={`rounded-full px-2.5 py-1 uppercase transition ${lang === code ? 'bg-brand text-brand-ink' : 'text-muted hover:text-ink'}`}
+          className={`rounded-md px-2.5 py-1 uppercase transition ${lang === code ? 'bg-surface text-ink shadow-[0_1px_2px_rgb(0_0_0/0.15)]' : 'text-muted hover:text-ink'}`}
         >
           {code}
         </button>
@@ -46,7 +44,7 @@ function ThemeToggle() {
 }
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-full px-3 py-1.5 text-sm font-medium transition ${isActive ? 'bg-brand-soft text-ink' : 'text-muted hover:text-ink'}`;
+  `rounded-lg px-3 py-1.5 text-sm font-medium transition ${isActive ? 'bg-sunken text-ink' : 'text-muted hover:text-ink'}`;
 
 export function Layout() {
   const { t } = usePrefs();
@@ -55,7 +53,7 @@ export function Layout() {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2">
         {t('app.skip')}
       </a>
-      <header className="sticky top-0 z-40 border-b border-line/60 bg-bg/75 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-line/70 bg-surface">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:px-5">
           <Link to="/" className="mr-1 rounded-lg text-lg" aria-label="FirstReply home">
             <Logo />
@@ -96,7 +94,7 @@ export function Layout() {
         <Outlet />
       </main>
 
-      <footer className="mt-10 border-t border-line/70 bg-surface/60 backdrop-blur">
+      <footer className="mt-10 border-t border-line/70 bg-surface">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
           <div className="flex max-w-2xl items-start gap-3">
             <Logo className="shrink-0 scale-90" />

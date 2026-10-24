@@ -1,5 +1,5 @@
 /**
- * The practice chat. The conversation is the server's root → head path (SessionView.nodes); every
+ * The practice chat. The conversation is the server's root-to-head path (SessionView.nodes); every
  * turn appends the nodes from the TurnResponse. Friend bubbles are revealed one at a time behind a
  * typing indicator. X-ray mode shows the Guardian, skill probabilities and trust math per message.
  */
@@ -192,7 +192,7 @@ export function Chat() {
   const trustNow = points[points.length - 1]?.trust ?? 0;
   const lastDelta = points.length > 1 ? points[points.length - 1].delta : 0;
 
-  // Only your most recent message gets a receipt ("Delivered" → "Read"), like a messaging app.
+  // Only your most recent message gets a receipt ("Delivered", then "Read"), like a messaging app.
   const lastUserIdx = nodes.reduce((last, n, i) => (n.role === 'user' ? i : last), -1);
   const clock = (createdAt?: number) =>
     createdAt ? new Date(createdAt * 1000).toLocaleTimeString(lang === 'es' ? 'es-US' : 'en-US', { hour: 'numeric', minute: '2-digit' }) : '';
@@ -250,7 +250,7 @@ export function Chat() {
             aria-label={`${t('chat.you')}: ${node.bubbles[0]}`}
             className={`im im-bubble im-sent im-tail text-left animate-pop-in disabled:cursor-default ${
               blocked ? 'line-through decoration-white/70 opacity-60' : 'hover:brightness-110'
-            } ${selected === node.id ? 'ring-2 ring-warm ring-offset-2 ring-offset-[rgb(var(--im-bg))]' : ''}`}
+            } ${selected === node.id ? 'ring-2 ring-brand ring-offset-2 ring-offset-[rgb(var(--im-bg))]' : ''}`}
           >
             {node.bubbles[0]}
           </button>
@@ -279,7 +279,7 @@ export function Chat() {
   // ever slides underneath it).
   const xrayBanner = xray && (
     <div className="mt-2.5 flex items-center gap-2 overflow-hidden rounded-xl bg-night px-3 py-1.5 text-[11px] font-semibold text-night-ink" role="note" data-testid="xray-banner">
-      <Icon name="eye" className="h-3.5 w-3.5 shrink-0 text-[rgb(var(--glow))]" />
+      <Icon name="eye" className="h-3.5 w-3.5 shrink-0 text-night-muted" />
       {t('chat.xray_banner')}
     </div>
   );
@@ -378,7 +378,7 @@ export function Chat() {
           </button>
         </div>
       </div>
-      <p id="composer-count" className={`mono-num mt-1 pr-2 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-warm' : 'im-meta'}`}>
+      <p id="composer-count" className={`mono-num mt-1 pr-2 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-bad' : 'im-meta'}`}>
         {t('chat.counter', { n: draft.length })}
       </p>
     </form>
@@ -422,7 +422,7 @@ export function Chat() {
             {typing && <TypingDots label={t('chat.typing', { name: friendName })} />}
             {ended && !reveal && (
               <div
-                className={`mt-4 rounded-2xl p-4 text-center animate-pop-in ${status === 'ended_success' ? 'bg-gradient-to-br from-good-soft to-brand-soft' : 'bg-sunken'}`}
+                className={`mt-4 rounded-2xl p-4 text-center animate-pop-in ${status === 'ended_success' ? 'bg-good-soft' : 'bg-sunken'}`}
                 data-testid={status === 'ended_success' ? 'end-success' : 'end-fail'}
               >
                 <p className="text-3xl" aria-hidden="true">
@@ -441,7 +441,7 @@ export function Chat() {
         <section className="card p-4">
           <div className="mb-3 flex items-center justify-between gap-4">
             <div>
-              <h2 className="eyebrow">{t('chat.trust_graph')}</h2>
+              <h2 className="text-base">{t('chat.trust_graph')}</h2>
               <p className="mt-1 max-w-[12rem] text-sm text-muted">{t('chat.trust_hint')}</p>
             </div>
             <div data-testid="trust-now">
@@ -452,11 +452,11 @@ export function Chat() {
         </section>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
           <section className="card p-4">
-            <h2 className="eyebrow mb-3">{t('chat.ladder')}</h2>
+            <h2 className="mb-3 text-base">{t('chat.ladder')}</h2>
             <DisclosureLadder level={last?.state_after.level ?? 0} />
           </section>
           <section className="card p-4">
-            <h2 className="eyebrow mb-1">{t('chat.skills')}</h2>
+            <h2 className="mb-1 text-base">{t('chat.skills')}</h2>
             <p className="mb-3 text-xs text-muted">{t('chat.skills_hint')}</p>
             <SkillChips seen={seen} latest={latest} />
           </section>

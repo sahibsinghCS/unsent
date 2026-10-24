@@ -5,7 +5,7 @@ export function NotFound() {
   const { t } = usePrefs();
   return (
     <div className="mx-auto max-w-md px-4 py-20 text-center">
-      <p className="numeral text-8xl italic text-brand">404</p>
+      <p className="numeral text-8xl text-muted">404</p>
       <h1 className="mt-4 text-3xl font-semibold">{t('notfound.title')}</h1>
       <p className="mt-2 text-muted">{t('notfound.body')}</p>
       <div className="mt-8 flex justify-center gap-3">

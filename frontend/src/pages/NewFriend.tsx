@@ -19,7 +19,7 @@ type FieldErrors = Partial<Record<string, string>>;
 
 function Counter({ n, max, id }: { n: number; max: number; id: string }) {
   return (
-    <span id={id} className={`mono-num text-[11px] ${n > max - 20 ? 'text-warm' : 'text-muted'}`}>
+    <span id={id} className={`mono-num text-[11px] ${n > max - 20 ? 'text-bad' : 'text-muted'}`}>
       {n}/{max}
     </span>
   );
@@ -36,7 +36,7 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 }
 
 const inputCls =
-  'w-full rounded-2xl border border-line bg-surface px-4 py-2.5 text-[15px] placeholder:text-muted focus:border-brand aria-[invalid=true]:border-bad';
+  'w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-[15px] placeholder:text-muted focus:border-brand aria-[invalid=true]:border-bad';
 
 export function NewFriend() {
   const { t, lang, country } = usePrefs();
@@ -104,32 +104,31 @@ export function NewFriend() {
   return (
     <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
       <div>
-        <Link to="/practice" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand">
+        <Link to="/practice" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep">
           <Icon name="back" className="h-4 w-4" />
           {t('friends.back')}
         </Link>
-        <p className="eyebrow mt-5">{t('friends.eyebrow')}</p>
-        <h1 className="mt-2 text-4xl font-semibold sm:text-5xl">{t('friends.title')}</h1>
+        <h1 className="mt-5 text-4xl sm:text-5xl">{t('friends.title')}</h1>
         <p className="mt-3 max-w-xl text-lg text-muted">{t('friends.sub')}</p>
 
         <div className="mt-6 space-y-3">
-          <p className="flex gap-3 rounded-2xl border border-brand/20 bg-brand-soft/60 p-4 text-sm leading-relaxed" data-testid="friend-privacy">
-            <Icon name="lock" className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+          <p className="flex gap-3 rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed" data-testid="friend-privacy">
+            <Icon name="lock" className="mt-0.5 h-5 w-5 shrink-0 text-muted" />
             {t('friends.privacy')}
           </p>
-          <p className="flex flex-wrap items-start gap-3 rounded-2xl border border-warm/30 bg-warm-soft/60 p-4 text-sm leading-relaxed" data-testid="friend-safety">
+          <p className="flex flex-wrap items-start gap-3 rounded-xl border border-warm/30 bg-warm-soft/60 p-4 text-sm leading-relaxed" data-testid="friend-safety">
             <Icon name="heart" className="mt-0.5 h-5 w-5 shrink-0 text-warm" />
             <span className="min-w-0 flex-1">
               {t('friends.safety')}{' '}
-              <Link to="/real" className="font-semibold text-ink underline underline-offset-4">
-                {t('app.footer_links.real')} →
+              <Link to="/real" className="link">
+                {t('app.footer_links.real')}
               </Link>
             </span>
           </p>
         </div>
 
         {banner && (
-          <div role="alert" className="mt-5 rounded-2xl bg-bad-soft p-4 text-sm font-medium text-bad" data-testid="friend-banner">
+          <div role="alert" className="mt-5 rounded-xl bg-bad-soft p-4 text-sm font-medium text-bad" data-testid="friend-banner">
             {banner}
             {banner === t('friends.expired') && (
               <button type="button" className="btn-ghost mt-3 w-full sm:w-auto" onClick={() => setBanner(null)}>
@@ -182,12 +181,12 @@ export function NewFriend() {
               {(['open', 'guarded'] as const).map((g) => (
                 <label
                   key={g}
-                  className={`flex cursor-pointer items-center gap-2.5 rounded-2xl border p-3 transition focus-within:ring-2 focus-within:ring-brand ${
+                  className={`flex cursor-pointer items-center gap-2.5 rounded-xl border p-3 transition focus-within:ring-2 focus-within:ring-brand ${
                     draft.guardedness === g ? 'border-brand bg-brand-soft' : 'border-line bg-surface hover:border-ink/25'
                   }`}
                 >
                   <input type="radio" name="guardedness" value={g} checked={draft.guardedness === g} onChange={() => update({ guardedness: g })} className="sr-only" />
-                  <span className={`h-2.5 w-2.5 rounded-full ${g === 'guarded' ? 'bg-warm' : 'bg-good'}`} aria-hidden="true" />
+                  <span className={`h-2.5 w-2.5 rounded-full ${g === 'guarded' ? 'bg-muted' : 'bg-good'}`} aria-hidden="true" />
                   <span>
                     <span className="block text-sm font-semibold">{t(`practice.${g}`)}</span>
                     <span className="block text-xs text-muted">{t(`friends.${g}_hint`)}</span>
@@ -221,7 +220,7 @@ export function NewFriend() {
           <div>
             <div className="flex items-baseline justify-between">
               <label htmlFor="f-situation" className="font-semibold">
-                {t('friends.situation')} <span className="text-warm">*</span>
+                {t('friends.situation')} <span className="text-bad">*</span>
               </label>
               <Counter id="c-situation" n={draft.situation.length} max={LIMITS.situation[1]} />
             </div>
@@ -297,7 +296,7 @@ export function NewFriend() {
 
       {/* Live preview of their voice */}
       <aside className="lg:sticky lg:top-20" aria-label={t('friends.preview')}>
-        <p className="eyebrow mb-3">{t('friends.preview')}</p>
+        <p className="small-label mb-3">{t('friends.preview')}</p>
         <PhoneFrame header={<MessagesHeader name={draft.name.trim() || '?'} sub={t('practice.age', { age: draft.age })} />} className="mx-auto h-[28rem] max-w-[22rem]">
           <div className="im-screen flex h-full flex-col justify-end gap-0.5 px-2.5 py-3" data-testid="friend-preview">
             {previewTexts.length === 0 ? (

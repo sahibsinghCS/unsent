@@ -25,17 +25,15 @@ export default {
         night: { DEFAULT: token('night'), ink: token('night-ink'), muted: token('night-muted'), line: token('night-line') },
       },
       fontFamily: {
-        // Self-hosted (@fontsource-variable): the production CSP only allows fonts from our own origin.
-        display: ['"Fraunces Variable"', 'ui-serif', 'Georgia', 'serif'],
-        sans: ['"Plus Jakarta Sans Variable"', 'ui-sans-serif', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        // The device's own UI font: the vernacular of a messaging app (no web fonts to download).
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"Segoe UI"', 'Roboto', 'system-ui', 'sans-serif'],
+        display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
       borderRadius: { bubble: '1.35rem', xl2: '1.75rem' },
       boxShadow: {
-        card: '0 1px 0 rgb(255 255 255 / 0.6) inset, 0 1px 2px rgb(30 15 50 / 0.05), 0 8px 24px -12px rgb(30 15 50 / 0.18)',
-        lift: '0 2px 4px rgb(30 15 50 / 0.06), 0 22px 44px -18px rgb(60 30 120 / 0.35)',
-        phone: '0 40px 80px -30px rgb(40 20 90 / 0.45), 0 0 0 1px rgb(0 0 0 / 0.06)',
-        glow: '0 0 0 1px rgb(var(--brand) / 0.35), 0 10px 40px -10px rgb(var(--brand) / 0.55)',
+        card: 'none',
+        phone: '0 0 0 1px rgb(0 0 0 / 0.08)',
       },
       keyframes: {
         'pop-in': { '0%': { opacity: 0, transform: 'translateY(8px) scale(0.97)' }, '100%': { opacity: 1, transform: 'none' } },

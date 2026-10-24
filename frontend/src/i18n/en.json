@@ -26,15 +26,13 @@
     "offline": "Can't reach the FirstReply server right now."
   },
   "landing": {
-    "eyebrow": "Suicide-prevention practice for teens",
-    "title": "Practice the text that could save a friend's life.",
-    "sub": "Chat with a simulated friend who's struggling. Models we trained score every reply, keep it safe, and show you exactly where you lost them and what would have worked.",
-    "start": "Start practicing",
+    "title": "Practice what to text a friend who isn't okay.",
+    "sub": "You text a simulated friend who is having a hard time. Our own models check every reply for safety, score it, and show where they stopped trusting you and what would have helped.",
+    "start": "Pick a friend to text",
     "how": "See how it works",
-    "stat": "1 in 5 US high schoolers seriously considered suicide last year.",
-    "stat_source": "CDC Youth Risk Behavior Survey, 2023",
-    "stat_kicker": "The first person they tell is usually a friend.",
-    "features_title": "Nobody teaches us what to say. So practice it.",
+    "stat": "1 in 5 US high schoolers seriously considered suicide in the past year.",
+    "stat_source": "CDC Youth Risk Behavior Survey, 2023 (20.4%)",
+    "stat_kicker": "When teens tell someone about suicidal thoughts, it's most often a friend.",
     "demo": {
       "friend1": "honestly idk why i even bother anymore",
       "you1": "that sounds really heavy. are you thinking about killing yourself?",
@@ -42,21 +40,32 @@
       "you2": "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
       "trust": "Trust"
     },
-    "title_a": "Practice the text that could",
-    "title_em": "save a friend's life.",
-    "steps_eyebrow": "How it works",
-    "steps_title": [
-      "Text a friend who's struggling",
-      "See inside, live",
-      "Learn what would have worked"
+    "safety_title": "If this is real right now",
+    "safety_body": "Call or text 988 any time in the US, or tell a trusted adult today. If someone is in immediate danger, call 911.",
+    "kicker_source": "Fox et al., 2021, Research on Child and Adolescent Psychopathology 50:669–681",
+    "example_title": "What happens when you send a text",
+    "example_sub": "An example conversation with Maya. Each note says what the app did with that message.",
+    "example_label_friend": "Maya.",
+    "example_label_you": "You.",
+    "example_label_read": "Read receipt.",
+    "example_texts": [
+      "honestly idk why i even bother anymore",
+      "lol you'll be fine",
+      "Read 9:42 PM",
+      "sorry, that was a bad thing to say. that sounds really heavy",
+      "are you thinking about killing yourself?",
+      "...yeah. sometimes"
     ],
-    "steps_body": [
-      "Five friends, each with a story. They open up only if you listen, validate and ask directly.",
-      "X-ray mode shows the safety check, the skills our models heard and exactly how trust moved.",
-      "Find the moment you lost them, then replay better replies and watch a different ending."
+    "example_notes": [
+      "She opens with this. She only says more once she trusts you.",
+      "The skill detector hears \"dismissed\". Trust drops from 30 to 8.",
+      "She left you on Read. That much lost trust makes her go quiet.",
+      "The skill detector hears \"validated\". Trust rises from 8 to 18.",
+      "Safety check: fine, 9 ms. Asking directly is the right move, so it is never blocked. Trust rises from 18 to 31.",
+      "She shares more. Our engine decides what she's ready to say."
     ],
-    "safety_title": "Real help, one tap away",
-    "safety_body": "Every message passes our safety check first. If you're the one who's struggling, we pause and show real resources. No accounts, nothing stored."
+    "safety_link": "What to do, step by step",
+    "demo_note": "asked directly · trust 30 to 54"
   },
   "practice": {
     "title": "Choose a friend to text",
@@ -144,7 +153,8 @@
     "read": "Read",
     "read_at": "Read {time}",
     "today": "Today",
-    "back": "Back to friends"
+    "back": "Back to friends",
+    "level_now": "now"
   },
   "tree": {
     "title": "Conversation branches",
@@ -219,7 +229,7 @@
     "uncertain_hint": "Our two models disagreed here, so treat this score with caution.",
     "try_instead": "Try instead",
     "gain": "adds: {skill}",
-    "try_again": "Try again from here",
+    "try_again": "Try a different reply",
     "what_if": "What if?",
     "new_scenario": "Practice another friend",
     "back_chat": "Back to chat",
@@ -236,14 +246,15 @@
     "you_said": "You said",
     "would_have_worked": "What would have worked",
     "gain_generic": "verified better",
-    "gain_hint": "Our skill detector scores this reply {gain} points higher on the skill you missed."
+    "gain_hint": "Our skill detector scores this reply {gain} points higher on the skill you missed.",
+    "transcript_title": "Your conversation, with notes"
   },
   "whatif": {
     "title": "What if you'd said something else?",
     "sub": "We replayed the conversation from your message with stronger replies, through the same trust engine and friend line bank.",
     "simulated": "Simulated",
     "simulated_hint": "These are simulations, not real people. They show how the model reacts.",
-    "best": "Best path",
+    "best": "Best",
     "score": "Skill match {score}%",
     "overlay": "All paths, trust over time",
     "you_said": "What you said",
@@ -252,7 +263,7 @@
     "error": "Couldn't run the simulation.",
     "back": "Back to feedback",
     "try_this": "Try this in the chat",
-    "trust_end": "Trust {from} → {to}",
+    "trust_end": "Trust {from} to {to}",
     "score_hint": "How strongly our skill detector sees the skill this reply teaches.",
     "empty": "We couldn't find a verified better reply for this message. Try another one.",
     "strategies": {
@@ -263,7 +274,7 @@
       "follow_up": "follow up",
       "combo": "combination"
     },
-    "futures": "Branching futures"
+    "futures": "Replies you could have sent instead"
   },
   "real": {
     "country": "Where are you?",
@@ -446,7 +457,7 @@
   },
   "friends": {
     "back": "Back to friends",
-    "eyebrow": "Add your own friend",
+    "small-label": "Add your own friend",
     "title": "Who do you want to practice with?",
     "sub": "Describe a friend in your own words. Our engine still decides what they reveal, and our safety checks still run on every message.",
     "privacy": "This friend only exists for this practice: it's kept in server memory and deleted after 60 minutes of inactivity. To write the friend's replies, your description is sent to OpenAI. Use a nickname, and don't paste anyone's private messages.",
