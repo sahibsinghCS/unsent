@@ -47,4 +47,9 @@ def write_jsonl(path: Path, rows: list[dict]) -> None:
 
 
 def load_scenario(sid: str) -> dict:
-    return json.loads((SCENARIO_DIR / f"{sid}.json").read_text(encoding="utf-8"))
+    path = SCENARIO_DIR / f"{sid}.json"
+    if (
+        not path.exists()
+    ):  # user-made-friend template lives on the integrator branch; tests keep a copy
+        path = ROOT / "tests" / "unit" / "data" / "fixtures" / f"{sid}.json"
+    return json.loads(path.read_text(encoding="utf-8"))

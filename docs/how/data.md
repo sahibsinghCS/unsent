@@ -21,3 +21,5 @@
 3. *How do you stop unsafe friend lines?* No method words (scanned), facts gated by level, and the engine runs the Guardian on every line.
 4. *Why must the Guardian ignore "are you thinking about suicide?"* Asking directly doesn't plant the idea and is the key helper skill; flagging it would punish the right move.
 5. *Why group splits by context?* Replies to the same friend message look alike; mixing them across train/test would leak answers.
+
+**"Add your own friend" fallback bank.** When a teen writes their own friend there is no hand-written bank for that story, so we ship one *situation-neutral* bank (`data/lines/_custom.en.jsonl` and `_custom.es.jsonl`, 201 lines each) plus 40 neutral helper exemplars per language. The lines never name the situation, a person, or a gender ("since everything happened", "this whole thing"), keep the same level-by-level realism rules as the other banks, and are checked by the same scripts (facts, banned words, duplicates, Guardian). A live AI may re-word them to the user's story; if it is off or fails a check, these lines are what the friend says.
