@@ -31,6 +31,11 @@
   - The chat drops the drawn phone bezel below sm (the landing demo keeps it).
   - Re-shot only the affected screenshots.
 
+- **Messages-style chat + Add your own friend** (f00da33…7bd8934):
+  - **Chat:** iOS-like bubbles with tails, a centered-avatar header with a back chevron, "Today …" timestamp, Delivered/Read receipts ("Read 9:42 PM" when left on read; the `seen` testid is kept), a gray typing bubble, and a "+" + pill composer. The landing demo and What-if transcripts use the same bubbles. AA-safe blues: #0071EB / #0A6EF0.
+  - **Custom friend:** /practice/new form with live preview, counters, privacy and safety notices, field-level 422s, a real_help card first, `GET /api/friends/{id}` lookups, an expired → "Create again" flow, and "Your friend" with a not-reviewed chip. React state only.
+  - **Tests:** 7 new vitest tests; `npm run test:friends` E2E (EN/ES × mobile/desktop, axe 0); click-nav now covers /practice/new and the chat's back chevron.
+
 ## In progress
 - Nothing. Lane is feature-complete against the stubs.
 

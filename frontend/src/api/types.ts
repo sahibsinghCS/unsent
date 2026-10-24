@@ -41,6 +41,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/friends": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add Friend
+         * @description A friend the helper describes. Kept in memory only, and expires like a session.
+         */
+        post: operations["add_friend_api_friends_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/friends/{friend_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Friend */
+        get: operations["get_friend_api_friends__friend_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/sessions": {
         parameters: {
             query?: never;
@@ -268,6 +305,43 @@ export interface components {
             /** Referral Turns */
             referral_turns?: number[];
         };
+        /** FriendRequest */
+        FriendRequest: {
+            /** Name */
+            name: string;
+            /**
+             * Age
+             * @default 16
+             */
+            age: number;
+            /**
+             * Guardedness
+             * @default guarded
+             * @enum {string}
+             */
+            guardedness: "open" | "guarded";
+            /**
+             * Personality
+             * @default
+             */
+            personality: string;
+            /** Situation */
+            situation: string;
+            /** Sample Texts */
+            sample_texts?: string[];
+            /**
+             * Locale
+             * @default en
+             * @enum {string}
+             */
+            locale: "en" | "es";
+        };
+        /** FriendResponse */
+        FriendResponse: {
+            friend: components["schemas"]["ScenarioSummary"];
+            /** Notice */
+            notice?: string | null;
+        };
         /** GuardianCheckRequest */
         GuardianCheckRequest: {
             /** Text */
@@ -433,6 +507,11 @@ export interface components {
              *     ]
              */
             locales: string[];
+            /**
+             * Custom
+             * @default false
+             */
+            custom: boolean;
         };
         /** SessionView */
         SessionView: {
@@ -627,6 +706,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ScenarioSummary"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_friend_api_friends_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FriendRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FriendResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_friend_api_friends__friend_id__get: {
+        parameters: {
+            query?: {
+                lang?: string;
+            };
+            header?: never;
+            path: {
+                friend_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioSummary"];
                 };
             };
             /** @description Validation Error */

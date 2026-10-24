@@ -11,8 +11,8 @@ const BASE = process.env.FR_UI ?? 'http://localhost:4173';
 const EXECUTABLE = process.env.CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 
 const T = {
-  en: { practice: 'Practice', how: 'How it works', real: "If it's real", privacy: 'Privacy', begin: /I understand/, finish: 'Finish', whatif: 'What if?', backFeedback: 'Back to feedback', backChat: 'Back to chat', backPractice: 'Back to practice', home: 'Go home', cont: 'Continue', seeHow: 'See how it works' },
-  es: { practice: 'Practicar', how: 'Cómo funciona', real: 'Si es real', privacy: 'Privacidad', begin: /Entiendo/, finish: 'Terminar', whatif: '¿Y si…?', backFeedback: 'Volver a los comentarios', backChat: 'Volver al chat', backPractice: 'Volver a practicar', home: 'Ir al inicio', cont: 'Continuar', seeHow: 'Ver cómo funciona' },
+  en: { backFriends: 'Back to friends', practice: 'Practice', how: 'How it works', real: "If it's real", privacy: 'Privacy', begin: /I understand/, finish: 'Finish', whatif: 'What if?', backFeedback: 'Back to feedback', backChat: 'Back to chat', backPractice: 'Back to practice', home: 'Go home', cont: 'Continue', seeHow: 'See how it works' },
+  es: { backFriends: 'Volver a los amigos', practice: 'Practicar', how: 'Cómo funciona', real: 'Si es real', privacy: 'Privacidad', begin: /Entiendo/, finish: 'Terminar', whatif: '¿Y si…?', backFeedback: 'Volver a los comentarios', backChat: 'Volver al chat', backPractice: 'Volver a practicar', home: 'Ir al inicio', cont: 'Continuar', seeHow: 'Ver cómo funciona' },
 };
 
 async function run(browser, lang, patchScroll) {
@@ -63,6 +63,8 @@ async function run(browser, lang, patchScroll) {
   await go('logo → home', () => header.getByRole('link', { name: 'FirstReply home' }).click(), /\/$/, 'start-practicing');
   await go('hero "see how" → how', link(page.locator('main'), t.seeHow), /\/how$/, 'guardian-box');
   await go('header → practice', link(header, t.practice), /\/practice$/, 'scenarios');
+  await go('practice → add your own friend', () => page.getByTestId('add-friend').click(), /\/practice\/new$/, 'friend-form');
+  await go('new friend → back to friends', link(page.locator('main'), t.backFriends), /\/practice$/, 'scenarios');
   await go('header → how', link(header, t.how), /\/how$/, 'guardian-box');
   await go('logo → home', () => header.getByRole('link', { name: 'FirstReply home' }).click(), /\/$/, 'start-practicing');
   await go('hero CTA → practice', () => page.getByTestId('start-practicing').click(), /\/practice$/, 'scenarios');
@@ -78,6 +80,9 @@ async function run(browser, lang, patchScroll) {
   await go('feedback → what if', link(page.locator('main'), t.whatif), /\/whatif\//, 'simulated');
   await go('what-if → back to feedback', link(page.locator('main'), t.backFeedback), /\/feedback\//, 'turning-point');
   await go('feedback → back to chat', link(page.locator('main'), t.backChat), /\/chat\//, 'composer');
+  await go('chat back chevron → practice', () => page.getByRole('link', { name: t.backFriends }).first().click(), /\/practice$/, 'scenarios');
+  await page.goBack();
+  await page.getByTestId('composer').waitFor();
   await go('help button (from chat) → real', () => page.getByTestId('help-now').click(), /\/real$/, 'primary-line');
   await go('real → back to practice', link(page.locator('main'), t.backPractice), /\/practice$/, 'scenarios');
   await page.goto(BASE + '/no-such-page'); // 404 can only be reached by URL

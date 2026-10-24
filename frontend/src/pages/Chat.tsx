@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../api/client';
 import type { Node, SessionView } from '../api/models';
 import { Icon } from '../components/Icon';
-import { Bubble, ContactHeader, PhoneFrame, TypingDots } from '../components/Phone';
+import { Bubble, MessagesHeader, PhoneFrame, TypingDots } from '../components/Phone';
 import { DisclosureLadder, SkillChips } from '../components/Progress';
 import { BlockedCard, CrisisModal } from '../components/Safety';
 import { ErrorBox, Spinner } from '../components/Status';
@@ -192,16 +192,21 @@ export function Chat() {
   const trustNow = points[points.length - 1]?.trust ?? 0;
   const lastDelta = points.length > 1 ? points[points.length - 1].delta : 0;
 
+  // Only your most recent message gets a receipt ("Delivered" → "Read"), like a messaging app.
+  const lastUserIdx = nodes.reduce((last, n, i) => (n.role === 'user' ? i : last), -1);
+  const clock = (createdAt?: number) =>
+    createdAt ? new Date(createdAt * 1000).toLocaleTimeString(lang === 'es' ? 'es-US' : 'en-US', { hour: 'numeric', minute: '2-digit' }) : '';
+
   /** Render one node of the path. */
   function renderNode(node: Node, idx: number) {
     const prev = nodes[idx - 1] ?? null;
     const next = nodes[idx + 1] ?? null;
 
     if (node.role === 'friend') {
-      if (node.seen_no_reply) return null; // shown as "Seen" under the helper's message
+      if (node.seen_no_reply) return null; // shown as "Read …" under the helper's message
       const shown = reveal?.id === node.id ? reveal.shown : node.bubbles.length;
       return (
-        <div className="space-y-1">
+        <div className="space-y-0.5">
           {node.bubbles.slice(0, shown).map((b, i) => (
             <Bubble key={i} tail={i === shown - 1}>
               {b}
@@ -227,18 +232,25 @@ export function Chat() {
     const concern = node.guardian?.action === 'show_resources';
     const showSeen = next?.seen_no_reply && reveal?.id !== next.id;
     const canRewind = !blocked && !paused && !!node.parent_id;
+    // Receipt under your latest message: Delivered while they type, then Read (with a time if they
+    // left you on read).
+    let receipt: { text: string; seen: boolean } | null = null;
+    if (idx === lastUserIdx && next?.role === 'friend') {
+      if (next.seen_no_reply) receipt = showSeen ? { text: t('chat.read_at', { time: clock(next.created_at) }), seen: true } : { text: t('chat.delivered'), seen: false };
+      else receipt = { text: reveal?.id === next.id ? t('chat.delivered') : t('chat.read'), seen: false };
+    }
     return (
       <div className="space-y-1">
-        <div className="flex justify-end">
+        <div className="flex justify-end pr-1.5">
           <button
             type="button"
             disabled={!canRewind || busy}
             onClick={() => setSelected(selected === node.id ? null : node.id)}
             aria-expanded={canRewind ? selected === node.id : undefined}
             aria-label={`${t('chat.you')}: ${node.bubbles[0]}`}
-            className={`max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md px-3.5 py-2 text-left text-[15px] leading-snug text-white animate-pop-in disabled:cursor-default ${
-              blocked ? 'bg-me/45 line-through decoration-white/60' : 'bg-me hover:brightness-110'
-            } ${selected === node.id ? 'ring-2 ring-warm ring-offset-2 ring-offset-surface' : ''}`}
+            className={`im im-bubble im-sent im-tail text-left animate-pop-in disabled:cursor-default ${
+              blocked ? 'line-through decoration-white/70 opacity-60' : 'hover:brightness-110'
+            } ${selected === node.id ? 'ring-2 ring-warm ring-offset-2 ring-offset-[rgb(var(--im-bg))]' : ''}`}
           >
             {node.bubbles[0]}
           </button>
@@ -251,9 +263,9 @@ export function Chat() {
             </button>
           </div>
         )}
-        {showSeen && (
-          <p className="pr-1 text-right text-[11px] font-medium text-muted animate-pop-in" data-testid="seen">
-            {t('chat.seen')}
+        {receipt && (
+          <p className="im-meta pr-2 text-right animate-pop-in" data-testid={receipt.seen ? 'seen' : 'receipt'}>
+            {receipt.text}
           </p>
         )}
         {concern && <p className="ml-auto max-w-[80%] text-right text-xs text-muted">{t('chat.concern')}</p>}
@@ -274,20 +286,25 @@ export function Chat() {
 
   const header = (
     <>
-    <ContactHeader
+    <MessagesHeader
       name={friendName}
+      left={
+        <Link to="/practice" className="flex items-center rounded-full py-1 pr-2 text-[rgb(var(--im-sent))]" aria-label={t('chat.back')}>
+          <Icon name="chevron" className="h-6 w-6" />
+        </Link>
+      }
       sub={
         typing ? (
-          <span className="text-brand">{t('chat.typing', { name: friendName })}…</span>
+          <span>{t('chat.typing', { name: friendName })}…</span>
         ) : (
           <span>
-            {t('chat.trust')} <span className="mono-num font-semibold text-ink">{Math.round(trustNow)}</span>
+            {t('chat.trust')} <span className="mono-num font-semibold">{Math.round(trustNow)}</span>
           </span>
         )
       }
       right={
-        <div className="flex items-center gap-1">
-          <button type="button" onClick={() => setTreeOpen(true)} className="rounded-full p-2 text-muted hover:bg-sunken hover:text-ink" aria-label={t('chat.branches')} title={t('chat.branches')}>
+        <>
+          <button type="button" onClick={() => setTreeOpen(true)} className="im-icon-btn" aria-label={t('chat.branches')} title={t('chat.branches')}>
             <Icon name="branch" className="h-4 w-4" />
           </button>
           <button
@@ -296,15 +313,13 @@ export function Chat() {
             aria-checked={xray}
             onClick={toggleXray}
             title={xray ? t('chat.xray_off') : t('chat.xray_on')}
-            className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition ${
-              xray ? 'border-brand bg-brand text-brand-ink' : 'border-line text-muted hover:text-ink'
-            }`}
+            className={`im-icon-btn ${xray ? '!bg-[rgb(var(--im-sent))] !text-white' : ''}`}
             data-testid="xray-toggle"
           >
-            <Icon name="eye" className="h-3.5 w-3.5" />
-            {t('chat.xray')}
+            <Icon name="eye" className="h-4 w-4" />
+            <span className="sr-only">{t('chat.xray')}</span>
           </button>
-        </div>
+        </>
       }
     />
     {xrayBanner}
@@ -312,14 +327,14 @@ export function Chat() {
   );
 
   const composer = ended ? (
-    <div className="border-t border-line bg-surface p-3">
+    <div className="border-t border-line/60 bg-[rgb(var(--im-bar))] p-3">
       <button type="button" className="btn-primary w-full" onClick={() => navigate(`/feedback/${sessionId}`)}>
         {t('chat.ended.see_feedback')}
       </button>
     </div>
   ) : (
     <form
-      className="border-t border-line bg-surface p-2.5"
+      className="border-t border-line/60 bg-[rgb(var(--im-bar))] px-2.5 pb-1.5 pt-2"
       onSubmit={(e) => {
         e.preventDefault();
         void send();
@@ -331,28 +346,39 @@ export function Chat() {
         </p>
       )}
       <div className="flex items-end gap-2">
-        <label htmlFor="composer" className="sr-only">
-          {t('chat.placeholder', { name: friendName })}
-        </label>
-        <textarea
-          id="composer"
-          ref={input}
-          rows={1}
-          value={draft}
-          maxLength={MAX_CHARS}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={onKeyDown}
-          placeholder={t('chat.placeholder', { name: friendName })}
-          disabled={!!crisisNode}
-          aria-describedby="composer-count"
-          className="max-h-32 min-h-[2.6rem] flex-1 resize-none rounded-3xl border border-line bg-bg px-4 py-2.5 text-[15px] leading-snug placeholder:text-muted focus:border-brand"
-          data-testid="composer"
-        />
-        <button type="submit" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-brand-ink transition disabled:opacity-40" disabled={!draft.trim() || busy} aria-label={t('chat.send')}>
-          <Icon name="send" className="h-4 w-4" />
-        </button>
+        {/* The round "+" of a messaging app: decorative here (practice is text only). */}
+        <span className="im-icon-btn mb-0.5 shrink-0 !text-[rgb(var(--im-meta))]" aria-hidden="true">
+          <Icon name="plus" className="h-4 w-4" />
+        </span>
+        <div className="flex min-w-0 flex-1 items-end rounded-[1.3rem] border border-[rgb(var(--im-meta)/0.4)] bg-[rgb(var(--im-bg))] py-1 pl-3.5 pr-1 focus-within:ring-2 focus-within:ring-brand">
+          <label htmlFor="composer" className="sr-only">
+            {t('chat.placeholder', { name: friendName })}
+          </label>
+          <textarea
+            id="composer"
+            ref={input}
+            rows={1}
+            value={draft}
+            maxLength={MAX_CHARS}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder={t('chat.placeholder', { name: friendName })}
+            disabled={!!crisisNode}
+            aria-describedby="composer-count"
+            className="im max-h-32 min-h-[1.9rem] flex-1 resize-none bg-transparent py-1 leading-snug text-ink outline-none placeholder:text-[rgb(var(--im-meta))] focus-visible:ring-0 focus-visible:ring-offset-0"
+            data-testid="composer"
+          />
+          <button
+            type="submit"
+            className="mb-px grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[rgb(var(--im-sent))] text-white transition disabled:opacity-35"
+            disabled={!draft.trim() || busy}
+            aria-label={t('chat.send')}
+          >
+            <Icon name="up" className="h-4 w-4" />
+          </button>
+        </div>
       </div>
-      <p id="composer-count" className={`mono-num mt-1 pr-12 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-warm' : 'text-muted'}`}>
+      <p id="composer-count" className={`mono-num mt-1 pr-2 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-warm' : 'im-meta'}`}>
         {t('chat.counter', { n: draft.length })}
       </p>
     </form>
@@ -378,16 +404,19 @@ export function Chat() {
           </button>
         </div>
         <PhoneFrame header={header} footer={composer} bezelOnMobile={false} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
-          <div ref={scroller} className="h-full space-y-2.5 overflow-y-auto overscroll-contain bg-surface px-3 py-4" aria-live="polite" aria-relevant="additions" data-testid="messages">
+          <div ref={scroller} className="im-screen h-full space-y-2.5 overflow-y-auto overscroll-contain px-2.5 py-3" aria-live="polite" aria-relevant="additions" data-testid="messages">
+            {nodes[0]?.created_at && (
+              <p className="im-meta pb-1 text-center" data-testid="chat-timestamp">
+                <b className="font-semibold">{t('chat.today')}</b> {clock(nodes[0].created_at)}
+              </p>
+            )}
             {nodes.map((node, idx) => (
               <Fragment key={node.id}>{renderNode(node, idx)}</Fragment>
             ))}
             {pendingText && (
               <div className="space-y-1" aria-busy="true">
-                <div className="flex justify-end">
-                  <div className="max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] leading-snug text-white">{pendingText}</div>
-                </div>
-                <p className="pr-1 text-right text-[11px] font-medium text-muted">{t('chat.delivered')}</p>
+                <Bubble me>{pendingText}</Bubble>
+                <p className="im-meta pr-2 text-right">{t('chat.delivered')}</p>
               </div>
             )}
             {typing && <TypingDots label={t('chat.typing', { name: friendName })} />}

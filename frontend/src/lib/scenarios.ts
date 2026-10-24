@@ -17,7 +17,24 @@ export function scenarioList(lang = 'en'): Promise<ScenarioSummary[]> {
   return list;
 }
 
+const custom = new Map<string, Promise<ScenarioSummary>>();
+
+/**
+ * Scenario info by id. Custom friends ("custom-…") aren't in /api/scenarios, so they're looked up
+ * with GET /api/friends/{id} (404 once the server has deleted them).
+ */
 export async function scenarioById(id: string, lang = 'en'): Promise<ScenarioSummary | undefined> {
+  if (id.startsWith('custom-')) {
+    let found = custom.get(id);
+    if (!found) {
+      found = api.friend(id).catch((error) => {
+        custom.delete(id);
+        throw error;
+      });
+      custom.set(id, found);
+    }
+    return found;
+  }
   return (await scenarioList(lang)).find((s) => s.id === id);
 }
 

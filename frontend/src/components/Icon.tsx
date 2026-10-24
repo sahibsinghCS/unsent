@@ -19,6 +19,9 @@ const PATHS: Record<string, string> = {
   globe: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm0 0c2.5-2.7 4-6.2 4-10s-1.5-7.3-4-10m0 20c-2.5-2.7-4-6.2-4-10s1.5-7.3 4-10M2 12h20',
   lock: 'M6 11h12v10H6V11zm2 0V7a4 4 0 1 1 8 0v4',
   flag: 'M5 21V4m0 0h11l-2 4 2 4H5',
+  chevron: 'M15 5l-7 7 7 7',
+  plus: 'M12 5v14M5 12h14',
+  up: 'M12 19V5m-6 6 6-6 6 6',
 };
 
 export type IconName = keyof typeof PATHS;

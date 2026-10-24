@@ -77,7 +77,7 @@ for (let i = 0; i < 40 && !found; i++) {
 if (!found) throw new Error('keyboard: could not Tab to the message box');
 await page.keyboard.type('hey are you ok? you seemed off today');
 await page.keyboard.press('Enter');
-await page.waitForFunction(() => document.querySelectorAll('[data-testid="messages"] .bg-them').length >= 3, null, { timeout: 30000 });
+await page.waitForFunction(() => document.querySelectorAll('[data-testid="messages"] .im-recv').length >= 3, null, { timeout: 30000 });
 if ((await focusedTestId()) !== 'composer') throw new Error('keyboard: focus should return to the message box after sending');
 // Your message becomes interactive (rewindable) once the friend's reply has finished arriving.
 await page.locator('button[aria-label^="You:"]:enabled').first().waitFor({ timeout: 30000 });
