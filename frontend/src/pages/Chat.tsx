@@ -1,5 +1,5 @@
 /**
- * The practice chat. The conversation is the server's root → head path (SessionView.nodes); every
+ * The practice chat. The conversation is the server's root-to-head path (SessionView.nodes); every
  * turn appends the nodes from the TurnResponse. Friend bubbles are revealed one at a time behind a
  * typing indicator. X-ray mode shows the Guardian, skill probabilities and trust math per message.
  */
@@ -192,7 +192,7 @@ export function Chat() {
   const trustNow = points[points.length - 1]?.trust ?? 0;
   const lastDelta = points.length > 1 ? points[points.length - 1].delta : 0;
 
-  // Only your most recent message gets a receipt ("Delivered" → "Read"), like a messaging app.
+  // Only your most recent message gets a receipt ("Delivered", then "Read"), like a messaging app.
   const lastUserIdx = nodes.reduce((last, n, i) => (n.role === 'user' ? i : last), -1);
   const clock = (createdAt?: number) =>
     createdAt ? new Date(createdAt * 1000).toLocaleTimeString(lang === 'es' ? 'es-US' : 'en-US', { hour: 'numeric', minute: '2-digit' }) : '';
@@ -250,7 +250,7 @@ export function Chat() {
             aria-label={`${t('chat.you')}: ${node.bubbles[0]}`}
             className={`im im-bubble im-sent im-tail text-left animate-pop-in disabled:cursor-default ${
               blocked ? 'line-through decoration-white/70 opacity-60' : 'hover:brightness-110'
-            } ${selected === node.id ? 'ring-2 ring-warm ring-offset-2 ring-offset-[rgb(var(--im-bg))]' : ''}`}
+            } ${selected === node.id ? 'ring-2 ring-brand ring-offset-2 ring-offset-[rgb(var(--im-bg))]' : ''}`}
           >
             {node.bubbles[0]}
           </button>
@@ -378,7 +378,7 @@ export function Chat() {
           </button>
         </div>
       </div>
-      <p id="composer-count" className={`mono-num mt-1 pr-2 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-warm' : 'im-meta'}`}>
+      <p id="composer-count" className={`mono-num mt-1 pr-2 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-bad' : 'im-meta'}`}>
         {t('chat.counter', { n: draft.length })}
       </p>
     </form>

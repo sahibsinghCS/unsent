@@ -1,7 +1,7 @@
 /**
  * "Branching futures" for the What-if page: the message you sent on the left, a curve to each
- * simulated future on the right, ending at the trust it reached. The best future glows; what really
- * happened is the dashed branch. HTML for the text (readable on phones) + one stretched SVG for curves.
+ * simulated future on the right, ending at the trust it reached. The best one is marked with the word
+ * "Best"; what really happened is the dashed red branch. HTML for the text (readable on phones) + one stretched SVG for curves.
  */
 import { usePrefs } from '../i18n';
 import { signed } from '../lib/trustMath';
@@ -21,8 +21,8 @@ export function BranchMap({ origin, branches }: { origin: string; branches: Bran
   return (
     <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:gap-0" data-testid="branch-map">
       <div className="flex w-full shrink-0 items-center sm:w-56">
-        <div className="w-full rounded-2xl border border-line bg-surface p-3 shadow-card">
-          <p className="eyebrow mb-1.5">{t('whatif.you_said')}</p>
+        <div className="w-full rounded-xl border border-line bg-surface p-3">
+          <p className="small-label mb-1.5">{t('whatif.you_said')}</p>
           <p className="text-sm leading-snug">{origin}</p>
         </div>
       </div>
@@ -48,15 +48,15 @@ export function BranchMap({ origin, branches }: { origin: string; branches: Bran
         {branches.map((b, i) => (
           <li
             key={i}
-            className={`flex items-center gap-3 rounded-2xl border px-3 py-2.5 ${
-              b.best ? 'border-brand bg-brand-soft shadow-glow' : b.actual ? 'border-dashed border-line bg-sunken/60' : 'border-line bg-surface'
+            className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 ${
+              b.best ? 'border-brand bg-surface' : b.actual ? 'border-dashed border-line bg-sunken/60' : 'border-line bg-surface'
             }`}
           >
             <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: b.color }} aria-hidden="true" />
             <span className="min-w-0 flex-1">
               <span className="block text-sm font-semibold leading-snug">
-                {b.best && '★ '}
                 {b.label}
+                {b.best && <span className="ml-2 text-brand-deep">{t('whatif.best')}</span>}
               </span>
               <span className="mono-num whitespace-nowrap text-xs text-muted">
                 {t('whatif.trust_end', { from: Math.round(b.from), to: Math.round(b.to) })}

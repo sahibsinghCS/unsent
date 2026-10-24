@@ -72,7 +72,7 @@ export function RealMode() {
       <p className="mt-3 text-lg leading-relaxed text-muted">{data.intro}</p>
 
       <fieldset className="mt-6">
-        <legend className="eyebrow mb-2">{t('real.country')}</legend>
+        <legend className="small-label mb-2">{t('real.country')}</legend>
         <div className="flex flex-wrap gap-2">
           {COUNTRIES.map((code) => (
             <button
@@ -142,7 +142,7 @@ export function RealMode() {
       )}
 
       <div className="mt-8 rounded-2xl bg-brand-soft/60 p-5">
-        <p className="eyebrow">{t('real.for_you')}</p>
+        <p className="small-label">{t('real.for_you')}</p>
         <p className="mt-1 leading-relaxed">{data.for_you}</p>
       </div>
       <p className="mt-6 flex items-start gap-2 text-sm text-muted">

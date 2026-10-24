@@ -233,7 +233,7 @@
     "uncertain_hint": "Nuestros dos modelos no estuvieron de acuerdo aquí; toma este puntaje con cautela.",
     "try_instead": "Prueba mejor",
     "gain": "suma: {skill}",
-    "try_again": "Intentar de nuevo desde aquí",
+    "try_again": "Probar otra respuesta",
     "what_if": "¿Y si…?",
     "new_scenario": "Practicar con otro amigo",
     "back_chat": "Volver al chat",
@@ -250,14 +250,15 @@
     "you_said": "Dijiste",
     "would_have_worked": "Lo que habría funcionado",
     "gain_generic": "mejor verificada",
-    "gain_hint": "Nuestro detector de habilidades puntúa esta respuesta {gain} puntos más alto en la habilidad que faltó."
+    "gain_hint": "Nuestro detector de habilidades puntúa esta respuesta {gain} puntos más alto en la habilidad que faltó.",
+    "transcript_title": "Tu conversación, con notas"
   },
   "whatif": {
     "title": "¿Y si hubieras dicho otra cosa?",
     "sub": "Repetimos la conversación desde tu mensaje con mejores respuestas, usando el mismo motor de confianza y banco de líneas.",
     "simulated": "Simulado",
     "simulated_hint": "Son simulaciones, no personas reales. Muestran cómo reacciona el modelo.",
-    "best": "Mejor camino",
+    "best": "Mejor",
     "score": "Coincidencia con la habilidad {score}%",
     "overlay": "Todos los caminos, confianza en el tiempo",
     "you_said": "Lo que dijiste",
@@ -266,7 +267,7 @@
     "error": "No se pudo ejecutar la simulación.",
     "back": "Volver a los comentarios",
     "try_this": "Probar esto en el chat",
-    "trust_end": "Confianza {from} → {to}",
+    "trust_end": "Confianza de {from} a {to}",
     "score_hint": "Qué tan claramente nuestro detector ve la habilidad que enseña esta respuesta.",
     "empty": "No encontramos una respuesta mejor verificada para este mensaje. Prueba con otro.",
     "strategies": {
@@ -277,7 +278,7 @@
       "follow_up": "dar seguimiento",
       "combo": "combinación"
     },
-    "futures": "Futuros posibles"
+    "futures": "Respuestas que podrías haber enviado"
   },
   "real": {
     "country": "¿Dónde estás?",
@@ -460,7 +461,7 @@
   },
   "friends": {
     "back": "Volver a los amigos",
-    "eyebrow": "Agrega a tu propio amigo",
+    "small-label": "Agrega a tu propio amigo",
     "title": "¿Con quién quieres practicar?",
     "sub": "Describe a un amigo con tus propias palabras. Nuestro motor sigue decidiendo qué revela, y nuestras revisiones de seguridad siguen corriendo en cada mensaje.",
     "privacy": "Este amigo solo existe para esta práctica: se guarda en la memoria del servidor y se borra tras 60 minutos de inactividad. Para escribir sus respuestas, tu descripción se envía a OpenAI. Usa un apodo y no pegues mensajes privados de nadie.",

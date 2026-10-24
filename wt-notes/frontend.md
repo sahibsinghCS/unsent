@@ -36,6 +36,13 @@
   - **Custom friend:** /practice/new form with live preview, counters, privacy and safety notices, field-level 422s, a real_help card first, `GET /api/friends/{id}` lookups, an expired → "Create again" flow, and "Your friend" with a not-reviewed chip. React state only.
   - **Tests:** 7 new vitest tests; `npm run test:friends` E2E (EN/ES × mobile/desktop, axe 0); click-nav now covers /practice/new and the chat's back chevron.
 
+- **De-slop ("looks like your phone")** (main 15c8ad4). See `frontend/DESIGN.md`.
+  - **Removed:** violet/ember/cream/grain/gradients/glows/backdrop-blur, Fraunces and @fontsource, eyebrows, italic accents, the sparkle icon, arrows in labels, stat banners, the 3-card grid, the radar and section fade-ups.
+  - **Now:** system font, iOS neutrals, one action blue (#0071EB fill / #0062CC text), green/red for helped/hurt, help red only for help/988/crisis.
+  - **Landing:** an annotated conversation, plus corrected sourced facts (CDC YRBS 2023 20.4% "in the past year"; Fox et al. 2021 friend disclosure).
+  - **Pages:** Practice is a contact list; Feedback leads with your annotated transcript; What-if is a split thread with "Best".
+  - **Proof:** before/after pairs in `screenshots/deslop/`.
+
 ## In progress
 - Nothing. Lane is feature-complete against the stubs.
 

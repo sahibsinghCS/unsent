@@ -97,7 +97,7 @@
   .link { @apply font-semibold text-brand-deep underline-offset-4 hover:underline; }
   .chip { @apply inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium; }
   /* A small plain label (sentence case; no uppercase tracking). */
-  .eyebrow { @apply text-[13px] font-semibold text-muted; }
+  .small-label { @apply text-[13px] font-semibold text-muted; }
   .mono-num { @apply font-mono tabular-nums; }
   .numeral { @apply font-bold tabular-nums tracking-tight; }
   /* X-ray inset: plain dark gray with hairlines (a debug view, no grid or glow). */

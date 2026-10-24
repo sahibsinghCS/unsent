@@ -18,7 +18,8 @@ import { usePrefs } from '../i18n';
 import { isScoredUserNode } from '../lib/conversation';
 import { strongestLabel } from '../lib/labels';
 
-const PATH_COLORS = ['#8b5cf6', '#0ea5e9', '#f59e0b', '#db2777'];
+// Alternatives are neutral grays; only the best one uses the action blue (and the word "Best").
+const PATH_COLORS = ['#8E8E93', '#636366', '#AEAEB2', '#48484A'];
 
 /** Trust points for a simulated path: its starting trust, then after each simulated helper message. */
 function pathPoints(path: WhatIfPath) {
@@ -76,7 +77,7 @@ export function WhatIf() {
       emphasis: (i === result.best_index ? 'best' : 'normal') as Series['emphasis'],
     }));
     const actual = actualSeries(nodes, result.from_node_id);
-    return actual.length > 1 ? [...simulated, { label: t('whatif.you_said'), values: actual, color: tokenColor('muted'), emphasis: 'actual' }] : simulated;
+    return actual.length > 1 ? [...simulated, { label: t('whatif.you_said'), values: actual, color: '#D70015', emphasis: 'actual' }] : simulated;
   }, [result, nodes, t, strategyName]);
 
   // The same data as the overlay chart, as branching futures (best first, what really happened last).
@@ -92,7 +93,7 @@ export function WhatIf() {
     sims.sort((a, b) => Number(!!b.best) - Number(!!a.best));
     const actual = actualSeries(nodes, result.from_node_id);
     return actual.length > 1
-      ? [...sims, { label: t('whatif.you_said'), from: actual[0], to: actual[actual.length - 1], color: tokenColor('muted'), actual: true }]
+      ? [...sims, { label: t('whatif.you_said'), from: actual[0], to: actual[actual.length - 1], color: '#D70015', actual: true }]
       : sims;
   }, [result, nodes, t, strategyName]);
 
@@ -121,12 +122,11 @@ export function WhatIf() {
       </Link>
       <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
         <div className="max-w-2xl">
-          <h1 className="text-4xl font-semibold sm:text-5xl">{t('whatif.title')}</h1>
+          <h1 className="text-4xl sm:text-5xl">{t('whatif.title')}</h1>
           <p className="mt-2 text-muted">{t('whatif.sub')}</p>
         </div>
         {result.simulated && (
-          <span className="chip border-warm/50 bg-warm-soft px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-ink" title={t('whatif.simulated_hint')} data-testid="simulated">
-            <Icon name="sparkle" className="h-4 w-4 text-warm" />
+          <span className="chip border-line bg-surface px-2.5 py-1 text-sm font-semibold text-muted" title={t('whatif.simulated_hint')} data-testid="simulated">
             {t('whatif.simulated')}
           </span>
         )}
@@ -141,7 +141,7 @@ export function WhatIf() {
 
       {result.paths.length === 0 && (
         <div className="card mt-6 p-8 text-center" role="status" data-testid="whatif-empty">
-          <Icon name="sparkle" className="mx-auto h-8 w-8 text-warm" />
+          <Icon name="branch" className="mx-auto h-8 w-8 text-muted" />
           <p className="mx-auto mt-3 max-w-md text-lg font-semibold">{t('whatif.empty')}</p>
           <Link to={`/feedback/${sessionId}`} className="btn-ghost mt-5">
             {t('whatif.back')}
@@ -151,7 +151,7 @@ export function WhatIf() {
 
       {result.paths.length > 0 && (
         <section className="card mt-6 p-5">
-          <h2 className="eyebrow mb-3">{t('whatif.overlay')}</h2>
+          <h2 className="mb-3 text-lg">{t('whatif.overlay')}</h2>
           <OverlayChart series={series} />
           <p className="mt-2 text-xs text-muted">{t('whatif.simulated_hint')}</p>
         </section>
@@ -162,13 +162,13 @@ export function WhatIf() {
           const best = i === result.best_index;
           const series = path.trust_series;
           return (
-            <li key={i} className={`card flex flex-col p-4 ${best ? 'ring-2 ring-brand' : ''}`} data-testid="whatif-path">
+            <li key={i} className={`card flex flex-col p-4 ${best ? 'border-brand' : ''}`} data-testid="whatif-path">
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="grid h-7 w-7 place-items-center rounded-full border-2 bg-surface text-xs font-bold text-ink" style={{ borderColor: best ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length] }}>
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-sunken text-xs font-bold text-ink">
                   {i + 1}
                 </span>
                 <span className="chip border-line">{strategyName(path.strategy)}</span>
-                {best && <span className="chip border-transparent bg-brand text-brand-ink">★ {t('whatif.best')}</span>}
+                {best && <span className="chip border-brand text-sm font-semibold text-brand-deep">{t('whatif.best')}</span>}
                 {/* critic_score = our detector's score (0–1) for the skill this reply teaches */}
                 <span className="mono-num ml-auto text-xs text-muted" title={t('whatif.score_hint')}>
                   {t('whatif.score', { score: Math.round(path.critic_score * 100) })}

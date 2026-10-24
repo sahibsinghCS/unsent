@@ -229,7 +229,7 @@
     "uncertain_hint": "Our two models disagreed here, so treat this score with caution.",
     "try_instead": "Try instead",
     "gain": "adds: {skill}",
-    "try_again": "Try again from here",
+    "try_again": "Try a different reply",
     "what_if": "What if?",
     "new_scenario": "Practice another friend",
     "back_chat": "Back to chat",
@@ -246,14 +246,15 @@
     "you_said": "You said",
     "would_have_worked": "What would have worked",
     "gain_generic": "verified better",
-    "gain_hint": "Our skill detector scores this reply {gain} points higher on the skill you missed."
+    "gain_hint": "Our skill detector scores this reply {gain} points higher on the skill you missed.",
+    "transcript_title": "Your conversation, with notes"
   },
   "whatif": {
     "title": "What if you'd said something else?",
     "sub": "We replayed the conversation from your message with stronger replies, through the same trust engine and friend line bank.",
     "simulated": "Simulated",
     "simulated_hint": "These are simulations, not real people. They show how the model reacts.",
-    "best": "Best path",
+    "best": "Best",
     "score": "Skill match {score}%",
     "overlay": "All paths, trust over time",
     "you_said": "What you said",
@@ -262,7 +263,7 @@
     "error": "Couldn't run the simulation.",
     "back": "Back to feedback",
     "try_this": "Try this in the chat",
-    "trust_end": "Trust {from} → {to}",
+    "trust_end": "Trust {from} to {to}",
     "score_hint": "How strongly our skill detector sees the skill this reply teaches.",
     "empty": "We couldn't find a verified better reply for this message. Try another one.",
     "strategies": {
@@ -273,7 +274,7 @@
       "follow_up": "follow up",
       "combo": "combination"
     },
-    "futures": "Branching futures"
+    "futures": "Replies you could have sent instead"
   },
   "real": {
     "country": "Where are you?",
@@ -456,7 +457,7 @@
   },
   "friends": {
     "back": "Back to friends",
-    "eyebrow": "Add your own friend",
+    "small-label": "Add your own friend",
     "title": "Who do you want to practice with?",
     "sub": "Describe a friend in your own words. Our engine still decides what they reveal, and our safety checks still run on every message.",
     "privacy": "This friend only exists for this practice: it's kept in server memory and deleted after 60 minutes of inactivity. To write the friend's replies, your description is sent to OpenAI. Use a nickname, and don't paste anyone's private messages.",

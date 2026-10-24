@@ -68,9 +68,9 @@ export function CrisisModal({ open, message, onAcknowledge }: { open: boolean; m
 export function BlockedCard({ message }: { message?: string }) {
   const { t } = usePrefs();
   return (
-    <div role="note" className="mx-auto my-1 max-w-[92%] rounded-2xl border border-warm/40 bg-warm-soft/60 p-3.5 text-sm animate-pop-in" data-testid="blocked-card">
+    <div role="note" className="mx-auto my-1 max-w-[92%] rounded-xl border border-line bg-surface p-3.5 text-sm animate-pop-in" data-testid="blocked-card">
       <p className="flex items-center gap-2 font-semibold">
-        <Icon name="shield" className="h-4 w-4 text-warm" />
+        <Icon name="shield" className="h-4 w-4 text-muted" />
         {t('chat.blocked.title')}
       </p>
       <p className="mt-1.5 leading-relaxed">{message || t('chat.blocked.teach')}</p>
@@ -97,7 +97,7 @@ export function ContentWarningModal({
       {scenario && (
         <div className="space-y-4" data-testid="content-warning">
           <div className="rounded-xl bg-sunken p-3.5">
-            <p className="eyebrow mb-1">{t('cw.covers')}</p>
+            <p className="small-label mb-1">{t('cw.covers')}</p>
             <p className="font-medium">{scenario.content_warning}</p>
           </div>
           <ul className="space-y-2.5 text-sm leading-relaxed">
