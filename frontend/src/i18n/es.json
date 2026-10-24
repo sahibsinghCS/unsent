@@ -290,7 +290,12 @@
       "follow_up": "dar seguimiento",
       "combo": "combinación"
     },
-    "futures": "Respuestas que podrías haber enviado"
+    "futures": "Respuestas que podrías haber enviado",
+    "rule": "Mejor = la mayor confianza y apertura en la menor cantidad de mensajes.",
+    "messages": "en {n} mensajes",
+    "messages_one": "en 1 mensaje",
+    "levels": "se abrió {n} niveles",
+    "levels_one": "se abrió 1 nivel"
   },
   "real": {
     "country": "¿Dónde estás?",

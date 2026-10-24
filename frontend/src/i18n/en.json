@@ -286,7 +286,12 @@
       "follow_up": "follow up",
       "combo": "combination"
     },
-    "futures": "Replies you could have sent instead"
+    "futures": "Replies you could have sent instead",
+    "rule": "Best = the most trust and openness in the fewest messages.",
+    "messages": "in {n} messages",
+    "messages_one": "in 1 message",
+    "levels": "she opened up {n} levels",
+    "levels_one": "she opened up 1 level"
   },
   "real": {
     "country": "Where are you?",

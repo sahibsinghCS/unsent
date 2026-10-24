@@ -11,6 +11,8 @@ export interface Branch {
   from: number;
   to: number;
   color: string;
+  /** e.g. "in 3 messages" (what the Best ranking also weighs). */
+  detail?: string;
   best?: boolean;
   actual?: boolean;
 }
@@ -58,8 +60,9 @@ export function BranchMap({ origin, branches }: { origin: string; branches: Bran
                 {b.label}
                 {b.best && <span className="chip ml-2 border-brand bg-brand align-middle font-semibold text-brand-ink">{t('whatif.best')}</span>}
               </span>
-              <span className="mono-num whitespace-nowrap text-xs text-muted">
-                {t('whatif.trust_end', { from: Math.round(b.from), to: Math.round(b.to) })}
+              <span className="mono-num block text-xs text-muted">
+                <span className="whitespace-nowrap">{t('whatif.trust_end', { from: Math.round(b.from), to: Math.round(b.to) })}</span>
+                {b.detail && <span className="whitespace-nowrap"> · {b.detail}</span>}
               </span>
             </span>
             <span className="text-right">

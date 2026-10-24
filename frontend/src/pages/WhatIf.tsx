@@ -30,6 +30,18 @@ function pathPoints(path: WhatIfPath) {
   ];
 }
 
+/**
+ * What the ranking rewards, made visible: how many of your messages the path took, and how many
+ * disclosure levels she opened up. "Best" (backend whatif/rollout.py path_value) is final trust
+ * + 10 per level gained − 10 per extra message (± 25 for an ending), so a path can reach more trust
+ * and still not be Best.
+ */
+function pathFacts(path: WhatIfPath, startLevel: number) {
+  const messages = path.nodes.filter((n) => n.role === 'user').length;
+  const end = path.nodes[path.nodes.length - 1]?.state_after.level ?? startLevel;
+  return { messages, levels: Math.max(0, end - startLevel) };
+}
+
 /** What actually happened from the same message: trust before it, then after each later helper message. */
 function actualSeries(nodes: Node[], fromId: string): number[] {
   const index = nodes.findIndex((n) => n.id === fromId);
@@ -71,7 +83,7 @@ export function WhatIf() {
   const series = useMemo<Series[]>(() => {
     if (!result) return [];
     const simulated = result.paths.map((p, i) => ({
-      label: `${i + 1}. ${strategyName(p.strategy)}`,
+      label: strategyName(p.strategy),
       values: p.trust_series,
       color: i === result.best_index ? tokenColor('brand') : PATH_COLORS[i % PATH_COLORS.length],
       emphasis: (i === result.best_index ? 'best' : 'normal') as Series['emphasis'],
@@ -80,10 +92,21 @@ export function WhatIf() {
     return actual.length > 1 ? [...simulated, { label: t('whatif.you_said'), values: actual, color: '#D70015', emphasis: 'actual' }] : simulated;
   }, [result, nodes, t, strategyName]);
 
+  // Disclosure level just before the message we branch from (the parent's state).
+  const startLevel = useMemo(() => {
+    const from = nodes.find((n) => n.id === result?.from_node_id);
+    return nodes.find((n) => n.id === from?.parent_id)?.state_after.level ?? 0;
+  }, [nodes, result]);
+  const facts = useMemo(() => (result ? result.paths.map((p) => pathFacts(p, startLevel)) : []), [result, startLevel]);
+  const levelsDiffer = new Set(facts.map((f) => f.levels)).size > 1;
+  const messagesText = useCallback((n: number) => t(n === 1 ? 'whatif.messages_one' : 'whatif.messages', { n }), [t]);
+  const levelsText = useCallback((n: number) => t(n === 1 ? 'whatif.levels_one' : 'whatif.levels', { n }), [t]);
+
   // The same data as the overlay chart, as branching futures (best first, what really happened last).
   const branches = useMemo<Branch[]>(() => {
     if (!result) return [];
     const sims = result.paths.map((p, i) => ({
+      detail: messagesText(facts[i]?.messages ?? 0),
       label: strategyName(p.strategy),
       from: p.trust_series[0] ?? 0,
       to: p.trust_series[p.trust_series.length - 1] ?? 0,
@@ -95,7 +118,7 @@ export function WhatIf() {
     return actual.length > 1
       ? [...sims, { label: t('whatif.you_said'), from: actual[0], to: actual[actual.length - 1], color: '#D70015', actual: true }]
       : sims;
-  }, [result, nodes, t, strategyName]);
+  }, [result, nodes, t, strategyName, facts, messagesText]);
 
   async function tryInChat(text: string) {
     if (!result) return;
@@ -124,6 +147,9 @@ export function WhatIf() {
         <div className="max-w-2xl">
           <h1 className="text-5xl sm:text-6xl">{t('whatif.title')}</h1>
           <p className="mt-2 text-muted">{t('whatif.sub')}</p>
+          <p className="mt-2 text-sm font-semibold" data-testid="best-rule">
+            {t('whatif.rule')}
+          </p>
         </div>
         {result.simulated && (
           <span className="chip border-line-strong px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-muted" title={t('whatif.simulated_hint')} data-testid="simulated">
@@ -189,8 +215,9 @@ export function WhatIf() {
                 )}
               </div>
               <div className="mt-auto">
-                <p className="mono-num mb-1 text-xs text-muted">
-                  {t('whatif.trust_end', { from: Math.round(series[0] ?? 0), to: Math.round(series[series.length - 1] ?? 0) })}
+                <p className="mono-num mb-1 text-xs text-muted" data-testid="path-facts">
+                  {t('whatif.trust_end', { from: Math.round(series[0] ?? 0), to: Math.round(series[series.length - 1] ?? 0) })} · {messagesText(facts[i].messages)}
+                  {levelsDiffer && <> · {levelsText(facts[i].levels)}</>}
                 </p>
                 <TrustChart points={pathPoints(path)} height={110} />
                 <button type="button" className="btn-ghost mt-3 w-full text-xs" onClick={() => tryInChat(path.candidate_text)}>
