@@ -25,6 +25,8 @@
 - Later: kappa when counselor labels exist.
 
 ## Decisions
+- Critic skips both Guardian-blocked and crisis (pause_roleplay) messages: they aren't practice replies, so
+  they're never scored or coached (integrator fix d9e1026, merged here).
 - "Almost asked" (integrator request): `rules.almost_asked` = no explicit term AND Model A ≥ 0.5 AND Model B
   ≥ 0.5 AND a recognised hint phrase (`rules.HINT_PHRASES`). Deviation from the request: the "or stacked p ≥
   0.5 before the cap" branch and the no-hint-phrase case were dropped, because they produced false coaching
