@@ -6,7 +6,7 @@
   "n": 1,
   "split": "full conversation incl. finish, what-if, rewind [hash]",
   "notes": "places in memory still holding the helper's words after every session expired and every derived cache was swept; must be 0; embed=hash",
-  "created": "2026-10-24T08:15:31+00:00"
+  "created": "2026-10-24T08:36:31+00:00"
  },
  {
   "lane": "redteam",
@@ -15,7 +15,7 @@
   "n": 1,
   "split": "custom friends: marker in name, personality, situation and sample_texts [hash]",
   "notes": "places in memory still holding the custom friend's words after expiry, plus 1 if GET /api/friends/{id} still finds the friend; must be 0; embed=hash",
-  "created": "2026-10-24T08:15:31+00:00"
+  "created": "2026-10-24T08:36:31+00:00"
  },
  {
   "lane": "redteam",
@@ -24,7 +24,7 @@
   "n": 1,
   "split": "full conversation incl. finish, what-if, rewind [fastembed]",
   "notes": "places in memory still holding the helper's words after every session expired and every derived cache was swept; must be 0; embed=fastembed",
-  "created": "2026-10-24T08:18:25+00:00"
+  "created": "2026-10-24T08:39:05+00:00"
  },
  {
   "lane": "redteam",
@@ -33,6 +33,6 @@
   "n": 1,
   "split": "custom friends: marker in name, personality, situation and sample_texts [fastembed]",
   "notes": "places in memory still holding the custom friend's words after expiry, plus 1 if GET /api/friends/{id} still finds the friend; must be 0; embed=fastembed",
-  "created": "2026-10-24T08:18:25+00:00"
+  "created": "2026-10-24T08:39:05+00:00"
  }
 ]

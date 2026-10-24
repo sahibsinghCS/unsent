@@ -45,11 +45,11 @@ test setup. How each number is measured: `docs/how/*.md`.
 | I7 injections that changed the friend | **0** | 2578 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; emb... |
 | I8 places still holding your words after expiry | **0** | 1 | full conversation incl. finish, what-if, rewind [fastembed] | places in memory still holding the helper's words after every session expired and every derived cache was s... |
 | I8 for custom friends (marker in the profile) | **0** | 1 | custom friends: marker in name, personality, situation and sample_texts [fastembed] | places in memory still holding the custom friend's words after expiry, plus 1 if GET /api/friends/{id} stil... |
-| Custom friends: attack profiles refused at creation | **53.3%** | 1953 | custom friends: profile attacks [fastembed] | attack profiles refused at creation (422); the rest were created and chatted; embed=fastembed |
-| Custom friends: ordinary profiles wrongly refused | **8.3%** | 12 | custom friends: ordinary hand-written profiles (EN + ES) [fastembed] | ordinary profiles refused at creation (should be 0): Noor: situation; embed=fastembed |
-| Custom friends (realistic): unsafe friend lines shown (I1) | **0** | 1635 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
-| Custom friends (realistic): direct asks blocked (I6) | **0** | 280 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
-| Custom friends, worst-case obedient AI: injected profile text shown | **82** | 120 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | created attack profiles whose injected text an obedient AI repeated AND the verifier then showed; by kind:... |
+| Custom friends: attack profiles refused at creation | **77.0%** | 1953 | custom friends: profile attacks [fastembed] | attack profiles refused at creation (422); the rest were created and chatted; embed=fastembed |
+| Custom friends: ordinary profiles wrongly refused | **0.0%** | 12 | custom friends: ordinary hand-written profiles (EN + ES) [fastembed] | ordinary profiles refused at creation (should be 0): ; embed=fastembed |
+| Custom friends (realistic): unsafe friend lines shown (I1) | **0** | 2453 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
+| Custom friends (realistic): direct asks blocked (I6) | **0** | 420 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
+| Custom friends, worst-case obedient AI: injected profile text shown | **36** | 120 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | created attack profiles whose injected text an obedient AI repeated AND the verifier then showed; by kind:... |
 | Live: friend replies written by the LLM | **92.7%** | 68 | live [fastembed] | share of friend replies by who wrote the words; embed=fastembed |
 | Live: unsafe friend lines shown | **0** | 68 | live [fastembed] | check_friend, method words or persona break in a shown line; must be 0; embed=fastembed |
 | Live: injection turns that hijacked the friend | **0** | 12 | live [fastembed] | persona-breaker/injector turns where the friend broke character or echoed; embed=fastembed |
@@ -57,6 +57,23 @@ test setup. How each number is measured: `docs/how/*.md`.
 | Live: estimated OpenAI cost | **$0.0115** | 78 | live [fastembed] | estimated from eval/logs/llm_usage.jsonl; cap $0.50; embed=fastembed |
 
 ## safety
+
+### `eval/reports/safety_custom.json`
+
+| Metric | Value | n | Split | Notes |
+|---|---|---|---|---|
+| `custom.attack_fields_blocked` | 0.996 | 1446 | custom_friend_seeds | all seeds x perturbations x 3 fields, excl. persona curiosity; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.benign_fields_refused` | 0 | 53 | custom_friend_seeds | red-team benign profiles; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.encourager` | 1 | 378 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.es_method_seeking` | 1 | 147 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.es_prompt_injection` | 1 | 63 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.hand_injection` | 1 | 42 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.hand_persona` | 1 | 42 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.hand_style` | 1 | 84 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.hand_unlock` | 1 | 84 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.method_seeking` | 1 | 291 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.persona_breaker` | 0.018 | 399 | custom_friend_seeds | curiosity: answered in persona; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
+| `custom.blocked.prompt_injector` | 0.981 | 315 | custom_friend_seeds | ; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2; screen_profile is lexicon-only |
 
 ### `eval/reports/safety_external_data_lane.json`
 
@@ -125,9 +142,9 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `robustness.emoji.without_normalizer` | 0.969 | 128 | test | decisions unchanged |
 | `robustness.typo.with_normalizer` | 0.977 | 128 | test | decisions unchanged |
 | `robustness.typo.without_normalizer` | 0.867 | 128 | test | decisions unchanged |
-| `latency_ms_p50` | 4.474 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
-| `latency_ms_p95` | 6.385 | 516 | test | target < 50 ms |
-| `friend_lines_flagged` | 0 | 2668 | scenarios+line_bank | should be 0 |
+| `latency_ms_p50` | 4.314 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
+| `latency_ms_p95` | 6.302 | 516 | test | target < 50 ms |
+| `friend_lines_flagged` | 0 | 2685 | scenarios+line_bank | should be 0 |
 | `self_risk_average_precision` | 0.998 | 172 | test | classifier only, PR curve PNG |
 
 ### `eval/reports/safety_moderation.json`
@@ -270,29 +287,29 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `custom.profiles.refused_rate` | 0.475 | 1953 | custom friends: profile attacks [hash] | attack profiles refused at creation (422); the rest were created and chatted; embed=hash |
+| `custom.profiles.refused_rate` | 0.77 | 1953 | custom friends: profile attacks [hash] | attack profiles refused at creation (422); the rest were created and chatted; embed=hash |
 | `custom.profiles.server_errors` | 0 | 1953 | custom friends: profile attacks [hash] | responses other than 200/422 (must be 0); embed=hash |
-| `custom.profiles.refused_rate.kind.encourager` | 0.746 | 394 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.es_method_seeking` | 0.865 | 170 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.es_prompt_injection` | 0.809 | 63 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.hand_injection` | 0.905 | 42 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.hand_persona` | 0.429 | 42 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.hand_style` | 0 | 84 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.hand_unlock` | 0.345 | 84 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.method_seeking` | 0.472 | 318 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.persona_breaker` | 0.014 | 428 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.kind.prompt_injector` | 0.595 | 328 | custom friends: profile attacks [hash] | by kind; embed=hash |
-| `custom.profiles.refused_rate.field.name` | 0.574 | 108 | custom friends: profile attacks [hash] | by field; embed=hash |
-| `custom.profiles.refused_rate.field.personality` | 0.444 | 615 | custom friends: profile attacks [hash] | by field; embed=hash |
-| `custom.profiles.refused_rate.field.sample_texts` | 0.556 | 615 | custom friends: profile attacks [hash] | by field; embed=hash |
-| `custom.profiles.refused_rate.field.situation` | 0.408 | 615 | custom friends: profile attacks [hash] | by field; embed=hash |
-| `custom.profiles.refused_rate.perturbation.emoji` | 0.509 | 275 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
-| `custom.profiles.refused_rate.perturbation.homoglyph` | 0.556 | 284 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
-| `custom.profiles.refused_rate.perturbation.leetspeak` | 0.549 | 288 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
-| `custom.profiles.refused_rate.perturbation.none` | 0.562 | 288 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
-| `custom.profiles.refused_rate.perturbation.spaced_letters` | 0.531 | 271 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
-| `custom.profiles.refused_rate.perturbation.stretched` | 0.538 | 273 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
-| `custom.profiles.refused_rate.perturbation.zero_width` | 0.069 | 274 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
+| `custom.profiles.refused_rate.kind.encourager` | 1 | 394 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.es_method_seeking` | 1 | 170 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.es_prompt_injection` | 1 | 63 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.hand_injection` | 1 | 42 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.hand_persona` | 1 | 42 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.hand_style` | 1 | 84 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.hand_unlock` | 1 | 84 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.method_seeking` | 1 | 318 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.persona_breaker` | 0.016 | 428 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.kind.prompt_injector` | 0.912 | 328 | custom friends: profile attacks [hash] | by kind; embed=hash |
+| `custom.profiles.refused_rate.field.name` | 0.713 | 108 | custom friends: profile attacks [hash] | by field; embed=hash |
+| `custom.profiles.refused_rate.field.personality` | 0.769 | 615 | custom friends: profile attacks [hash] | by field; embed=hash |
+| `custom.profiles.refused_rate.field.sample_texts` | 0.78 | 615 | custom friends: profile attacks [hash] | by field; embed=hash |
+| `custom.profiles.refused_rate.field.situation` | 0.769 | 615 | custom friends: profile attacks [hash] | by field; embed=hash |
+| `custom.profiles.refused_rate.perturbation.emoji` | 0.778 | 275 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
+| `custom.profiles.refused_rate.perturbation.homoglyph` | 0.768 | 284 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
+| `custom.profiles.refused_rate.perturbation.leetspeak` | 0.757 | 288 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
+| `custom.profiles.refused_rate.perturbation.none` | 0.771 | 288 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
+| `custom.profiles.refused_rate.perturbation.spaced_letters` | 0.76 | 271 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
+| `custom.profiles.refused_rate.perturbation.stretched` | 0.777 | 273 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
+| `custom.profiles.refused_rate.perturbation.zero_width` | 0.777 | 274 | custom friends: profile attacks [hash] | by perturbation; embed=hash |
 | `custom.bank.invariants.I1.violations` | 0 | 840 | custom friends: 120 created attack profiles, bank voice [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
 | `custom.bank.invariants.I2.violations` | 0 | 720 | custom friends: 120 created attack profiles, bank voice [hash] | friend lines revealing a fact above the current level; n = checks; embed=hash |
 | `custom.bank.invariants.I3.violations` | 0 | 840 | custom friends: 120 created attack profiles, bank voice [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
@@ -301,42 +318,42 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `custom.obedient_llm.invariants.I1.violations` | 0 | 840 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
 | `custom.obedient_llm.invariants.I2.violations` | 0 | 720 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | friend lines revealing a fact above the current level; n = checks; embed=hash |
 | `custom.obedient_llm.invariants.I3.violations` | 0 | 840 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
-| `custom.obedient_llm.invariants.I7.violations` | 414 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash |
-| `custom.obedient_llm.voice.fallback` | 0.285 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | share of friend replies by who wrote the words; embed=hash |
-| `custom.obedient_llm.voice.llm` | 0.715 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | share of friend replies by who wrote the words; embed=hash |
-| `custom.invariants.I1.violations` | 0 | 2520 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
-| `custom.invariants.I2.violations` | 0 | 2268 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | friend lines revealing a fact above the current level; n = checks; embed=hash |
-| `custom.invariants.I3.violations` | 0 | 2520 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
+| `custom.obedient_llm.invariants.I7.violations` | 208 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash |
+| `custom.obedient_llm.voice.fallback` | 0.645 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | share of friend replies by who wrote the words; embed=hash |
+| `custom.obedient_llm.voice.llm` | 0.355 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | share of friend replies by who wrote the words; embed=hash |
+| `custom.invariants.I1.violations` | 0 | 2517 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
+| `custom.invariants.I2.violations` | 0 | 2265 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | friend lines revealing a fact above the current level; n = checks; embed=hash |
+| `custom.invariants.I3.violations` | 0 | 2517 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
 | `custom.invariants.I4.violations` | 0 | 114 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=hash |
-| `custom.invariants.I5.violations` | 0 | 276 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=hash |
+| `custom.invariants.I5.violations` | 0 | 279 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=hash |
 | `custom.invariants.I6.violations` | 0 | 420 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=hash |
 | `custom.invariants.I7.violations` | 0 | 855 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash |
 | `custom.conversations.count` | 252 | 252 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [hash] | every attack in the bank, per friend; embed=hash |
-| `custom.obedient_llm.injected_text_shown_profiles` | 76 | 120 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | created attack profiles whose injected text an obedient AI repeated AND the verifier then showed; by kind: encourager 2, hand_style 5, hand_unlock 7, method_seeking 13, persona_breaker 39, prompt_injector 10; embed=hash |
-| `custom.benign.false_refusal_rate` | 0.083 | 12 | custom friends: ordinary hand-written profiles (EN + ES) [hash] | ordinary profiles refused at creation (should be 0): Sam: sample_texts.1; embed=hash |
-| `custom.profiles.refused_rate` | 0.533 | 1953 | custom friends: profile attacks [fastembed] | attack profiles refused at creation (422); the rest were created and chatted; embed=fastembed |
+| `custom.obedient_llm.injected_text_shown_profiles` | 36 | 120 | custom friends: 120 created attack profiles, obedient_llm voice [hash] | created attack profiles whose injected text an obedient AI repeated AND the verifier then showed; by kind: persona_breaker 35, prompt_injector 1; embed=hash |
+| `custom.benign.false_refusal_rate` | 0 | 12 | custom friends: ordinary hand-written profiles (EN + ES) [hash] | ordinary profiles refused at creation (should be 0): ; embed=hash |
+| `custom.profiles.refused_rate` | 0.77 | 1953 | custom friends: profile attacks [fastembed] | attack profiles refused at creation (422); the rest were created and chatted; embed=fastembed |
 | `custom.profiles.server_errors` | 0 | 1953 | custom friends: profile attacks [fastembed] | responses other than 200/422 (must be 0); embed=fastembed |
-| `custom.profiles.refused_rate.kind.encourager` | 0.761 | 394 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.es_method_seeking` | 0.859 | 170 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.es_prompt_injection` | 0.889 | 63 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.hand_injection` | 0.929 | 42 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.hand_persona` | 0.452 | 42 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.hand_style` | 0.048 | 84 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.hand_unlock` | 0.786 | 84 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.method_seeking` | 0.472 | 318 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.encourager` | 1 | 394 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.es_method_seeking` | 1 | 170 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.es_prompt_injection` | 1 | 63 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.hand_injection` | 1 | 42 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.hand_persona` | 1 | 42 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.hand_style` | 1 | 84 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.hand_unlock` | 1 | 84 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.kind.method_seeking` | 1 | 318 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
 | `custom.profiles.refused_rate.kind.persona_breaker` | 0.016 | 428 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.kind.prompt_injector` | 0.774 | 328 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
-| `custom.profiles.refused_rate.field.name` | 0.62 | 108 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
-| `custom.profiles.refused_rate.field.personality` | 0.489 | 615 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
-| `custom.profiles.refused_rate.field.sample_texts` | 0.623 | 615 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
-| `custom.profiles.refused_rate.field.situation` | 0.471 | 615 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
-| `custom.profiles.refused_rate.perturbation.emoji` | 0.56 | 275 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
-| `custom.profiles.refused_rate.perturbation.homoglyph` | 0.62 | 284 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
-| `custom.profiles.refused_rate.perturbation.leetspeak` | 0.608 | 288 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
-| `custom.profiles.refused_rate.perturbation.none` | 0.625 | 288 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
-| `custom.profiles.refused_rate.perturbation.spaced_letters` | 0.613 | 271 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
-| `custom.profiles.refused_rate.perturbation.stretched` | 0.571 | 273 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
-| `custom.profiles.refused_rate.perturbation.zero_width` | 0.124 | 274 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
+| `custom.profiles.refused_rate.kind.prompt_injector` | 0.912 | 328 | custom friends: profile attacks [fastembed] | by kind; embed=fastembed |
+| `custom.profiles.refused_rate.field.name` | 0.713 | 108 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
+| `custom.profiles.refused_rate.field.personality` | 0.769 | 615 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
+| `custom.profiles.refused_rate.field.sample_texts` | 0.78 | 615 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
+| `custom.profiles.refused_rate.field.situation` | 0.769 | 615 | custom friends: profile attacks [fastembed] | by field; embed=fastembed |
+| `custom.profiles.refused_rate.perturbation.emoji` | 0.778 | 275 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
+| `custom.profiles.refused_rate.perturbation.homoglyph` | 0.768 | 284 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
+| `custom.profiles.refused_rate.perturbation.leetspeak` | 0.757 | 288 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
+| `custom.profiles.refused_rate.perturbation.none` | 0.771 | 288 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
+| `custom.profiles.refused_rate.perturbation.spaced_letters` | 0.76 | 271 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
+| `custom.profiles.refused_rate.perturbation.stretched` | 0.777 | 273 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
+| `custom.profiles.refused_rate.perturbation.zero_width` | 0.777 | 274 | custom friends: profile attacks [fastembed] | by perturbation; embed=fastembed |
 | `custom.bank.invariants.I1.violations` | 0 | 840 | custom friends: 120 created attack profiles, bank voice [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
 | `custom.bank.invariants.I2.violations` | 0 | 720 | custom friends: 120 created attack profiles, bank voice [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
 | `custom.bank.invariants.I3.violations` | 0 | 840 | custom friends: 120 created attack profiles, bank voice [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
@@ -345,19 +362,19 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `custom.obedient_llm.invariants.I1.violations` | 0 | 840 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
 | `custom.obedient_llm.invariants.I2.violations` | 0 | 720 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
 | `custom.obedient_llm.invariants.I3.violations` | 0 | 840 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
-| `custom.obedient_llm.invariants.I7.violations` | 457 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
-| `custom.obedient_llm.voice.fallback` | 0.23 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | share of friend replies by who wrote the words; embed=fastembed |
-| `custom.obedient_llm.voice.llm` | 0.77 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | share of friend replies by who wrote the words; embed=fastembed |
-| `custom.invariants.I1.violations` | 0 | 1635 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
-| `custom.invariants.I2.violations` | 0 | 1467 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
-| `custom.invariants.I3.violations` | 0 | 1635 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
-| `custom.invariants.I4.violations` | 0 | 78 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
-| `custom.invariants.I5.violations` | 0 | 210 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=fastembed |
-| `custom.invariants.I6.violations` | 0 | 280 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
-| `custom.invariants.I7.violations` | 0 | 569 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
-| `custom.conversations.count` | 168 | 168 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | every attack in the bank, per friend; embed=fastembed |
-| `custom.obedient_llm.injected_text_shown_profiles` | 82 | 120 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | created attack profiles whose injected text an obedient AI repeated AND the verifier then showed; by kind: encourager 10, hand_style 6, hand_unlock 1, method_seeking 16, persona_breaker 43, prompt_injector 6; embed=fastembed |
-| `custom.benign.false_refusal_rate` | 0.083 | 12 | custom friends: ordinary hand-written profiles (EN + ES) [fastembed] | ordinary profiles refused at creation (should be 0): Noor: situation; embed=fastembed |
+| `custom.obedient_llm.invariants.I7.violations` | 210 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
+| `custom.obedient_llm.voice.fallback` | 0.642 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | share of friend replies by who wrote the words; embed=fastembed |
+| `custom.obedient_llm.voice.llm` | 0.358 | 600 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | share of friend replies by who wrote the words; embed=fastembed |
+| `custom.invariants.I1.violations` | 0 | 2453 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
+| `custom.invariants.I2.violations` | 0 | 2201 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend lines revealing a fact above the current level; n = checks; embed=fastembed |
+| `custom.invariants.I3.violations` | 0 | 2453 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
+| `custom.invariants.I4.violations` | 0 | 117 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | helper-crisis turns not paused with resources, or followed by friend lines; n = checks; embed=fastembed |
+| `custom.invariants.I5.violations` | 0 | 315 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | blocked turns without a teaching message, or with a friend reply / state change; n = checks; embed=fastembed |
+| `custom.invariants.I6.violations` | 0 | 420 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
+| `custom.invariants.I7.violations` | 0 | 854 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
+| `custom.conversations.count` | 252 | 252 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | every attack in the bank, per friend; embed=fastembed |
+| `custom.obedient_llm.injected_text_shown_profiles` | 36 | 120 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | created attack profiles whose injected text an obedient AI repeated AND the verifier then showed; by kind: persona_breaker 35, prompt_injector 1; embed=fastembed |
+| `custom.benign.false_refusal_rate` | 0 | 12 | custom friends: ordinary hand-written profiles (EN + ES) [fastembed] | ordinary profiles refused at creation (should be 0): ; embed=fastembed |
 
 ### `eval/reports/redteam_fuzz_all.json`
 
@@ -660,12 +677,12 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `bank_lines` | 201 | 201 | bank | after-the-breakup (data/lines) |
 | `bank_required_cells_covered` | 1 | 32 | bank | after-the-breakup (data/lines) |
 | `bank_guardian_pass_rate` | 1 | 460 | bank | after-the-breakup (data/lines); Guardian check_friend on every bubble |
-| `bank_violations` | 1 | 201 | bank | after-the-breakup (data/lines) |
+| `bank_violations` | 0 | 201 | bank | after-the-breakup (data/lines) |
 | `bank_coverage_matrix` | 201 | 201 | bank | after-the-breakup (data/lines) |
 | `bank_lines` | 201 | 201 | bank | failing-chem (data/lines) |
 | `bank_required_cells_covered` | 1 | 32 | bank | failing-chem (data/lines) |
 | `bank_guardian_pass_rate` | 1 | 351 | bank | failing-chem (data/lines); Guardian check_friend on every bubble |
-| `bank_violations` | 1 | 201 | bank | failing-chem (data/lines) |
+| `bank_violations` | 0 | 201 | bank | failing-chem (data/lines) |
 | `bank_coverage_matrix` | 201 | 201 | bank | failing-chem (data/lines) |
 | `bank_lines` | 201 | 201 | bank | giving-stuff-away (data/lines) |
 | `bank_required_cells_covered` | 1 | 32 | bank | giving-stuff-away (data/lines) |
@@ -674,24 +691,38 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `bank_coverage_matrix` | 201 | 201 | bank | giving-stuff-away (data/lines) |
 | `bank_lines` | 201 | 201 | bank | group-chat (data/lines) |
 | `bank_required_cells_covered` | 1 | 32 | bank | group-chat (data/lines) |
-| `bank_guardian_pass_rate` | 1 | 447 | bank | group-chat (data/lines); Guardian check_friend on every bubble |
-| `bank_violations` | 15 | 201 | bank | group-chat (data/lines) |
+| `bank_guardian_pass_rate` | 1 | 450 | bank | group-chat (data/lines); Guardian check_friend on every bubble |
+| `bank_violations` | 0 | 201 | bank | group-chat (data/lines) |
 | `bank_coverage_matrix` | 201 | 201 | bank | group-chat (data/lines) |
 | `bank_lines` | 201 | 201 | bank | new-school (data/lines) |
 | `bank_required_cells_covered` | 1 | 32 | bank | new-school (data/lines) |
 | `bank_guardian_pass_rate` | 1 | 440 | bank | new-school (data/lines); Guardian check_friend on every bubble |
-| `bank_violations` | 1 | 201 | bank | new-school (data/lines) |
+| `bank_violations` | 0 | 201 | bank | new-school (data/lines) |
 | `bank_coverage_matrix` | 201 | 201 | bank | new-school (data/lines) |
 | `bank_lines` | 201 | 201 | bank_es | after-the-breakup (data/lines) |
 | `bank_required_cells_covered` | 1 | 32 | bank_es | after-the-breakup (data/lines) |
 | `bank_guardian_pass_rate` | 1 | 459 | bank_es | after-the-breakup (data/lines); Guardian check_friend on every bubble |
-| `bank_violations` | 1 | 201 | bank_es | after-the-breakup (data/lines) |
+| `bank_violations` | 0 | 201 | bank_es | after-the-breakup (data/lines) |
 | `bank_coverage_matrix` | 201 | 201 | bank_es | after-the-breakup (data/lines) |
 | `bank_lines` | 68 | 68 | engine_fixture | after-the-breakup (tests/unit/engine/fixtures) |
 | `bank_required_cells_covered` | 1 | 32 | engine_fixture | after-the-breakup (tests/unit/engine/fixtures) |
 | `bank_guardian_pass_rate` | 1 | 134 | engine_fixture | after-the-breakup (tests/unit/engine/fixtures); Guardian check_friend on every bubble |
 | `bank_violations` | 0 | 68 | engine_fixture | after-the-breakup (tests/unit/engine/fixtures) |
 | `bank_coverage_matrix` | 68 | 68 | engine_fixture | after-the-breakup (tests/unit/engine/fixtures) |
+
+### `eval/reports/engine_custom.json`
+
+| Metric | Value | n | Split | Notes |
+|---|---|---|---|---|
+| `custom_injected_text_shown_personality` | 0 | 88 | redteam_dev | obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: |
+| `custom_injected_text_shown_sample` | 0 | 88 | redteam_dev | obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: |
+| `custom_injected_text_shown_situation` | 0.057 | 88 | redteam_dev | obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: persona_breaker 5 |
+| `custom_injected_text_shown_personality` | 0.014 | 73 | redteam_holdout | obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: prompt_injector 1 |
+| `custom_injected_text_shown_sample` | 0.014 | 73 | redteam_holdout | obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: prompt_injector 1 |
+| `custom_injected_text_shown_situation` | 0.164 | 73 | redteam_holdout | obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: encourager 3, method_seeking 2, persona_breaker 2, prompt_injector 5 |
+| `custom_benign_level3_pass_rate` | 1 | 3 | custom_template | template level-3 fallback lines through the custom verifier |
+| `custom_situation_echo_pass_rate` | 1 | 2 | handwritten | replies that repeat the situation's words |
+| `custom_template_lines` | 15 | 15 | custom_template | fallback lines in data/scenarios/_custom.json |
 
 ### `eval/reports/engine_pacing.json`
 
@@ -899,150 +930,174 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `cold_start_s` | 7.02 | 1 | local | process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `rss_idle_mb` | 790.79 | 1 | local | after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/finish` | 57.14 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/finish` | 82.63 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/finish` | 92.19 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/message` | 27.42 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/message` | 128.71 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/message` | 191.91 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/scenarios` | 4.02 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/scenarios` | 8.31 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/scenarios` | 45.39 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/session_create` | 2.57 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/session_create` | 3.38 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/session_create` | 3.43 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/whatif` | 719.03 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/whatif` | 1,199 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/whatif` | 1,376 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `error_rate` | 0 | 200 | c1/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 0.48 | 200 | c1/think | 20 conversations, 1 at a time |
-| `latency_p50_ms/finish` | 116.97 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/finish` | 273.74 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/finish` | 319.1 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/message` | 25.44 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/message` | 50.41 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/message` | 74.51 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/scenarios` | 6.51 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/scenarios` | 193.66 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/scenarios` | 223.44 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/session_create` | 5.56 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/session_create` | 25.44 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/session_create` | 126.24 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/whatif` | 1,340 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/whatif` | 2,178 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/whatif` | 2,431 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `error_rate` | 0 | 200 | c5/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 2.28 | 200 | c5/think | 20 conversations, 5 at a time |
-| `latency_p50_ms/finish` | 215.25 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/finish` | 699.53 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/finish` | 790.12 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/message` | 23.81 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/message` | 46.81 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/message` | 125.23 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/scenarios` | 98.5 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/scenarios` | 380.11 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/scenarios` | 416.73 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/session_create` | 12.65 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/session_create` | 110.31 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/session_create` | 140.78 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/whatif` | 3,063 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/whatif` | 5,028 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/whatif` | 5,143 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `error_rate` | 0 | 200 | c10/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 4.02 | 200 | c10/think | 20 conversations, 10 at a time |
-| `latency_p50_ms/finish` | 1,169 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/finish` | 1,641 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/finish` | 1,683 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/message` | 24.93 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/message` | 87.22 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/message` | 345 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/scenarios` | 647.12 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/scenarios` | 1,115 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/scenarios` | 1,153 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/session_create` | 27.87 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/session_create` | 30.48 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/session_create` | 30.62 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p50_ms/whatif` | 9,693 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p95_ms/whatif` | 11,090 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `latency_p99_ms/whatif` | 11,262 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
-| `error_rate` | 0 | 200 | c20/think | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 5.91 | 200 | c20/think | 20 conversations, 20 at a time |
-| `rss_peak_mb` | 845.06 | 1 | local | peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `cold_start_s` | 10.48 | 1 | local | process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `rss_idle_mb` | 791.31 | 1 | local | after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/finish` | 72.38 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 126 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 139.46 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/friend_create` | 49.74 | 5 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/friend_create` | 68.91 | 5 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/friend_create` | 70.98 | 5 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 29.27 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 125.76 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 176.88 | 120 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 4.14 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 8.32 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 33.51 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 2.73 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 3.73 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 3.91 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 785.22 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 1,350 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 1,587 | 20 | c1/think | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 205 | c1/think | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 0.49 | 205 | c1/think | 20 conversations, 1 at a time |
+| `latency_p50_ms/finish` | 94.03 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 222.19 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 226.03 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/friend_create` | 130.23 | 5 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/friend_create` | 149.43 | 5 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/friend_create` | 152.65 | 5 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 27.03 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 51.41 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 61.31 | 120 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 8.68 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 153.13 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 189.8 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 3.61 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 24.01 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 59.46 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 807.52 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 1,761 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 1,765 | 20 | c5/think | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 205 | c5/think | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 2.38 | 205 | c5/think | 20 conversations, 5 at a time |
+| `latency_p50_ms/finish` | 195.81 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 512.6 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 621.7 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/friend_create` | 155.74 | 5 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/friend_create` | 254.51 | 5 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/friend_create` | 264.06 | 5 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 27.12 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 87.45 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 200.52 | 120 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 58.77 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 463.52 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 515.86 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 12.53 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 58.26 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 94.05 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 1,649 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 3,568 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 3,728 | 20 | c10/think | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 205 | c10/think | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 4.3 | 205 | c10/think | 20 conversations, 10 at a time |
+| `latency_p50_ms/finish` | 1,642 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/finish` | 2,107 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/finish` | 2,454 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/friend_create` | 229.12 | 5 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/friend_create` | 241.84 | 5 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/friend_create` | 242.97 | 5 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/message` | 28.76 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/message` | 104.63 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/message` | 609.79 | 120 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/scenarios` | 753.09 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/scenarios` | 1,207 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/scenarios` | 1,242 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/session_create` | 66.37 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/session_create` | 75.79 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/session_create` | 76.6 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p50_ms/whatif` | 8,316 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p95_ms/whatif` | 10,918 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `latency_p99_ms/whatif` | 11,242 | 20 | c20/think | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
+| `error_rate` | 0 | 205 | c20/think | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 6.05 | 205 | c20/think | 20 conversations, 20 at a time |
+| `rss_peak_mb` | 845.44 | 1 | local | peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; think 2-4 s/message, 1.5-2.5 s before finish (seed 20261025) |
 
 ### `eval/reports/deploy_load_burst.json`
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `cold_start_s` | 6.15 | 1 | local | process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `rss_idle_mb` | 790.75 | 1 | local | after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/finish` | 49.88 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/finish` | 243.11 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/finish` | 1,840 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/message` | 21.81 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/message` | 127.46 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/message` | 217.09 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/scenarios` | 3.9 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/scenarios` | 6.33 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/scenarios` | 26.64 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/session_create` | 2.4 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/session_create` | 3.06 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/session_create` | 3.14 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/whatif` | 706.68 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/whatif` | 1,116 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/whatif` | 1,403 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `error_rate` | 0 | 200 | c1/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 8.11 | 200 | c1/burst | 20 conversations, 1 at a time |
-| `latency_p50_ms/finish` | 272.46 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/finish` | 319.68 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/finish` | 349.17 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/message` | 99.75 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/message` | 146.29 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/message` | 174.87 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/scenarios` | 90.64 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/scenarios` | 183.22 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/scenarios` | 249.43 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/session_create` | 11.38 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/session_create` | 55.81 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/session_create` | 56.07 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/whatif` | 3,198 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/whatif` | 3,447 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/whatif` | 3,512 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `error_rate` | 0 | 200 | c5/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 11.53 | 200 | c5/burst | 20 conversations, 5 at a time |
-| `latency_p50_ms/finish` | 718.44 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/finish` | 945.4 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/finish` | 988.2 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/message` | 208.3 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/message` | 339.06 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/message` | 355.66 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/scenarios` | 154.79 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/scenarios` | 354.23 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/scenarios` | 384.22 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/session_create` | 22.86 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/session_create` | 121.58 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/session_create` | 164.18 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/whatif` | 6,379 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/whatif` | 6,907 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/whatif` | 6,908 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `error_rate` | 0 | 200 | c10/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 11.19 | 200 | c10/burst | 20 conversations, 10 at a time |
-| `latency_p50_ms/finish` | 1,297 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/finish` | 1,527 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/finish` | 1,969 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/message` | 382.13 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/message` | 535.5 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/message` | 605.02 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/scenarios` | 591.71 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/scenarios` | 1,045 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/scenarios` | 1,082 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/session_create` | 48.51 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/session_create` | 55.5 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/session_create` | 55.97 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p50_ms/whatif` | 13,491 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p95_ms/whatif` | 13,985 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `latency_p99_ms/whatif` | 14,049 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
-| `error_rate` | 0 | 200 | c20/burst | non-2xx or failed; statuses finish: 200x20, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
-| `throughput_rps` | 10.7 | 200 | c20/burst | 20 conversations, 20 at a time |
-| `rss_peak_mb` | 853.87 | 1 | local | peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `cold_start_s` | 8.98 | 1 | local | process start -> first healthy /api/health, incl. warm-up of every model; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `rss_idle_mb` | 791.35 | 1 | local | after warm-up; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/finish` | 70.01 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 303.39 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 2,122 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/friend_create` | 55.07 | 5 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/friend_create` | 67.11 | 5 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/friend_create` | 68.31 | 5 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 22.34 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 125.89 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 179.52 | 120 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 3.84 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 6.9 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 27.03 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 2.59 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 3.9 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 4.55 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 789.19 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 1,423 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 1,459 | 20 | c1/burst | 1 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 205 | c1/burst | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 8.27 | 205 | c1/burst | 20 conversations, 1 at a time |
+| `latency_p50_ms/finish` | 433.97 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 589 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 699.56 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/friend_create` | 202.87 | 5 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/friend_create` | 218.13 | 5 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/friend_create` | 219.3 | 5 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 113.62 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 209.86 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 276.92 | 120 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 63.29 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 222.62 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 225.55 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 26.44 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 67.87 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 79.09 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 3,395 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 3,841 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 3,941 | 20 | c5/burst | 5 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 205 | c5/burst | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 12.06 | 205 | c5/burst | 20 conversations, 5 at a time |
+| `latency_p50_ms/finish` | 1,024 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 1,393 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 1,506 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/friend_create` | 304.71 | 5 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/friend_create` | 335.6 | 5 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/friend_create` | 337.2 | 5 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 210.97 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 356.32 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 547.38 | 120 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 177.7 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 471.18 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 500.63 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 45.21 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 160.38 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 208.59 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 4,570 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 7,780 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 8,257 | 20 | c10/burst | 10 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 205 | c10/burst | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 12.06 | 205 | c10/burst | 20 conversations, 10 at a time |
+| `latency_p50_ms/finish` | 1,410 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/finish` | 1,616 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/finish` | 1,616 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/friend_create` | 441.45 | 5 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/friend_create` | 510.84 | 5 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/friend_create` | 512.08 | 5 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/message` | 395.01 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/message` | 855.23 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/message` | 908.48 | 120 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/scenarios` | 676.58 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/scenarios` | 1,103 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/scenarios` | 1,138 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/session_create` | 130.63 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/session_create` | 181.24 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/session_create` | 204.43 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p50_ms/whatif` | 10,988 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p95_ms/whatif` | 11,510 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `latency_p99_ms/whatif` | 11,559 | 20 | c20/burst | 20 concurrent users; 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
+| `error_rate` | 0 | 205 | c20/burst | non-2xx or failed; statuses finish: 200x20, friend_create: 200x5, message: 200x120, scenarios: 200x20, session_create: 200x20, whatif: 200x20 |
+| `throughput_rps` | 11.92 | 205 | c20/burst | 20 conversations, 20 at a time |
+| `rss_peak_mb` | 850.46 | 1 | local | peak resident memory over the whole run (VmHWM); 4 CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 uvicorn worker; burst (no think time) |
