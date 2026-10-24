@@ -263,7 +263,17 @@ export function Chat() {
     );
   }
 
+  // X-ray banner: a solid strip under the contact bar (outside the scrolling messages, so nothing
+  // ever slides underneath it).
+  const xrayBanner = xray && (
+    <div className="mt-2.5 flex items-center gap-2 overflow-hidden rounded-xl bg-night px-3 py-1.5 text-[11px] font-semibold text-night-ink" role="note" data-testid="xray-banner">
+      <Icon name="eye" className="h-3.5 w-3.5 shrink-0 text-[rgb(var(--glow))]" />
+      {t('chat.xray_banner')}
+    </div>
+  );
+
   const header = (
+    <>
     <ContactHeader
       name={friendName}
       sub={
@@ -297,6 +307,8 @@ export function Chat() {
         </div>
       }
     />
+    {xrayBanner}
+    </>
   );
 
   const composer = ended ? (
@@ -365,17 +377,8 @@ export function Chat() {
             {t('chat.finish')}
           </button>
         </div>
-        <PhoneFrame header={header} footer={composer} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
+        <PhoneFrame header={header} footer={composer} bezelOnMobile={false} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
           <div ref={scroller} className="h-full space-y-2.5 overflow-y-auto overscroll-contain bg-surface px-3 py-4" aria-live="polite" aria-relevant="additions" data-testid="messages">
-            {xray && (
-              <div className="night-panel relative sticky top-0 z-10 -mx-1 mb-1 overflow-hidden px-3 py-2 text-[11px] font-semibold" role="note" data-testid="xray-banner">
-                <span className="pointer-events-none absolute inset-x-0 top-0 h-full animate-scan bg-gradient-to-b from-transparent via-[rgb(var(--brand)/0.25)] to-transparent" aria-hidden="true" />
-                <span className="relative flex items-center gap-2">
-                  <Icon name="eye" className="h-3.5 w-3.5 text-[rgb(var(--glow))]" />
-                  {t('chat.xray_banner')}
-                </span>
-              </div>
-            )}
             {nodes.map((node, idx) => (
               <Fragment key={node.id}>{renderNode(node, idx)}</Fragment>
             ))}

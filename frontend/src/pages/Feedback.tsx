@@ -277,12 +277,14 @@ export function Feedback() {
                       <Icon name="sparkle" className="h-3.5 w-3.5" />
                       {t('feedback.try_instead')}
                       {score.rewrite_gain != null && (
-                        <span className="chip mono-num border-transparent bg-good text-white normal-case dark:text-[rgb(6_30_20)]">
-                          {t('feedback.gain', {
-                            // rewrite_gain is a probability gain on the missing skill (0..1): show percentage points.
-                            gain: `${signed(Math.round(score.rewrite_gain * 100))}%`,
-                            skill: score.rewrite_skill ? t(`skills.${score.rewrite_skill}`) : '',
-                          }).trim()}
+                        // rewrite_gain = how much higher our detector scores the missing skill on this
+                        // reply. The chip names the skill it adds; the exact number is in the tooltip.
+                        <span
+                          className="chip border-transparent bg-good text-white normal-case dark:text-[rgb(6_30_20)]"
+                          title={t('feedback.gain_hint', { gain: Math.round(score.rewrite_gain * 100) })}
+                          data-testid="rewrite-gain"
+                        >
+                          ✓ {score.rewrite_skill ? t('feedback.gain', { skill: t(`skills_verb.${score.rewrite_skill}`) }) : t('feedback.gain_generic')}
                         </span>
                       )}
                     </p>

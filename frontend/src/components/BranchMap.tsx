@@ -19,14 +19,14 @@ export function BranchMap({ origin, branches }: { origin: string; branches: Bran
   const { t } = usePrefs();
   const n = branches.length;
   return (
-    <div className="flex items-stretch gap-0" data-testid="branch-map">
-      <div className="flex w-28 shrink-0 items-center sm:w-56">
+    <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:gap-0" data-testid="branch-map">
+      <div className="flex w-full shrink-0 items-center sm:w-56">
         <div className="w-full rounded-2xl border border-line bg-surface p-3 shadow-card">
           <p className="eyebrow mb-1.5">{t('whatif.you_said')}</p>
-          <p className="line-clamp-4 text-sm leading-snug">{origin}</p>
+          <p className="text-sm leading-snug">{origin}</p>
         </div>
       </div>
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-10 shrink-0 sm:w-24" aria-hidden="true">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="hidden w-24 shrink-0 sm:block" aria-hidden="true">
         {branches.map((b, i) => {
           const y = ((i + 0.5) / n) * 100;
           return (
@@ -43,7 +43,8 @@ export function BranchMap({ origin, branches }: { origin: string; branches: Bran
           );
         })}
       </svg>
-      <ol className="flex min-w-0 flex-1 flex-col justify-around gap-2.5">
+      {/* Below sm: a vertical rail from "what you said" instead of the fork curves. */}
+      <ol className="ml-4 flex min-w-0 flex-1 flex-col justify-around gap-2.5 border-l-2 border-line pl-4 sm:ml-0 sm:border-0 sm:pl-0">
         {branches.map((b, i) => (
           <li
             key={i}
@@ -53,11 +54,11 @@ export function BranchMap({ origin, branches }: { origin: string; branches: Bran
           >
             <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: b.color }} aria-hidden="true" />
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-semibold">
+              <span className="block text-sm font-semibold leading-snug">
                 {b.best && '★ '}
                 {b.label}
               </span>
-              <span className="mono-num text-xs text-muted">
+              <span className="mono-num whitespace-nowrap text-xs text-muted">
                 {t('whatif.trust_end', { from: Math.round(b.from), to: Math.round(b.to) })}
               </span>
             </span>

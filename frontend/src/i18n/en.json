@@ -214,7 +214,7 @@
     "uncertain": "uncertain: {labels}",
     "uncertain_hint": "Our two models disagreed here, so treat this score with caution.",
     "try_instead": "Try instead",
-    "gain": "{skill} {gain}",
+    "gain": "adds: {skill}",
     "try_again": "Try again from here",
     "what_if": "What if?",
     "new_scenario": "Practice another friend",
@@ -230,7 +230,9 @@
     "story_title": "How it went",
     "lost_here": "lost them here",
     "you_said": "You said",
-    "would_have_worked": "What would have worked"
+    "would_have_worked": "What would have worked",
+    "gain_generic": "verified better",
+    "gain_hint": "Our skill detector scores this reply {gain} points higher on the skill you missed."
   },
   "whatif": {
     "title": "What if you'd said something else?",
@@ -428,5 +430,14 @@
   "langs": {
     "en": "English",
     "es": "Spanish"
+  },
+  "skills_verb": {
+    "check_in": "checking in",
+    "listen": "listening",
+    "ask_directly": "asking directly",
+    "no_secrecy": "no secrecy",
+    "persuade": "encouraging help",
+    "refer": "a trusted adult or 988",
+    "follow_up": "following up"
   }
 }
