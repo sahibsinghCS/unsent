@@ -2,7 +2,7 @@
 UV ?= uv
 export PYTHONPATH := $(CURDIR)
 
-.PHONY: help install dev dev-stub lint format test test-llm check smoke ownership fixtures schema eval report docs train guardian-train label redteam loadtest csp-check demo-transcript docker spike models
+.PHONY: help install dev dev-stub lint format test test-llm check smoke ownership fixtures schema eval report docs train guardian-train label redteam loadtest csp-check docker spike models
 
 help: ## list targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' Makefile | awk 'BEGIN{FS=":.*?## "}{printf "  %-15s %s\n", $$1, $$2}'
@@ -67,9 +67,6 @@ redteam: ## offline red-team harness: attack bank, multi-turn invariants, fuzzin
 
 loadtest: ## load test a local prod-mode server (FR_LLM=0, no API cost)
 	FR_LLM=0 $(UV) run python deploy/loadtest.py
-
-demo-transcript: ## regenerate the landing page's example conversation from a real run (content/demo_transcript.json)
-	PYTHONPATH=. $(UV) run python scripts/demo_transcript.py
 
 csp-check: ## check the security policy in headless Chromium (FR_URL, default http://127.0.0.1:7860)
 	node deploy/csp_check.mjs $${FR_URL:-http://127.0.0.1:7860}
