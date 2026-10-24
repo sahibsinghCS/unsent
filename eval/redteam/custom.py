@@ -174,7 +174,8 @@ def chat_with(
     chat = conv.Chat(client, friend_id, "en")
     conv.check_friend_node(run, {**chat.opening, "voice": None}, chat.scenario, chat.bank, where)
     for i in range(CHAT_TURNS):
-        code, data = chat.send(conv.EN_HELPER[i])
+        helper = conv.ES_HELPER if chat.locale == "es" else conv.EN_HELPER
+        code, data = chat.send(helper[i])
         if code != 200 or not data["friend_node"]:
             break
         friend = data["friend_node"]
