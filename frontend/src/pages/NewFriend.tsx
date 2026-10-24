@@ -87,7 +87,8 @@ export function NewFriend() {
     if (!created) return;
     setStarting(true);
     try {
-      const session = await api.startSession(created.id, lang, apiCountry(country));
+      // A custom friend is practiced only in the language it was written in (friend.locales).
+      const session = await api.startSession(created.id, created.locales?.[0] ?? lang, apiCountry(country));
       navigate(`/chat/${session.session_id}`);
     } catch (e) {
       const error = e as ApiError;
