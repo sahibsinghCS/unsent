@@ -35,7 +35,9 @@ export function Practice() {
     if (!chosen) return;
     setStarting(true);
     try {
-      const session = await api.startSession(chosen.id, lang, apiCountry(country));
+      // Custom friends are practiced only in the language they were written in (locales[0]).
+      const locale = isCustomId(chosen.id) ? (chosen.locales?.[0] ?? lang) : lang;
+      const session = await api.startSession(chosen.id, locale, apiCountry(country));
       navigate(`/chat/${session.session_id}`);
     } catch (e) {
       // A custom friend the server already deleted (60 min): offer to create it again.

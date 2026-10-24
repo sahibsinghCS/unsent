@@ -121,4 +121,23 @@ describe('Add your own friend', () => {
     expect(screen.getByTestId('friend-privacy')).toHaveTextContent('OpenAI');
     expect(screen.getByTestId('friend-safety')).toHaveTextContent('practice can wait');
   });
+
+  it("starts the session in the friend's own language (locales[0])", async () => {
+    const calls: { url: string; body: unknown }[] = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((url: string, init: RequestInit) => {
+        calls.push({ url, body: init?.body ? JSON.parse(init.body as string) : null });
+        const body = url === '/api/friends' ? { friend: { ...FRIEND, locales: ['es'] }, notice: null } : { session_id: 's1' };
+        return Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(body) });
+      }),
+    );
+    renderPage();
+    fillValid();
+    fireEvent.click(screen.getByTestId('friend-create'));
+    await screen.findByTestId('content-warning');
+    fireEvent.click(screen.getByRole('button', { name: /I understand/ }));
+    await vi.waitFor(() => expect(calls.some((c) => c.url === '/api/sessions')).toBe(true));
+    expect(calls.find((c) => c.url === '/api/sessions')!.body).toMatchObject({ scenario_id: FRIEND.id, locale: 'es' });
+  });
 });
