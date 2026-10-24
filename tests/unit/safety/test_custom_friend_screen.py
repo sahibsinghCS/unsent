@@ -108,3 +108,15 @@ def test_profile_can_describe_a_rule_breaker():
         screen_profile("she loves to break the rules at school and skips class").action
         == "continue"
     )
+
+
+@pytest.mark.parametrize("text", ["nose", "nose que decir", "nose q hacer", "nose jaja"])
+def test_spanish_nose_is_i_dont_know(g: Guardian, text: str):
+    assert g.check_user(text, []).action == "continue", text
+    assert g.check_friend(text).level == "none", text
+    assert screen_profile(text).action == "continue", text
+
+
+@pytest.mark.parametrize("text", ["the noose", "a nooose", "n00se", "n o o s e", "nооse"])
+def test_noose_still_caught_in_friend_lines(g: Guardian, text: str):
+    assert g.check_friend(text).action == "block_message", text
