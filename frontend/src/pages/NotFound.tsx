@@ -6,7 +6,7 @@ export function NotFound() {
   return (
     <div className="mx-auto max-w-md px-4 py-20 text-center">
       <p className="numeral text-8xl text-muted">404</p>
-      <h1 className="mt-4 text-3xl font-semibold">{t('notfound.title')}</h1>
+      <h1 className="mt-4 text-4xl">{t('notfound.title')}</h1>
       <p className="mt-2 text-muted">{t('notfound.body')}</p>
       <div className="mt-8 flex justify-center gap-3">
         <Link to="/" className="btn-primary">

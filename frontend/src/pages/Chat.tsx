@@ -441,7 +441,7 @@ export function Chat() {
         <section className="card p-4">
           <div className="mb-3 flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-base">{t('chat.trust_graph')}</h2>
+              <h2 className="text-lg">{t('chat.trust_graph')}</h2>
               <p className="mt-1 max-w-[12rem] text-sm text-muted">{t('chat.trust_hint')}</p>
             </div>
             <div data-testid="trust-now">
@@ -452,11 +452,11 @@ export function Chat() {
         </section>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
           <section className="card p-4">
-            <h2 className="mb-3 text-base">{t('chat.ladder')}</h2>
+            <h2 className="mb-3 text-lg">{t('chat.ladder')}</h2>
             <DisclosureLadder level={last?.state_after.level ?? 0} />
           </section>
           <section className="card p-4">
-            <h2 className="mb-1 text-base">{t('chat.skills')}</h2>
+            <h2 className="mb-1 text-lg">{t('chat.skills')}</h2>
             <p className="mb-3 text-xs text-muted">{t('chat.skills_hint')}</p>
             <SkillChips seen={seen} latest={latest} />
           </section>

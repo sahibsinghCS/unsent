@@ -108,7 +108,7 @@ export function NewFriend() {
           <Icon name="back" className="h-4 w-4" />
           {t('friends.back')}
         </Link>
-        <h1 className="mt-5 text-4xl sm:text-5xl">{t('friends.title')}</h1>
+        <h1 className="mt-5 text-5xl sm:text-6xl">{t('friends.title')}</h1>
         <p className="mt-3 max-w-xl text-lg text-muted">{t('friends.sub')}</p>
 
         <div className="mt-6 space-y-3">

@@ -7,7 +7,7 @@ export function DisclosureLadder({ level }: { level: number }) {
   const { t, tl } = usePrefs();
   const names = tl('chat.levels');
   return (
-    <ol aria-label={t('chat.ladder')}>
+    <ol className="space-y-1" aria-label={t('chat.ladder')}>
       {[4, 3, 2, 1, 0].map((n) => {
         const reached = level >= n;
         const current = level === n;
@@ -15,13 +15,15 @@ export function DisclosureLadder({ level }: { level: number }) {
           <li
             key={n}
             aria-current={current ? 'step' : undefined}
-            className={`flex items-center gap-2.5 border-b border-line/60 px-1 py-2 text-sm last:border-0 ${current ? 'font-semibold text-ink' : reached ? 'text-ink' : 'text-muted'}`}
+            className={`flex items-center gap-2.5 rounded-xl border px-2.5 py-1.5 text-sm ${
+              current ? 'border-brand bg-brand font-semibold text-brand-ink' : reached ? 'border-line bg-sunken/60 text-ink' : 'border-transparent text-muted'
+            }`}
           >
-            <span className={`mono-num grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-bold ${current ? 'bg-brand text-brand-ink' : reached ? 'bg-sunken text-ink' : 'border border-line'}`}>
+            <span className={`mono-num grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-bold ${current ? 'bg-white/25' : reached ? 'bg-surface text-ink' : 'border border-line'}`}>
               {n}
             </span>
             {names[n]}
-            {current && <span className="ml-auto text-xs font-medium text-muted">{t('chat.level_now')}</span>}
+            {current && <span className="ml-auto font-mono text-[10px] font-medium uppercase tracking-[0.12em]">{t('chat.level_now')}</span>}
           </li>
         );
       })}

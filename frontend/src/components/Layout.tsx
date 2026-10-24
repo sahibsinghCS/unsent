@@ -9,7 +9,7 @@ export function Logo({ className = '' }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <img src="/favicon.svg" alt="" className="h-7 w-7" />
-      <span className="text-[1.1rem] font-bold tracking-tight">FirstReply</span>
+      <span className="font-display text-[1.15rem] font-bold tracking-tight">FirstReply</span>
     </span>
   );
 }
@@ -17,14 +17,14 @@ export function Logo({ className = '' }: { className?: string }) {
 function LangToggle() {
   const { lang, setLang, t } = usePrefs();
   return (
-    <div role="group" aria-label={t('app.language')} className="flex rounded-lg bg-sunken p-0.5 text-xs font-semibold">
+    <div role="group" aria-label={t('app.language')} className="flex rounded-full border border-line p-0.5 font-mono text-[11px] font-medium">
       {(['en', 'es'] as Lang[]).map((code) => (
         <button
           key={code}
           type="button"
           onClick={() => setLang(code)}
           aria-pressed={lang === code}
-          className={`rounded-md px-2.5 py-1 uppercase transition ${lang === code ? 'bg-surface text-ink shadow-[0_1px_2px_rgb(0_0_0/0.15)]' : 'text-muted hover:text-ink'}`}
+          className={`rounded-full px-2.5 py-1 uppercase transition ${lang === code ? 'bg-ink text-bg' : 'text-muted hover:text-ink'}`}
         >
           {code}
         </button>
@@ -37,14 +37,14 @@ function ThemeToggle() {
   const { theme, toggleTheme, t } = usePrefs();
   const label = theme === 'dark' ? t('app.theme_light') : t('app.theme_dark');
   return (
-    <button type="button" onClick={toggleTheme} className="rounded-full border border-line bg-surface p-2 text-muted hover:text-ink" aria-label={label} title={label}>
+    <button type="button" onClick={toggleTheme} className="rounded-full border border-line p-2 text-muted transition hover:border-line-strong hover:text-ink" aria-label={label} title={label}>
       <Icon name={theme === 'dark' ? 'sun' : 'moon'} className="h-4 w-4" />
     </button>
   );
 }
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-lg px-3 py-1.5 text-sm font-medium transition ${isActive ? 'bg-sunken text-ink' : 'text-muted hover:text-ink'}`;
+  `rounded-full px-3 py-1.5 text-sm font-medium transition ${isActive ? 'bg-sunken text-ink' : 'text-muted hover:text-ink'}`;
 
 export function Layout() {
   const { t } = usePrefs();
@@ -53,8 +53,8 @@ export function Layout() {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2">
         {t('app.skip')}
       </a>
-      <header className="sticky top-0 z-40 border-b border-line/70 bg-surface">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:px-5">
+      <header className="sticky top-0 z-40 border-b border-line bg-bg">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:px-6">
           <Link to="/" className="mr-1 rounded-lg text-lg" aria-label="FirstReply home">
             <Logo />
           </Link>
@@ -78,7 +78,7 @@ export function Layout() {
           </div>
         </div>
         {/* Small screens: language + theme live in a slim second row so nothing is hidden. */}
-        <div className="flex items-center justify-end gap-2 border-t border-line/50 px-3 py-1.5 sm:hidden">
+        <div className="flex items-center justify-end gap-2 border-t border-line px-3 py-1.5 sm:hidden">
           <NavLink to="/practice" className={navClass}>
             {t('app.nav.practice')}
           </NavLink>
@@ -94,7 +94,7 @@ export function Layout() {
         <Outlet />
       </main>
 
-      <footer className="mt-10 border-t border-line/70 bg-surface">
+      <footer className="mt-10 border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
           <div className="flex max-w-2xl items-start gap-3">
             <Logo className="shrink-0 scale-90" />

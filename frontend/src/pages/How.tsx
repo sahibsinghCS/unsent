@@ -170,7 +170,7 @@ function GuardianBox() {
 
   return (
     <section className="card p-5 sm:p-6" data-testid="guardian-box">
-      <h2 className="flex items-center gap-2 text-xl font-bold">
+      <h2 className="flex items-center gap-2 text-2xl">
         <Icon name="shield" className="h-5 w-5 text-muted" />
         {t('how.try_title')}
       </h2>
@@ -251,7 +251,7 @@ function VoiceSection({ health, failed }: { health: Health | null; failed: boole
     : [];
   return (
     <section className="card mt-5 p-5 sm:p-6" data-testid="voice-section">
-      <h2 className="flex items-center gap-2 text-xl font-bold">
+      <h2 className="flex items-center gap-2 text-2xl">
         <Icon name="message" className="h-5 w-5 text-muted" />
         {t('how.voice_title')}
       </h2>
@@ -317,11 +317,11 @@ export function How() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="text-4xl sm:text-5xl">{t('how.title')}</h1>
+      <h1 className="text-5xl sm:text-6xl">{t('how.title')}</h1>
       <p className="mt-3 max-w-3xl text-lg leading-relaxed text-muted">{t('how.sub')}</p>
 
       <section className="card mt-8 p-5 sm:p-6">
-        <h2 className="mb-4 text-xl font-bold">{t('how.pipeline_title')}</h2>
+        <h2 className="mb-4 text-2xl">{t('how.pipeline_title')}</h2>
         <PipelineDiagram />
       </section>
 
@@ -359,7 +359,7 @@ export function How() {
       </div>
 
       <section className="card mt-5 p-5">
-        <h2 className="flex items-center gap-2 text-lg font-bold">
+        <h2 className="flex items-center gap-2 text-xl">
           <Icon name="lock" className="h-5 w-5 text-brand-deep" />
           {t('how.privacy_title')}
         </h2>

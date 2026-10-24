@@ -115,26 +115,26 @@ export function WhatIf() {
   const original = nodes.find((n) => n.id === result.from_node_id);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <Link to={`/feedback/${sessionId}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep">
         <Icon name="back" className="h-4 w-4" />
         {t('whatif.back')}
       </Link>
       <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
         <div className="max-w-2xl">
-          <h1 className="text-4xl sm:text-5xl">{t('whatif.title')}</h1>
+          <h1 className="text-5xl sm:text-6xl">{t('whatif.title')}</h1>
           <p className="mt-2 text-muted">{t('whatif.sub')}</p>
         </div>
         {result.simulated && (
-          <span className="chip border-line bg-surface px-2.5 py-1 text-sm font-semibold text-muted" title={t('whatif.simulated_hint')} data-testid="simulated">
+          <span className="chip border-line-strong px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-muted" title={t('whatif.simulated_hint')} data-testid="simulated">
             {t('whatif.simulated')}
           </span>
         )}
       </div>
 
       {original && result.paths.length > 0 && (
-        <section className="card mt-6 p-4 sm:p-6">
-          <h2 className="mb-4 text-2xl font-semibold">{t('whatif.futures')}</h2>
+        <section className="card mt-8 p-5 sm:p-7">
+          <h2 className="mb-5 text-2xl sm:text-3xl">{t('whatif.futures')}</h2>
           <BranchMap origin={original.bubbles.join(' ')} branches={branches} />
         </section>
       )}
@@ -162,20 +162,18 @@ export function WhatIf() {
           const best = i === result.best_index;
           const series = path.trust_series;
           return (
-            <li key={i} className={`card flex flex-col p-4 ${best ? 'border-brand' : ''}`} data-testid="whatif-path">
+            <li key={i} className={`card card-lift flex flex-col p-5 ${best ? '!border-2 !border-brand' : ''}`} data-testid="whatif-path">
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-sunken text-xs font-bold text-ink">
-                  {i + 1}
-                </span>
+                <span className="meta-label">{String(i + 1).padStart(2, '0')}</span>
                 <span className="chip border-line">{strategyName(path.strategy)}</span>
-                {best && <span className="chip border-brand text-sm font-semibold text-brand-deep">{t('whatif.best')}</span>}
+                {best && <span className="chip border-brand bg-brand font-semibold text-brand-ink">{t('whatif.best')}</span>}
                 {/* critic_score = our detector's score (0–1) for the skill this reply teaches */}
                 <span className="mono-num ml-auto text-xs text-muted" title={t('whatif.score_hint')}>
                   {t('whatif.score', { score: Math.round(path.critic_score * 100) })}
                 </span>
               </div>
               <p className="text-[15px] font-semibold leading-snug">“{path.candidate_text}”</p>
-              <div className="im-screen my-3 space-y-1 rounded-2xl border border-line/70 px-2 py-3">
+              <div className="im-screen my-3 space-y-1 overflow-hidden rounded-2xl border border-line px-3 py-3">
                 {path.nodes.map((n) =>
                   n.role === 'system' ? null : n.seen_no_reply ? (
                     <p key={n.id} className="im-meta pr-2 text-right">
