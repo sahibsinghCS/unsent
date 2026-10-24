@@ -56,7 +56,9 @@ export function WhatIf() {
       (e: ApiError) => setError(e),
     );
   }, [sessionId, nodeId]);
-  useEffect(load, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   // Exemplar strategies (check_in, validate, ask_directly, refer, follow_up, combo) in the UI language.
   const strategyName = useCallback((s: string) => {

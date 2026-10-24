@@ -50,7 +50,9 @@ export function Feedback() {
       (e: ApiError) => setError(e),
     );
   }, [sessionId]);
-  useEffect(load, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const byId = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
   const points = useMemo(() => trustPoints(nodes), [nodes]);

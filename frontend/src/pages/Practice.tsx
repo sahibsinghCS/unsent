@@ -25,7 +25,9 @@ export function Practice() {
     setError(null);
     scenarioList(lang).then(setScenarios, (e) => setError(e.message));
   }, [lang]);
-  useEffect(load, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   async function start() {
     if (!chosen) return;

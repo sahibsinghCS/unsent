@@ -14,7 +14,8 @@
     "prebuild": "node scripts/sync-content.mjs",
     "pretest": "node scripts/sync-content.mjs",
     "test:slow": "node scripts/slow.mjs",
-    "test:a11y": "node scripts/a11y.mjs"
+    "test:a11y": "node scripts/a11y.mjs",
+    "test:nav": "node scripts/clicknav.mjs"
   },
   "dependencies": {
     "chart.js": "^4.4.6",

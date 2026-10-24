@@ -64,8 +64,15 @@ export function Chat() {
       (e: ApiError) => setLoadError(e),
     );
   }, [sessionId]);
-  useEffect(loadSession, [loadSession]);
-  useEffect(() => () => void animation.current++, []);
+  useEffect(() => {
+    loadSession();
+  }, [loadSession]);
+  useEffect(
+    () => () => {
+      animation.current++; // cancel any reveal still running when the page unmounts
+    },
+    [],
+  );
 
   const nodes = useMemo(() => view?.nodes ?? [], [view]);
   const last = nodes[nodes.length - 1];
