@@ -18,6 +18,7 @@
 | `data/skills/final.jsonl`, `splits/{train,val,test,test_freeform}.jsonl` | 1,410 rows (1,313 agreed + 97 rule-adjudicated) → 904 / 152 / 133 / 221 | training and evaluation |
 | `data/guardian/messages.jsonl` + `splits/` | 698 helper messages in 8 categories (488 / 105 / 105, stratified) | Guardian |
 | `data/lines/<scenario>.en.jsonl` | 5 × 201 friend lines (+ `after-the-breakup.es.jsonl`, 201 Spanish lines) | friend voice |
+| `data/lines/_custom.{en,es}.jsonl`, `data/exemplars/_custom.{en,es}.jsonl` | 2 × 201 situation-neutral, gender-neutral friend lines and 2 × 40 neutral exemplars for user-made friends (template `data/scenarios/_custom.json`, fact ids c0a–c4b) | custom-friend fallback |
 | `data/exemplars/<scenario>.en.jsonl` | 5 × 40 better replies, with labels (+ `after-the-breakup.es.jsonl`, 40 Spanish exemplars for Maya) | critic, "what if" |
 | `data/redteam/attacks.jsonl` | 250 adversarial helper messages in 7 strategies with `expected_action` | red-team lane |
 

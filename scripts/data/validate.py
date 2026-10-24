@@ -163,7 +163,7 @@ def check_lines() -> None:
     summary = {}
     for path in sorted((DATA / "lines").glob("*.jsonl")):
         sid, locale = path.stem.split(".")
-        if sid not in SCENARIOS:
+        if sid not in SCENARIOS and sid != "_custom":
             bad(f"lines: unknown scenario file {path.name}")
             continue
         sc = load_scenario(sid)
@@ -261,18 +261,25 @@ def check_exemplars() -> None:
             if strategies[st] < 3:
                 bad(f"exemplars: {sid} strategy {st} has only {strategies[st]}")
         summary[sid] = len(rows)
-    es_path = DATA / "exemplars" / "after-the-breakup.es.jsonl"
-    if es_path.exists():
+    for es_path in sorted((DATA / "exemplars").glob("*.es.jsonl")) + [
+        DATA / "exemplars" / "_custom.en.jsonl"
+    ]:
+        if not es_path.exists():
+            continue
         es_rows = read_jsonl(es_path)
         es_seen = set()
         for r in es_rows:
             ex = Exemplar.model_validate(r)
-            if ex.locale != "es" or METHOD_WORDS.search(ex.text) or norm(ex.text) in es_seen:
+            if (
+                ex.locale != es_path.name.split(".")[1]
+                or METHOD_WORDS.search(ex.text)
+                or norm(ex.text) in es_seen
+            ):
                 bad(f"exemplars: bad Spanish exemplar {ex.id}")
             es_seen.add(norm(ex.text))
         if len(es_rows) < 36:
             bad(f"exemplars: Spanish file has only {len(es_rows)}")
-        summary["after-the-breakup.es"] = len(es_rows)
+        summary[es_path.name] = len(es_rows)
     REPORT["exemplars"] = summary
 
 

@@ -8,6 +8,8 @@ from common import DATA, write_jsonl
 from lines_src.patches import PATCHES
 
 MODULES = {
+    "custom": "cus",
+    "custom_es": "cus",
     "maya": "mya",
     "maya_es": "mya",
     "jordan": "jor",

@@ -31,6 +31,11 @@
 - +80 TRAIN-ONLY rows (t0161-t0240, contexts `y-*`): ~50 Spanish/Spanglish encouragement/follow-up/referral/validation and ~30 English indirect encouragement (with ultimatum hard negatives). Blind agreement on the 240 train-only rows: 97.9% exact, kappa 0.989. `adjudicate_rules.py` also treats "could really help / take weight off" as general encouragement (R-ENC-GEN).
 - final.jsonl 1,410; splits 904/152/133/221 (only additions to train; val/test/test_freeform ids identical); test_freeform leakage 0.0%; queue 259 (129 + 130 audit).
 
+## Update 7 ("Add your own friend": neutral bank)
+- Wrote `data/lines/_custom.en.jsonl` and `_custom.es.jsonl` (201 lines each, ids `cus-en-L2-validated-01`, scenario_id `_custom`, fact ids c0a..c4b) and `data/exemplars/_custom.en.jsonl` / `_custom.es.jsonl` (40 each). Sources: `scripts/data/lines_src/custom.py`, `custom_es.py`, `author_exemplars.py`. Situation-neutral and gender-neutral (no names, no third-party pronouns, no breakup/grades/chat details); L3 is indirect with no clinical words; no hotlines/advice from the friend.
+- Checked with the integrator's `validate_bank` and `services.guardian().check_friend` (all bubbles level none), via `tests/unit/data/test_custom_bank.py` (the engine part skips on a branch without `validate_bank`; I ran it in a temporary worktree of origin/claude/amazing-carson-31tzo3: 5 passed). The template is copied to `tests/unit/data/fixtures/_custom.json` (my lane) because data/scenarios is not mine and I did not merge.
+- Exemplar label derivation now also recognises singular "parent" and Spanish "familiar/adulto" (two Maya exemplar files changed slightly).
+
 ## Decisions
 - Disagreements are dropped from `final.jsonl` until Sahib labels them (human > agreed); `--provisional` keeps intended labels for early training.
 - Duplicate-line rule is per (level, reaction) cell, since Eli's very short lines ("ok", "thx") legitimately repeat across cells.
@@ -38,6 +43,7 @@
 - Red-team `expected_action` vocabulary is documented at the top of `scripts/data/author_redteam.py`.
 
 ## Requests
+- **Integrator:** `tests/unit/test_contracts.py::test_line_bank_and_exemplar_files_validate` asserts every `data/lines/*.jsonl` scenario_id is in `load_scenarios()`, which skips `_custom` (underscore files). With the new `_custom` banks it fails until that test skips or whitelists `_custom` (one line; not my file).
 - None blocking. Optional: integrator may want `eval/reports/data_*.json` linked in the README metrics table.
 
 ## Known issues

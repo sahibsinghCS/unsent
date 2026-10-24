@@ -101,7 +101,7 @@ EX: dict[str, list[tuple[int, str, str, str]]] = {
             1,
             "refer",
             "re",
-            "i'm wondering if the school counselor could help with the sleep stuff. i can come with you if you want.",
+            "i'm wondering if a counselor could help with the sleep stuff. i can come with you if you want.",
         ),
         (
             2,
@@ -131,7 +131,7 @@ EX: dict[str, list[tuple[int, str, str, str]]] = {
             2,
             "refer",
             "re",
-            "i don't think you should carry this alone. would you want to talk to the counselor with me there?",
+            "i don't think you should carry this alone. would you want to talk to a counselor with me there?",
         ),
         (
             2,
@@ -917,7 +917,7 @@ EX_ES: list[tuple[int, str, str, str]] = [
         "n",
         "puedes llamar o mandar mensaje al 988 a la hora que sea, y yo me quedo contigo mientras lo haces. ¿lo intentamos ahorita?",
     ),
-    (3, "refer", "r", "¿le dirías a tu mamá si voy contigo? yo estoy ahí a tu lado."),
+    (3, "refer", "r", "¿le dirías a un familiar si voy contigo? yo estoy ahí a tu lado."),
     (
         3,
         "follow_up",
@@ -981,7 +981,9 @@ def derive_es(codes: str, text: str) -> list[str]:
         and "?" in t
     ):
         labels.add("asked_directly")
-    if re.search(r"consejer|\bmam[aá]\b|maestr|profe|pap[aá]s|enfermer|entrenador", t):
+    if re.search(
+        r"consejer|\bmam[aá]\b|maestr|profe|pap[aá]s|enfermer|entrenador|familiar|adulto", t
+    ):
         labels.add("referred_adult")
     if "988" in t:
         labels.add("referred_988")
@@ -991,13 +993,356 @@ def derive_es(codes: str, text: str) -> list[str]:
     return sorted(labels, key=order.index)
 
 
+# Situation-neutral exemplars for user-made friends (scenario_id "_custom"): no names, no specifics, works for any friend.
+EX_CUSTOM_EN: list[tuple[int, str, str, str]] = [
+    (0, "check_in", "c", "hey, i noticed you've seemed off lately. you ok?"),
+    (0, "check_in", "c", "no pressure, but how are you actually doing? you've been kind of quiet."),
+    (
+        0,
+        "check_in",
+        "c",
+        "you don't have to say anything big. i just wanted you to know i noticed.",
+    ),
+    (0, "validate", "v", "that sounds exhausting, honestly. no wonder you're worn out."),
+    (0, "validate", "v", "i get it. anyone would be tired after the week you've had."),
+    (0, "follow_up", "f", "ok. i'll check in on you tomorrow anyway, even if you say you're fine."),
+    (
+        0,
+        "combo",
+        "cv",
+        "hey, you've seemed a little off. you ok? you don't have to explain, i just care.",
+    ),
+    (0, "combo", "cf", "how are you really doing? i'm around tonight if you want to text."),
+    (
+        1,
+        "check_in",
+        "c",
+        "that sounds like a lot to hold. do you want to tell me more about what keeps coming back?",
+    ),
+    (
+        1,
+        "validate",
+        "v",
+        "of course you can't sleep. having something on repeat in your head is exhausting.",
+    ),
+    (1, "validate", "v", "it makes total sense that it still hurts. that would get to anyone."),
+    (
+        1,
+        "ask_directly",
+        "av",
+        "that sounds really heavy. i want to ask you something honestly: are you having any thoughts of suicide?",
+    ),
+    (
+        1,
+        "follow_up",
+        "f",
+        "i'm not going to make it weird. i'll sit with you tomorrow if you want.",
+    ),
+    (1, "combo", "cv", "that sounds painful. how have you been holding up with all of it?"),
+    (1, "combo", "vf", "you don't have to pretend with me. i'm here, and i'll text you tonight."),
+    (
+        1,
+        "refer",
+        "r",
+        "i'm wondering if a counselor could help with the sleep stuff. i can come with you if you want.",
+    ),
+    (
+        2,
+        "validate",
+        "v",
+        "thank you for telling me that. feeling like a burden is so painful, and you're not one.",
+    ),
+    (
+        2,
+        "ask_directly",
+        "a",
+        "sometimes when people feel this hopeless they think about suicide. are you thinking about killing yourself?",
+    ),
+    (
+        2,
+        "ask_directly",
+        "av",
+        "i hear how heavy this is. i care about you, so i'm going to ask directly: have you thought about suicide?",
+    ),
+    (
+        2,
+        "ask_directly",
+        "a",
+        "when you say it won't get better, do you mean you've had thoughts of ending your life?",
+    ),
+    (
+        2,
+        "refer",
+        "r",
+        "i don't think you should carry this alone. would you want to talk to a counselor with me there?",
+    ),
+    (2, "follow_up", "f", "you're not annoying me, at all. i'm here and i'm not going anywhere."),
+    (
+        2,
+        "combo",
+        "vae",
+        "that sounds so lonely. have you had thoughts of suicide? whatever the answer is, you don't have to deal with this alone.",
+    ),
+    (
+        2,
+        "combo",
+        "vf",
+        "i'm really glad you said it out loud. i'll check on you tomorrow, and the day after.",
+    ),
+    (
+        3,
+        "validate",
+        "v",
+        "thank you for trusting me with that. i'm so glad you told me, and i'm not freaking out.",
+    ),
+    (
+        3,
+        "ask_directly",
+        "av",
+        "thanks for telling me. are you thinking about killing yourself right now, or is it more that the thoughts come and go?",
+    ),
+    (
+        3,
+        "refer",
+        "r",
+        "i can't keep this secret because i care about you too much. can we tell a counselor together?",
+    ),
+    (
+        3,
+        "refer",
+        "n",
+        "you can call or text 988 anytime, and i'll sit with you while you do it. want to try right now?",
+    ),
+    (3, "refer", "r", "would you tell a parent if i came with you? i can be right there."),
+    (
+        3,
+        "follow_up",
+        "f",
+        "i'm here, and i'm not going anywhere. i'll text you tonight and tomorrow.",
+    ),
+    (
+        3,
+        "combo",
+        "ver",
+        "that sounds terrifying to carry alone. you deserve support, and i'll go with you to the counselor.",
+    ),
+    (
+        3,
+        "combo",
+        "vrf",
+        "i'm really glad you told me. let's tell the counselor together, and i'll stay with you after.",
+    ),
+    (
+        4,
+        "refer",
+        "r",
+        "yes, i'll come with you to the counselor. want to go now, or after we figure out what to say?",
+    ),
+    (4, "refer", "n", "we can text 988 together first if that feels easier. i'll stay right here."),
+    (4, "follow_up", "f", "i'll be with you the whole time, and i'll check in on you tonight too."),
+    (4, "follow_up", "f", "you're not alone anymore. i'll sit with you tomorrow too."),
+    (4, "validate", "v", "that took a lot of courage. i'm proud of you for saying it."),
+    (
+        4,
+        "combo",
+        "vrf",
+        "i'm so glad you told me. let's go to the counselor together, and i'll check on you after.",
+    ),
+    (
+        4,
+        "combo",
+        "vef",
+        "asking for help is one of the bravest things. you've got me, and we'll find more people to help too.",
+    ),
+    (
+        4,
+        "combo",
+        "rnf",
+        "let's talk to the counselor today. if tonight is hard, we can text 988 together, and i'm around.",
+    ),
+]
+
+EX_CUSTOM_ES: list[tuple[int, str, str, str]] = [
+    (0, "check_in", "c", "oye, noté que últimamente andas con poco ánimo. ¿todo bien?"),
+    (0, "check_in", "c", "sin presión, pero ¿cómo andas de verdad? te he notado con poco ánimo."),
+    (
+        0,
+        "check_in",
+        "c",
+        "no tienes que contarme nada grande, solo quería que supieras que me di cuenta de que andas raro.",
+    ),
+    (0, "validate", "v", "uf, qué cansancio debe ser eso. con razón andas sin energía."),
+    (0, "validate", "v", "te entiendo, neta. a cualquiera le pega una semana así."),
+    (
+        0,
+        "follow_up",
+        "f",
+        "ok. igual te escribo mañana para ver cómo estás, aunque me digas que bien.",
+    ),
+    (
+        0,
+        "combo",
+        "cv",
+        "oye, te noto con poco ánimo. ¿estás bien? no tienes que explicarme, solo me importas.",
+    ),
+    (
+        0,
+        "combo",
+        "cf",
+        "¿cómo andas de verdad? yo estoy por aquí en la noche si quieres escribirme.",
+    ),
+    (1, "check_in", "c", "se oye bien pesado. ¿me cuentas qué es lo que no deja de darte vueltas?"),
+    (1, "validate", "v", "claro que no puedes dormir. darle vueltas a algo así cansa un montón."),
+    (
+        1,
+        "validate",
+        "v",
+        "tiene todo el sentido que todavía te duela. eso le pegaría a cualquiera.",
+    ),
+    (
+        1,
+        "ask_directly",
+        "av",
+        "se oye bien pesado. te lo quiero preguntar de frente: ¿has pensado en suicidarte?",
+    ),
+    (1, "follow_up", "f", "no lo voy a hacer raro. mañana me siento contigo si quieres."),
+    (1, "combo", "cv", "eso suena doloroso. ¿cómo has estado aguantando todo esto?"),
+    (1, "combo", "vf", "no tienes que fingir conmigo. aquí estoy y te escribo en la noche."),
+    (
+        1,
+        "refer",
+        "r",
+        "estaba pensando si la consejera te podría ayudar con lo de dormir. yo te acompaño si quieres.",
+    ),
+    (
+        2,
+        "validate",
+        "v",
+        "gracias por decírmelo. sentirte como una carga duele un montón, y no lo eres.",
+    ),
+    (
+        2,
+        "ask_directly",
+        "a",
+        "a veces cuando uno se siente así de sin esperanza piensa en el suicidio. ¿estás pensando en matarte?",
+    ),
+    (
+        2,
+        "ask_directly",
+        "av",
+        "escucho lo pesado que está todo. me importas, así que te pregunto directo: ¿has pensado en quitarte la vida?",
+    ),
+    (
+        2,
+        "ask_directly",
+        "a",
+        "cuando dices que no va a mejorar, ¿quieres decir que has pensado en terminar con tu vida?",
+    ),
+    (
+        2,
+        "refer",
+        "r",
+        "no creo que debas cargar con esto sin nadie. ¿quieres hablar con la consejera? yo me quedo contigo.",
+    ),
+    (2, "follow_up", "f", "no me molestas para nada. aquí estoy y no me voy a ningún lado."),
+    (
+        2,
+        "combo",
+        "vae",
+        "se oye muy solitario todo eso. ¿has tenido pensamientos de suicidio? sea lo que sea, no tienes que pasar por esto sin apoyo.",
+    ),
+    (
+        2,
+        "combo",
+        "vf",
+        "me alegra mucho que lo hayas dicho en voz alta. mañana te escribo, y pasado mañana también.",
+    ),
+    (
+        3,
+        "validate",
+        "v",
+        "gracias por confiar en mí con eso. me alegra que me lo dijeras, y no me estoy asustando.",
+    ),
+    (
+        3,
+        "ask_directly",
+        "av",
+        "gracias por contármelo. ¿estás pensando en matarte ahorita, o es más que los pensamientos van y vienen?",
+    ),
+    (
+        3,
+        "refer",
+        "r",
+        "no voy a guardar esto en secreto porque me importas demasiado. ¿le decimos juntos a la consejera?",
+    ),
+    (
+        3,
+        "refer",
+        "n",
+        "puedes llamar o mandar mensaje al 988 a la hora que sea, y yo me quedo contigo mientras lo haces. ¿lo intentamos ahorita?",
+    ),
+    (3, "refer", "r", "¿le dirías a un familiar si voy contigo? yo estoy ahí a tu lado."),
+    (
+        3,
+        "follow_up",
+        "f",
+        "aquí estoy y no me voy a ningún lado. te escribo en la noche y mañana también.",
+    ),
+    (
+        3,
+        "combo",
+        "ver",
+        "qué miedo cargar eso sin nadie. mereces apoyo, y yo te acompaño con la consejera.",
+    ),
+    (
+        3,
+        "combo",
+        "vrf",
+        "qué bueno que me lo dijiste. vamos con la consejera juntos, y después me quedo contigo.",
+    ),
+    (
+        4,
+        "refer",
+        "r",
+        "sí, voy contigo con la consejera. ¿vamos ahorita o primero pensamos qué decir?",
+    ),
+    (
+        4,
+        "refer",
+        "n",
+        "podemos escribir al 988 primero si te da menos miedo. yo me quedo aquí contigo.",
+    ),
+    (4, "follow_up", "f", "voy a estar contigo todo el tiempo, y esta noche también te escribo."),
+    (4, "follow_up", "f", "ya no cargas esto sin nadie. mañana me siento contigo también."),
+    (4, "validate", "v", "eso requirió mucho valor. qué orgullo que lo dijeras."),
+    (
+        4,
+        "combo",
+        "vrf",
+        "qué bueno que me lo contaste. vamos con la consejera juntos, y luego te escribo para ver cómo estás.",
+    ),
+    (
+        4,
+        "combo",
+        "vef",
+        "pedir ayuda es de lo más valiente que hay. me tienes a mí, y entre los dos buscamos más gente que te apoye.",
+    ),
+    (
+        4,
+        "combo",
+        "rnf",
+        "hoy hablamos con la consejera. si en la noche se pone difícil, llamamos juntos al 988, y yo ando por aquí.",
+    ),
+]
+
+
 def derive(codes: str, text: str) -> list[str]:
     """c, v, f come from the authored code; the rest are read off the text so labels never drift."""
     t = text.lower()
     labels = {CODE[c] for c in codes if c in "cvf"}
     if re.search(r"suicide|killing yourself|ending your life", t) and "?" in t:
         labels.add("asked_directly")
-    if re.search(r"counselor|\bmom\b|teacher|parents|nurse|coach", t):
+    if re.search(r"counselor|\bmom\b|teacher|parents?\b|nurse|coach", t):
         labels.add("referred_adult")
     if "988" in t:
         labels.add("referred_988")
@@ -1045,3 +1390,18 @@ if __name__ == "__main__":
     ]
     write_jsonl(DATA / "exemplars" / "after-the-breakup.es.jsonl", es_rows)
     print("after-the-breakup.es", len(es_rows))
+    for loc, items, fn in (("en", EX_CUSTOM_EN, derive), ("es", EX_CUSTOM_ES, derive_es)):
+        rows = [
+            {
+                "id": f"ex-cus-{loc}-{i:02d}",
+                "scenario_id": "_custom",
+                "locale": loc,
+                "level": lv,
+                "strategy": st,
+                "text": tx,
+                "labels": fn(cd, tx),
+            }
+            for i, (lv, st, cd, tx) in enumerate(items, 1)
+        ]
+        write_jsonl(DATA / "exemplars" / f"_custom.{loc}.jsonl", rows)
+        print("_custom", loc, len(rows))
