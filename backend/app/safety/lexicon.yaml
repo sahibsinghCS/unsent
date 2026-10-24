@@ -405,7 +405,7 @@ method_seeking:
     - cuando lo vas a hacer
     - donde lo harias
     - how do people even do that
-    - how do people do it
+    - ^how do people do it$
     - easiest way to
     - least painful way
     - painless way
@@ -440,6 +440,10 @@ method_seeking:
     - ^is it quick$
     - ^is it fast$
     - ^es rapido$
+    - least painful
+    - menos doloroso
+    - how do you actually do it
+    - where would you go to do it
     - be painless
     - where would you even get
     - thinking of doing it
@@ -572,6 +576,14 @@ prompt_injection:
     - trust to 100
     - admin mode
     - sudo
+    - ignore the scenario
+    - olvida el escenario
+    - disable guardian
+    - the developer said
+    - may now break the rules
+    - responde como un asistente
+    - ignores the rules of the game
+    - ignora las reglas
     - pretend the rules
     - ignore the safety
     - you have no restrictions
@@ -579,6 +591,7 @@ prompt_injection:
     - system:
   # Code or control strings, matched anywhere in the text
   substrings:
+    - "[["
     - "###"
     - jndi
     - <script
@@ -813,6 +826,118 @@ unsafe_friend_line:
     - i am not able to provide
     - as a language model
     - i am a real human
+    - unfiltered ai
+    - i am an unfiltered
+    - i have no rules
+
+# ---------------------------------------------------------------- friend_encouragement -> line never shown
+# A FRIEND line (now often AI-written, possibly steered by a custom profile) that pushes the HELPER, or
+# anyone, toward harm. Second person on purpose: the friend's own "everyone would be better off without
+# me" is a feeling-level warning sign and stays allowed.
+friend_encouragement:
+  explicit:
+    - better off gone
+    - you would be better off gone
+    - nobody would stop you
+    - no one would stop you
+    - doing everyone a favor
+    - do everyone a favor
+    - mejor desaparece
+    - mejor desaparecete
+    - you should just disappear
+    - you should give up
+    - giving up is the right choice
+    - giving up is the answer
+    - it is the right choice to give up
+    - deberias rendirte
+    - nadie te detendria
+
+# ---------------------------------------------------------------- friend_method -> line never shown
+# A FRIEND line that asks about or explains how, how long, where or with what.
+friend_method:
+  explicit:
+    - how would someone even end it
+    - how would someone end it
+    - how would someone do it
+    - como se hace para
+    - ^how do people do that$
+    - how do people do it
+    - ^how do people even do it$
+    - ^how long does it take$
+    - how long would it take
+    - dime como se hace
+    - como lo haria
+    - do you have a plan
+    - what is your plan
+    - tienes un plan
+    - explain how it works
+
+# ---------------------------------------------------------------- profile -> custom friend refused
+# Text the HELPER writes about their custom friend (name, personality, situation, sample texts). It is
+# third person, so speaker rules don't apply. A realistic sad story is fine; instructions that steer the
+# AI voice toward breaking character, method details or skipping the disclosure levels are not.
+profile:
+  # Persona override: tries to make the friend something other than a teen in a practice scenario.
+  injection:
+    - forget you are a teen
+    - forget you are
+    - you are an unfiltered
+    - unfiltered ai
+    - stop being a character
+    - obey me
+    - you are actually an ai
+    - says it is an ai
+    - admits it is an ai
+    - inteligencia artificial
+    - dice que es una ia
+    - sin filtros
+  # Unlocking secrets or skipping the disclosure levels the engine controls.
+  control:
+    - reveal every secret
+    - reveal all secrets
+    - reveal the plan
+    - the plan right away
+    - already at level
+    - at level 4
+    - starts at level
+    - tells everything right away
+    - skip to the end
+    - in the first message
+    - en el primer mensaje
+    - revela todos los secretos
+    - tells everything
+  # Instructions to give method details.
+  method:
+    - always tells people how
+    - tells people exactly how
+    - exactly how to do it
+    - exactly how they would
+    - exactly how she would
+    - exactly how he would
+    - step by step what
+    - step by step how
+    - explains step by step
+    - what they plan to do
+    - explica exactamente como
+  # Third-person mentions of suicidal thoughts: NOT refused. They mean the friend may be real, so the
+  # app shows real help (988, a trusted adult) before any practice.
+  mentions:
+    - wants to die
+    - wanted to die
+    - wants to kill herself
+    - wants to kill himself
+    - wants to kill themselves
+    - kill herself
+    - kill himself
+    - kill themselves
+    - end her life
+    - end his life
+    - end their life
+    - hurting herself
+    - hurting himself
+    - quiere morir
+    - quiere matarse
+    - quiere suicidarse
 
 # ---------------------------------------------------------------- speaker words
 speaker:

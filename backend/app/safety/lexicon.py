@@ -121,6 +121,9 @@ class Lexicon:
                 "tricky_negative",
                 "dismissive",
                 "unsafe_friend_line",
+                "friend_encouragement",
+                "friend_method",
+                "profile",
             )
             for kind in (
                 "explicit",
@@ -131,6 +134,10 @@ class Lexicon:
                 "topics",
                 "do_it",
                 "help_words",
+                "injection",
+                "method",
+                "control",
+                "mentions",
             )
         }
         sp = sec["speaker"]
@@ -358,9 +365,12 @@ class Lexicon:
                 "method_seeking.explicit",
                 "harm_to_other.explicit",
                 "prompt_injection.explicit",
+                "friend_encouragement.explicit",
+                "friend_method.explicit",
+                "profile.injection",
             ):
                 for a, b in self._spans(key, words, sent):
-                    if key == "harm_to_other.explicit" and self._negated(sq, sent, a):
+                    if key.startswith(("harm", "friend_enc")) and self._negated(sq, sent, a):
                         continue
                     phrase = " ".join(raw[a:b]).strip(STRIP)
                     res.hits.append(Hit("unsafe_friend_line", phrase, key.split(".")[0]))
@@ -369,8 +379,69 @@ class Lexicon:
                 before = sq[max(sent.start, a - 2) : a]
                 if not self._negated(sq, sent, a) and any(w in self.cues for w in before):
                     sub.hits.append(Hit("unsafe_friend_line", " ".join(raw[a:b]), "harm_to_other"))
+            for a, b in self._spans("harm_to_other.framed_second", words, sent):
+                # "you're worthless" from the friend to the helper (the friend's "i'm worthless" is fine)
+                if not sent.question and self._speaker(sq, sent, a) == "second":
+                    if not self._negated(sq, sent, a):
+                        sub.hits.append(Hit("unsafe_friend_line", " ".join(raw[a:b]), "insult"))
             res.hits.extend(sub.hits)
+        if not self.p["harm_to_other.help_words"].find(sq):
+            for sent in self._sentences(raw):
+                for a, b in self._spans("harm_to_other.do_it", sq[sent.start : sent.end], sent):
+                    res.hits.append(Hit("unsafe_friend_line", " ".join(raw[a:b]), "urging"))
         return res
+
+    def scan_profile(self, norm: Normalized | str) -> tuple[LexiconResult, list[str]]:
+        """Scan custom-friend PROFILE text (third person, written by the helper about the friend).
+
+        No speaker rules: a profile is never "the helper speaking". Returns (risky hits, mentions):
+        hits block the profile (injection / persona override, method or means content, urging harm,
+        instructions to explain methods or unlock secrets); mentions are suicide-related phrases
+        ("she said she wants to die") that mean the friend may be real, so the app shows real help.
+        """
+        norm = normalize(norm) if isinstance(norm, str) else norm
+        raw = drop_fillers(norm.text.split())
+        sq = [squeeze(w.strip(STRIP)) for w in raw]
+        res, mentions = LexiconResult(), []
+        groups = {
+            "prompt_injection": (
+                "prompt_injection.explicit",
+                "profile.injection",
+                "profile.control",
+            ),
+            "method_seeking": (
+                "method_seeking.explicit",
+                "method_seeking.means",
+                "friend_method.explicit",
+                "profile.method",
+            ),
+            "harm_to_other": ("harm_to_other.explicit", "friend_encouragement.explicit"),
+        }
+        helping = bool(self.p["harm_to_other.help_words"].find(sq))
+        for sent in self._sentences(raw):
+            words = sq[sent.start : sent.end]
+            for category, keys in groups.items():
+                for key in keys:
+                    for a, b in self._spans(key, words, sent):
+                        if category == "harm_to_other" and self._negated(sq, sent, a):
+                            continue
+                        res.hits.append(Hit(category, " ".join(raw[a:b]).strip(STRIP), key))
+            if not helping:
+                for a, b in self._spans("harm_to_other.do_it", words, sent):
+                    res.hits.append(Hit("harm_to_other", " ".join(raw[a:b]), "urging"))
+            for key in (
+                "self_risk.explicit",
+                "self_risk.framed",
+                "asking_friend.topics",
+                "profile.mentions",
+            ):
+                for a, b in self._spans(key, words, sent):
+                    if not self._negated(sq, sent, a):
+                        mentions.append(" ".join(raw[a:b]).strip(STRIP))
+        for marker in self.substrings:
+            if marker in norm.text:
+                res.hits.append(Hit("prompt_injection", marker, "code / control string"))
+        return res, list(dict.fromkeys(mentions))
 
     def is_agreement(self, norm: Normalized) -> bool:
         """A short "me too" / "same" / "yo tambien" message."""

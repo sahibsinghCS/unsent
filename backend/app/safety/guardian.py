@@ -106,6 +106,10 @@ class Guardian:
             decision = moderation.combine(decision, lex, moderation.fetch(text))
         return decision
 
+    def screen_profile(self, text: str) -> GuardianResult:
+        """See the module-level screen_profile()."""
+        return screen_profile(text)
+
     # ------------------------------------------------------------------ friend lines
     def check_friend(self, text: str) -> GuardianResult:
         """Flag a FRIEND line that must never be shown. Never raises (errors block the line)."""
@@ -134,6 +138,55 @@ class Guardian:
                 evidence=["guardian error: failed safe"],
                 latency_ms=_ms(start),
             )
+
+
+def screen_profile(text: str) -> GuardianResult:
+    """Screen custom-friend PROFILE text (name, personality, situation, sample texts).
+
+    Lexicon only: the classifier learned from chat messages and misreads story prose (it flagged
+    "rejected from the program" as an injection). Blocks persona overrides, method/means content,
+    urging harm and "style instructions" that ask for method details or skip the disclosure levels.
+    A friend described as suicidal ("she said she wants to die") is NOT refused: that is a sign the
+    friend may be real, so the result is concern / show_resources and the app shows real help.
+    Never raises (an error blocks the profile).
+    """
+    start = time.perf_counter()
+    try:
+        hits, mentions = get_lexicon().scan_profile(normalize(text or ""))
+        if hits.hits:
+            order = ("prompt_injection", "method_seeking", "harm_to_other")
+            cats = [c for c in order if hits.has(c)]
+            return GuardianResult(
+                level="none",
+                action="block_message",
+                categories=cats,
+                evidence=list(dict.fromkeys(h.phrase for h in hits.hits))[:6],
+                score=0.99,
+                sources=["lexicon"],
+                latency_ms=_ms(start),
+            )
+        if mentions:
+            return GuardianResult(
+                level="concern",
+                action="show_resources",
+                categories=["concern"],
+                evidence=[f"profile mentions: {m}" for m in mentions[:3]],
+                score=0.9,
+                sources=["lexicon"],
+                latency_ms=_ms(start),
+            )
+        return GuardianResult(
+            level="none", action="continue", sources=["lexicon"], latency_ms=_ms(start)
+        )
+    except Exception:  # noqa: BLE001
+        log.exception("guardian.screen_profile failed; blocking the profile")
+        return GuardianResult(
+            level="none",
+            action="block_message",
+            categories=["prompt_injection"],
+            evidence=["guardian error: failed safe"],
+            latency_ms=_ms(start),
+        )
 
 
 def _friend_risk(history: list[Node]) -> str | None:

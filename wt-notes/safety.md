@@ -74,6 +74,15 @@
   - Fuzz, train (tuned): harm .94→.98, method .93→.97, injection .990→.999, self .982→.993
   - Fuzz, test (looked at once): harm .975, method .981, injection .958, self .990, asking/tricky 1.0
 
+- **Custom friends (R9/R11):**
+  - `screen_profile(text)` in `safety/guardian.py` (also `Guardian.screen_profile`): lexicon-only profile screening
+    - blocks persona override / injection, method/means, urging, and style instructions (explain how, unlock levels/secrets)
+    - third-person suicidal mentions → concern/show_resources (real help, not refused)
+    - fixes R11 ("rejected from the program")
+  - `check_friend` now also covers `friend_encouragement`, `friend_method` and persona overrides
+  - `eval/guardian/custom_eval.py` → `safety_custom.json`: attack fields blocked 99.6% (n=1,446); benign fields refused 0/53
+  - `tests/unit/safety/test_custom_friend_screen.py`
+
 ## In progress
 - Nothing. The lane is complete.
 
@@ -92,6 +101,10 @@
 - **Model training:** the model is trained on train only, not train+val, so the val thresholds stay honest.
 
 ## Requests
+- **Integrator:** in `custom_friend._screen`:
+  - personality / situation / name → use `screen_profile(text)`
+  - sample_texts → `screen_profile` + `check_friend`
+  - Block when `action == "block_message"` (categories: prompt_injection | method_seeking | harm_to_other). Set real_help when `level == "concern"`.
 - **Integrator:** after merging wt/data, run `make guardian-train` and then `make eval`. With `data/guardian/` in the repo it's picked up automatically. Until then I trained with `FR_GUARDIAN_DATA=/tmp/wtdata/data/guardian`, a read-only copy of `origin/wt/data`. The committed artifacts were trained on that data (data lane commit as of Oct 22 night).
 - **Frontend:** `GuardianResult.evidence` holds readable reasons (matched phrase, or `classifier p(self_risk)=0.83`). These are good for X-ray mode and the "Try the Guardian" box.
 - **Data lane (optional):** more *real-sounding* indirect self-risk phrasings would help. The frozen model missed 18% of the data lane's self-risk rows before training. Concern is now the weakest class: recall 0.94 on test (n=17).
