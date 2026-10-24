@@ -53,7 +53,7 @@ async function run(device) {
   // 1. Landing
   await page.goto(BASE + '/');
   await page.getByTestId('start-practicing').waitFor();
-  await page.waitForTimeout(7400); // let the live demo reach its final frame (friend opens up)
+  await page.waitForTimeout(19500); // the replay shows the Read dip and the apology that wins her back
   await shot('01-landing', { full: true });
 
   // 2. Scenario picker + content warning

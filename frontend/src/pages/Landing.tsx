@@ -1,36 +1,82 @@
 // Landing page: a plain headline beside the live conversation, the key fact with its source, and an
-// annotated conversation that explains the product the way X-ray does: each message, plus a short
+// annotated conversation (a recorded real run, see lib/demoTranscript) that explains the product the way X-ray does: each message, plus a short
 // note on what the app did with it. Then where to get real help.
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { LiveDemo } from '../components/LiveDemo';
 import { Bubble } from '../components/Phone';
 import { Call988 } from '../components/Safety';
 import { usePrefs } from '../i18n';
+import { DEMO_RECORDED_AT, demoRun, turnSummary, type DemoTurn } from '../lib/demoTranscript';
 
-// Who sends each line of the annotated example (texts and notes come from i18n, in order).
-const EXAMPLE_WHO = ['friend', 'you', 'read', 'you', 'you', 'friend'] as const;
+/** The note beside one recorded turn: Guardian time, skills heard, trust change, and how Maya replied. */
+function turnNote(turn: DemoTurn, first: boolean, t: (k: string, v?: Record<string, string | number>) => string) {
+  const sum = turnSummary(turn);
+  const parts = [t('landing.run.safety', { ms: Math.round(turn.guardian.ms) })];
+  parts.push(
+    turn.skills.length
+      ? t('landing.run.heard', { labels: turn.skills.map((s) => `“${t(`labels.${s}`)}”`).join(', ') })
+      : t('landing.run.heard_none'),
+  );
+  if (turn.skills.includes('asked_directly')) parts.push(t('landing.run.direct'));
+  parts.push(t(sum.up ? 'landing.run.up' : 'landing.run.down', { from: sum.from, to: sum.to }));
+  if (turn.friend?.seen) parts.push(t('landing.run.read'));
+  else if (turn.status === 'ended_success') parts.push(t('landing.run.success'));
+  else if (turn.level_after > turn.level_before) parts.push(t('landing.run.level_up', { level: turn.level_after }));
+  else if (turn.skills.includes('asked_directly')) parts.push(t('landing.run.level_same', { level: turn.level_after }));
+  if (first && turn.friend?.voice === 'bank') parts.push(t('landing.run.bank'));
+  return parts.join(' ');
+}
 
 function AnnotatedExample() {
-  const { t, tl } = usePrefs();
-  const texts = tl('landing.example_texts');
-  const notes = tl('landing.example_notes');
+  const { t, lang } = usePrefs();
+  const run = demoRun(lang);
+  const firstReply = run.turns.findIndex((x) => x.friend?.voice === 'bank');
   return (
     <ol className="im-screen divide-y divide-line/70 overflow-hidden rounded-xl border border-line/70" data-testid="annotated-example">
-      {EXAMPLE_WHO.map((who, i) => (
-        <li key={i} className="grid gap-2 px-3 py-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center md:gap-6 md:px-5">
-          <div className="py-1">
-            {who === 'read' ? (
-              <p className="im-meta pr-3 text-right">{texts[i]}</p>
-            ) : (
-              <Bubble me={who === 'you'}>{texts[i]}</Bubble>
-            )}
-          </div>
-          <p className="border-l-2 border-line pl-3 text-sm leading-relaxed text-muted md:border-l md:pl-4">
-            <span className="font-semibold text-ink">{t(`landing.example_label_${who}`)}</span> {notes[i]}
-          </p>
-        </li>
+      <Row
+        thread={run.opening.map((b, j) => (
+          <Bubble key={j} tail={j === run.opening.length - 1}>
+            {b}
+          </Bubble>
+        ))}
+        label={t('landing.run.label_friend')}
+        note={t('landing.run.opening', { trust: Math.round(run.trust_start) })}
+      />
+      {run.turns.map((turn, i) => (
+        <Row
+          key={i}
+          testid="example-turn"
+          thread={
+            <>
+              <Bubble me>{turn.text}</Bubble>
+              {turn.friend?.seen ? (
+                <p className="im-meta pr-3 text-right">{t('chat.read_at', { time: '9:42 PM' })}</p>
+              ) : (
+                turn.friend?.bubbles.map((b, j) => (
+                  <Bubble key={j} tail={j === turn.friend!.bubbles.length - 1}>
+                    {b}
+                  </Bubble>
+                ))
+              )}
+            </>
+          }
+          label={t('landing.run.label_you', { n: i + 1 })}
+          note={turnNote(turn, i === firstReply, t)}
+        />
       ))}
     </ol>
+  );
+}
+
+function Row({ thread, label, note, testid }: { thread: ReactNode; label: string; note: string; testid?: string }) {
+  return (
+    <li className="grid gap-2 px-3 py-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center md:gap-6 md:px-5" data-testid={testid}>
+      <div className="space-y-1 py-1">{thread}</div>
+      <p className="border-l-2 border-line pl-3 text-sm leading-relaxed text-muted md:border-l md:pl-4">
+        <span className="font-semibold text-ink">{label}</span> {note}
+      </p>
+    </li>
   );
 }
 
@@ -68,6 +114,9 @@ export function Landing() {
         <div className="mt-6">
           <AnnotatedExample />
         </div>
+        <p className="mt-3 text-sm text-muted" data-testid="real-run-note">
+          {t('landing.run.note', { date: DEMO_RECORDED_AT })}
+        </p>
         <div className="mt-6">
           <Link to="/practice" className="btn-primary">
             {t('landing.start')}

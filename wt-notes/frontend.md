@@ -42,6 +42,7 @@
   - **Landing:** an annotated conversation, plus corrected sourced facts (CDC YRBS 2023 20.4% "in the past year"; Fox et al. 2021 friend disclosure).
   - **Pages:** Practice is a contact list; Feedback leads with your annotated transcript; What-if is a split thread with "Best".
   - **Proof:** before/after pairs in `screenshots/deslop/`.
+- **Landing from a real run** (integrator must-fix): `npm run demo:transcript` plays 9 fixed messages (EN + ES) through the real API (FR_EMBED=fastembed, FR_LLM=0) and writes `src/content/demo-transcript.json`. The hero phone replays it (starting with "Today 9:41 PM" and Maya's opening bubbles, no empty area) and the annotated conversation renders every turn from it, with notes built from the real labels, trust and Guardian ms. Story: check in, dismissive reply (34 → 12, left on Read), apology, validation, a direct question she deflects, reassurance, asking again (she opens up), counselor, 988 → success. Re-recording is identical except Guardian ms. A vitest checks every rendered row against the JSON.
 
 ## In progress
 - Nothing. Lane is feature-complete against the stubs.
@@ -67,7 +68,7 @@
 - With every component stubbed, the summary text is the stub's placeholder and metrics are empty (the page shows a friendly empty state).
 
 ## Numbers
-- vitest: 61/61 passing (10 files).
+- vitest: 75/75 passing (13 files).
 - E2E journey: passes on mobile + desktop; 50 screenshots.
 - Bundle: app 291 KB (94 KB gzip), charts 179 KB (63 KB gzip, separate chunk), CSS 51 KB (10 KB gzip); fonts are self-hosted woff2 (Latin subsets downloaded on demand).
 - Lowest AA contrast pair: 4.98 (white on coral button, light mode).
