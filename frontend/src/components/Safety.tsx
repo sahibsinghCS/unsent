@@ -156,7 +156,7 @@ export function CheckInModal({ open, onClose }: { open: boolean; onClose: () => 
           ))}
         </div>
         {mood === 'low' && (
-          <div className="space-y-3 rounded-2xl border border-warm/40 bg-warm-soft/50 p-4 animate-pop-in" data-testid="checkin-resources">
+          <div className="space-y-3 rounded-2xl border border-warm/40 bg-warm-soft/50 p-4" data-testid="checkin-resources">
             <p className="text-sm leading-relaxed">{t('checkin.low_body')}</p>
             <Call988 compact />
             <Link to="/real" className="block text-center text-sm font-semibold text-brand-deep underline underline-offset-4">

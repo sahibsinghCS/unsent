@@ -1,8 +1,9 @@
 /**
- * The landing page's live demo: the recorded real run (lib/demoTranscript) replayed in a phone. "You"
- * type each message, it sends with a small note (the skill the detector heard and how trust moved),
- * then Maya types her real reply or leaves you on Read. Older messages scroll off the top. Pure React
- * state + CSS; reduced motion shows the whole thread at once.
+ * The landing page's live demo: the recorded real run (lib/demoTranscript) replayed in a phone. It
+ * opens like a real thread: the "Today 9:41 PM" separator, Maya's typing dots, then her first texts.
+ * Then "you" type each message, it sends with a small note (the skill the detector heard and how trust
+ * moved), and Maya types her real reply or leaves you on Read. The trust readout in the header eases
+ * between values. Older messages scroll off the top. Reduced motion shows the whole thread at once.
  */
 import { useEffect, useMemo, useState } from 'react';
 import { usePrefs } from '../i18n';
@@ -10,12 +11,14 @@ import { demoRun, turnSummary, type DemoTurn } from '../lib/demoTranscript';
 import { prefersReducedMotion } from '../lib/typingDelay';
 import { Icon } from './Icon';
 import { Bubble, MessagesHeader, PhoneFrame, TypingDots } from './Phone';
+import { useCountUp } from './TrustMeter';
 
-type Step = { kind: 'type' | 'sent' | 'typing' | 'read' | 'friend'; turn: number; ms: number };
+type Step = { kind: 'otyping' | 'open' | 'type' | 'sent' | 'typing' | 'read' | 'friend'; turn: number; ms: number };
 
-/** The replay timeline: per turn, type → sent → (typing → friend) or read. */
-function timeline(turns: DemoTurn[]): Step[] {
-  return turns.flatMap((t, i) => {
+/** The replay timeline: Maya types and sends her opening texts, then per turn: type → sent → (typing → friend) or read. */
+function timeline(opening: string[], turns: DemoTurn[]): Step[] {
+  const intro: Step[] = [{ kind: 'otyping', turn: -1, ms: 900 }, ...opening.map((_, i) => ({ kind: 'open' as const, turn: i, ms: i === opening.length - 1 ? 1400 : 700 }))];
+  return intro.concat(turns.flatMap((t, i) => {
     const steps: Step[] = [
       { kind: 'type', turn: i, ms: Math.min(2600, 38 * t.you.length) + 400 },
       { kind: 'sent', turn: i, ms: 1100 },
@@ -23,13 +26,13 @@ function timeline(turns: DemoTurn[]): Step[] {
     if (t.seen) steps.push({ kind: 'read', turn: i, ms: 2400 });
     else if (t.friend.length) steps.push({ kind: 'typing', turn: i, ms: 1300 }, { kind: 'friend', turn: i, ms: 1500 + 450 * t.friend.length });
     return steps;
-  });
+  }));
 }
 
 export function LiveDemo() {
   const { t, lang } = usePrefs();
   const run = demoRun(lang);
-  const steps = useMemo(() => timeline(run.turns), [run]);
+  const steps = useMemo(() => timeline(run.opening, run.turns), [run]);
   const [step, setStep] = useState(-1);
   const [typed, setTyped] = useState(0);
 
@@ -43,7 +46,7 @@ export function LiveDemo() {
       timers.forEach(clearTimeout);
       timers = [];
       setStep(-1);
-      let at = 1200;
+      let at = 900; // the phone rises first (see Landing), then Maya starts typing
       steps.forEach((s, i) => {
         timers.push(setTimeout(() => setStep(i), at));
         if (s.kind === 'type') {
@@ -61,10 +64,14 @@ export function LiveDemo() {
 
   const current = steps[step];
   const shown = steps.slice(0, step + 1);
+  // Trust as of the last sent message (the engine's real value), eased by useCountUp.
+  const lastSent = [...shown].reverse().find((s) => s.kind === 'sent');
+  const trust = useCountUp(lastSent ? run.turns[lastSent.turn].trust_after : (run.turns[0]?.trust_before ?? 0));
+  const typingNow = current?.kind === 'typing' || current?.kind === 'otyping';
   return (
     <div className="relative mx-auto w-full max-w-[20rem]" aria-hidden="true">
       <PhoneFrame
-        header={<MessagesHeader name="Maya" sub={current?.kind === 'typing' ? t('chat.typing', { name: 'Maya' }) : undefined} left={<Icon name="chevron" className="h-6 w-6 text-[rgb(var(--im-sent))]" />} />}
+        header={<MessagesHeader name="Maya" sub={typingNow ? t('chat.typing', { name: 'Maya' }) : <span className="tabular-nums">{t('chat.trust')} {Math.round(trust)}</span>} left={<Icon name="chevron" className="h-6 w-6 text-[rgb(var(--im-sent))]" />} />}
         className="h-[31rem]"
       >
         {/* Top-aligned while the thread is short; once it overflows, the newest stays in view (justify-end). */}
@@ -73,12 +80,15 @@ export function LiveDemo() {
           <p className="im-meta shrink-0 pb-1 text-center">
             <b className="font-semibold">{t('chat.today')}</b> 9:41 PM
           </p>
-          {run.opening.map((b, j) => (
-            <Bubble key={`o${j}`} tail={j === run.opening.length - 1}>
-              {b}
-            </Bubble>
-          ))}
           {shown.map((s, i) => {
+            if (s.kind === 'otyping') return i === step ? <TypingDots key={i} label="" /> : null;
+            if (s.kind === 'open') {
+              return (
+                <Bubble key={i} tail={s.turn === run.opening.length - 1 || !shown.some((x) => x.kind === 'open' && x.turn === s.turn + 1)}>
+                  {run.opening[s.turn]}
+                </Bubble>
+              );
+            }
             const turn = run.turns[s.turn];
             if (s.kind === 'sent') {
               const sum = turnSummary(turn);

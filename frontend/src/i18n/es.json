@@ -58,7 +58,10 @@
       "level_up": "Cuenta más (nivel de apertura {level}). Nuestro motor decide qué está lista para contar.",
       "bank": "Sus respuestas son frases revisadas de nuestro banco, no texto de IA.",
       "note": "Una conversación real en la app con nuestras frases revisadas (sin texto de IA). Cada número es el que calculó el motor.",
-      "not_ready": "Todavía no está lista para decirlo. Nuestro motor decide qué está lista para contar."
+      "not_ready": "Todavía no está lista para decirlo. Nuestro motor decide qué está lista para contar.",
+      "more": "Ver toda la conversación ({n} mensajes más)",
+      "less": "Mostrar menos",
+      "expanded": "Se muestra toda la conversación."
     },
     "stat_big": "1 de cada 5",
     "features_title": "Nadie nos enseña qué decir. Así que practícalo.",

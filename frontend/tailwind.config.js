@@ -44,6 +44,11 @@ export default {
         scan: { '0%': { transform: 'translateY(-100%)' }, '100%': { transform: 'translateY(100%)' } },
         caret: { '0%, 49%': { opacity: 1 }, '50%, 100%': { opacity: 0 } },
         'bump': { '0%': { transform: 'scale(1)' }, '40%': { transform: 'scale(1.12)' }, '100%': { transform: 'scale(1)' } },
+        // Calm intro motion: slow, eased, no bounce.
+        'rise-in': { '0%': { opacity: 0, transform: 'translateY(12px)' }, '100%': { opacity: 1, transform: 'none' } },
+        'rise-phone': { '0%': { opacity: 0, transform: 'translateY(24px)' }, '100%': { opacity: 1, transform: 'none' } },
+        'fade-in': { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+        breathe: { '0%, 100%': { transform: 'scale(0.84)', opacity: 'calc(var(--breathe-max) * 0.55)' }, '50%': { transform: 'scale(1.06)', opacity: 'var(--breathe-max)' } },
       },
       animation: {
         'pop-in': 'pop-in 260ms cubic-bezier(.2,.8,.2,1) both',
@@ -53,6 +58,10 @@ export default {
         scan: 'scan 2.8s linear infinite',
         caret: 'caret 1s steps(1) infinite',
         bump: 'bump 420ms ease-out',
+        'rise-in': 'rise-in 700ms cubic-bezier(.25,.1,.25,1) both',
+        'rise-phone': 'rise-phone 800ms cubic-bezier(.25,.1,.25,1) both',
+        'fade-in': 'fade-in 700ms ease-out both',
+        breathe: 'breathe 5.5s ease-in-out infinite',
       },
     },
   },

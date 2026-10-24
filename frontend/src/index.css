@@ -67,7 +67,7 @@
     --brand-deep: 77 163 255;
     --brand-soft: 14 30 56;
     --brand-ink: 255 255 255;
-    --warm: 255 105 97;         /* help red on near-black (dark text on it) */
+    --warm: 214 58 64;          /* help red #D63A40: steady, white label passes AA (4.6) */
     --warm-soft: 52 18 22;
     --glow: 10 110 240;
     --good: 48 209 88;
@@ -108,7 +108,8 @@
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-semibold transition duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100; }
   .btn-primary { @apply btn bg-brand text-brand-ink hover:bg-brand/90; }
   .btn-ghost { @apply btn border border-line-strong bg-transparent text-ink hover:border-ink/50 hover:bg-sunken/60; }
-  .btn-warm { @apply btn bg-warm text-white hover:bg-warm/90 dark:text-black; }
+  /* Help actions stay still: no press scale. */
+  .btn-warm { @apply btn bg-warm text-white hover:bg-warm/90 active:scale-100; }
   .link { @apply font-semibold text-brand-deep underline-offset-4 hover:underline; }
   .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium; }
   .small-label { @apply text-[13px] font-semibold text-muted; }
@@ -119,8 +120,15 @@
   /* X-ray: a solid dark panel with mono data (no grid, glow or blur). */
   .night-panel { @apply rounded-2xl border border-night-line bg-night text-night-ink; }
   .section-rule { @apply border-t border-line; }
-  /* The one background moment: a very soft vignette behind the landing hero, dark mode only. */
-  .dark .hero-vignette { background: radial-gradient(48rem 28rem at 78% 18%, rgb(var(--brand) / 0.09), transparent 70%); }
+  /* Landing hero sky: a soft dawn wash in light mode; in dark mode the canvas star field sits on the canvas color. */
+  .hero-sky { background: linear-gradient(180deg, rgb(251 251 253) 0%, rgb(233 240 251) 100%); }
+  .dark .hero-sky { background: rgb(var(--bg)); }
+  /* The breathing light behind the hero phone: our one ambient signature (5.5 s, ease-in-out). */
+  .breathe-light { --breathe-max: 0.18; background: radial-gradient(closest-side, rgb(var(--brand)), transparent); }
+  .dark .breathe-light { --breathe-max: 0.35; }
+  /* Scroll moments: fade + 8px rise once in view (see lib/useInView). */
+  .reveal { opacity: 0; transform: translateY(8px); transition: opacity 600ms ease-out, transform 600ms ease-out; }
+  .reveal.is-in { opacity: 1; transform: none; }
 }
 
 
@@ -143,5 +151,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+  /* Final state at once: no durations and no delays (a delayed fade would otherwise stay hidden). */
+  *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; transition-delay: 0ms !important; scroll-behavior: auto !important; }
 }

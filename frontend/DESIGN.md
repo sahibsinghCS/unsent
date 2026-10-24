@@ -10,7 +10,7 @@ Tokens live in `src/index.css` (`:root` = light, `.dark` = dark) and `tailwind.c
 
 | Role | Font | Used for |
 |---|---|---|
-| Display | **Syne** 700, big and tight | Hero headline, section titles, friend names, big numbers ("1 in 5", trust score, what-if scores) |
+| Display | **Syne** 700, big and tight | Hero headline, section titles, friend names, big numbers (trust score, what-if scores). Digits in "1 in 5" are set in Plex Sans, because Syne's "1" reads like a dotless "ı" |
 | UI and body | **IBM Plex Sans** 400/500/600 | Everything else, including the feedback summary as large pull text |
 | Data | **IBM Plex Mono** 400/500 | X-ray numbers, trust math, metric values, sources, small tracked meta labels ("01", "SIMULATED") |
 | Chat | the phone's system font | Inside the Messages thread only, so it feels like a real phone |
@@ -29,13 +29,13 @@ sparingly, never above every heading.
 | Text / muted | `#F6F4FA` / `#A39FB3` | `#0B0B12` / `#5E5A6E` | Text |
 | Accent (one) | `#0A6EF0` fill, `#4DA3FF` text | `#0071EB` fill, `#0062CC` text | Primary pill buttons, links, focus, "Best", your bubbles, the trust gauge |
 | Annotation | helped `#30D158`, hurt `#FF6961` | helped `#1B7532`, hurt `#D70015` | Trust changes, detected skills, "you lost them" |
-| Help | `#FF6961` (dark text) | `#C41230` | Only "I need help now", 988 and the crisis card |
+| Help | `#D63A40` (white text) | `#C41230` | Only "I need help now", 988 and the crisis card |
 
 The accent is the iMessage blue already in the chat. To use Sahib's `#FF4FD8` instead, change
 `--brand` and `--brand-deep` only (and re-run `npm run test:a11y`). Every text pair passes WCAG AA.
 
 No glass or backdrop blur, no glows or colored shadows, no grain, no gradients on text or buttons.
-The one background moment is a very soft radial vignette behind the landing hero, in dark mode only.
+The only background moments are in the landing hero: the star field (dark) or dawn wash (light) and the breathing light behind the phone.
 
 ## Layout and components
 
@@ -55,10 +55,23 @@ The one background moment is a very soft radial vignette behind the landing hero
   what would have worked), the trust chart, then the full annotated conversation.
 - What-if: branching futures; "Best" is a solid accent border plus the word "Best".
 
-## Motion
+## Motion: calm, like a breath
 
-The hero demo, a bubble sliding in, the trust number counting, and the card hover lift. No
-staggered section fade-ups. Reduced motion is always respected.
+Slow and eased (400 to 1200 ms, ease-out or ease-in-out), never springy. One meaningful moment
+at a time. Everything plays once, and with reduced motion everything is static in its final state.
+
+- **Opening (landing, about 2.5 s, never blocks reading):** a very sparse, slowly drifting star field
+  on a canvas in dark mode (52 stars, 30 fps cap, paused when hidden or off-screen) or a soft dawn
+  wash in light mode; a blue light behind the phone that *breathes* on a 5.5 s loop (max opacity
+  0.35 dark / 0.18 light); the headline rises line by line (700 ms, 120 ms apart); the phone rises
+  24 px and fades in; Maya's typing dots, then her first texts; the buttons fade in last.
+- **Scroll moments (once, at ~30% in view):** the "1 in 5" band lights one of five figures in blue;
+  each "how it works" snippet animates its own story (bubbles slide in, the X-ray trust bar fills and
+  the number ticks to its real value, "you said" then "what brought her back"); annotated rows fade
+  in with an 8 px rise.
+- **Everywhere:** card hover lift (2 px, brighter hairline, 200 ms) and a 0.98 press on pills.
+- **Never:** flashing, parallax on text, scroll-jacking, sound. Help UI ("I need help now", 988,
+  the crisis card) never animates. Ambient motion exists only in the landing hero.
 
 ## Copy
 

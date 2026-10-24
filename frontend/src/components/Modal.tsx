@@ -69,7 +69,7 @@ export function Modal({ open, title, onClose, dismissible = true, children, tone
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={`relative max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border border-line bg-surface p-6 animate-pop-in sm:max-w-lg sm:rounded-2xl ${tone === 'warm' ? 'border-t-4 border-t-warm' : ''}`}
+        className={`relative max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border border-line bg-surface p-6 sm:max-w-lg sm:rounded-2xl ${tone === 'warm' ? 'border-t-4 border-t-warm' : 'animate-pop-in'}`}
       >
         <div className="mb-4 flex items-start gap-3">
           {icon}

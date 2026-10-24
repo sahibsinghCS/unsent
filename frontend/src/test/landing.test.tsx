@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import recorded from '../content/demo_transcript.json';
 import { Landing } from '../pages/Landing';
 import { renderApp } from './render';
@@ -14,6 +14,11 @@ describe('Landing example conversation', () => {
 
   it('renders every recorded turn with the numbers the engine computed', () => {
     renderApp(<Landing />);
+    const more = screen.getByTestId('example-more');
+    expect(within(screen.getByTestId('annotated-example')).getAllByTestId('example-turn')).toHaveLength(3);
+    expect(more.getAttribute('aria-expanded')).toBe('false');
+    fireEvent.click(more);
+    expect(more.getAttribute('aria-expanded')).toBe('true');
     const rows = within(screen.getByTestId('annotated-example')).getAllByTestId('example-turn');
     expect(rows).toHaveLength(recorded.en.turns.length);
     recorded.en.turns.forEach((turn, i) => {
