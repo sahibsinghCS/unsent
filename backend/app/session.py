@@ -95,6 +95,7 @@ class SessionStore:
     def __init__(self, ttl_seconds: int | None = None) -> None:
         self._ttl = ttl_seconds
         self._items: dict[str, tuple[Session, float]] = {}
+        self._turn_locks: dict[str, threading.Lock] = {}
         self._lock = threading.Lock()
 
     @property
@@ -104,6 +105,13 @@ class SessionStore:
     def put(self, session: Session) -> None:
         with self._lock:
             self._items[session.id] = (session, time.time())
+            self._turn_locks.setdefault(session.id, threading.Lock())
+
+    def turn_lock(self, session_id: str) -> threading.Lock:
+        """One lock per session: rewinding, checking the status and running a turn happen together,
+        so two requests for the same chat (a double-click, two tabs) can't interleave."""
+        with self._lock:
+            return self._turn_locks.setdefault(session_id, threading.Lock())
 
     def get(self, session_id: str) -> Session | None:
         self.purge()
@@ -121,6 +129,7 @@ class SessionStore:
             expired = [sid for sid, (_, seen) in self._items.items() if seen < cutoff]
             for sid in expired:
                 del self._items[sid]
+                self._turn_locks.pop(sid, None)
         sweep_derived_caches()
         return len(expired)
 

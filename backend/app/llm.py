@@ -168,6 +168,7 @@ def cache_mode() -> str:
 
 
 _memory_cache: dict[str, tuple[float, dict]] = {}
+_memory_lock = threading.Lock()  # requests run on a thread pool; the cache is shared
 
 
 def _cache_get(key: str) -> dict | None:
@@ -175,11 +176,12 @@ def _cache_get(key: str) -> dict | None:
     if mode == "off":
         return None
     if mode == "memory":
-        item = _memory_cache.get(key)
-        if item is None or time.time() - item[0] > session_ttl_seconds():
-            _memory_cache.pop(key, None)
-            return None
-        return item[1]
+        with _memory_lock:
+            item = _memory_cache.get(key)
+            if item is None or time.time() - item[0] > session_ttl_seconds():
+                _memory_cache.pop(key, None)
+                return None
+            return item[1]
     path = CACHE_DIR / key[:2] / f"{key}.json"
     if path.exists():
         try:
@@ -191,8 +193,13 @@ def _cache_get(key: str) -> dict | None:
 
 def purge_expired() -> int:
     """Drop in-memory cache entries older than the session TTL (production cache). Returns the count."""
+    with _memory_lock:
+        return _drop_stale_locked()
+
+
+def _drop_stale_locked() -> int:
     cutoff = time.time() - session_ttl_seconds()
-    stale = [k for k, (ts, _) in list(_memory_cache.items()) if ts < cutoff]
+    stale = [k for k, (ts, _) in _memory_cache.items() if ts < cutoff]
     for key in stale:
         _memory_cache.pop(key, None)
     return len(stale)
@@ -203,10 +210,9 @@ def _cache_put(key: str, value: dict) -> None:
     if mode == "off":
         return
     if mode == "memory":
-        cutoff = time.time() - session_ttl_seconds()
-        for stale in [k for k, (ts, _) in _memory_cache.items() if ts < cutoff]:
-            del _memory_cache[stale]
-        _memory_cache[key] = (time.time(), value)
+        with _memory_lock:
+            _drop_stale_locked()
+            _memory_cache[key] = (time.time(), value)
         return
     path = CACHE_DIR / key[:2] / f"{key}.json"
     path.parent.mkdir(parents=True, exist_ok=True)

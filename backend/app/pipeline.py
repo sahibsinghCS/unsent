@@ -46,7 +46,7 @@ def run_turn(session: Session, text: str) -> TurnResponse:
     guardian = services.guardian().check_user(text, path)
     user_node = Node(
         id=new_id("n"),
-        parent_id=session.head_id,
+        parent_id=path[-1].id,
         role="user",
         bubbles=[text],
         guardian=guardian,

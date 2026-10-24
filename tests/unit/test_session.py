@@ -26,3 +26,13 @@ def test_store_expires_sessions():
     session = create_session("after-the-breakup", "en", "US", _node("a", None, 30))
     store.put(session)
     assert store.get(session.id) is None
+
+
+def test_each_session_has_one_turn_lock_until_it_expires():
+    store = SessionStore(ttl_seconds=3600)
+    session = create_session("after-the-breakup", "en", "US", _node("a", None, 30))
+    store.put(session)
+    assert store.turn_lock(session.id) is store.turn_lock(session.id)
+    store._ttl = 0
+    store.purge()
+    assert session.id not in store._turn_locks

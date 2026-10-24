@@ -20,9 +20,11 @@ and it protects that public server:
   (uid 1000), not as root, with exactly **one worker process**, because practice sessions live only
   in that process's memory.
 - **One middleware** (`backend/app/ops/middleware.py`) wraps every request:
-  1. Works out who the visitor is. On Hugging Face every request comes through their proxy, so we
-     use the first address in the `X-Forwarded-For` header, but *only* when `FR_TRUST_PROXY=1`
-     (set in the image). Otherwise anyone could fake that header to dodge the limits.
+  1. Works out who the visitor is. When the app runs behind a hosting proxy, every request comes
+     through it, and the proxy adds the visitor's address to the *end* of the `X-Forwarded-For`
+     header. So we use the last address (or the 2nd-to-last with `FR_PROXY_HOPS=2`, for two
+     proxies), and *only* when `FR_TRUST_PROXY=1` (set in the image). Anything earlier in that
+     header was written by the visitor, so anyone could fake it to dodge the limits.
   2. **Rate limit** with *token buckets* (`ratelimit.py`). Picture a bucket of 30 tokens per visitor
      for messages: each message takes one, and the bucket refills at 30 per minute. Empty bucket →
      HTTP 429 "slow down" with a `Retry-After` time. Limits: 10 new sessions/min, 30 messages/min

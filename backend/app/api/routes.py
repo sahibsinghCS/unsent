@@ -181,27 +181,29 @@ def send_message(session_id: str, request: MessageRequest) -> TurnResponse:
         raise HTTPException(422, "Message is empty.")
     if len(text) > max_message_chars():
         raise HTTPException(422, f"Message is longer than {max_message_chars()} characters.")
-    if request.parent_node_id:
-        try:
-            rewind(session, request.parent_node_id)
-        except KeyError as exc:
-            raise HTTPException(404, "Unknown node.") from exc
-    status = session.nodes[session.head_id].state_after.status
-    if status not in ("active", "silent"):
-        raise HTTPException(
-            409, f"Conversation is {status}. Rewind to an earlier message or finish."
-        )
-    return run_turn(session, text)
+    with store.turn_lock(session.id):
+        target = request.parent_node_id or session.head_id
+        if target not in session.nodes:
+            raise HTTPException(404, "Unknown node.")
+        # Check before moving the head, so a refused message leaves the conversation where it was.
+        status = session.nodes[target].state_after.status
+        if status not in ("active", "silent"):
+            raise HTTPException(
+                409, f"Conversation is {status}. Rewind to an earlier message or finish."
+            )
+        rewind(session, target)
+        return run_turn(session, text)
 
 
 @router.post("/sessions/{session_id}/rewind", response_model=SessionView)
 def rewind_session(session_id: str, request: RewindRequest) -> SessionView:
     session = _session(session_id)
-    try:
-        rewind(session, request.node_id)
-    except KeyError as exc:
-        raise HTTPException(404, "Unknown node.") from exc
-    return _view(session)
+    with store.turn_lock(session.id):
+        try:
+            rewind(session, request.node_id)
+        except KeyError as exc:
+            raise HTTPException(404, "Unknown node.") from exc
+        return _view(session)
 
 
 @router.get("/sessions/{session_id}/tree", response_model=TreeView)
@@ -233,7 +235,20 @@ def whatif(session_id: str, request: WhatIfRequest) -> WhatIfResult:
         node_id = turning.node_id
     if node_id not in {node.id for node in path}:
         raise HTTPException(404, "Node is not on the current conversation path.")
+    if _is_crisis_moment(path, node_id):
+        raise HTTPException(
+            409, "This message paused the practice for real help, so it has no what-if."
+        )
     return services.whatif().simulate(session, path, node_id)
+
+
+def _is_crisis_moment(path: list[Node], node_id: str) -> bool:
+    """The helper's own crisis message (or the pause note after it) is never replayed as a mistake."""
+    index = next(i for i, node in enumerate(path) if node.id == node_id)
+    node = path[index]
+    if node.role == "system" and index > 0:
+        node = path[index - 1]
+    return node.guardian is not None and node.guardian.action == "pause_roleplay"
 
 
 @router.get("/realmode")

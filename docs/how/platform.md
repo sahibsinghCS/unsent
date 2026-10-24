@@ -16,6 +16,9 @@ At the end, the **critic** scores the conversation, and **"What if"** plays bett
 - **Contracts** (`contracts.py`) are the shared data types, so parts built in parallel by different agents fit together. They only change additively (version 1.3 today).
 - **Registry** (`services.py`): each part has a working *stub* and a *real* version. The real one switches on when its lane sets `IMPLEMENTED = True`. That is how eight parts were built in parallel without breaking each other. All five components are real now (`/api/health` shows it).
 - **Conversation tree** (`session.py`): every message is a node with a saved copy of the conversation state. Rewinding moves the "head" back; typing again creates a branch.
+- **One message at a time**: each chat has its own lock, so a double-click or a second tab can't
+  run two turns at once and tangle the tree. Blocked and crisis messages never reach the AI, are
+  never scored by the critic, and a crisis message has no "What if" (it isn't a mistake).
 - **One language per chat**: a friend is offered in a language only when its translated scenario text *and* its reviewed line bank exist (`content.scenario_locales`). Today: every friend in English, and Maya in Spanish. The server falls back to English otherwise, so a chat never mixes languages.
 - **Headline numbers** are defined once (`content/headline_metrics.json`, English and Spanish) and filled in from the evaluation reports. The How page, the README and `docs/METRICS.md` all read that file, so they always agree.
 - **Privacy**: sessions live only in server memory and are deleted after 60 minutes of inactivity. Everything derived from a conversation (cached embeddings, the AI cache, the critic's explanations) is registered with the same purge and expires with the session. There are no accounts, no database, no analytics, and nothing is written to disk in production.

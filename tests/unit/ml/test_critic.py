@@ -176,6 +176,15 @@ def test_blocked_messages_are_not_scored(monkeypatch):
     assert "n3" not in [s.node_id for s in report.per_message]
 
 
+def test_crisis_messages_are_not_scored(monkeypatch):
+    """The helper's own crisis message is not a practice reply: no score, no "try saying" rewrite."""
+    session, path = build(CONVO)
+    path[5].guardian = GuardianResult(level="crisis", action="pause_roleplay")
+    report = make_critic(monkeypatch).score_conversation(session, path)
+    assert "n5" not in [s.node_id for s in report.per_message]
+    assert "n3" in [s.node_id for s in report.per_message]
+
+
 def test_missing_skill_rules():
     base = {label: 0.0 for label in L}
     calm = State(level=2)

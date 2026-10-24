@@ -19,7 +19,7 @@ from backend.app.config import FRONTEND_DIST, env_int, is_prod
 from backend.app.ops.headers import app_csp, docs_csp, inline_script_hashes
 from backend.app.ops.middleware import OpsMiddleware
 from backend.app.ops.purge import Purger
-from backend.app.ops.ratelimit import RateLimiter, rate_limit_enabled, trust_proxy
+from backend.app.ops.ratelimit import RateLimiter, proxy_hops, rate_limit_enabled, trust_proxy
 from backend.app.session import store
 
 IMPLEMENTED = True
@@ -57,6 +57,7 @@ def install(app: FastAPI) -> None:
         app_csp=app_csp(inline_script_hashes(FRONTEND_DIST / "index.html")),
         docs_csp=docs_csp(),
         trust_proxy=trust_proxy(),
+        proxy_hops=proxy_hops(),
     )
 
 
