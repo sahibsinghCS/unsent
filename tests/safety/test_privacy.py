@@ -26,3 +26,15 @@ def test_i8_nothing_remembers_your_words_after_expiry():
     privacy.converse(privacy.marker())
     privacy.expire_everything()
     assert privacy.find(privacy.marker()) == []
+
+
+def test_i8_custom_friend_words_are_forgotten_too():
+    """The marker in a custom friend's name / situation / sample texts is gone after expiry, and the
+    friend itself is no longer served."""
+    services.reset()
+    friend_id = privacy.converse_custom(privacy.custom_marker())
+    gc.collect()
+    assert privacy.find(privacy.custom_marker())  # positive control: alive before expiry
+    privacy.expire_everything()
+    assert privacy.find(privacy.custom_marker()) == []
+    assert privacy.custom_expired(friend_id)
