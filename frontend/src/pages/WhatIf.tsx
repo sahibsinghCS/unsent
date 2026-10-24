@@ -175,15 +175,15 @@ export function WhatIf() {
                 </span>
               </div>
               <p className="text-[15px] font-semibold leading-snug">“{path.candidate_text}”</p>
-              <div className="my-3 space-y-1.5 rounded-2xl bg-sunken/70 p-3 text-sm">
+              <div className="im-screen my-3 space-y-1 rounded-2xl border border-line/70 px-2 py-3">
                 {path.nodes.map((n) =>
                   n.role === 'system' ? null : n.seen_no_reply ? (
-                    <p key={n.id} className="text-right text-[11px] text-muted">
-                      {t('chat.seen')}
+                    <p key={n.id} className="im-meta pr-2 text-right">
+                      {t('chat.read')}
                     </p>
                   ) : (
                     n.bubbles.map((b, j) => (
-                      <Bubble key={n.id + j} me={n.role === 'user'} className="!text-[13px]">
+                      <Bubble key={n.id + j} me={n.role === 'user'} tail={j === n.bubbles.length - 1} className="!text-[14px]">
                         {b}
                       </Bubble>
                     ))

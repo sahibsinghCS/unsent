@@ -44,7 +44,7 @@ await page.waitForTimeout(500);
 if (posts !== 1) fail(`expected 1 request during a slow reply, saw ${posts}`);
 // The reply arrives and is revealed bubble by bubble.
 await page.waitForFunction(() => !document.querySelector('[role="status"][aria-label*="typing"]'), null, { timeout: 30000 });
-const friendBubbles = await page.locator('[data-testid="messages"] .bg-them').count();
+const friendBubbles = await page.locator('[data-testid="messages"] .im-recv').count();
 if (friendBubbles < 3) fail('friend reply did not appear after the slow request');
 if ((await page.inputValue('[data-testid="composer"]')) !== 'are you there?') fail('a draft typed during the wait was lost');
 console.log('  slow reply: typing shown, Send disabled, 1 request, reply revealed, draft kept');
