@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import threading
+
 import pytest
 from pydantic import BaseModel
 
@@ -202,3 +204,27 @@ def test_reasoning_effort_can_be_turned_off(real_call, monkeypatch):
     fake = real_call([_response('{"bubbles": ["hi"]}')])
     llm.chat_json("actor", [{"role": "user", "content": "hi"}], Reply)
     assert "reasoning_effort" not in fake.calls[0]
+
+
+def test_memory_cache_survives_concurrent_writes_and_purges(monkeypatch):
+    """Requests run on a thread pool: writes and sweeps at the same time must never raise."""
+    monkeypatch.setenv("FR_LLM_CACHE", "memory")
+    monkeypatch.setenv("FR_SESSION_TTL_MIN", "0")  # every entry is already stale: max churn
+    errors: list[BaseException] = []
+
+    def hammer(worker: int) -> None:
+        try:
+            for i in range(300):
+                llm._cache_put(f"{worker}-{i}", {"bubbles": ["x"]})
+                llm._cache_get(f"{worker}-{i - 1}")
+                llm.purge_expired()
+        except BaseException as exc:  # noqa: BLE001 - any error is the failure we're testing for
+            errors.append(exc)
+
+    threads = [threading.Thread(target=hammer, args=(w,)) for w in range(8)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(30)
+    llm._memory_cache.clear()
+    assert errors == []

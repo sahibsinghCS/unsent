@@ -26,14 +26,20 @@ log = logging.getLogger("firstreply.request")
 _SALT = secrets.token_bytes(32)
 
 
-def client_ip(scope: Scope, trust_proxy: bool) -> str:
-    """First X-Forwarded-For hop when behind a trusted proxy (Hugging Face), else the socket peer."""
+def client_ip(scope: Scope, trust_proxy: bool, hops: int = 1) -> str:
+    """Behind a trusted proxy, the address that proxy saw: the `hops`-th X-Forwarded-For entry from
+    the right. Entries further left are written by the client and can be forged to dodge rate limits.
+    Without a trusted proxy, the socket peer."""
     if trust_proxy:
-        for name, value in scope.get("headers", []):
-            if name == b"x-forwarded-for":
-                first = value.decode("latin-1").split(",")[0].strip()
-                if first:
-                    return first
+        entries = [
+            part.strip()
+            for name, value in scope.get("headers", [])
+            if name == b"x-forwarded-for"
+            for part in value.decode("latin-1").split(",")
+        ]
+        entries = [entry for entry in entries if entry]
+        if entries:
+            return entries[-min(max(hops, 1), len(entries))]
     client = scope.get("client")
     return client[0] if client else "unknown"
 
@@ -82,11 +88,13 @@ class OpsMiddleware:
         app_csp: str,
         docs_csp: str,
         trust_proxy: bool,
+        proxy_hops: int = 1,
     ) -> None:
         self.app = app
         self.limiter = limiter
         self.max_body = max_body_bytes
         self.trust_proxy = trust_proxy
+        self.proxy_hops = proxy_hops
         self.app_headers = security_headers(app_csp)
         self.docs_headers = security_headers(docs_csp)
 
@@ -98,7 +106,7 @@ class OpsMiddleware:
         started = time.perf_counter()
         path = scope.get("path", "")
         method = scope.get("method", "GET")
-        ip = client_ip(scope, self.trust_proxy)
+        ip = client_ip(scope, self.trust_proxy, self.proxy_hops)
         extra = self.docs_headers if path in DOCS_PATHS else self.app_headers
         state = {"status": 500}
 

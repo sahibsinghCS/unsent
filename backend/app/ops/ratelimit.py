@@ -148,3 +148,11 @@ def retry_after_header(seconds: float) -> str:
 
 def trust_proxy() -> bool:
     return os.getenv("FR_TRUST_PROXY", "0").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def proxy_hops() -> int:
+    """How many trusted proxies append to X-Forwarded-For (FR_PROXY_HOPS, default 1)."""
+    try:
+        return max(1, int(os.getenv("FR_PROXY_HOPS", "1")))
+    except ValueError:
+        return 1

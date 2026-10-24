@@ -24,6 +24,7 @@ from backend.app.contracts import ActorOutput, Line, Node, Reaction, Scenario, S
 PROMPT_PATH = Path(__file__).with_name("prompts") / "actor.md"
 PROMPT_NAME = "actor"
 HISTORY_TURNS = 6
+SKIPPED_ACTIONS = ("block_message", "pause_roleplay")
 MAX_EXAMPLES = 5
 
 # What each reaction should sound like (the engine picked the reaction; this tells the voice).
@@ -151,7 +152,13 @@ def system_prompt(
 
 def chat_messages(history: Sequence[Node], system: str) -> list[dict[str, str]]:
     """System prompt + the last few turns (helper = user, friend = assistant JSON)."""
-    turns = [node for node in history if node.role in ("user", "friend")][-HISTORY_TURNS:]
+    # Blocked and crisis messages never reach the model: they got a system note, not a friend reply.
+    turns = [
+        node
+        for node in history
+        if node.role in ("user", "friend")
+        and (node.guardian is None or node.guardian.action not in SKIPPED_ACTIONS)
+    ][-HISTORY_TURNS:]
     messages = [{"role": "system", "content": system}]
     for node in turns:
         if node.role == "user":

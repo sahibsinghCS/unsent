@@ -447,7 +447,8 @@ def missed_skill_text(skill: str, summary: dict[str, float], locale: str = "en")
 
 
 def _blocked(node: Node) -> bool:
-    return node.guardian is not None and node.guardian.action == "block_message"
+    """Blocked and crisis messages aren't practice replies: never score or coach them."""
+    return node.guardian is not None and node.guardian.action in ("block_message", "pause_roleplay")
 
 
 def _clip(text: str, limit: int = 60) -> str:

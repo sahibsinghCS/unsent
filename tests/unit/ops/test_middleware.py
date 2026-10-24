@@ -65,9 +65,12 @@ def test_health_is_never_rate_limited(monkeypatch):
 
 def test_forwarded_for_only_trusted_when_configured(monkeypatch):
     client = TestClient(make_app(monkeypatch, FR_RL_SESSIONS_PER_MIN="1", FR_TRUST_PROXY="1"))
-    assert client.post("/api/sessions", headers={"x-forwarded-for": "9.9.9.1, 10.0.0.1"}).is_success
-    assert client.post("/api/sessions", headers={"x-forwarded-for": "9.9.9.2, 10.0.0.1"}).is_success
+    assert client.post("/api/sessions", headers={"x-forwarded-for": "6.6.6.6, 9.9.9.1"}).is_success
+    assert client.post("/api/sessions", headers={"x-forwarded-for": "9.9.9.2"}).is_success
     assert client.post("/api/sessions", headers={"x-forwarded-for": "9.9.9.1"}).status_code == 429
+    # The client controls everything left of what our proxy appended: a forged first entry is ignored.
+    forged = client.post("/api/sessions", headers={"x-forwarded-for": "5.5.5.5, 9.9.9.1"})
+    assert forged.status_code == 429
 
     untrusted = TestClient(make_app(monkeypatch, FR_RL_SESSIONS_PER_MIN="1", FR_TRUST_PROXY="0"))
     assert untrusted.post("/api/sessions", headers={"x-forwarded-for": "1.1.1.1"}).is_success
@@ -77,9 +80,24 @@ def test_forwarded_for_only_trusted_when_configured(monkeypatch):
 
 def test_client_ip_parsing():
     scope = {"headers": [(b"x-forwarded-for", b" 7.7.7.7 , 10.0.0.1")], "client": ("10.0.0.9", 1)}
-    assert client_ip(scope, trust_proxy=True) == "7.7.7.7"
+    assert client_ip(scope, trust_proxy=True) == "10.0.0.1", "the hop our proxy appended"
+    assert client_ip(scope, trust_proxy=True, hops=2) == "7.7.7.7"
+    assert client_ip(scope, trust_proxy=True, hops=9) == "7.7.7.7", "never past the first entry"
     assert client_ip(scope, trust_proxy=False) == "10.0.0.9"
     assert client_ip({"headers": []}, trust_proxy=True) == "unknown"
+    split = {"headers": [(b"x-forwarded-for", b"1.1.1.1"), (b"x-forwarded-for", b"2.2.2.2, ")]}
+    assert client_ip(split, trust_proxy=True) == "2.2.2.2", "repeated headers read as one list"
+
+
+def test_proxy_hops_setting(monkeypatch):
+    from backend.app.ops.ratelimit import proxy_hops
+
+    monkeypatch.delenv("FR_PROXY_HOPS", raising=False)
+    assert proxy_hops() == 1
+    monkeypatch.setenv("FR_PROXY_HOPS", "2")
+    assert proxy_hops() == 2
+    monkeypatch.setenv("FR_PROXY_HOPS", "zero")
+    assert proxy_hops() == 1
 
 
 def test_rate_limits_off_by_default_outside_prod(monkeypatch):

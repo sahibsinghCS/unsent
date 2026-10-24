@@ -23,6 +23,9 @@ At the end, the **critic** scores the conversation, and **"What if"** plays bett
 - **Contracts** (`contracts.py`) are the shared data types, so parts built in parallel by different agents fit together. They only change additively (version 1.3 today).
 - **Registry** (`services.py`): each part has a working *stub* and a *real* version. The real one switches on when its lane sets `IMPLEMENTED = True`. That is how eight parts were built in parallel without breaking each other. All five components are real now (`/api/health` shows it).
 - **Conversation tree** (`session.py`): every message is a node with a saved copy of the conversation state. Rewinding moves the "head" back; typing again creates a branch.
+- **One message at a time**: each chat has its own lock, so a double-click or a second tab can't
+  run two turns at once and tangle the tree. Blocked and crisis messages never reach the AI, are
+  never scored by the critic, and a crisis message has no "What if" (it isn't a mistake).
 - **One language per chat**: a friend is offered in a language only when its translated scenario text *and* its reviewed line bank exist (`content.scenario_locales`). Today: every friend in English, and Maya in Spanish. The server falls back to English otherwise, so a chat never mixes languages.
 - **Headline numbers** are defined once (`content/headline_metrics.json`, English and Spanish) and filled in from the evaluation reports. The How page, the README and `docs/METRICS.md` all read that file, so they always agree.
 - **Privacy**: sessions live only in server memory and are deleted after 60 minutes of inactivity. Everything derived from a conversation (cached embeddings, the AI cache, the critic's explanations) is registered with the same purge and expires with the session. There are no accounts, no database, no analytics, and nothing is written to disk in production.
@@ -1276,9 +1279,11 @@ and it protects that public server:
   (uid 1000), not as root, with exactly **one worker process**, because practice sessions live only
   in that process's memory.
 - **One middleware** (`backend/app/ops/middleware.py`) wraps every request:
-  1. Works out who the visitor is. On Hugging Face every request comes through their proxy, so we
-     use the first address in the `X-Forwarded-For` header, but *only* when `FR_TRUST_PROXY=1`
-     (set in the image). Otherwise anyone could fake that header to dodge the limits.
+  1. Works out who the visitor is. When the app runs behind a hosting proxy, every request comes
+     through it, and the proxy adds the visitor's address to the *end* of the `X-Forwarded-For`
+     header. So we use the last address (or the 2nd-to-last with `FR_PROXY_HOPS=2`, for two
+     proxies), and *only* when `FR_TRUST_PROXY=1` (set in the image). Anything earlier in that
+     header was written by the visitor, so anyone could fake it to dodge the limits.
   2. **Rate limit** with *token buckets* (`ratelimit.py`). Picture a bucket of 30 tokens per visitor
      for messages: each message takes one, and the bucket refills at 30 per minute. Empty bucket →
      HTTP 429 "slow down" with a `Retry-After` time. Limits: 10 new sessions/min, 30 messages/min

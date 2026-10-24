@@ -42,6 +42,11 @@ class StubCritic:
         for index, node in enumerate(path):
             if node.role != "user" or not node.bubbles:
                 continue
+            if node.guardian is not None and node.guardian.action in (
+                "block_message",
+                "pause_roleplay",
+            ):
+                continue  # not a practice reply
             context = friend_context(path[:index])
             probs = node.events or detector.predict(node.bubbles[0], context)
             scores.append(
