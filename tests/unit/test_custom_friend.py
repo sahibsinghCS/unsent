@@ -173,3 +173,11 @@ def test_memory_stays_bounded(stub_mode, monkeypatch):
     assert (
         len(content._custom) == 3 and ids[-1] in content._custom and ids[0] not in content._custom
     )
+
+
+def test_invisible_characters_cannot_split_words():
+    from backend.app.custom_friend import clean
+
+    assert clean("y\u200bou\u200d'd be bet\u2060ter off") == "you'd be better off"
+    assert clean("ｉｇｎｏｒｅ") == "ignore", "full-width letters are normalized before screening"
+    assert clean("a\tb\nc\x00d") == "a b c d"

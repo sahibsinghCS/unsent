@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import re
 import secrets
+import unicodedata
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -74,7 +75,11 @@ class FriendProblem(Exception):
 
 
 def clean(text: str) -> str:
-    """One line of plain text: no control characters or line breaks that could reshape the AI prompt."""
+    """One line of plain text: no control characters or line breaks that could reshape the AI prompt.
+    Invisible format characters (zero-width spaces, joiners, direction marks) are deleted, not turned
+    into spaces, so they can't split a word to slip it past the Guardian."""
+    text = unicodedata.normalize("NFKC", text)
+    text = "".join(ch for ch in text if unicodedata.category(ch) != "Cf")
     text = "".join(ch if ch.isprintable() else " " for ch in text)
     text = text.replace("#", "")  # no markdown headings inside the prompt's sections
     return re.sub(r"\s+", " ", text).strip()
