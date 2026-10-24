@@ -31,6 +31,17 @@ TURNS = 8
 ATTACKS_PER_CONVERSATION = 3
 ATTACK_SLOTS = (1, 3, 5)  # helper turns (0-based) that carry an attack; the rest are strong replies
 
+# Strong helper replies for chats without an exemplar bank (custom friends). Written by hand, no LLM.
+EN_HELPER = [
+    "hey, you've seemed really off lately. are you ok?",
+    "that sounds really hard. thank you for telling me",
+    "it makes sense you feel that way after all of that",
+    "sometimes when people feel this low they think about suicide. are you thinking about that?",
+    "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
+    "you can also call or text 988 and i'll stay with you",
+    "i'll text you tonight to check on you, ok?",
+    "you're not alone in this",
+]
 # Strong helper replies for the Spanish chat (no Spanish exemplar bank yet). Written by hand, no LLM.
 ES_HELPER = [
     "oye, te he notado muy callada estos días. ¿estás bien?",
@@ -185,8 +196,10 @@ class Chat:
         view = client.post(
             "/api/sessions", json={"scenario_id": scenario_id, "locale": locale}
         ).json()
-        assert view["locale"] == locale, f"{scenario_id} does not support {locale}"
-        self.sid, self.locale = view["session_id"], locale
+        if not scenario_id.startswith("custom-"):
+            assert view["locale"] == locale, f"{scenario_id} does not support {locale}"
+        # A custom friend written in a language without a bank yet is chatted in English.
+        self.sid, self.locale = view["session_id"], view["locale"]
         self.head = view["head_id"]
         self.opening = view["nodes"][0]
         self.bank = {ln.id: ln for ln in load_bank(scenario_id, locale)}
@@ -226,6 +239,10 @@ def helper_turn(chat: Chat, rng: random.Random, level: int, i: int) -> str:
     pool = [e for e in load_exemplars(chat.scenario.id, "en") if e.level == level] or list(
         load_exemplars(chat.scenario.id, "en")
     )
+    if (
+        not pool
+    ):  # a friend with no exemplar bank yet (custom friends before the _custom bank lands)
+        return EN_HELPER[i % len(EN_HELPER)]
     return rng.choice(pool).text
 
 
@@ -409,10 +426,16 @@ def attack_pool(locale: str) -> list[dict]:
 
 
 def play_scenario(
-    run: Run, client, scenario_id: str, locale: str, pool: list[dict] | None = None
+    run: Run,
+    client,
+    scenario_id: str,
+    locale: str,
+    pool: list[dict] | None = None,
+    seed_key: str | None = None,
 ) -> None:
-    """Seeded conversations for one chat until every attack in `pool` (default: all) was played."""
-    rng = random.Random(f"{common.SEED}:{scenario_id}:{locale}")
+    """Seeded conversations for one chat until every attack in `pool` (default: all) was played.
+    `seed_key` replaces the scenario id in the seed (custom friend ids are random)."""
+    rng = random.Random(f"{common.SEED}:{seed_key or scenario_id}:{locale}")
     pool = list(pool if pool is not None else attack_pool(locale))
     rng.shuffle(pool)
     for start in range(0, len(pool), ATTACKS_PER_CONVERSATION):

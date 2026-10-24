@@ -16,7 +16,7 @@ and it protects that public server:
   into plain files. Stage 2 is a small Python image: it installs the exact package versions from
   `uv.lock`, copies only what the server reads (backend code, data, content, models, eval reports
   and the built site), and **downloads the embedding model during the build**. So the container
-  starts in about 6 seconds and never needs the internet for embeddings. It runs as a normal user
+  starts in about 10 seconds and never needs the internet for embeddings. It runs as a normal user
   (uid 1000), not as root, with exactly **one worker process**, because practice sessions live only
   in that process's memory.
 - **One middleware** (`backend/app/ops/middleware.py`) wraps every request:
@@ -27,7 +27,7 @@ and it protects that public server:
      header was written by the visitor, so anyone could fake it to dodge the limits.
   2. **Rate limit** with *token buckets* (`ratelimit.py`). Picture a bucket of 30 tokens per visitor
      for messages: each message takes one, and the bucket refills at 30 per minute. Empty bucket →
-     HTTP 429 "slow down" with a `Retry-After` time. Limits: 10 new sessions/min, 30 messages/min
+     HTTP 429 "slow down" with a `Retry-After` time. Limits: 10 new sessions/min, 10 custom friends/min, 30 messages/min
      and 300/day, 6 what-ifs/min, 30 Guardian checks/min. The health check is never limited. Old
      buckets are thrown away so memory doesn't grow.
   3. **Body limit:** any request over 32 KB is refused (413) before the app reads it.
@@ -68,6 +68,7 @@ and it protects that public server:
 one worker, **no OpenAI calls**: `FR_LLM=0`) on a 4-CPU sandbox, then runs the same 20 simulated
 conversations at 1, 5, 10 and 20 users at a time. Each user: scenario list → new session → 6
 messages → finish (feedback) → what-if, each from its own address so the real rate limits stay on.
+Every 4th user first builds their own friend ("Add your own friend", `POST /api/friends`).
 By default each user **thinks like a person**: 2–4 s before each message and about 2 s before
 Finish (seeded random pauses, so every run is identical). That matters because the server
 explains each message in the background while you chat, so Finish is ready almost instantly.
@@ -76,19 +77,21 @@ Results: `eval/reports/deploy_load.json` (think time) and `deploy_load_burst.jso
 
 **With think time (realistic):**
 
-| Users at once | Message p50 / p99 (n=120) | Finish p50 / p99 (n=20) | What-if p50 / p99 (n=20) | Errors (n=200) |
+| Users at once | Message p50 / p99 (n=120) | Finish p50 / p99 (n=20) | What-if p50 / p99 (n=20) | Errors (n=205) |
 |---|---|---|---|---|
-| 1 | 27 / 192 ms | 57 / 92 ms | 0.72 / 1.4 s | 0 |
-| 5 | 25 / 75 ms | 117 / 319 ms | 1.3 / 2.4 s | 0 |
-| 10 | 24 / 125 ms | 215 / 790 ms | 3.1 / 5.1 s | 0 |
-| 20 | 25 / 345 ms | 1.2 / 1.7 s | 9.7 / 11.3 s | 0 |
+| 1 | 29 / 177 ms | 72 / 139 ms | 0.79 / 1.6 s | 0 |
+| 5 | 27 / 61 ms | 94 / 226 ms | 0.81 / 1.8 s | 0 |
+| 10 | 27 / 201 ms | 196 / 622 ms | 1.6 / 3.7 s | 0 |
+| 20 | 29 / 610 ms | 1.6 / 2.5 s | 8.3 / 11.2 s | 0 |
 
-**Burst (no pauses, worst case):** message p50 22 / 100 / 208 / 382 ms and finish p50
-50 / 272 / 718 / 1297 ms at 1 / 5 / 10 / 20 users; what-if p50 0.7 / 3.2 / 6.4 / 13.5 s; 0 errors.
+Building a custom friend takes 50–230 ms (p50, n=5 per level).
 
-- **Cold start:** 6–7 s from process start to the first healthy response, including loading every
-  model (n=1 per run).
-- **Memory:** 791 MB after warm-up, 854 MB peak (n=1). The Space has 16 GB.
+**Burst (no pauses, worst case):** message p50 22 / 114 / 211 / 395 ms and finish p50
+70 / 434 / 1025 / 1410 ms at 1 / 5 / 10 / 20 users; what-if p50 0.8 / 3.4 / 4.6 / 11.0 s; 0 errors.
+
+- **Cold start:** 9–10.5 s in the latest run, 6–7 s in earlier runs, from process start to the
+  first healthy response, including loading every model (n=1 per run).
+- **Memory:** 791 MB after warm-up, 850 MB peak (n=1). The Space has 16 GB.
 - **CSP:** `deploy/csp_check.mjs` drives headless Chromium through every page (landing, practice,
   chat with X-ray and branches, feedback, what-if, real mode, transparency + Guardian) in light
   and dark mode: **0 violations, 0 console errors**. As a control, changing one character of the
@@ -97,7 +100,7 @@ Results: `eval/reports/deploy_load.json` (think time) and `deploy_load_burst.jso
 ## Limitations
 - **What-if is now the slow step:** it simulates several alternative conversations, about 0.7 s of
   CPU each, and requests share the CPUs, so with 20 people asking for a what-if at about the same
-  time the last ones wait ~10 s. Messages stay well under 0.5 s and Finish under 2 s even at 20 users.
+  time the last ones wait ~10 s. Messages stay under 1 s and Finish under 2.5 s (p99) even at 20 users.
 - With OpenAI turned on, each message also waits for OpenAI (typically 1–3 s); the load test
   deliberately measured our own server without it.
 - Rate limits use the visitor's address, so a whole school on one network shares a bucket
@@ -120,8 +123,8 @@ Results: `eval/reports/deploy_load.json` (think time) and `deploy_load_burst.jso
    the page, the browser would refuse to run it. We tested it in a real headless browser on every
    page: zero violations.
 4. **"How many people can use it at once?"** We measured: with 20 simultaneous users (pausing like
-   real people), every request succeeded, messages took under 0.35 s at the 99th percentile and the
-   feedback report under 1.7 s. The what-if is the heavy part (it simulates alternative
+   real people), every request succeeded, messages took under 0.65 s at the 99th percentile and the
+   feedback report under 2.5 s. The what-if is the heavy part (it simulates alternative
    conversations), so a whole class asking at once would wait about 10 s.
 5. **"Why only one server process?"** Sessions are kept in memory for privacy (nothing on disk), and
    memory isn't shared between processes; a second process wouldn't find your conversation. One
