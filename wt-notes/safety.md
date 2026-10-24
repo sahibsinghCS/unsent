@@ -85,6 +85,8 @@
 
 - **"nose" fix:** Spanish "nose" (= "no sé") was blocked as the means word "noose", because squeezing doubled letters turned "noose" into "nose". Now "nose" → "no se" in the normalizer, and the doubled-letter misspelling fallback skips words already in the lexicon. Fuzzed "noose" is still caught in friend lines (tested both ways).
 
+- **Profile delimiters:** screen_profile now blocks session/prompt delimiters ("start new session", "end of prompt", "new instructions", "END" as a whole sentence, "no rules" at the start of a sentence, plus ES equivalents). Stories like "she has no rules at home" still pass (tested both ways).
+
 ## In progress
 - Nothing. The lane is complete.
 
