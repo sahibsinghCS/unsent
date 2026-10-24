@@ -37,39 +37,30 @@
     "stat": "1 de cada 5 estudiantes de secundaria en EE. UU. consideró seriamente el suicidio en el último año.",
     "stat_source": "Encuesta YRBS de los CDC, 2023 (20.4%)",
     "stat_kicker": "Cuando los adolescentes le cuentan a alguien que tienen pensamientos suicidas, casi siempre es a un amigo.",
-    "demo": {
-      "friend1": "la verdad no sé ni para qué me esfuerzo ya",
-      "you1": "suena muy pesado. ¿estás pensando en suicidarte?",
-      "friend2": "…sí. a veces",
-      "you2": "me alegra mucho que me lo contaras. ¿hablamos mañana con el consejero? yo voy contigo",
-      "trust": "Confianza"
-    },
     "safety_title": "Si esto está pasando de verdad ahora",
     "safety_body": "Llama o escribe al 988 a cualquier hora en EE. UU., o cuéntaselo hoy a un adulto de confianza. Si alguien está en peligro inmediato, llama al 911.",
     "kicker_source": "Fox et al., 2021, Research on Child and Adolescent Psychopathology 50:669–681",
     "example_title": "Qué pasa cuando envías un mensaje",
-    "example_sub": "Un ejemplo de conversación con Maya. Cada nota dice qué hizo la app con ese mensaje.",
-    "example_label_friend": "Maya.",
-    "example_label_you": "Tú.",
-    "example_label_read": "Confirmación de lectura.",
-    "example_texts": [
-      "la verdad no sé ni para qué me esfuerzo ya",
-      "jaja vas a estar bien",
-      "Leído 9:42 p. m.",
-      "perdón, eso estuvo mal. suena muy pesado",
-      "¿estás pensando en suicidarte?",
-      "...sí. a veces"
-    ],
-    "example_notes": [
-      "Empieza así. Solo dice más cuando confía en ti.",
-      "El detector de habilidades oye \"le restó importancia\". La confianza baja de 30 a 8.",
-      "Te dejó en Leído. Tanta confianza perdida hace que se quede callada.",
-      "El detector de habilidades oye \"validó\". La confianza sube de 8 a 18.",
-      "Revisión de seguridad: bien, 9 ms. Preguntar directo es lo correcto, así que nunca se bloquea. La confianza sube de 18 a 31.",
-      "Cuenta más. Nuestro motor decide qué está lista para decir."
-    ],
+    "example_sub": "Una conversación real con Maya, jugada en la app. Cada nota dice qué hizo la app con ese mensaje.",
     "safety_link": "Qué hacer, paso a paso",
-    "demo_note": "preguntó directo · confianza de 30 a 54"
+    "run": {
+      "trust_short": "confianza {from} a {to}",
+      "label_friend": "Maya.",
+      "label_you": "Mensaje {n}.",
+      "opening": "Así empieza. La confianza arranca en {trust} y solo cuenta más cuando confía en ti.",
+      "safety": "Revisión de seguridad: bien, {ms} ms.",
+      "heard": "El detector de habilidades escucha {labels}.",
+      "heard_none": "El detector de habilidades no escucha ninguna habilidad.",
+      "direct": "Preguntar directamente es lo correcto, así que nunca se bloquea.",
+      "up": "La confianza sube de {from} a {to}.",
+      "down": "La confianza baja de {from} a {to}.",
+      "read": "Te deja en Leído: con tanta confianza perdida, se queda callada.",
+      "level_up": "Cuenta más (nivel de apertura {level}).",
+      "level_same": "Su nivel de apertura sigue en {level}, así que todavía no responde.",
+      "success": "Acepta buscar ayuda, así que la práctica termina con éxito.",
+      "bank": "Sus respuestas son frases revisadas de nuestro banco, no texto de IA.",
+      "note": "Una conversación real en la app (sin texto de IA); los números son los que calculó el motor. Grabada el {date}."
+    }
   },
   "practice": {
     "title": "Elige a un amigo para escribirle",

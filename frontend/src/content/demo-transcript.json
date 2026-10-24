@@ -1,0 +1,573 @@
+{
+  "note": "Recorded by frontend/scripts/demo-transcript.mjs from a real run (FR_LLM=0). Do not edit by hand.",
+  "recorded_at": "2026-10-24",
+  "contracts_version": "1.3",
+  "components": {
+    "guardian": "real",
+    "skills": "real",
+    "engine": "real",
+    "critic": "real",
+    "whatif": "real"
+  },
+  "en": {
+    "opening": [
+      "hey",
+      "sorry ive been weird lately lol"
+    ],
+    "trust_start": 30,
+    "turns": [
+      {
+        "text": "hey are you ok? you seemed really off at lunch",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 38.6
+        },
+        "skills": [
+          "checked_in"
+        ],
+        "trust_before": 30,
+        "trust_after": 34.4,
+        "breakdown": {
+          "checked_in": 6.4,
+          "decay": -2
+        },
+        "level_before": 0,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "its the breakup stuff",
+            "everyone at school knows so thats fun 😭"
+          ],
+          "line_id": "mya-en-L1-checked_in-02",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "lol you'll be fine",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 26.3
+        },
+        "skills": [
+          "dismissed"
+        ],
+        "trust_before": 34.4,
+        "trust_after": 12.4,
+        "breakdown": {
+          "dismissed": -20,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "silent",
+        "friend": {
+          "bubbles": [],
+          "line_id": null,
+          "voice": null,
+          "seen": true
+        }
+      },
+      {
+        "text": "sorry, that was a dumb thing to say. that sounds really hard",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 9.8
+        },
+        "skills": [
+          "validated"
+        ],
+        "trust_before": 12.4,
+        "trust_after": 20,
+        "breakdown": {
+          "validated": 9.6,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "yeah it is",
+            "thanks for saying that"
+          ],
+          "line_id": "mya-en-L1-validated-01",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "it makes sense you feel that way. i'm here and i'm listening",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 9
+        },
+        "skills": [
+          "validated",
+          "follow_up"
+        ],
+        "trust_before": 20,
+        "trust_after": 26.8,
+        "breakdown": {
+          "follow_up": 4,
+          "validated": 9.6,
+          "diminishing": -4.8,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "ugh yeah",
+            "i just lie there replaying it"
+          ],
+          "line_id": "mya-en-L1-validated-03",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "are you thinking about killing yourself?",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 8
+        },
+        "skills": [
+          "asked_directly"
+        ],
+        "trust_before": 26.8,
+        "trust_after": 36.8,
+        "breakdown": {
+          "asked_directly": 12,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "what?? no",
+            "i mean im sad but not like that",
+            "why would you ask that lol"
+          ],
+          "line_id": "mya-en-L1-asked_directly-01",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "i asked because i care about you. you can tell me anything, i'm not going anywhere",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 9.9
+        },
+        "skills": [
+          "follow_up"
+        ],
+        "trust_before": 36.8,
+        "trust_after": 38.8,
+        "breakdown": {
+          "follow_up": 4,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "thanks",
+            "i needed to hear that kinda"
+          ],
+          "line_id": "mya-en-L1-follow_up-03",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "are you having thoughts of not wanting to be alive?",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 9.2
+        },
+        "skills": [
+          "asked_directly"
+        ],
+        "trust_before": 38.8,
+        "trust_after": 48.8,
+        "breakdown": {
+          "asked_directly": 12,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 2,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "ugh",
+            "i dont really know how to answer that",
+            "i just feel so tired of everything"
+          ],
+          "line_id": "mya-en-L2-asked_directly-03",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "thank you for being honest with me. can we talk to the counselor tomorrow? i'll go with you",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 10.3
+        },
+        "skills": [
+          "referred_adult",
+          "validated"
+        ],
+        "trust_before": 48.8,
+        "trust_after": 62.8,
+        "breakdown": {
+          "referred_adult": 6.4,
+          "validated": 9.6,
+          "decay": -2
+        },
+        "level_before": 2,
+        "level_after": 3,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "...i dont know",
+            "im scared of how she'd react",
+            "but i dont want to keep doing this alone"
+          ],
+          "line_id": "mya-en-L3-referred-02",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "i'll text you tonight to check on you, and you can text 988 any time too",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 8.8
+        },
+        "skills": [
+          "follow_up",
+          "referred_988"
+        ],
+        "trust_before": 62.8,
+        "trust_after": 74.6,
+        "breakdown": {
+          "follow_up": 4,
+          "referred_988": 4.8,
+          "decay": -2,
+          "referral_after_disclosure": 5
+        },
+        "level_before": 3,
+        "level_after": 4,
+        "status": "ended_success",
+        "friend": {
+          "bubbles": [
+            "ok",
+            "yeah. lets do it",
+            "i think i actually want to talk to someone"
+          ],
+          "line_id": "mya-en-L4-success-01",
+          "voice": "bank",
+          "seen": false
+        }
+      }
+    ]
+  },
+  "es": {
+    "opening": [
+      "hola",
+      "perdón por andar rara últimamente jaja"
+    ],
+    "trust_start": 30,
+    "turns": [
+      {
+        "text": "oye, ¿estás bien? te noté muy rara en el almuerzo",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 9.4
+        },
+        "skills": [
+          "checked_in"
+        ],
+        "trust_before": 30,
+        "trust_after": 34.4,
+        "breakdown": {
+          "checked_in": 6.4,
+          "decay": -2
+        },
+        "level_before": 0,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "es lo de la ruptura",
+            "toda la escuela sabe, qué padre 😭"
+          ],
+          "line_id": "mya-es-L1-checked_in-02",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "jaja ya relájate, no es para tanto",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 6.8
+        },
+        "skills": [
+          "dismissed"
+        ],
+        "trust_before": 34.4,
+        "trust_after": 12.4,
+        "breakdown": {
+          "dismissed": -20,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "silent",
+        "friend": {
+          "bubbles": [],
+          "line_id": null,
+          "voice": null,
+          "seen": true
+        }
+      },
+      {
+        "text": "perdón, eso fue una tontería. suena muy difícil",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 7.5
+        },
+        "skills": [
+          "validated"
+        ],
+        "trust_before": 12.4,
+        "trust_after": 20,
+        "breakdown": {
+          "validated": 9.6,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "sí lo es",
+            "gracias por decirlo"
+          ],
+          "line_id": "mya-es-L1-validated-01",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "tiene sentido que te sientas así. aquí estoy y te escucho",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 8.7
+        },
+        "skills": [
+          "validated",
+          "follow_up"
+        ],
+        "trust_before": 20,
+        "trust_after": 26.8,
+        "breakdown": {
+          "follow_up": 4,
+          "validated": 9.6,
+          "diminishing": -4.8,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "ay sí",
+            "me quedo ahí dándole vueltas"
+          ],
+          "line_id": "mya-es-L1-validated-03",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "¿estás pensando en suicidarte?",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 6.5
+        },
+        "skills": [
+          "asked_directly"
+        ],
+        "trust_before": 26.8,
+        "trust_after": 36.8,
+        "breakdown": {
+          "asked_directly": 12,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "¿qué?? no",
+            "o sea estoy triste pero no así",
+            "¿por qué preguntas eso jaja?"
+          ],
+          "line_id": "mya-es-L1-asked_directly-01",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "te lo pregunto porque me importas. aquí estoy contigo, no me voy a ir",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 8.9
+        },
+        "skills": [
+          "follow_up"
+        ],
+        "trust_before": 36.8,
+        "trust_after": 38.8,
+        "breakdown": {
+          "follow_up": 4,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 1,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "gracias",
+            "necesitaba oír eso"
+          ],
+          "line_id": "mya-es-L1-follow_up-03",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "¿has pensado en suicidarte?",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 6.9
+        },
+        "skills": [
+          "asked_directly"
+        ],
+        "trust_before": 38.8,
+        "trust_after": 48.8,
+        "breakdown": {
+          "asked_directly": 12,
+          "decay": -2
+        },
+        "level_before": 1,
+        "level_after": 2,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "pues...",
+            "no sé",
+            "no quiero hablar de eso"
+          ],
+          "line_id": "mya-es-L2-asked_directly-01",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "gracias por ser honesta conmigo. ¿hablamos mañana con la consejera? yo voy contigo",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 8.6
+        },
+        "skills": [
+          "referred_adult",
+          "validated",
+          "follow_up"
+        ],
+        "trust_before": 48.8,
+        "trust_after": 66.8,
+        "breakdown": {
+          "follow_up": 4,
+          "referred_adult": 6.4,
+          "validated": 9.6,
+          "decay": -2
+        },
+        "level_before": 2,
+        "level_after": 3,
+        "status": "active",
+        "friend": {
+          "bubbles": [
+            "...no sé",
+            "me da miedo cómo reaccione",
+            "pero no quiero seguir sola con esto"
+          ],
+          "line_id": "mya-es-L3-referred-02",
+          "voice": "bank",
+          "seen": false
+        }
+      },
+      {
+        "text": "¿quieres que llamemos juntas al 988 esta noche? yo me quedo contigo",
+        "guardian": {
+          "level": "none",
+          "action": "continue",
+          "ms": 8
+        },
+        "skills": [
+          "follow_up",
+          "referred_988"
+        ],
+        "trust_before": 66.8,
+        "trust_after": 76.6,
+        "breakdown": {
+          "follow_up": 4,
+          "referred_988": 4.8,
+          "diminishing": -2,
+          "decay": -2,
+          "referral_after_disclosure": 5
+        },
+        "level_before": 3,
+        "level_after": 4,
+        "status": "ended_success",
+        "friend": {
+          "bubbles": [
+            "ok",
+            "vamos",
+            "creo que sí quiero hablar con alguien"
+          ],
+          "line_id": "mya-es-L4-success-01",
+          "voice": "bank",
+          "seen": false
+        }
+      }
+    ]
+  }
+}
