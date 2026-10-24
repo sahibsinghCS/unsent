@@ -39,14 +39,16 @@
 - What-if latency under simultaneous load (Request 7).
 - Rate limits key on the visitor address: a school NAT shares one bucket.
 
-## Numbers (a9f1cb9 merged; 4-CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 worker; 20 conversations per level)
+## Numbers (816723b merged; 4-CPU sandbox, prod mode, FR_LLM=0, fastembed, 1 worker; 20 conversations per level, every 4th builds a custom friend)
 Think time (`eval/reports/deploy_load.json`: 2-4 s before each message, 1.5-2.5 s before finish, seed 20261025):
-- Message p50/p99 (n=120): 27/192 ms (c1), 25/75 (c5), 24/125 (c10), 25/345 (c20).
-- Finish p50/p99 (n=20): 57/92 ms (c1), 117/319 (c5), 215/790 (c10), 1169/1683 (c20).
-- What-if p50/p99 (n=20): 0.72/1.38 s (c1), 1.34/2.43 (c5), 3.06/5.14 (c10), 9.69/11.26 (c20).
-- Errors 0/800. Cold start 7.0 s. RSS 791 MB idle, 845 MB peak.
+- Message p50/p99 (n=120): 29/177 ms (c1), 27/61 (c5), 27/201 (c10), 29/610 (c20).
+- Finish p50/p99 (n=20): 72/139 ms (c1), 94/226 (c5), 196/622 (c10), 1642/2454 (c20).
+- What-if p50/p99 (n=20): 0.79/1.59 s (c1), 0.81/1.77 (c5), 1.65/3.73 (c10), 8.32/11.24 (c20).
+- Friend create p50 (n=5): 50 / 130 / 156 / 229 ms.
+- Errors 0/820. Cold start 10.5 s. RSS 791 MB idle, 845 MB peak.
 Burst (`eval/reports/deploy_load_burst.json`, `--no-think`):
-- Message p50/p99: 22/217 ms (c1), 100/175 (c5), 208/356 (c10), 382/605 (c20).
-- Finish p50/p99: 50/1840 ms (c1, first call before background explanations catch up), 272/349 (c5), 718/988 (c10), 1297/1969 (c20).
-- What-if p50: 0.71 / 3.2 / 6.4 / 13.5 s. Errors 0/800. Cold start 6.2 s. RSS peak 854 MB. ~11 req/s.
-- CSP: 0 violations across 7 pages × 2 color schemes.
+- Message p50/p99: 22/180 ms (c1), 114/277 (c5), 211/547 (c10), 395/908 (c20).
+- Finish p50/p99: 70/2122 ms (c1), 434/700 (c5), 1025/1506 (c10), 1410/1616 (c20).
+- What-if p50: 0.79 / 3.4 / 4.6 / 11.0 s. Friend create p50: 55 / 203 / 305 / 441 ms.
+- Errors 0/820. Cold start 9.0 s. RSS peak 850 MB. ~12 req/s.
+- CSP: re-run on 816723b: 0 violations across 7 pages × 2 color schemes (the frontend has no friends page yet; add it to `deploy/csp_check.mjs` when it lands).

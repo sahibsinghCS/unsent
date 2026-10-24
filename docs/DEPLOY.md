@@ -95,7 +95,7 @@ restart (about 1 minute). The day before and an hour before judging:
 
 1. Open the Space page; if it says **Sleeping**, click **Restart this Space**.
 2. When it shows **Running**, open `/api/health` once. Inside the container the server is ready
-   about 5–6 seconds after it starts (models load at startup), so judges never wait on the first message.
+   about 10 seconds after it starts (models load at startup), so judges never wait on the first message.
 
 ## 7. Logs and rollback
 
