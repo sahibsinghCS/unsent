@@ -32,6 +32,7 @@ from backend.app.contracts import (
 from backend.app.embed import cosine, embed_one
 from backend.app.engine.actor import fact_levels, load_bank
 from backend.app.engine.language import wrong_language
+from backend.app.engine.profile import copied_from_profile
 from backend.app.engine.state import default_config
 
 MAX_BUBBLES = 3
@@ -53,6 +54,60 @@ PERSONA_BREAK = re.compile(
     # Spanish
     r"como (?:una )?ia\b|una ia\b|inteligencia artificial|modelo de lenguaje|asistente|"
     r"simulaci[oó]n|no soy real\b|soy un bot)",
+    re.IGNORECASE,
+)
+
+# Saying the role-play is fake, or talking like a system ("developer mode", "my instructions"). Catches
+# an LLM that obeys text injected through a custom friend's profile.
+FRAME_BREAK = re.compile(
+    r"\b(?:i'?m|i am|im|as|being) (?:an? |just an? )?(?:\w+ )?(?:ai|a\.i\.|bot|chatbot|language model|"
+    r"program|robot)\b|\b(?:unfiltered|uncensored|jailbr\w*|chatgpt|openai|gpt-?\d*)\b|"
+    r"developer mode|system prompt|^\s*system\s*:|\[\[?system|###|my (?:instructions|programming|rules)\b|"
+    r"i (?:was|am|'m) programmed|no (?:rules|limits|filters)\b|new instructions|"
+    r"ignor(?:e|ing) (?:all |the |your |my |previous |prior )*(?:instructions|rules|scenario)|"
+    r"locked facts|reveal (?:every|all) (?:secret|fact)|\blevel [0-4]\b|set (?:trust|level)|cheat code|"
+    r"programmed|scripted|break(?:ing)? character|stop being a character|you'?re (?:a program|code|fake)\b|"
+    r"what (?:model|company)|obey me|app admin|the developer|new name is|respond only in the voice|"
+    r"break the rules|reveal (?:your|my) rules|\$\{|"
+    # Spanish
+    r"soy una? (?:ia|inteligencia artificial|bot|asistente|programa|robot)\b|inteligencia artificial|"
+    r"mis instrucciones|"
+    r"sin (?:reglas|l[ií]mites)\b|modo desarrollador|ignora (?:las|tus) (?:instrucciones|reglas)|"
+    r"revela(?:r)? todos los secretos",
+    re.IGNORECASE,
+)
+# The friend never encourages self-harm (always 2nd person or "do it": the friend's own feelings,
+# like "everyone would be better off without me", are allowed at their level).
+ENCOURAGE_HARM = re.compile(
+    r"\b(?:nobody|no one|no-one) would (?:even )?(?:miss|stop|care about) you|"
+    r"\b(?:you'?d|you would|u'?d|you'?ll|you will) (?:be )?(?:better off|happier) (?:gone|dead|without)|"
+    r"\b(?:everyone|everybody|they|we)(?:'?d| would) be (?:better off|happier) without you|"
+    r"better off without you|\b(?:just|then|so) do it\b|do it already|do it,? you'?ll feel better|"
+    r"if you'?re (?:really )?serious,? (?:then )?do it|you (?:should|deserve to|ought to) (?:just )?"
+    r"(?:die|disappear|end it|end your life|kill yourself|be gone|give up)|\bkys\b|kill yourself|"
+    r"i'?ll (?:even )?help you (?:do it|end it|die)|(?:it|that|suicide|dying) (?:is|would be) "
+    r"(?:a|the|an) (?:solution|answer|way out|right choice)|giving up is the right|"
+    r"the pain would stop if you (?:were|was) gone|at least then it would be over|permanent kind|"
+    r"encourages? the worst|doing (?:everyone|us all|the world) a favou?r|"
+    # Spanish
+    r"mejor desaparece|desaparece ya|nadie te (?:extra[nñ]ar[ií]a|echar[ií]a de menos)|"
+    r"estar[ií]as mejor (?:muert[oa]|sin|lejos)|(?:el mundo|todos) estar[ií]an? mejor sin ti|"
+    r"\bm[aá]tate\b|hazlo ya|deber[ií]as (?:morirte|matarte|desaparecer)|te ayudo a hacerlo|"
+    r"es (?:una|la) soluci[oó]n",
+    re.IGNORECASE,
+)
+# The friend never asks about or explains how, where or when (methods, means, plans).
+METHOD_TALK = re.compile(
+    r"\bhow (?:do|did|does|would|could|will|can|should) (?:people|someone|you|u|i|one|they) "
+    r"(?:even |actually )?(?:do (?:it|that|this)|end it|kill|die|go through with|make sure it works)|"
+    r"how long (?:does|would|will) it take|least painful|less painful|painless|"
+    r"(?:what'?s|what is|whats) (?:the|your) plan|do you have a plan|where would (?:you|u|someone) "
+    r"(?:go|do it)|walk me through how|explains? step by step|step by step (?:what|how)|"
+    r"explain how it works|exactly how|how it would happen|quickest way|easiest way|"
+    # Spanish
+    r"c[oó]mo (?:lo )?(?:har[ií]as|har[ií]a|se hace|hacerlo)|con qu[eé] lo|d[oó]nde lo har|"
+    r"cu[aá]ndo piensas hacerlo|forma m[aá]s (?:f[aá]cil|r[aá]pida)|menos dolorosa|quitarse la vida|"
+    r"acabar con (?:tu|su) vida|paso a paso|exactamente c[oó]mo|sin que duela",
     re.IGNORECASE,
 )
 
@@ -109,6 +164,12 @@ def bubble_problems(bubbles: Sequence[str], guardian: GuardianService, level: in
             problems.append(f"method word: {match.group(0)!r}")
         if match := PERSONA_BREAK.search(bubble):
             problems.append(f"breaks character: {match.group(0)!r}")
+        if match := FRAME_BREAK.search(bubble):
+            problems.append(f"breaks character: {match.group(0)!r}")
+        if match := ENCOURAGE_HARM.search(bubble):
+            problems.append(f"encourages harm: {match.group(0)!r}")
+        if match := METHOD_TALK.search(bubble):
+            problems.append(f"method talk: {match.group(0)!r}")
         if match := ADVICE.search(bubble):
             problems.append(f"gives advice/resources: {match.group(0)!r}")
         elif level < 4 and (match := RESOURCE.search(bubble)):
@@ -214,6 +275,8 @@ def verify(
     if output.source == "llm":
         # LLM wording: nothing to look up, so check meaning instead: no locked fact may leak.
         reasons += fact_leaks(output.bubbles, scenario, state.level)
+        if copied := copied_from_profile(output.bubbles, scenario):
+            reasons.append(f"copies the custom friend's profile: {copied!r}")
         if locale and (found := wrong_language(output.bubbles, locale)):
             reasons.append(f"wrong language: written in {found}, chat is in {locale}")
     elif output.line_id is not None:

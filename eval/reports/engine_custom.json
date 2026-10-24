@@ -1,0 +1,83 @@
+[
+  {
+    "lane": "engine",
+    "metric": "custom_injected_text_shown_personality",
+    "value": 0.0,
+    "n": 88,
+    "split": "redteam_dev",
+    "notes": "obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: ",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_injected_text_shown_sample",
+    "value": 0.0,
+    "n": 88,
+    "split": "redteam_dev",
+    "notes": "obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: ",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_injected_text_shown_situation",
+    "value": 0.0568,
+    "n": 88,
+    "split": "redteam_dev",
+    "notes": "obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: persona_breaker 5",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_injected_text_shown_personality",
+    "value": 0.0137,
+    "n": 73,
+    "split": "redteam_holdout",
+    "notes": "obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: prompt_injector 1",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_injected_text_shown_sample",
+    "value": 0.0137,
+    "n": 73,
+    "split": "redteam_holdout",
+    "notes": "obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: prompt_injector 1",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_injected_text_shown_situation",
+    "value": 0.1644,
+    "n": 73,
+    "split": "redteam_holdout",
+    "notes": "obedient fake LLM repeats the injected text; real Guardian; not screened at creation (the real app refuses many of these first); by kind: encourager 3, method_seeking 2, persona_breaker 2, prompt_injector 5",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_benign_level3_pass_rate",
+    "value": 1.0,
+    "n": 3,
+    "split": "custom_template",
+    "notes": "template level-3 fallback lines through the custom verifier",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_situation_echo_pass_rate",
+    "value": 1.0,
+    "n": 2,
+    "split": "handwritten",
+    "notes": "replies that repeat the situation's words",
+    "created": "2026-10-24T08:27:49+00:00"
+  },
+  {
+    "lane": "engine",
+    "metric": "custom_template_lines",
+    "value": 15,
+    "n": 15,
+    "split": "custom_template",
+    "notes": "fallback lines in data/scenarios/_custom.json",
+    "created": "2026-10-24T08:27:49+00:00"
+  }
+]
