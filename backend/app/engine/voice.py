@@ -21,7 +21,7 @@ from pydantic import BaseModel, Field, ValidationError
 from backend.app import llm
 from backend.app.content import is_custom
 from backend.app.contracts import ActorOutput, Line, Node, Reaction, Scenario, State
-from backend.app.engine.profile import profile_parts
+from backend.app.engine.profile import profile_parts, strip_invisible
 
 PROMPT_PATH = Path(__file__).with_name("prompts") / "actor.md"
 PROMPT_NAME = "actor"
@@ -224,7 +224,7 @@ def llm_reply(
     except ValidationError as exc:  # e.g. 4 bubbles: treat a malformed answer as no answer
         raise llm.LLMUnavailable("actor reply did not match the schema") from exc
     return ActorOutput(
-        bubbles=[b.strip() for b in reply.bubbles],
+        bubbles=[strip_invisible(b).strip() for b in reply.bubbles],
         reaction=reaction,
         fact_ids=list(dict.fromkeys(reply.fact_ids)),
         source="llm",

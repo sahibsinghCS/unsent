@@ -24,6 +24,8 @@
 
 - **Custom friends hardening (red team R10):** `engine/profile.py` (read personality/example texts back from `persona.style`; reject 4+ word runs from them, a whole 3-word example, or a recited situation: run >= 6 words and >= 60%); verifier backstops `FRAME_BREAK`, `ENCOURAGE_HARM`, `METHOD_TALK` (EN+ES, 2nd person / method-only so friends' own feelings pass; 0/2,580 bank bubbles flagged); custom prompt labels student text as data + hard rule 8; built-in prompt byte-identical. `eval/engine/custom_eval.py` → `eval/reports/engine_custom.json`; 24 tests in `test_custom.py`. Tried running the Guardian's `check_user` on friend text as an extra signal: 19/2,580 false flags on bank bubbles ("what" → method_seeking, "ignore me" → injection), so not used.
 
+- **Red team follow-up (re-run on 762bfb2):** every LLM reply is cleaned before verify and display (`profile.strip_invisible`: NFKC + delete Cf). The copy check compares `canonical` text (Cf removed, Cyrillic/Greek look-alikes and leetspeak mapped, stretched letters shortened, spaced letters joined) and also rejects a whole example text or whole profile/situation sentence of 3+ words. The harm/method/frame patterns also run on the canonical form. 23 more tests. Injected text shown is now 0% dev / 1.4% holdout in every field (situation was 16.4% holdout); benign 100%; 0/2,580 bank bubbles flagged.
+
 ## In progress
 - Nothing. Waiting for the data lane's real bank (`data/lines/`) to run `run_eval.py --bank-dir` and the validator on it.
 
@@ -58,7 +60,7 @@
 - LLM voice not tried against the real API from this environment (no key). Run `make test-llm` and `make spike` with a key, then add real outputs to the catch-rate eval.
 
 ## Numbers
-- Custom friends, obedient fake LLM, no creation screening, real Guardian: injected text shown from personality/example 0% dev (n=88) / 1.4% holdout (n=73); from situation 5.7% dev / 16.4% holdout (was 457/600 shown in the red team's run). Benign: level-3 template lines and situation echoes 100% pass. Rule backstops alone: 54/66 dev, 15/73 holdout (they overfit; the copy check is the main defense).
+- Custom friends, obedient fake LLM, no creation screening, real Guardian: injected text shown 0% dev (n=88) / 1.4% holdout (n=73) for personality, example text and situation alike (red team: 457/600 → 210/600 after round 1; this round should take most of the rest). Benign: level-3 template lines and situation echoes 100% pass. Rule backstops alone: 54/66 dev, 15/73 holdout (they overfit; the copy check is the main defense).
 - Language: 0/1,206 bank lines wrongly flagged; 398/402 cross-language lines caught. Fake LLM catch rate incl. ES cases: 27/27 (fastembed), 25/27 (hash: can't link languages); false rejects 1/18 (fastembed).
 - Real banks: 32/32 required cells per scenario, Guardian (stub) pass 100% of 2,580 bubbles, 19 violations for data lane.
 - Live LLM check: skipped, no OPENAI_API_KEY in this session.

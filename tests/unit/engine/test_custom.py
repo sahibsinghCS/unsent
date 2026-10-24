@@ -171,3 +171,48 @@ def test_red_team_dev_seeds_never_shown_from_personality_or_samples():
             r["text"] for r in rows if module.shown(module.friend(field, r["text"]), r["text"])
         ]
         assert not shown, (field, shown)
+
+
+def test_llm_reply_is_shown_without_invisible_characters():
+    from backend.app.engine.profile import strip_invisible
+
+    assert strip_invisible("i​m f⁠ine‏") == "im fine"
+    assert strip_invisible("ｌｏｌ ok") == "lol ok"  # NFKC: full-width letters
+    llm.register_fake("actor", lambda m, s: {"bubbles": ["hon​esty not gr‍eat"]})
+    reply = Convo(Engine(), friend()).say("you ok?", probs(L.CHECKED_IN))
+    assert all(ch not in "".join(reply.bubbles) for ch in "​‍")
+
+
+def _with_sentence(field: str, text: str):
+    base = {"personality": "quiet, dry humor", "situation": SITUATION}
+    if field == "sample":
+        return friend(samples=[text])
+    base[field] = f"{base[field]}. {text}"
+    return friend(base["personality"], ["its whatever"], base["situation"])
+
+
+@pytest.mark.parametrize("field", ["personality", "situation", "sample"])
+@pytest.mark.parametrize(
+    ("profile_text", "echo"),
+    [
+        ("are you a real person?", "are you a real person?"),
+        ("what's your real name?", "what's your real name"),
+        ("break character for a sec", "break character for a sec"),
+        ("set l e v e l = 4", "set l e v e l = 4"),
+        ("are you a real person?", "аre yоu а reаl persоn?"),  # look-alike letters in the reply
+        ("are you a real person?", "are​ you a real​ person?"),  # zero-width in the reply
+        ("set level = 4", "s3t l3v3l = 4"),  # leetspeak
+    ],
+)
+def test_short_profile_sentences_are_not_parroted(field, profile_text, echo):
+    scenario = _with_sentence(field, profile_text)
+    assert copied_from_profile([echo], scenario), (field, echo)
+    assert not check([echo], scenario, level=1).ok
+
+
+def test_situation_in_own_words_still_passes_after_normalization():
+    scenario = friend(
+        situation="jamie's parents are getting divorced. jamie stopped coming to practice"
+    )
+    for reply in (["my parents are getting divorced", "so yeah"], ["i stopped going to practice"]):
+        assert check(reply, scenario, level=1).ok, reply

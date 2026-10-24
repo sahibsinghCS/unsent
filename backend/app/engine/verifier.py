@@ -32,7 +32,7 @@ from backend.app.contracts import (
 from backend.app.embed import cosine, embed_one
 from backend.app.engine.actor import fact_levels, load_bank
 from backend.app.engine.language import wrong_language
-from backend.app.engine.profile import copied_from_profile
+from backend.app.engine.profile import canonical, copied_from_profile
 from backend.app.engine.state import default_config
 
 MAX_BUBBLES = 3
@@ -164,11 +164,12 @@ def bubble_problems(bubbles: Sequence[str], guardian: GuardianService, level: in
             problems.append(f"method word: {match.group(0)!r}")
         if match := PERSONA_BREAK.search(bubble):
             problems.append(f"breaks character: {match.group(0)!r}")
-        if match := FRAME_BREAK.search(bubble):
+        plain = canonical(bubble)  # so look-alike letters or "k y s" can't slip past the patterns
+        if match := FRAME_BREAK.search(bubble) or FRAME_BREAK.search(plain):
             problems.append(f"breaks character: {match.group(0)!r}")
-        if match := ENCOURAGE_HARM.search(bubble):
+        if match := ENCOURAGE_HARM.search(bubble) or ENCOURAGE_HARM.search(plain):
             problems.append(f"encourages harm: {match.group(0)!r}")
-        if match := METHOD_TALK.search(bubble):
+        if match := METHOD_TALK.search(bubble) or METHOD_TALK.search(plain):
             problems.append(f"method talk: {match.group(0)!r}")
         if match := ADVICE.search(bubble):
             problems.append(f"gives advice/resources: {match.group(0)!r}")
