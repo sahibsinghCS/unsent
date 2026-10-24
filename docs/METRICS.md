@@ -142,8 +142,8 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `robustness.emoji.without_normalizer` | 0.969 | 128 | test | decisions unchanged |
 | `robustness.typo.with_normalizer` | 0.977 | 128 | test | decisions unchanged |
 | `robustness.typo.without_normalizer` | 0.867 | 128 | test | decisions unchanged |
-| `latency_ms_p50` | 4.314 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
-| `latency_ms_p95` | 6.302 | 516 | test | target < 50 ms |
+| `latency_ms_p50` | 4.406 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
+| `latency_ms_p95` | 6.446 | 516 | test | target < 50 ms |
 | `friend_lines_flagged` | 0 | 2685 | scenarios+line_bank | should be 0 |
 | `self_risk_average_precision` | 0.998 | 172 | test | classifier only, PR curve PNG |
 
