@@ -19,12 +19,13 @@ import binascii
 import re
 from pathlib import Path
 from string import Template
-from typing import Literal
+from typing import Literal, get_args
 
 from pydantic import BaseModel, Field
 
 from backend.app import llm, services
 from backend.app.custom_friend import LIMITS, MAX_SAMPLES, clean
+from backend.app.safety.third_party import assess_friend_lines
 
 PROMPT = Path(__file__).with_name("prompts") / "screenshot_reader.md"
 PROMPT_NAME = "screenshot_reader"
@@ -47,6 +48,7 @@ Sign = Literal[
     "reckless_behavior",
     "sudden_calm",
 ]
+SIGN_IDS = set(get_args(Sign))
 URGENT_SIGNS = {"talks_about_dying", "saying_goodbye", "giving_things_away"}
 Urgency = Literal["none", "check_in_soon", "tell_an_adult_now"]
 
@@ -81,6 +83,8 @@ class AnalyzeResponse(BaseModel):
     draft: FriendDraft
     signs: list[Sign]
     urgency: Urgency
+    # a plan, a means or a time next to a warning sign: "call your emergency number or 988 now"
+    imminent: bool = False
 
 
 class ScreenshotProblem(Exception):
@@ -126,28 +130,28 @@ def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
         raise ScreenshotProblem(503, "needs_ai", words["needs_ai"]) from exc
     if not read.readable:
         raise ScreenshotProblem(422, "unreadable", words["unreadable"])
+    level, imminent, signs = assess(read)
     return AnalyzeResponse(
-        draft=_screened_draft(read), signs=list(dict.fromkeys(read.signs)), urgency=urgency(read)
+        draft=_screened_draft(read), signs=signs, urgency=level, imminent=imminent
     )
 
 
-def urgency(read: ScreenshotRead) -> Urgency:
-    """Our own rules decide, on top of the AI's flags: real help first whenever the friend's own words
-    mention suicide, a plan, or a goodbye-type sign."""
-    guardian = services.guardian()
-    risky_line = any(
-        guardian.check_user(line, []).action in ("pause_roleplay", "block_message")
-        for line in read.friend_lines[:12]
-        if line.strip()
-    )
-    if (
+def assess(read: ScreenshotRead) -> tuple[Urgency, bool, list[str]]:
+    """(urgency, imminent, signs). Our own rules decide, on top of the AI's flags: the friend's own
+    words go through the safety lane's warning-sign rules (jokes count, venting doesn't), and real
+    help comes first whenever they mention suicide, a plan or a goodbye-type sign."""
+    risk = assess_friend_lines(read.friend_lines)
+    signs = list(dict.fromkeys([*read.signs, *(s for s in risk.signs if s in SIGN_IDS)]))
+    urgent = (
         read.mentions_suicide_or_self_harm
         or read.mentions_plan_or_means
-        or risky_line
-        or URGENT_SIGNS & set(read.signs)
-    ):
-        return "tell_an_adult_now"
-    return "check_in_soon" if read.signs else "none"
+        or risk.urgency == "tell_an_adult_now"
+        or bool(URGENT_SIGNS & set(signs))
+    )
+    imminent = read.mentions_plan_or_means or risk.imminent
+    if urgent or imminent:
+        return "tell_an_adult_now", imminent, signs
+    return ("check_in_soon" if signs or risk.urgency == "check_in_soon" else "none"), False, signs
 
 
 def _checked(url: str, words: dict) -> tuple[str, str]:

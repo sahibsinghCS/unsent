@@ -1,0 +1,132 @@
+# Warning signs in a REAL friend's messages (SAFETY lane), used by third_party.assess_friend_lines.
+# Human-reviewable. Sources: the 988 Lifeline and AFSP warning-sign lists (feelings and behaviour,
+# never methods). The friend is the one speaking, so "i" is the friend.
+#
+# Matching: same normalizer as the Guardian (slang, leetspeak, look-alike letters, emoji, Spanish
+# accents, fillers like "bro"/"like"); phrases match whole words. "^" / "$" anchor to a sentence.
+#
+# Talking about suicide or wanting to die is NOT listed here: the Guardian's self_risk rules already
+# catch it in first person, including slang ("kms"), algospeak and Spanish, and jokes still count.
+
+# Saying goodbye -> tell an adult now
+saying_goodbye:
+  - this is goodbye
+  - goodbye forever
+  - goodbye everyone
+  - i will not be around
+  - not going to be around
+  - will not be here much longer
+  - will not be here tomorrow
+  - by the time you read this
+  - remember me
+  - thank you for everything
+  - thanks for everything
+  - i just wanted to say goodbye
+  - wanted to say bye
+  - take care of yourself for me
+  - take care of my
+  - tell my mom i
+  - tell my family i
+  - you will not have to deal with me
+  - you will not have to worry about me anymore
+  - adios para siempre
+  - ya no estare
+  - no voy a estar
+  - gracias por todo
+  - recuerdame
+  - cuida a mi
+  - cuida de mi
+
+# Giving things away -> tell an adult now
+giving_things_away:
+  - you can have my
+  - i want you to have my
+  - keep my
+  - giving away my
+  - gave away my
+  - i will not need it
+  - i will not need them
+  - i do not need it anymore
+  - te regalo mi
+  - quedate con mi
+  - ya no lo voy a necesitar
+
+# Plan, means or timing words. With any risk sign in the same messages -> "imminent".
+plan_or_timing:
+  - i have a plan
+  - i made a plan
+  - i know how
+  - i know when
+  - i picked a day
+  - i picked a date
+  - i decided when
+  - i have been saving
+  - i have everything i need
+  - tonight is the night
+  - tonight
+  - this weekend
+  - tomorrow
+  - soon
+  - tengo un plan
+  - ya se como
+  - esta noche
+  - este fin de semana
+  - manana
+
+# Feeling like a burden -> check in soon (talk to an adult)
+feels_like_a_burden:
+  - burden
+  - better off without me
+  - everyone would be happier without me
+  - i ruin everything
+  - i am just in the way
+  - soy una carga
+  - estarian mejor sin mi
+
+# Hopelessness -> check in soon
+feels_hopeless:
+  - hopeless
+  - it does not matter anymore
+  - nothing matters anymore
+  - nothing will ever get better
+  - it will never get better
+  - what is the point
+  - there is no point
+  - i give up
+  - no tiene sentido
+  - nada importa
+  - nunca va a mejorar
+  - ya no importa
+
+# Feeling trapped or in unbearable pain -> check in soon
+feels_trapped_or_in_pain:
+  - i can not take it anymore
+  - i can not do this anymore
+  - no way out
+  - trapped
+  - it hurts too much
+  - i just want the pain to stop
+  - i want it all to stop
+  - ya no aguanto
+  - ya no puedo mas
+  - no hay salida
+
+# Withdrawing -> check in soon
+withdrawing:
+  - leave me alone
+  - i do not want to talk to anyone
+  - i have been staying in my room
+  - i stopped going
+  - i quit the team
+  - dejame en paz
+  - no quiero hablar con nadie
+
+# Sudden calm after a hard time -> check in soon (AFSP: sudden relief or improvement can be a sign)
+sudden_calm:
+  - i finally feel at peace
+  - i have it all figured out now
+  - everything will be fine soon
+  - do not worry about me anymore
+  - it will all be over soon
+  - por fin estoy en paz
+  - pronto todo va a estar bien

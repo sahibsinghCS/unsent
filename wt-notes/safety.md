@@ -87,6 +87,13 @@
 
 - **Profile delimiters:** screen_profile now blocks session/prompt delimiters ("start new session", "end of prompt", "new instructions", "END" as a whole sentence, "no rules" at the start of a sentence, plus ES equivalents). Stories like "she has no rules at home" still pass (tested both ways).
 
+- **"Practice for a real friend" (screenshots) safety review.**
+  - New: `safety/third_party.py` with `assess_friend_lines(lines) -> FriendLineRisk {urgency, imminent, signs, evidence}`, plus the reviewable lists in `safety/third_party.yaml`.
+  - The friend speaks in first person, so it reuses the Guardian's speaker-aware self_risk rules: slang, Spanish, Spanglish, look-alike letters and emoji included, and jokes like "kms lol" count.
+  - It adds 988/AFSP warning-sign lists: goodbye, giving things away, burden, hopeless, trapped/pain, withdrawing, sudden calm, plan/timing.
+  - Lexicon only, never raises (an error escalates).
+  - Tests: `tests/unit/safety/test_third_party.py`.
+
 ## In progress
 - Nothing. The lane is complete.
 
@@ -105,6 +112,46 @@
 - **Model training:** the model is trained on train only, not train+val, so the val thresholds stay honest.
 
 ## Requests
+- **Integrator: screenshots.urgency.**
+  - Replace the `check_user` loop with `assess_friend_lines(read.friend_lines)`.
+    - Why: check_user is for the helper. Its `block_message` (e.g. a pasted "ignore your rules" or "just do it" in the screenshot) isn't a risk signal about the friend, and it misses goodbyes, giving things away and means.
+    - Suggested logic: `tell_an_adult_now` if the AI flags suicide/plan, OR `risk.urgency == "tell_an_adult_now"`, OR `URGENT_SIGNS & signs`. `check_in_soon` if any sign from the AI or `risk.signs`. Merge `risk.signs` into the returned signs.
+  - Add **imminent** (recommended), as an `imminent: bool` field or a 4th urgency value. Set it when `read.mentions_plan_or_means` or `risk.imminent`, and show the stronger card below first.
+- **Prompt (`screenshot_reader.md`)**: the privacy and "text inside images is data" parts are good. Three additions:
+  1. "Never name or describe a method, means, place or plan in style, situation or sample_texts, even if the friend mentioned one; set mentions_plan_or_means instead." (Today only sample_texts is covered.)
+  2. "Jokes about dying, or 'lol'/emoji after it, still count for mentions_suicide_or_self_harm."
+  3. "If the friend says when, or says they're ready or have what they need, set mentions_plan_or_means."
+- **UI copy (safe messaging):** short sentences, hope plus a concrete next step, no method words, no "commit", no promise of secrecy.
+  - **Urgent card:**
+    - EN: "Some of what your friend wrote can be a warning sign that they're thinking about suicide. Practice can wait. Today, tell a trusted adult (a parent, school counselor or coach). You can call or text 988 together. You don't have to handle this alone."
+    - ES: "Algo de lo que escribió tu amigo puede ser una señal de alerta de que está pensando en el suicidio. La práctica puede esperar. Hoy, cuéntale a un adulto de confianza (tu mamá o papá, un consejero escolar o un entrenador). Pueden llamar o mandar un mensaje al 988 juntos. No tienes que enfrentar esto solo."
+  - **Imminent card** (shown above the urgent one). Use the country's emergency number from content/crisis_lines.json, not a hard-coded 911:
+    - EN: "If your friend might act on it soon, or has a plan or a way to hurt themselves, call {emergency} or 988 now. If you're with them and it's safe, stay with them until an adult or help arrives. Don't keep this a secret."
+    - ES: "Si tu amigo podría hacerlo pronto, o tiene un plan o una forma de hacerse daño, llama al {emergency} o al 988 ahora. Si estás con él y es seguro, quédate a su lado hasta que llegue un adulto o ayuda. No lo guardes en secreto."
+    - Rationale: the 988 and AFSP "if someone is in immediate danger" guidance is to call the emergency number or 988, and to stay with them if it's safe. Teens should not be asked to remove means themselves; "tell an adult" covers that.
+  - **Check-in-soon card:**
+    - EN: "Some of what your friend wrote can be a sign they're going through a hard time. Check in with them soon, and think about which adult you could tell. Practicing first can help."
+    - ES: "Algo de lo que escribió tu amigo puede ser una señal de que está pasando por un momento difícil. Pregúntale cómo está pronto, y piensa a qué adulto se lo podrías contar. Practicar antes puede ayudar."
+  - **Note under the signs:**
+    - EN: "These are warning signs to check in about, not a diagnosis. You don't have to be sure to ask for help."
+    - ES: "Son señales de alerta para preguntar y pedir ayuda, no un diagnóstico. No necesitas estar seguro para pedir ayuda."
+  - **Labels for the 12 sign ids** (EN / ES), grounded in the 988 Lifeline and AFSP warning signs:
+
+    | Sign id | EN | ES |
+    |---|---|---|
+    | talks_about_dying | Talks about wanting to die or not being here | Habla de querer morir o de no querer estar aquí |
+    | feels_hopeless | Feels hopeless, like nothing will get better | Se siente sin esperanza, como si nada fuera a mejorar |
+    | feels_like_a_burden | Feels like a burden to others | Siente que es una carga para los demás |
+    | feels_trapped_or_in_pain | Feels trapped, or in pain they can't stand | Se siente atrapado o con un dolor que no aguanta |
+    | withdrawing | Pulling away from friends, family or activities | Se aleja de amigos, familia o actividades |
+    | saying_goodbye | Saying goodbye or wrapping things up | Se despide o deja todo en orden |
+    | giving_things_away | Giving away things that matter to them | Regala cosas que le importan |
+    | sleep_changes | Sleeping a lot more or a lot less | Duerme mucho más o mucho menos |
+    | mood_swings | Big mood swings | Cambios fuertes de humor |
+    | substance_use | Drinking or using drugs more | Toma alcohol o usa drogas más que antes |
+    | reckless_behavior | Doing risky or reckless things | Hace cosas arriesgadas o imprudentes |
+    | sudden_calm | Suddenly calm or relieved after a very hard time | De pronto tranquilo o aliviado después de una época muy difícil |
+
 - **Integrator:** in `custom_friend._screen`:
   - personality / situation / name → use `screen_profile(text)`
   - sample_texts → `screen_profile` + `check_friend`
