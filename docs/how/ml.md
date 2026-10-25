@@ -225,6 +225,11 @@ test, flagged decisions are wrong about 19 times as often as unflagged ones.
 had 80 fewer Spanish/indirect-encouragement training rows): free-form 0.822 → **0.836**, Spanish
 free-form 0.725 → **0.790**, composed test 0.969 → 0.974.
 
+- **Custom friends ("Add your own friend"):** the detector scores what *you* write, so swapping in a
+  custom friend's messages doesn't change its accuracy. We re-scored the same 221 free-form replies with
+  each friend message replaced by a random line from the custom-friend bank (seeded, matching language):
+  macro-F1 0.845, against 0.836 with the scenario's own messages and 0.837 with no friend message at all
+  (`eval/reports/ml_skills.json`, split "test_freeform (custom-friend contexts)").
 - **Explicit-term rule for `asked_directly`:** included in the ensemble numbers above. Free-form F1
   1.00. The rule never blocks a labeled direct ask in any split.
 - **Probes** (hand-written sentences from reviewers, not a test set): 17 of 18 behave as expected,
