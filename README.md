@@ -12,7 +12,7 @@ Built for the 2026 Congressional App Challenge (IL-11).
 
 ## Why
 
-In 2023, 20.4% of US high school students seriously considered suicide (CDC YRBS), and teens usually tell a friend before they tell an adult. Most apps help the person who is struggling. Unsent trains the *friend*: what to say first, how to ask directly, and how to get them to a trusted adult or 988.
+In 2023, 20.4% of US high school students seriously considered suicide (CDC YRBS), and when teens tell someone about suicidal thoughts, it's most often a friend (Fox et al., 2021). Most apps help the person who is struggling. Unsent trains the *friend*: what to say first, how to ask directly, and how to get them to a trusted adult or 988.
 
 ## What it looks like
 
@@ -25,6 +25,9 @@ In 2023, 20.4% of US high school students seriously considered suicide (CDC YRBS
 ## What it does
 
 - **5 friends to practice with**, each with their own situation, texting style and level of guardedness. Maya also works fully in Spanish.
+- **Texting that looks like iMessage**: blue and gray bubbles, Delivered and Read receipts, typing dots, and being left on Read.
+- **Add your own friend**: describe a friend (name, personality, what happened, a few texts they might send) and practice with them. Only those words change: what the friend reveals and when still comes from our fixed, reviewed template, and every field is screened first. Custom friends can be deleted at any time.
+- **Practice for a real friend, from screenshots**: upload 1 to 3 screenshots of a real chat after blacking out names and numbers in the browser. The AI drafts a practice version of the friend and lists the warning signs it sees; the teen reviews everything. If the friend's own words sound like a crisis, real help (a trusted adult, 988, or 911 if they might act soon) comes before any practice. Screenshots and real messages are never stored.
 - **A friend who reacts realistically.** Trust goes up or down with every reply. The friend opens up step by step (from "surface" to "thoughts of suicide" to "open to help"), goes quiet and leaves you on "Seen" if you brush them off, and agrees to get help when you've earned it.
 - **X-ray mode** shows what our models saw in each message, and the exact trust math ("+6.4 trusted adult · −2 time = +8.4").
 - **Feedback** on 7 helping skills (based on the Question, Persuade, Refer framework), the message where you lost them, highlighted words, and a verified better reply for each weak message.
