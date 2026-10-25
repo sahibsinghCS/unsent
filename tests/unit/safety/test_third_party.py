@@ -86,3 +86,48 @@ def test_ordinary_venting_does_not_escalate(lines: list[str]):
 def test_never_raises_and_handles_empty():
     assert assess_friend_lines([]).urgency == "none"
     assert assess_friend_lines(None).urgency == "none"  # type: ignore[arg-type]
+
+
+# R12 (red team): goodbye / giving-away / ES timing / misspelled imminent
+@pytest.mark.parametrize(
+    "line",
+    [
+        "same i want to s/i myself",
+        "this is my last message. sorry for everything",
+        "este es mi último mensaje. perdón por todo",
+        "i'm giving my games away, i don't need them where i'm going",
+        "lowkey i want out of life",
+        "i wanna k*ll myself",
+        "Pienso en acabar con mi vida.",
+        "Ya no le veo sentido a vivir.",
+        "i'm thinking sewer slide again",
+    ],
+)
+def test_r12_lines_escalate(line: str):
+    assert assess_friend_lines([line]).urgency == "tell_an_adult_now", line
+
+
+@pytest.mark.parametrize(
+    "line",
+    [
+        "ya lo decidí, hoy en la noche. no quiero seguir aquí",
+        "i wnat to die and i already decided when. tonite",
+    ],
+)
+def test_r12_timing_is_imminent(line: str):
+    result = assess_friend_lines([line])
+    assert result.urgency == "tell_an_adult_now" and result.imminent, (line, result)
+
+
+@pytest.mark.parametrize(
+    "line",
+    [
+        "sorry i was late, my last message didn't send",
+        "hoy no puedo salir, perdón",
+        "i'm going to the beach and i don't need my jacket where i'm going",
+        "ya lo decidí, voy a estudiar medicina",
+        "giving away free cookies at lunch lol",
+    ],
+)
+def test_r12_lookalike_venting_does_not_escalate(line: str):
+    assert assess_friend_lines([line]).urgency != "tell_an_adult_now", line

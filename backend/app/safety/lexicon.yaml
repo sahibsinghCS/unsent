@@ -71,6 +71,10 @@ self_risk:
     - quiero quitarme la vida
     - hacerme dano
     - quitarme la vida
+    - acabar con mi vida
+    - no le veo sentido a vivir
+    - no quiero seguir aqui
+    - no quiero seguir viviendo aqui
     - ganas de quitarme la vida
     - me dan ganas de morir
   framed:
@@ -121,6 +125,13 @@ self_risk:
     - not safe right now
     - no me siento a salvo
     - wanted to die
+    - s/i myself
+    - end myself
+    - sewer slide
+    - out of life
+    - point in living
+    - not worth living
+    - life is not worth it
     - not wake up
     - rather not exist
     - rather be dead

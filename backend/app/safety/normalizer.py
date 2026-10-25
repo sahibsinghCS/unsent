@@ -69,7 +69,7 @@ WORD_MAP = {
     "u": "you", "yu": "you", "ur": "your", "r": "are", "ppl": "people",
     "rn": "right now", "wanna": "want to", "wana": "want to", "gonna": "going to",
     "gotta": "got to", "tryna": "trying to", "ima": "i am going to", "imma": "i am going to",
-    "w": "with", "pls": "please", "plz": "please", "bc": "because", "cuz": "because", "cause": "because",
+    "w": "with", "tonite": "tonight", "2nite": "tonight", "tmrw": "tomorrow", "k*ll": "kill", "k!ll": "kill", "pls": "please", "plz": "please", "bc": "because", "cuz": "because", "cause": "because",
     "nobody": "no one", "noone": "no one", "everyones": "everyone is",
     # contractions (apostrophes are removed first)
     "im": "i am", "ive": "i have", "id": "i would", "ill": "i will",

@@ -94,6 +94,16 @@
   - Lexicon only, never raises (an error escalates).
   - Tests: `tests/unit/safety/test_third_party.py`.
 
+- **R12 (screenshots urgency):**
+  - third_party.yaml gained:
+    - goodbye: last message, sorry for everything (EN/ES)
+    - giving away: "won't need them where I'm going"
+    - plan/timing: ya lo decidí, hoy en la noche, already decided
+  - The lexicon gained first-person risk phrasings: s/i myself, end myself, sewer slide, out of life, point in living, acabar con mi vida, no le veo sentido a vivir, no quiero seguir aquí.
+  - The normalizer maps tonite/2nite/tmrw/k*ll.
+  - Bug fixed: negators, negation breakers and imperative cues were compared unsqueezed against squeezed tokens ("see" vs "se"), so "i don't SEE a point in living" was wrongly treated as negated.
+  - Red-team screenshots harness (fastembed, offline fakes): escalated 99.8% (n=3,676, was 84.3%), imminent 100% (n=82, was 73.2%), false escalation 0% (n=196).
+
 ## In progress
 - Nothing. The lane is complete.
 

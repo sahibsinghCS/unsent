@@ -10,6 +10,23 @@
 
 # Saying goodbye -> tell an adult now
 saying_goodbye:
+  - this is my last message
+  - ^my last message$
+  - this is my last
+  - sorry for everything
+  - i am sorry for everything
+  - forgive me for everything
+  - it was nice knowing you
+  - you will not hear from me again
+  - last time you will hear from me
+  - i love you all, bye
+  - mi ultimo mensaje
+  - este es mi ultimo
+  - perdon por todo
+  - perdonen por todo
+  - lo siento por todo
+  - fue un gusto conocerte
+  - no van a saber mas de mi
   - this is goodbye
   - goodbye forever
   - goodbye everyone
@@ -39,6 +56,15 @@ saying_goodbye:
 
 # Giving things away -> tell an adult now
 giving_things_away:
+  - giving my stuff away
+  - do not need them where
+  - do not need it where
+  - will not need them where
+  - will not need it where
+  - where i am going i will not
+  - regalando mis
+  - ya no los voy a necesitar
+  - no los necesito donde
   - you can have my
   - i want you to have my
   - keep my
@@ -53,6 +79,14 @@ giving_things_away:
 
 # Plan, means or timing words. With any risk sign in the same messages -> "imminent".
 plan_or_timing:
+  - i already decided
+  - already decided when
+  - i decided when
+  - ya lo decidi
+  - ya decidi cuando
+  - hoy en la noche
+  - esta misma noche
+  - hoy
   - i have a plan
   - i made a plan
   - i know how

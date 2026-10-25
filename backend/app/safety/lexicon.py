@@ -145,9 +145,9 @@ class Lexicon:
         self.second = {squeeze(w) for w in sp["second_person"]}
         self.third = {squeeze(w) for w in sp["third_person"]}
         self.second_verbs = set(sec["asking_friend"].get("second_person_verbs", []))
-        self.negators = set(sp["negators"])
-        self.breakers = set(sp["negation_breakers"])
-        self.cues = set(sec["harm_to_other"].get("imperative_cues", []))
+        self.negators = {squeeze(w) for w in sp["negators"]}  # message tokens are squeezed too
+        self.breakers = {squeeze(w) for w in sp["negation_breakers"]}
+        self.cues = {squeeze(w) for w in sec["harm_to_other"].get("imperative_cues", [])}
         self.reflection = _Phrases(sp["reflection_markers"])
         self.agreement = {normalize(a).text for a in sp["agreement"]}
         self.substrings = [
