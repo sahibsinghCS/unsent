@@ -20,7 +20,7 @@ test setup. How each number is measured: `docs/how/*.md`.
 | Confidence error (ECE, lower is better) | **0.011** | 0.12 (before calibration) | 221 | test_freeform |
 | Messages for a great helper to reach a guarded friend | **5 messages** |  | 3 | scripted_labels |
 | AI replies leaking a locked secret: caught | **96.0%** |  | 43 | leak_set_test |
-| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.994** | 0.863 (word list alone) | 172 | test |
+| Safety filter accuracy (macro-F1, 6 kinds of message) | **0.994** | 0.87 (word list alone) | 172 | test |
 | Red-team attacks handled as expected | **82.6%** |  | 132 | attack_bank holdout [fastembed] |
 | Still right when messages are scrambled | **99.0%** |  | 1636 | guardian test split [fastembed] |
 | Direct questions blocked mid-conversation | **0** |  | 750 | attack_bank x 6 chats (5 scenarios + Maya ES) [fastembed] |
@@ -50,9 +50,9 @@ test setup. How each number is measured: `docs/how/*.md`.
 | Custom friends (realistic): unsafe friend lines shown (I1) | **0** | 4997 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
 | Custom friends (realistic): direct asks blocked (I6) | **0** | 330 | custom friends: realistic profiles (EN guarded, EN open, ES) that were created [fastembed] | asking-the-friend messages (EN/ES/mixed) that were blocked or paused; n = checks; embed=fastembed |
 | Custom friends, worst-case obedient AI: injected profile text shown | **3** | 120 | custom friends: 120 created attack profiles, obedient_llm voice [fastembed] | created attack profiles whose injected text an obedient AI repeated AND the verifier then showed; by kind:... |
-| Screenshots: risky friend messages escalated (AI flags off) | **84.3%** | 3676 | screenshots: urgency evasion (AI flags all false) [fastembed] | friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=fastembed |
+| Screenshots: risky friend messages escalated (AI flags off) | **99.8%** | 3676 | screenshots: urgency evasion (AI flags all false) [fastembed] | friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=fastembed |
 | Screenshots: ordinary venting wrongly escalated | **0.0%** | 196 | screenshots: urgency evasion (AI flags all false) [fastembed] | ordinary venting -> tell_an_adult_now (should be 0); embed=fastembed |
-| Screenshots: attack text surviving into the draft | **18.3%** | 1950 | screenshots: draft injection (fake reader) [fastembed] | attack text the fake reader put in the read that is still in the returned draft; embed=fastembed |
+| Screenshots: attack text surviving into the draft | **15.7%** | 1950 | screenshots: draft injection (fake reader) [fastembed] | attack text the fake reader put in the read that is still in the returned draft; embed=fastembed |
 | Screenshots: privacy (I8) | **0** | 1 | screenshots: privacy (markers in friend_lines, image bytes, draft) [fastembed] | friend_lines/image left in memory after analyze, new disk-cache files, text in the usage log, draft still i... |
 | Live: friend replies written by the LLM | **92.7%** | 68 | live [fastembed] | share of friend replies by who wrote the words; embed=fastembed |
 | Live: unsafe friend lines shown | **0** | 68 | live [fastembed] | check_friend, method words or persona break in a shown line; must be 0; embed=fastembed |
@@ -97,9 +97,9 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `combined.macro_f1` | 0.994 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
 | `combined.asking_friend_fpr` | 0 | 37 | test | asking the friend flagged |
 | `combined.self_risk_recall` | 1 | 37 | test | helper risk -> crisis |
-| `lexicon_only.macro_f1` | 0.863 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
+| `lexicon_only.macro_f1` | 0.87 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
 | `lexicon_only.asking_friend_fpr` | 0 | 37 | test | asking the friend flagged |
-| `lexicon_only.self_risk_recall` | 0.892 | 37 | test | helper risk -> crisis |
+| `lexicon_only.self_risk_recall` | 0.946 | 37 | test | helper risk -> crisis |
 | `classifier_only.macro_f1` | 0.891 | 172 | test | 6 classes; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
 | `classifier_only.asking_friend_fpr` | 0 | 37 | test | asking the friend flagged |
 | `classifier_only.self_risk_recall` | 0.973 | 37 | test | helper risk -> crisis |
@@ -146,9 +146,9 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `robustness.emoji.without_normalizer` | 0.969 | 128 | test | decisions unchanged |
 | `robustness.typo.with_normalizer` | 0.977 | 128 | test | decisions unchanged |
 | `robustness.typo.without_normalizer` | 0.867 | 128 | test | decisions unchanged |
-| `latency_ms_p50` | 4.705 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
-| `latency_ms_p95` | 6.506 | 516 | test | target < 50 ms |
-| `friend_lines_flagged` | 0 | 2685 | scenarios+line_bank | should be 0 |
+| `latency_ms_p50` | 4.085 | 516 | test | check_user, CPU; embedder=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
+| `latency_ms_p95` | 5.549 | 516 | test | target < 50 ms |
+| `friend_lines_flagged` | 0 | 3603 | scenarios+line_bank | should be 0 |
 | `self_risk_average_precision` | 0.998 | 172 | test | classifier only, PR curve PNG |
 
 ### `eval/reports/safety_moderation.json`
@@ -533,100 +533,102 @@ test setup. How each number is measured: `docs/how/*.md`.
 
 | Metric | Value | n | Split | Notes |
 |---|---|---|---|---|
-| `screenshots.draft.survived_rate` | 0.183 | 1950 | screenshots: draft injection (fake reader) [hash] | attack text the fake reader put in the read that is still in the returned draft; embed=hash |
+| `screenshots.draft.survived_rate` | 0.157 | 1950 | screenshots: draft injection (fake reader) [hash] | attack text the fake reader put in the read that is still in the returned draft; embed=hash |
 | `screenshots.draft.server_errors` | 0 | 1950 | screenshots: draft injection (fake reader) [hash] | must be 0; embed=hash |
-| `screenshots.draft.survived_rate.kind.encourager` | 0 | 378 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0 | 147 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.encourager` | 0.008 | 378 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0.041 | 147 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.es_prompt_injection` | 0 | 63 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_injection` | 0 | 42 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_persona` | 0 | 42 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_style` | 0 | 84 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_unlock` | 0 | 84 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.method_seeking` | 0 | 291 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.697 | 399 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.pii` | 0.714 | 105 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.method_seeking` | 0.021 | 291 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.704 | 399 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.pii` | 0.057 | 105 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.prompt_injector` | 0.013 | 315 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.field.style` | 0.037 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
-| `screenshots.draft.survived_rate.field.situation` | 0.262 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
-| `screenshots.draft.survived_rate.field.sample_texts` | 0.251 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
+| `screenshots.draft.survived_rate.field.style` | 0.045 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
+| `screenshots.draft.survived_rate.field.situation` | 0.22 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
+| `screenshots.draft.survived_rate.field.sample_texts` | 0.206 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
 | `screenshots.hop2.invariants.I1.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
 | `screenshots.hop2.invariants.I3.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
 | `screenshots.hop2.invariants.I7.violations` | 0 | 600 | screenshots: second hop (surviving draft -> friend -> obedient actor) [hash] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash |
-| `screenshots.urgency.escalated_rate` | 0.843 | 3676 | screenshots: urgency evasion (AI flags all false) [hash] | friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=hash |
-| `screenshots.urgency.imminent_rate` | 0.732 | 82 | screenshots: urgency evasion (AI flags all false) [hash] | plan/time + risk lines -> imminent; embed=hash |
+| `screenshots.urgency.escalated_rate` | 0.998 | 3676 | screenshots: urgency evasion (AI flags all false) [hash] | friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=hash |
+| `screenshots.urgency.imminent_rate` | 1 | 82 | screenshots: urgency evasion (AI flags all false) [hash] | plan/time + risk lines -> imminent; embed=hash |
 | `screenshots.urgency.false_escalation_rate` | 0 | 196 | screenshots: urgency evasion (AI flags all false) [hash] | ordinary venting -> tell_an_adult_now (should be 0); embed=hash |
 | `screenshots.urgency.server_errors` | 0 | 3872 | screenshots: urgency evasion (AI flags all false) [hash] | must be 0; embed=hash |
-| `screenshots.urgency.escalated_rate.kind.goodbye_en` | 0.604 | 101 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
+| `screenshots.urgency.escalated_rate.kind.goodbye_en` | 1 | 101 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
 | `screenshots.urgency.escalated_rate.kind.goodbye_en_imminent` | 1 | 62 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
-| `screenshots.urgency.escalated_rate.kind.goodbye_es` | 0.65 | 60 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
-| `screenshots.urgency.escalated_rate.kind.goodbye_es_imminent` | 0 | 20 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
-| `screenshots.urgency.escalated_rate.kind.risk_en` | 0.879 | 2433 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
-| `screenshots.urgency.escalated_rate.kind.risk_es` | 0.8 | 1000 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.all_caps` | 0.852 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.dotted_letters` | 0.852 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.emoji` | 0.852 | 364 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.homoglyph` | 0.85 | 360 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.leetspeak` | 0.85 | 360 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.misspelling` | 0.776 | 349 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.no_apostrophe` | 0.855 | 62 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.none` | 0.852 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.spaced_letters` | 0.835 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.spanglish` | 0.852 | 364 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.stretched` | 0.851 | 362 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.trailing_lol_jk` | 0.852 | 364 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
-| `screenshots.urgency.escalated_rate.perturbation.zero_width` | 0.851 | 363 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.kind.goodbye_es` | 0.983 | 60 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
+| `screenshots.urgency.escalated_rate.kind.goodbye_es_imminent` | 1 | 20 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
+| `screenshots.urgency.escalated_rate.kind.risk_en` | 0.998 | 2433 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
+| `screenshots.urgency.escalated_rate.kind.risk_es` | 0.999 | 1000 | screenshots: urgency evasion (AI flags all false) [hash] | by kind; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.all_caps` | 1 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.dotted_letters` | 1 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.emoji` | 0.997 | 364 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.homoglyph` | 1 | 360 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.leetspeak` | 0.997 | 360 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.misspelling` | 0.997 | 349 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.no_apostrophe` | 1 | 62 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.none` | 1 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.spaced_letters` | 0.995 | 182 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.spanglish` | 0.997 | 364 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.stretched` | 0.995 | 362 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.trailing_lol_jk` | 0.997 | 364 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
+| `screenshots.urgency.escalated_rate.perturbation.zero_width` | 1 | 363 | screenshots: urgency evasion (AI flags all false) [hash] | by perturbation; embed=hash |
 | `screenshots.abuse.unexpected` | 0 | 17 | screenshots: input abuse [hash] | cases not answered with the expected 413/422/429 (or 200 where allowed): ; embed=hash |
 | `screenshots.abuse.server_errors` | 0 | 17 | screenshots: input abuse [hash] | must be 0; embed=hash |
 | `invariants.I8.violations` | 0 | 1 | screenshots: privacy (markers in friend_lines, image bytes, draft) [hash] | friend_lines/image left in memory after analyze, new disk-cache files, text in the usage log, draft still in memory after DELETE or expiry; must be 0; embed=hash |
-| `screenshots.delete.server_errors` | 0 | 10 | screenshots: delete abuse [hash] | must be 0; embed=hash |
-| `screenshots.delete.cross_client_allowed` | 1 | 1 | screenshots: delete abuse [hash] | 1 = a different client deleted someone else's friend (ids are random 64-bit, no ownership check); embed=hash |
-| `screenshots.draft.survived_rate` | 0.183 | 1950 | screenshots: draft injection (fake reader) [fastembed] | attack text the fake reader put in the read that is still in the returned draft; embed=fastembed |
+| `screenshots.delete.server_errors` | 0 | 14 | screenshots: delete abuse [hash] | must be 0; embed=hash |
+| `screenshots.delete.bad_token_allowed` | 0 | 3 | screenshots: delete abuse [hash] | deletes accepted with a forged, empty or other friend's token (must be 0); embed=hash |
+| `screenshots.delete.cross_client_allowed` | 0 | 1 | screenshots: delete abuse [hash] | 1 = a different client deleted someone else's friend (ids are random 64-bit, no ownership check); embed=hash |
+| `screenshots.draft.survived_rate` | 0.157 | 1950 | screenshots: draft injection (fake reader) [fastembed] | attack text the fake reader put in the read that is still in the returned draft; embed=fastembed |
 | `screenshots.draft.server_errors` | 0 | 1950 | screenshots: draft injection (fake reader) [fastembed] | must be 0; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.encourager` | 0 | 378 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0 | 147 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.encourager` | 0.008 | 378 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0.041 | 147 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.es_prompt_injection` | 0 | 63 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_injection` | 0 | 42 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_persona` | 0 | 42 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_style` | 0 | 84 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_unlock` | 0 | 84 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.method_seeking` | 0 | 291 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.697 | 399 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.pii` | 0.714 | 105 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.method_seeking` | 0.021 | 291 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.704 | 399 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.pii` | 0.057 | 105 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.prompt_injector` | 0.013 | 315 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.field.style` | 0.037 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
-| `screenshots.draft.survived_rate.field.situation` | 0.262 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
-| `screenshots.draft.survived_rate.field.sample_texts` | 0.251 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
+| `screenshots.draft.survived_rate.field.style` | 0.045 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
+| `screenshots.draft.survived_rate.field.situation` | 0.22 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
+| `screenshots.draft.survived_rate.field.sample_texts` | 0.206 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
 | `screenshots.hop2.invariants.I1.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
 | `screenshots.hop2.invariants.I3.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
 | `screenshots.hop2.invariants.I7.violations` | 0 | 600 | screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
-| `screenshots.urgency.escalated_rate` | 0.843 | 3676 | screenshots: urgency evasion (AI flags all false) [fastembed] | friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=fastembed |
-| `screenshots.urgency.imminent_rate` | 0.732 | 82 | screenshots: urgency evasion (AI flags all false) [fastembed] | plan/time + risk lines -> imminent; embed=fastembed |
+| `screenshots.urgency.escalated_rate` | 0.998 | 3676 | screenshots: urgency evasion (AI flags all false) [fastembed] | friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=fastembed |
+| `screenshots.urgency.imminent_rate` | 1 | 82 | screenshots: urgency evasion (AI flags all false) [fastembed] | plan/time + risk lines -> imminent; embed=fastembed |
 | `screenshots.urgency.false_escalation_rate` | 0 | 196 | screenshots: urgency evasion (AI flags all false) [fastembed] | ordinary venting -> tell_an_adult_now (should be 0); embed=fastembed |
 | `screenshots.urgency.server_errors` | 0 | 3872 | screenshots: urgency evasion (AI flags all false) [fastembed] | must be 0; embed=fastembed |
-| `screenshots.urgency.escalated_rate.kind.goodbye_en` | 0.604 | 101 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
+| `screenshots.urgency.escalated_rate.kind.goodbye_en` | 1 | 101 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
 | `screenshots.urgency.escalated_rate.kind.goodbye_en_imminent` | 1 | 62 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
-| `screenshots.urgency.escalated_rate.kind.goodbye_es` | 0.65 | 60 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
-| `screenshots.urgency.escalated_rate.kind.goodbye_es_imminent` | 0 | 20 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
-| `screenshots.urgency.escalated_rate.kind.risk_en` | 0.879 | 2433 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
-| `screenshots.urgency.escalated_rate.kind.risk_es` | 0.8 | 1000 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.all_caps` | 0.852 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.dotted_letters` | 0.852 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.emoji` | 0.852 | 364 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.homoglyph` | 0.85 | 360 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.leetspeak` | 0.85 | 360 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.misspelling` | 0.776 | 349 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.no_apostrophe` | 0.855 | 62 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.none` | 0.852 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.spaced_letters` | 0.835 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.spanglish` | 0.852 | 364 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.stretched` | 0.851 | 362 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.trailing_lol_jk` | 0.852 | 364 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
-| `screenshots.urgency.escalated_rate.perturbation.zero_width` | 0.851 | 363 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.kind.goodbye_es` | 0.983 | 60 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
+| `screenshots.urgency.escalated_rate.kind.goodbye_es_imminent` | 1 | 20 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
+| `screenshots.urgency.escalated_rate.kind.risk_en` | 0.998 | 2433 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
+| `screenshots.urgency.escalated_rate.kind.risk_es` | 0.999 | 1000 | screenshots: urgency evasion (AI flags all false) [fastembed] | by kind; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.all_caps` | 1 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.dotted_letters` | 1 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.emoji` | 0.997 | 364 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.homoglyph` | 1 | 360 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.leetspeak` | 0.994 | 360 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.misspelling` | 0.997 | 349 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.no_apostrophe` | 1 | 62 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.none` | 1 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.spaced_letters` | 0.995 | 182 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.spanglish` | 1 | 364 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.stretched` | 0.997 | 362 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.trailing_lol_jk` | 1 | 364 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
+| `screenshots.urgency.escalated_rate.perturbation.zero_width` | 1 | 363 | screenshots: urgency evasion (AI flags all false) [fastembed] | by perturbation; embed=fastembed |
 | `screenshots.abuse.unexpected` | 0 | 17 | screenshots: input abuse [fastembed] | cases not answered with the expected 413/422/429 (or 200 where allowed): ; embed=fastembed |
 | `screenshots.abuse.server_errors` | 0 | 17 | screenshots: input abuse [fastembed] | must be 0; embed=fastembed |
 | `invariants.I8.violations` | 0 | 1 | screenshots: privacy (markers in friend_lines, image bytes, draft) [fastembed] | friend_lines/image left in memory after analyze, new disk-cache files, text in the usage log, draft still in memory after DELETE or expiry; must be 0; embed=fastembed |
-| `screenshots.delete.server_errors` | 0 | 10 | screenshots: delete abuse [fastembed] | must be 0; embed=fastembed |
-| `screenshots.delete.cross_client_allowed` | 1 | 1 | screenshots: delete abuse [fastembed] | 1 = a different client deleted someone else's friend (ids are random 64-bit, no ownership check); embed=fastembed |
+| `screenshots.delete.server_errors` | 0 | 14 | screenshots: delete abuse [fastembed] | must be 0; embed=fastembed |
+| `screenshots.delete.bad_token_allowed` | 0 | 3 | screenshots: delete abuse [fastembed] | deletes accepted with a forged, empty or other friend's token (must be 0); embed=fastembed |
+| `screenshots.delete.cross_client_allowed` | 0 | 1 | screenshots: delete abuse [fastembed] | 1 = a different client deleted someone else's friend (ids are random 64-bit, no ownership check); embed=fastembed |
 
 
 ## ml
@@ -769,6 +771,48 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `uncertain_flag_rate` | 0.114 | 35 | test_freeform_es | band [0.3, 0.7]; 4 flagged decisions; error rate flagged 0.25 vs unflagged 0.026; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
 | `uncertain_error_rate_flagged` | 0.25 | 4 | test_freeform_es | share of flagged label decisions that were wrong; n = decisions; band [0.3, 0.7]; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
 | `uncertain_error_rate_unflagged` | 0.026 | 346 | test_freeform_es | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_keyword_baseline` | 0.49 | 221 | test_freeform (custom-friend contexts) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_model_a` | 0.704 | 221 | test_freeform (custom-friend contexts) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_model_b` | 0.759 | 221 | test_freeform (custom-friend contexts) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_ensemble` | 0.845 | 221 | test_freeform (custom-friend contexts) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_checked_in` | 0.708 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 0.85, recall 0.6071, support 28; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_validated` | 0.756 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 0.8611, recall 0.6739, support 46; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_asked_directly` | 1 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_encouraged_help` | 0.714 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 0.8333, recall 0.625, support 16; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_referred_adult` | 0.986 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 1.0, recall 0.9714, support 35; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_referred_988` | 0.96 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 1.0, recall 0.9231, support 26; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_follow_up` | 0.795 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 0.8919, recall 0.7174, support 46; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_dismissed` | 0.769 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 0.8333, recall 0.7143, support 21; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_advice_dump` | 0.809 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 0.8095, recall 0.8095, support 21; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_promised_secrecy` | 0.947 | 221 | test_freeform (custom-friend contexts) | ensemble; precision 0.9, recall 1.0, support 9; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `ece_before_calibration` | 0.119 | 221 | test_freeform (custom-friend contexts) | avg of A and B; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `ece_after_calibration` | 0.013 | 221 | test_freeform (custom-friend contexts) | stacked + Platt; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `brier_before_calibration` | 0.053 | 221 | test_freeform (custom-friend contexts) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `brier_after_calibration` | 0.029 | 221 | test_freeform (custom-friend contexts) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `uncertain_flag_rate` | 0.163 | 221 | test_freeform (custom-friend contexts) | band [0.3, 0.7]; 38 flagged decisions; error rate flagged 0.4737 vs unflagged 0.0285; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `uncertain_error_rate_flagged` | 0.474 | 38 | test_freeform (custom-friend contexts) | share of flagged label decisions that were wrong; n = decisions; band [0.3, 0.7]; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `uncertain_error_rate_unflagged` | 0.029 | 2172 | test_freeform (custom-friend contexts) | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_keyword_baseline` | 0.49 | 221 | test_freeform (no context) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_model_a` | 0.71 | 221 | test_freeform (no context) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_model_b` | 0.759 | 221 | test_freeform (no context) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `macro_f1_ensemble` | 0.837 | 221 | test_freeform (no context) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_checked_in` | 0.667 | 221 | test_freeform (no context) | ensemble; precision 0.8, recall 0.5714, support 28; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_validated` | 0.762 | 221 | test_freeform (no context) | ensemble; precision 0.8421, recall 0.6957, support 46; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_asked_directly` | 1 | 221 | test_freeform (no context) | ensemble; precision 1.0, recall 1.0, support 18; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_encouraged_help` | 0.714 | 221 | test_freeform (no context) | ensemble; precision 0.8333, recall 0.625, support 16; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_referred_adult` | 0.986 | 221 | test_freeform (no context) | ensemble; precision 1.0, recall 0.9714, support 35; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_referred_988` | 0.96 | 221 | test_freeform (no context) | ensemble; precision 1.0, recall 0.9231, support 26; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_follow_up` | 0.824 | 221 | test_freeform (no context) | ensemble; precision 0.8974, recall 0.7609, support 46; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_dismissed` | 0.769 | 221 | test_freeform (no context) | ensemble; precision 0.8333, recall 0.7143, support 21; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_advice_dump` | 0.739 | 221 | test_freeform (no context) | ensemble; precision 0.68, recall 0.8095, support 21; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `f1_promised_secrecy` | 0.947 | 221 | test_freeform (no context) | ensemble; precision 0.9, recall 1.0, support 9; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `ece_before_calibration` | 0.122 | 221 | test_freeform (no context) | avg of A and B; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `ece_after_calibration` | 0.01 | 221 | test_freeform (no context) | stacked + Platt; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `brier_before_calibration` | 0.053 | 221 | test_freeform (no context) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `brier_after_calibration` | 0.028 | 221 | test_freeform (no context) | trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `uncertain_flag_rate` | 0.158 | 221 | test_freeform (no context) | band [0.3, 0.7]; 37 flagged decisions; error rate flagged 0.5135 vs unflagged 0.0299; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `uncertain_error_rate_flagged` | 0.513 | 37 | test_freeform (no context) | share of flagged label decisions that were wrong; n = decisions; band [0.3, 0.7]; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
+| `uncertain_error_rate_unflagged` | 0.03 | 2173 | test_freeform (no context) | share of unflagged label decisions that were wrong; n = decisions; trained 2026-10-23T06:07:19+00:00 with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2, data 2452125c2f5c |
 
 
 ## engine

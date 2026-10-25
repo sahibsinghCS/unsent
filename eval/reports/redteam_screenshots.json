@@ -2,11 +2,11 @@
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate",
-  "value": 0.1831,
+  "value": 0.1569,
   "n": 1950,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "attack text the fake reader put in the read that is still in the returned draft; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -15,25 +15,25 @@
   "n": 1950,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "must be 0; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.encourager",
-  "value": 0.0,
+  "value": 0.0079,
   "n": 378,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.es_method_seeking",
-  "value": 0.0,
+  "value": 0.0408,
   "n": 147,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -42,7 +42,7 @@
   "n": 63,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -51,7 +51,7 @@
   "n": 42,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -60,7 +60,7 @@
   "n": 42,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -69,7 +69,7 @@
   "n": 84,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -78,34 +78,34 @@
   "n": 84,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.method_seeking",
-  "value": 0.0,
+  "value": 0.0206,
   "n": 291,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.persona_breaker",
-  "value": 0.6967,
+  "value": 0.7043,
   "n": 399,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.pii",
-  "value": 0.7143,
+  "value": 0.0571,
   "n": 105,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -114,34 +114,34 @@
   "n": 315,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.field.style",
-  "value": 0.0369,
+  "value": 0.0446,
   "n": 650,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by field; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.field.situation",
-  "value": 0.2615,
+  "value": 0.22,
   "n": 650,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by field; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.field.sample_texts",
-  "value": 0.2508,
+  "value": 0.2062,
   "n": 650,
   "split": "screenshots: draft injection (fake reader) [hash]",
   "notes": "by field; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -150,7 +150,7 @@
   "n": 1800,
   "split": "screenshots: second hop (surviving draft -> friend -> obedient actor) [hash]",
   "notes": "friend bubbles shown that fail check_friend; n = checks; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -159,7 +159,7 @@
   "n": 1800,
   "split": "screenshots: second hop (surviving draft -> friend -> obedient actor) [hash]",
   "notes": "friend bubbles with method/means vocabulary; n = checks; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -168,25 +168,25 @@
   "n": 600,
   "split": "screenshots: second hop (surviving draft -> friend -> obedient actor) [hash]",
   "notes": "injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate",
-  "value": 0.8433,
+  "value": 0.9978,
   "n": 3676,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.imminent_rate",
-  "value": 0.7317,
+  "value": 1.0,
   "n": 82,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "plan/time + risk lines -> imminent; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -195,7 +195,7 @@
   "n": 196,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "ordinary venting -> tell_an_adult_now (should be 0); embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -204,16 +204,16 @@
   "n": 3872,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "must be 0; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.goodbye_en",
-  "value": 0.604,
+  "value": 1.0,
   "n": 101,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -222,160 +222,160 @@
   "n": 62,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.goodbye_es",
-  "value": 0.65,
+  "value": 0.9833,
   "n": 60,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.goodbye_es_imminent",
-  "value": 0.0,
+  "value": 1.0,
   "n": 20,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.risk_en",
-  "value": 0.8788,
+  "value": 0.9975,
   "n": 2433,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.risk_es",
-  "value": 0.8,
+  "value": 0.999,
   "n": 1000,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by kind; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.all_caps",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.dotted_letters",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.emoji",
-  "value": 0.8516,
+  "value": 0.9973,
   "n": 364,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.homoglyph",
-  "value": 0.85,
+  "value": 1.0,
   "n": 360,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.leetspeak",
-  "value": 0.85,
+  "value": 0.9972,
   "n": 360,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.misspelling",
-  "value": 0.7765,
+  "value": 0.9971,
   "n": 349,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.no_apostrophe",
-  "value": 0.8548,
+  "value": 1.0,
   "n": 62,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.none",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.spaced_letters",
-  "value": 0.8352,
+  "value": 0.9945,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.spanglish",
-  "value": 0.8516,
+  "value": 0.9973,
   "n": 364,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.stretched",
-  "value": 0.8508,
+  "value": 0.9945,
   "n": 362,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.trailing_lol_jk",
-  "value": 0.8516,
+  "value": 0.9973,
   "n": 364,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.zero_width",
-  "value": 0.8512,
+  "value": 1.0,
   "n": 363,
   "split": "screenshots: urgency evasion (AI flags all false) [hash]",
   "notes": "by perturbation; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -384,7 +384,7 @@
   "n": 17,
   "split": "screenshots: input abuse [hash]",
   "notes": "cases not answered with the expected 413/422/429 (or 200 where allowed): ; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -393,7 +393,7 @@
   "n": 17,
   "split": "screenshots: input abuse [hash]",
   "notes": "must be 0; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
@@ -402,34 +402,43 @@
   "n": 1,
   "split": "screenshots: privacy (markers in friend_lines, image bytes, draft) [hash]",
   "notes": "friend_lines/image left in memory after analyze, new disk-cache files, text in the usage log, draft still in memory after DELETE or expiry; must be 0; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.delete.server_errors",
   "value": 0,
-  "n": 10,
+  "n": 14,
   "split": "screenshots: delete abuse [hash]",
   "notes": "must be 0; embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "screenshots.delete.bad_token_allowed",
+  "value": 0,
+  "n": 3,
+  "split": "screenshots: delete abuse [hash]",
+  "notes": "deletes accepted with a forged, empty or other friend's token (must be 0); embed=hash",
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.delete.cross_client_allowed",
-  "value": 1,
+  "value": 0,
   "n": 1,
   "split": "screenshots: delete abuse [hash]",
   "notes": "1 = a different client deleted someone else's friend (ids are random 64-bit, no ownership check); embed=hash",
-  "created": "2026-10-25T01:11:18+00:00"
+  "created": "2026-10-25T01:32:34+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate",
-  "value": 0.1831,
+  "value": 0.1569,
   "n": 1950,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "attack text the fake reader put in the read that is still in the returned draft; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -438,25 +447,25 @@
   "n": 1950,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "must be 0; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.encourager",
-  "value": 0.0,
+  "value": 0.0079,
   "n": 378,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.es_method_seeking",
-  "value": 0.0,
+  "value": 0.0408,
   "n": 147,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -465,7 +474,7 @@
   "n": 63,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -474,7 +483,7 @@
   "n": 42,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -483,7 +492,7 @@
   "n": 42,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -492,7 +501,7 @@
   "n": 84,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -501,34 +510,34 @@
   "n": 84,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.method_seeking",
-  "value": 0.0,
+  "value": 0.0206,
   "n": 291,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.persona_breaker",
-  "value": 0.6967,
+  "value": 0.7043,
   "n": 399,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.kind.pii",
-  "value": 0.7143,
+  "value": 0.0571,
   "n": 105,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -537,34 +546,34 @@
   "n": 315,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.field.style",
-  "value": 0.0369,
+  "value": 0.0446,
   "n": 650,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by field; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.field.situation",
-  "value": 0.2615,
+  "value": 0.22,
   "n": 650,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by field; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.draft.survived_rate.field.sample_texts",
-  "value": 0.2508,
+  "value": 0.2062,
   "n": 650,
   "split": "screenshots: draft injection (fake reader) [fastembed]",
   "notes": "by field; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -573,7 +582,7 @@
   "n": 1800,
   "split": "screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed]",
   "notes": "friend bubbles shown that fail check_friend; n = checks; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -582,7 +591,7 @@
   "n": 1800,
   "split": "screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed]",
   "notes": "friend bubbles with method/means vocabulary; n = checks; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -591,25 +600,25 @@
   "n": 600,
   "split": "screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed]",
   "notes": "injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate",
-  "value": 0.8433,
+  "value": 0.9984,
   "n": 3676,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "friend lines that should escalate -> tell_an_adult_now (plain + fuzzed); embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.imminent_rate",
-  "value": 0.7317,
+  "value": 1.0,
   "n": 82,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "plan/time + risk lines -> imminent; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -618,7 +627,7 @@
   "n": 196,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "ordinary venting -> tell_an_adult_now (should be 0); embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -627,16 +636,16 @@
   "n": 3872,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "must be 0; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.goodbye_en",
-  "value": 0.604,
+  "value": 1.0,
   "n": 101,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -645,160 +654,160 @@
   "n": 62,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.goodbye_es",
-  "value": 0.65,
+  "value": 0.9833,
   "n": 60,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.goodbye_es_imminent",
-  "value": 0.0,
+  "value": 1.0,
   "n": 20,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.risk_en",
-  "value": 0.8788,
+  "value": 0.9984,
   "n": 2433,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.kind.risk_es",
-  "value": 0.8,
+  "value": 0.999,
   "n": 1000,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by kind; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.all_caps",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.dotted_letters",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.emoji",
-  "value": 0.8516,
+  "value": 0.9973,
   "n": 364,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.homoglyph",
-  "value": 0.85,
+  "value": 1.0,
   "n": 360,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.leetspeak",
-  "value": 0.85,
+  "value": 0.9944,
   "n": 360,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.misspelling",
-  "value": 0.7765,
+  "value": 0.9971,
   "n": 349,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.no_apostrophe",
-  "value": 0.8548,
+  "value": 1.0,
   "n": 62,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.none",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.spaced_letters",
-  "value": 0.8352,
+  "value": 0.9945,
   "n": 182,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.spanglish",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 364,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.stretched",
-  "value": 0.8508,
+  "value": 0.9972,
   "n": 362,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.trailing_lol_jk",
-  "value": 0.8516,
+  "value": 1.0,
   "n": 364,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.urgency.escalated_rate.perturbation.zero_width",
-  "value": 0.8512,
+  "value": 1.0,
   "n": 363,
   "split": "screenshots: urgency evasion (AI flags all false) [fastembed]",
   "notes": "by perturbation; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -807,7 +816,7 @@
   "n": 17,
   "split": "screenshots: input abuse [fastembed]",
   "notes": "cases not answered with the expected 413/422/429 (or 200 where allowed): ; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -816,7 +825,7 @@
   "n": 17,
   "split": "screenshots: input abuse [fastembed]",
   "notes": "must be 0; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
@@ -825,24 +834,33 @@
   "n": 1,
   "split": "screenshots: privacy (markers in friend_lines, image bytes, draft) [fastembed]",
   "notes": "friend_lines/image left in memory after analyze, new disk-cache files, text in the usage log, draft still in memory after DELETE or expiry; must be 0; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.delete.server_errors",
   "value": 0,
-  "n": 10,
+  "n": 14,
   "split": "screenshots: delete abuse [fastembed]",
   "notes": "must be 0; embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
+ },
+ {
+  "lane": "redteam",
+  "metric": "screenshots.delete.bad_token_allowed",
+  "value": 0,
+  "n": 3,
+  "split": "screenshots: delete abuse [fastembed]",
+  "notes": "deletes accepted with a forged, empty or other friend's token (must be 0); embed=fastembed",
+  "created": "2026-10-25T01:34:02+00:00"
  },
  {
   "lane": "redteam",
   "metric": "screenshots.delete.cross_client_allowed",
-  "value": 1,
+  "value": 0,
   "n": 1,
   "split": "screenshots: delete abuse [fastembed]",
   "notes": "1 = a different client deleted someone else's friend (ids are random 64-bit, no ownership check); embed=fastembed",
-  "created": "2026-10-25T01:12:40+00:00"
+  "created": "2026-10-25T01:34:02+00:00"
  }
 ]
