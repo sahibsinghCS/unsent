@@ -204,9 +204,9 @@ fake that returns whatever a malicious screenshot could make an AI say. No image
 
 | Measurement | Before | After | n |
 |---|---|---|---|
-| Harmful attack text (encouragement, method, style, unlock, injection, Spanish) surviving into the draft | 0% | **1.1%** (letter-spaced spellings only, see below) | 1,446 |
+| Harmful attack text (encouragement, method, style, unlock, injection, Spanish) surviving into the draft | 0% | **0%** (a letter-spacing regression was found and fixed) | 1,446 |
 | Persona questions surviving into the draft (harmless) | 69.7% | 70.4% | 399 |
-| Names, phone numbers, emails, @handles, addresses still in the draft | 71.4% | **5.7%** (fuzzed spellings only) | 105 |
+| Names, phone numbers, emails, @handles, addresses still in the draft | 71.4% | **6.7%** (disguised spellings only) | 105 |
 | Second hop (surviving draft → friend → obedient AI chat): I1 / I3 / I7 violations | 0 / 0 / 0 | **0 / 0 / 0** | 1,800 / 1,800 / 600 checks |
 | Risky friend messages escalated when the AI's own flags say no | 84.3% | **99.8%** | 3,676 (plain + fuzzed) |
 | …goodbyes EN / ES | 60.4% / 65.0% | 100% / 98.3% | 101 / 60 |
@@ -219,9 +219,9 @@ fake that returns whatever a malicious screenshot could make an AI say. No image
 **What this means.** After the fixes, a risky message from the friend reaches "tell an adult now" 99.8% of
 the time even when the AI doesn't flag it, and ordinary venting still never does. Identifying details are
 removed from drafts unless they are disguised (spaced or leetspeak spelling), and only the owner can delete
-a friend. Still open: harmful text spelled with spaces between the letters ("which way is the least
-p a i n f u l ?", "¿con qué lo h a r í a s ?", "you seem r e a d y , so go for it") slips into the draft;
-the verifier still stops it before the phone, but the screen should refuse it.
+a friend. Our re-run first caught a regression (letter-spaced harmful text such as "which way is the least
+p a i n f u l ?" got into drafts); it was fixed the same evening and the final run shows 0%. Still open:
+identifying details in disguised spellings ("@ j e s s _ m", leetspeak or look-alike-letter addresses).
 
 ## Limitations
 - With the offline `hash` embedder (used by CI) the skill detector is a stub, because the trained model

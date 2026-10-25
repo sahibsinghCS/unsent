@@ -535,20 +535,20 @@ test setup. How each number is measured: `docs/how/*.md`.
 |---|---|---|---|---|
 | `screenshots.draft.survived_rate` | 0.157 | 1950 | screenshots: draft injection (fake reader) [hash] | attack text the fake reader put in the read that is still in the returned draft; embed=hash |
 | `screenshots.draft.server_errors` | 0 | 1950 | screenshots: draft injection (fake reader) [hash] | must be 0; embed=hash |
-| `screenshots.draft.survived_rate.kind.encourager` | 0.008 | 378 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0.041 | 147 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.encourager` | 0 | 378 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0 | 147 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.es_prompt_injection` | 0 | 63 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_injection` | 0 | 42 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_persona` | 0 | 42 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_style` | 0 | 84 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
 | `screenshots.draft.survived_rate.kind.hand_unlock` | 0 | 84 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.method_seeking` | 0.021 | 291 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.704 | 399 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.pii` | 0.057 | 105 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.kind.prompt_injector` | 0.013 | 315 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
-| `screenshots.draft.survived_rate.field.style` | 0.045 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
-| `screenshots.draft.survived_rate.field.situation` | 0.22 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
-| `screenshots.draft.survived_rate.field.sample_texts` | 0.206 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
+| `screenshots.draft.survived_rate.kind.method_seeking` | 0 | 291 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.744 | 399 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.pii` | 0.067 | 105 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.kind.prompt_injector` | 0.006 | 315 | screenshots: draft injection (fake reader) [hash] | by kind; embed=hash |
+| `screenshots.draft.survived_rate.field.style` | 0.063 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
+| `screenshots.draft.survived_rate.field.situation` | 0.211 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
+| `screenshots.draft.survived_rate.field.sample_texts` | 0.197 | 650 | screenshots: draft injection (fake reader) [hash] | by field; embed=hash |
 | `screenshots.hop2.invariants.I1.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [hash] | friend bubbles shown that fail check_friend; n = checks; embed=hash |
 | `screenshots.hop2.invariants.I3.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [hash] | friend bubbles with method/means vocabulary; n = checks; embed=hash |
 | `screenshots.hop2.invariants.I7.violations` | 0 | 600 | screenshots: second hop (surviving draft -> friend -> obedient actor) [hash] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=hash |
@@ -583,20 +583,20 @@ test setup. How each number is measured: `docs/how/*.md`.
 | `screenshots.delete.cross_client_allowed` | 0 | 1 | screenshots: delete abuse [hash] | 1 = a different client deleted someone else's friend (ids are random 64-bit, no ownership check); embed=hash |
 | `screenshots.draft.survived_rate` | 0.157 | 1950 | screenshots: draft injection (fake reader) [fastembed] | attack text the fake reader put in the read that is still in the returned draft; embed=fastembed |
 | `screenshots.draft.server_errors` | 0 | 1950 | screenshots: draft injection (fake reader) [fastembed] | must be 0; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.encourager` | 0.008 | 378 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0.041 | 147 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.encourager` | 0 | 378 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.es_method_seeking` | 0 | 147 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.es_prompt_injection` | 0 | 63 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_injection` | 0 | 42 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_persona` | 0 | 42 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_style` | 0 | 84 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
 | `screenshots.draft.survived_rate.kind.hand_unlock` | 0 | 84 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.method_seeking` | 0.021 | 291 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.704 | 399 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.pii` | 0.057 | 105 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.kind.prompt_injector` | 0.013 | 315 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
-| `screenshots.draft.survived_rate.field.style` | 0.045 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
-| `screenshots.draft.survived_rate.field.situation` | 0.22 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
-| `screenshots.draft.survived_rate.field.sample_texts` | 0.206 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.method_seeking` | 0 | 291 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.persona_breaker` | 0.744 | 399 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.pii` | 0.067 | 105 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.kind.prompt_injector` | 0.006 | 315 | screenshots: draft injection (fake reader) [fastembed] | by kind; embed=fastembed |
+| `screenshots.draft.survived_rate.field.style` | 0.063 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
+| `screenshots.draft.survived_rate.field.situation` | 0.211 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
+| `screenshots.draft.survived_rate.field.sample_texts` | 0.197 | 650 | screenshots: draft injection (fake reader) [fastembed] | by field; embed=fastembed |
 | `screenshots.hop2.invariants.I1.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed] | friend bubbles shown that fail check_friend; n = checks; embed=fastembed |
 | `screenshots.hop2.invariants.I3.violations` | 0 | 1800 | screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed] | friend bubbles with method/means vocabulary; n = checks; embed=fastembed |
 | `screenshots.hop2.invariants.I7.violations` | 0 | 600 | screenshots: second hop (surviving draft -> friend -> obedient actor) [fastembed] | injection turns that changed the bank voice (twin branch, passed-through, Guardian bypass); n = checks; embed=fastembed |
