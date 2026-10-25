@@ -31,7 +31,9 @@ export function RealFriend() {
   const [boxes, setBoxes] = useState<Box[][]>([]);
   const [result, setResult] = useState<AnalyzeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [checkedAll, setCheckedAll] = useState(false);
   const consentId = useId();
+  const checkedId = useId();
   const heading = useRef<HTMLHeadingElement>(null);
 
   // Move focus to each step's heading so keyboard and screen-reader users land in the right place.
@@ -66,6 +68,7 @@ export function RealFriend() {
       const loaded = await Promise.all(list.map(loadImage));
       setImages(loaded);
       setBoxes(loaded.map(() => []));
+      setCheckedAll(false);
       setStep('redact');
     } catch {
       setError(t('real_friend.bad_file'));
@@ -120,6 +123,8 @@ export function RealFriend() {
     </button>
   );
   const allCovered = boxes.length > 0 && boxes.every((b) => b.length > 0);
+  // The final check: the user confirms every screenshot is covered before anything is uploaded.
+  const ready = allCovered && checkedAll;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -182,11 +187,22 @@ export function RealFriend() {
               <RedactEditor key={i} index={i} image={img} boxes={boxes[i] ?? []} onChange={(next) => setBoxes(boxes.map((b, j) => (j === i ? next : b)))} />
             ))}
           </div>
+          <label htmlFor={checkedId} className="card mt-5 flex cursor-pointer items-start gap-3 p-4">
+            <input
+              id={checkedId}
+              type="checkbox"
+              className="mt-1 h-4 w-4 accent-[rgb(var(--brand))]"
+              checked={checkedAll}
+              onChange={(e) => setCheckedAll(e.target.checked)}
+              data-testid="checked-all"
+            />
+            <span className="leading-relaxed">{t('real_friend.checked_all')}</span>
+          </label>
           {error && (
             <div role="alert" className="card mt-5 border-bad/40 p-4" data-testid="analyze-error">
               <p className="font-medium">{error}</p>
               <div className="mt-3 flex flex-wrap gap-3">
-                <button type="button" className="btn-ghost px-4 py-2 text-sm" onClick={analyze} disabled={!allCovered}>
+                <button type="button" className="btn-ghost px-4 py-2 text-sm" onClick={analyze} disabled={!ready}>
                   {t('real_friend.try_again')}
                 </button>
                 <button type="button" className="btn-primary px-4 py-2 text-sm" onClick={() => toForm(false)}>
@@ -196,10 +212,14 @@ export function RealFriend() {
             </div>
           )}
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <button type="button" className="btn-primary" disabled={!allCovered} onClick={analyze} data-testid="analyze">
+            <button type="button" className="btn-primary" disabled={!ready} onClick={analyze} data-testid="analyze">
               {t('real_friend.analyze')}
             </button>
-            {!allCovered && <span className="text-sm text-muted">{t('real_friend.cover_each')}</span>}
+            {!allCovered ? (
+              <span className="text-sm text-muted">{t('real_friend.cover_each')}</span>
+            ) : (
+              !checkedAll && <span className="text-sm text-muted">{t('real_friend.tick_check')}</span>
+            )}
             {manual}
           </div>
         </section>

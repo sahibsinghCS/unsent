@@ -1,12 +1,13 @@
 /**
- * Cover names and numbers on one screenshot. Drag (mouse, pen or finger) to draw a solid black box.
+ * Cover names and numbers on one screenshot. Drag (mouse, pen or finger) to draw a solid black box;
+ * drag a box's bottom edge to make it taller or shorter.
  * Keyboard: "Add box" places a box; arrow keys move the selected box (Shift + arrows resize it),
  * Delete removes it. "Cover the top bar" covers the contact name and number at the top of a phone
  * screenshot in one tap. Boxes are kept in the image's own pixels and flattened later (lib/redact).
  */
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
 import { usePrefs } from '../i18n';
-import { boxFromPoints, nudge, targetSize, topBarBox, type Box } from '../lib/redact';
+import { bottomEdgeHit, boxFromPoints, nudge, targetSize, topBarBox, type Box } from '../lib/redact';
 
 export function RedactEditor({ image, boxes, onChange, index }: { image: HTMLImageElement; boxes: Box[]; onChange: (boxes: Box[]) => void; index: number }) {
   const { t } = usePrefs();
@@ -15,6 +16,7 @@ export function RedactEditor({ image, boxes, onChange, index }: { image: HTMLIma
   const [selected, setSelected] = useState<number | null>(null);
   const [temp, setTemp] = useState<Box | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
+  const resizing = useRef<number>(-1); // index of the box whose bottom edge is being dragged
   const W = image.naturalWidth || image.width;
   const H = image.naturalHeight || image.height;
   const step = Math.max(4, Math.round(Math.max(W, H) * 0.02));
@@ -53,13 +55,27 @@ export function RedactEditor({ image, boxes, onChange, index }: { image: HTMLIma
     } catch {
       /* synthetic or already-released pointer: dragging still works without capture */
     }
-    start.current = point(e);
+    const p = point(e);
+    // Grab a box's bottom edge (a generous target, finger-friendly) to resize it instead of drawing.
+    const rect = e.currentTarget.getBoundingClientRect();
+    const hit = bottomEdgeHit(boxes, p, (14 / rect.height) * H);
+    if (hit >= 0) {
+      resizing.current = hit;
+      setSelected(hit);
+      return;
+    }
+    start.current = p;
   }
   function onPointerMove(e: PointerEvent<HTMLCanvasElement>) {
-    if (start.current) setTemp(boxFromPoints(start.current, point(e), W, H));
+    const p = point(e);
+    if (resizing.current >= 0) {
+      const i = resizing.current;
+      onChange(boxes.map((b, j) => (j === i ? { ...b, h: Math.max(step, Math.min(H - b.y, p.y - b.y)) } : b)));
+    } else if (start.current) setTemp(boxFromPoints(start.current, p, W, H));
   }
   function onPointerUp() {
-    if (temp && temp.w > step / 2 && temp.h > step / 2) add(temp);
+    if (resizing.current < 0 && temp && temp.w > step / 2 && temp.h > step / 2) add(temp);
+    resizing.current = -1;
     start.current = null;
     setTemp(null);
   }

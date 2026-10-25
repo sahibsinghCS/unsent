@@ -539,14 +539,14 @@
     "too_many": "Elige hasta 3 capturas.",
     "bad_file": "Uno de los archivos no se pudo abrir como imagen PNG, JPEG o WebP.",
     "redact_title": "Tapa nombres y números",
-    "redact_body": "Dibuja un cuadro negro sobre cada nombre, número de teléfono, foto o cualquier cosa que muestre quién es. Los cuadros se graban en la imagen antes de que salga de tu dispositivo.",
+    "redact_body": "Dibuja un cuadro negro sobre cada nombre, número de teléfono, foto o nombre de usuario. El nombre y el número del contacto suelen estar hasta arriba, y también puede haber nombres dentro de los mensajes (\"dile a la maestra carter…\"). Los cuadros se graban en la imagen antes de que salga de tu dispositivo.",
     "image_n": "Captura {n}",
     "cover_top": "Tapar la barra de arriba",
     "add_box": "Agregar cuadro",
     "undo": "Deshacer",
     "clear": "Borrar todo",
     "canvas_label": "Captura {n}. Arrastra para dibujar un cuadro negro.",
-    "editor_help": "Arrastra sobre la captura para dibujar un cuadro. Con teclado: presiona \"Agregar cuadro\" y usa las flechas para moverlo, Shift + flechas para cambiar su tamaño y Supr para quitarlo.",
+    "editor_help": "Arrastra sobre la captura para dibujar un cuadro, o arrastra el borde de abajo de un cuadro para hacerlo más alto. Con teclado: presiona \"Agregar cuadro\" y usa las flechas para moverlo, Shift + flechas para cambiar su tamaño y Supr para quitarlo.",
     "boxes": "{n} cuadro(s) dibujado(s)",
     "no_boxes": "Todavía no hay cuadros",
     "cover_each": "Primero tapa nombres y números en cada captura.",
@@ -583,6 +583,8 @@
     "imminent_title": "Si podría hacerlo pronto",
     "imminent_body": "Si tu amigo podría hacerlo pronto, o tiene un plan o una forma de hacerse daño, llama al {emergency} o al 988 ahora. Si estás con él y es seguro, quédate a su lado hasta que llegue un adulto o ayuda. No lo guardes en secreto.",
     "call_number": "Llamar al {number}",
-    "removed_identifying": "Quitamos nombres, números y otros datos que podrían identificar a alguien. Revisa que el texto siga teniendo sentido."
+    "removed_identifying": "Quitamos nombres, números y otros datos que podrían identificar a alguien. Revisa que el texto siga teniendo sentido.",
+    "checked_all": "Revisé cada captura: los nombres, números, fotos y nombres de usuario están tapados.",
+    "tick_check": "Primero marca la revisión final."
   }
 }

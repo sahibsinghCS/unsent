@@ -53,7 +53,9 @@ async function makeScreenshotFile() {
     x.fillStyle = '#fff';
     x.fillRect(0, 0, c.width, c.height);
     x.fillStyle = '#f00';
-    x.fillRect(300, 80, 570, 160); // "Alex · (555) 010-0199"
+    x.fillRect(485, 110, 200, 180); // contact photo
+    x.fillRect(360, 310, 450, 60); // "Alex >"
+    x.fillRect(330, 400, 510, 70); // "(555) 010-0199", 15.8-18.6% down: a 12% box would miss it
     x.fillStyle = '#e9e9eb';
     for (let i = 0; i < 6; i++) x.fillRect(60, 500 + i * 300, 700, 180);
     x.fillStyle = '#f00';
@@ -91,7 +93,7 @@ async function inspectUpload(page, images) {
       const x = c.getContext('2d');
       x.drawImage(img, 0, 0);
       const at = (fx, fy) => Array.from(x.getImageData(Math.round(fx * img.width), Math.round(fy * img.height), 1, 1).data.slice(0, 3));
-      out.push({ jpeg: url.startsWith('data:image/jpeg'), w: img.width, h: img.height, bytes: Math.round((url.length - url.indexOf(',') - 1) * 0.75), top: at(0.5, 0.06), middle: at(0.5, 0.5), bubble: at(0.2, 0.8) });
+      out.push({ jpeg: url.startsWith('data:image/jpeg'), w: img.width, h: img.height, bytes: Math.round((url.length - url.indexOf(',') - 1) * 0.75), top: at(0.5, 0.06), header: at(0.5, 0.175), lower: at(0.5, 0.27), middle: at(0.5, 0.5), bubble: at(0.2, 0.8) });
     }
     return out;
   }, images);
@@ -156,12 +158,25 @@ async function run({ theme, device, urgency, keyboard }) {
     }
   }
   await first.getByTestId('cover-top').click();
-  await page.getByTestId('redact-editor').nth(1).getByTestId('cover-top').click();
+  const second = page.getByTestId('redact-editor').nth(1);
+  await second.getByTestId('cover-top').click();
+  if (!keyboard && device === 'desktop') {
+    // Drag the top-bar box's bottom edge (at 20%) down to 30%.
+    const c2 = await second.getByTestId('redact-canvas').boundingBox();
+    await page.mouse.move(c2.x + c2.width * 0.5, c2.y + c2.height * 0.2);
+    await page.mouse.down();
+    await page.mouse.move(c2.x + c2.width * 0.5, c2.y + c2.height * 0.3, { steps: 5 });
+    await page.mouse.up();
+  }
   if ((await first.getByTestId('box-count').innerText()).trim() !== '2 box(es) drawn') fail(`${tag}: box count ${await first.getByTestId('box-count').innerText()}`);
   if (urgency === 'tell_an_adult_now') {
     await axe(page, `${tag} redact`);
     await shot('02-redact');
   }
+  // The final check gates the upload, even with every screenshot covered.
+  if (await page.getByTestId('analyze').isEnabled()) fail(`${tag}: analyze enabled before the final check`);
+  await page.getByTestId('checked-all').check();
+  if (!(await page.getByTestId('analyze').isEnabled())) fail(`${tag}: analyze still disabled after the final check`);
   await page.getByTestId('analyze').click();
 
   if (!urgency) {
@@ -184,9 +199,11 @@ async function run({ theme, device, urgency, keyboard }) {
   for (const [i, m] of imgs.entries()) {
     if (!m.jpeg || Math.max(m.w, m.h) > 1280 || m.bytes > 1_500_000) fail(`${tag}: image ${i} not a ≤1280px JPEG under 1.5 MB: ${JSON.stringify(m)}`);
     if (Math.max(...m.top) > 40) fail(`${tag}: image ${i} top bar not black ${m.top}`);
+    if (Math.max(...m.header) > 40) fail(`${tag}: image ${i} phone-number line (17.5% down) not covered ${m.header}`);
     if (Math.min(...m.bubble) < 150) fail(`${tag}: image ${i} uncovered area changed ${m.bubble}`);
   }
   if (Math.max(...imgs[0].middle) > 40) fail(`${tag}: drawn box not flattened ${imgs[0].middle}`);
+  if (!keyboard && device === 'desktop' && Math.max(...imgs[1].lower) > 40) fail(`${tag}: bottom-edge drag did not grow the box ${imgs[1].lower}`);
   if (uploaded.locale !== 'en') fail(`${tag}: locale ${uploaded.locale}`);
 
   const help = page.getByTestId('urgent-help');

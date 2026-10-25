@@ -1,4 +1,4 @@
-import { boxFromPoints, dataUrlBytes, encodeUnder, MAX_BYTES, nudge, paintRedacted, prepareScreenshot, targetSize, topBarBox } from '../lib/redact';
+import { bottomEdgeHit, boxFromPoints, dataUrlBytes, encodeUnder, MAX_BYTES, nudge, paintRedacted, prepareScreenshot, targetSize, topBarBox } from '../lib/redact';
 
 /** A tiny fake 2D context with a real pixel grid: drawImage fills every pixel white, fillRect paints. */
 function pixelCtx(width: number, height: number) {
@@ -62,5 +62,20 @@ describe('screenshot redaction', () => {
     expect(boxFromPoints({ x: -5, y: 0 }, { x: 120, y: 10 }, 100, 100)).toEqual({ x: 0, y: 0, w: 100, h: 10 });
     expect(nudge({ x: 90, y: 0, w: 10, h: 10 }, 20, 0, 100, 100)).toMatchObject({ x: 90 });
     expect(nudge({ x: 0, y: 0, w: 10, h: 10 }, 5, 5, 100, 100, true)).toMatchObject({ w: 15, h: 15 });
+  });
+
+  it('"Cover the top bar" covers the top 20% of a portrait screenshot (12% for landscape)', () => {
+    const portrait = topBarBox(1170, 2532);
+    expect(portrait.y).toBe(0);
+    expect(portrait.w).toBe(1170);
+    expect(portrait.h / 2532).toBeGreaterThanOrEqual(0.2);
+    expect(topBarBox(2532, 1170).h / 1170).toBeCloseTo(0.12, 2);
+  });
+
+  it("finds the box whose bottom edge is under the pointer, so it can be dragged taller", () => {
+    const boxes = [{ x: 0, y: 0, w: 100, h: 20 }, { x: 10, y: 50, w: 30, h: 10 }];
+    expect(bottomEdgeHit(boxes, { x: 50, y: 21 }, 3)).toBe(0);
+    expect(bottomEdgeHit(boxes, { x: 20, y: 59 }, 3)).toBe(1);
+    expect(bottomEdgeHit(boxes, { x: 50, y: 35 }, 3)).toBe(-1);
   });
 });

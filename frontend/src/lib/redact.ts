@@ -25,9 +25,22 @@ export function targetSize(width: number, height: number, maxSide = MAX_SIDE) {
   return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)), scale };
 }
 
-/** Phone screenshots put the contact's name and number in the top bar: cover the top 12%. */
+/**
+ * Phone screenshots put the contact's photo, name and number at the top. On a tall (portrait)
+ * screenshot that header reaches about 20% down (a real iMessage capture showed 12% leaves the number
+ * visible), so cover the top 20%; landscape images get 12%.
+ */
 export function topBarBox(width: number, height: number): Box {
-  return { x: 0, y: 0, w: width, h: Math.round(height * 0.12) };
+  return { x: 0, y: 0, w: width, h: Math.ceil(height * (height > width ? 0.2 : 0.12)) };
+}
+
+/** Index of the box whose bottom edge is under the point (to drag it taller or shorter), or -1. */
+export function bottomEdgeHit(boxes: Box[], p: { x: number; y: number }, tolerance: number): number {
+  for (let i = boxes.length - 1; i >= 0; i--) {
+    const b = boxes[i];
+    if (p.x >= b.x && p.x <= b.x + b.w && Math.abs(p.y - (b.y + b.h)) <= tolerance) return i;
+  }
+  return -1;
 }
 
 /** A box from two drag corners, in any direction, clamped to the image. */
