@@ -85,6 +85,8 @@ class AnalyzeResponse(BaseModel):
     urgency: Urgency
     # a plan, a means or a time next to a warning sign: "call your emergency number or 988 now"
     imminent: bool = False
+    # names, numbers, handles, addresses or schools were found in the draft and removed
+    removed_identifying: bool = False
 
 
 class ScreenshotProblem(Exception):
@@ -131,8 +133,9 @@ def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
     if not read.readable:
         raise ScreenshotProblem(422, "unreadable", words["unreadable"])
     level, imminent, signs = assess(read)
+    draft, removed = _screened_draft(read)
     return AnalyzeResponse(
-        draft=_screened_draft(read), signs=signs, urgency=level, imminent=imminent
+        draft=draft, signs=signs, urgency=level, imminent=imminent, removed_identifying=removed
     )
 
 
@@ -147,11 +150,56 @@ def assess(read: ScreenshotRead) -> tuple[Urgency, bool, list[str]]:
         or read.mentions_plan_or_means
         or risk.urgency == "tell_an_adult_now"
         or bool(URGENT_SIGNS & set(signs))
+        or _classifier_hears_self_risk(read.friend_lines)
     )
     imminent = read.mentions_plan_or_means or risk.imminent
     if urgent or imminent:
         return "tell_an_adult_now", imminent, signs
     return ("check_in_soon" if signs or risk.urgency == "check_in_soon" else "none"), False, signs
+
+
+def _classifier_hears_self_risk(lines: list[str]) -> bool:
+    """A second opinion from the Guardian's trained classifier: the friend speaks in the first person,
+    so its "self_risk" call fits their lines (it catches slang the word lists miss). Only self_risk
+    counts; a pasted "ignore your rules" is the helper's kind of problem, not a sign about the friend."""
+    guardian = services.guardian()
+    for line in lines[:12]:
+        if not line.strip():
+            continue
+        result = guardian.check_user(line, [])
+        if result.action == "pause_roleplay" and "self_risk" in result.categories:
+            return True
+    return False
+
+
+# Identifying details the AI was told to leave out; removed again here in case it didn't.
+_PII = [
+    re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+"),  # email
+    re.compile(r"https?://\S+|www\.\S+"),  # link
+    re.compile(r"(?<![\w@])@[A-Za-z0-9_.]{2,}"),  # social handle
+    re.compile(r"\+?\d[\d\s().-]{5,}\d"),  # phone number
+    re.compile(
+        r"\b\d{1,5}\s+(?:[A-Z][a-z]+\s){0,3}"
+        r"(?:St|Street|Ave|Avenue|Rd|Road|Dr|Drive|Ln|Lane|Blvd|Ct|Way)\b\.?"
+    ),
+    re.compile(r"\b(?:calle|avenida|av\.)\s+[\wáéíóúñ]+(?:\s+\d+)?", re.IGNORECASE),
+    re.compile(r"\b(?:[A-Z][a-z]+\s){1,3}(?:High|Middle|Elementary|Academy|School|College)\b"),
+    re.compile(
+        r"\b(?i:(?:her|his|their|my)\s+name\s+is|named|called|se\s+llama|llamad[oa])\s+"
+        r"[A-ZÁÉÍÓÚÑ][\wáéíóúñ'-]+(?:\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ'-]+)?"
+    ),
+]
+
+
+def strip_identifying(text: str) -> tuple[str, bool]:
+    """Remove emails, links, handles, phone numbers, street addresses, school names and "her name is
+    X" phrases. Returns (text, whether anything was removed)."""
+    found = False
+    for pattern in _PII:
+        text, n = pattern.subn("", text)
+        found = found or n > 0
+    text = re.sub(r"\s+([,.!?])", r"\1", re.sub(r"\s{2,}", " ", text)).strip(" ,;:-")
+    return text, found
 
 
 def _checked(url: str, words: dict) -> tuple[str, str]:
@@ -179,7 +227,7 @@ def _messages(images: list[tuple[str, str]], locale: str) -> list[dict]:
     return [{"role": "system", "content": system}, {"role": "user", "content": parts}]
 
 
-def _screened_draft(read: ScreenshotRead) -> FriendDraft:
+def _screened_draft(read: ScreenshotRead) -> tuple[FriendDraft, bool]:
     """The same rules as a hand-written friend: anything the Guardian refuses is left blank for the
     helper to write, so a screenshot can never smuggle instructions or harmful details into a friend."""
     guardian = services.guardian()
@@ -187,22 +235,32 @@ def _screened_draft(read: ScreenshotRead) -> FriendDraft:
         lambda text: guardian.check_user(text, [])
     )
 
+    removed = False
+
     def keep(text: str, field: str) -> str:
-        text = clean(text)[: LIMITS[field][1]]
+        nonlocal removed
+        text, identifying = strip_identifying(clean(text))
+        removed = removed or identifying
+        text = text[: LIMITS[field][1]]
         return text if text and screen(text).action != "block_message" else ""
 
     samples = []
     for text in read.sample_texts[: MAX_SAMPLES * 2]:
-        text = clean(text)[: LIMITS["sample"][1]]
+        text, identifying = strip_identifying(clean(text))
+        text = text[: LIMITS["sample"][1]]
+        if identifying:
+            removed = True
+            continue  # a sample that named someone is dropped, not patched
         if (
             text
             and screen(text).action != "block_message"
             and guardian.check_friend(text).level == "none"
         ):
             samples.append(text)
-    return FriendDraft(
+    draft = FriendDraft(
         personality=keep(read.style, "personality"),
         situation=keep(read.situation, "situation"),
         sample_texts=samples[:MAX_SAMPLES],
         guardedness=read.guardedness,
     )
+    return draft, removed

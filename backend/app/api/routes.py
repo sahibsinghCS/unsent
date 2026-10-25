@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import time
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel, Field
 
 from backend.app import llm, services
@@ -16,6 +16,7 @@ from backend.app.content import (
     load_metrics,
     load_realmode,
     load_scenarios,
+    owns_custom,
     remove_custom,
     resolve_headline,
     scenario_locales,
@@ -60,6 +61,8 @@ class FriendResponse(BaseModel):
     friend: ScenarioSummary
     # "real_help": the story may be about a real friend (or the helper) at risk: show real help first
     notice: str | None = None
+    # send back as X-Friend-Token to delete this friend (kept in the page's memory only)
+    owner_token: str = ""
 
 
 class CreateSessionRequest(BaseModel):
@@ -163,12 +166,14 @@ def _summary(scenario: Scenario, lang: str) -> ScenarioSummary:
 def add_friend(request: FriendRequest) -> FriendResponse:
     """A friend the helper describes. Kept in memory only, and expires like a session."""
     try:
-        scenario, real_help = create_friend(request)
+        scenario, real_help, owner_token = create_friend(request)
     except FriendProblem as problem:
         raise HTTPException(422, problem.detail) from problem
     locale = scenario_locales(scenario)[0]
     return FriendResponse(
-        friend=_summary(scenario, locale), notice="real_help" if real_help else None
+        friend=_summary(scenario, locale),
+        notice="real_help" if real_help else None,
+        owner_token=owner_token,
     )
 
 
@@ -183,10 +188,14 @@ def analyze_screenshots(request: AnalyzeRequest) -> AnalyzeResponse:
 
 
 @router.delete("/friends/{friend_id}", status_code=204)
-def delete_friend(friend_id: str) -> None:
-    """Delete a custom friend now, with every chat practising it. Built-in friends can't be deleted."""
-    if not is_custom(friend_id) or not remove_custom(friend_id):
-        raise HTTPException(404, "No such friend.")
+def delete_friend(
+    friend_id: str, x_friend_token: str = Header(default="", alias="X-Friend-Token")
+) -> None:
+    """Delete a custom friend now, with every chat practising it. Only the browser that created it
+    (it holds the owner token) can; built-in friends can't be deleted."""
+    if not is_custom(friend_id) or not owns_custom(friend_id, x_friend_token):
+        raise HTTPException(404, "No such friend.")  # same answer either way: ids stay unguessable
+    remove_custom(friend_id)
     store.drop_scenario(friend_id)
 
 

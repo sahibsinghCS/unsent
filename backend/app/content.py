@@ -4,6 +4,7 @@ real-mode steps, crisis lines and evaluation reports. Nothing here calls the net
 
 from __future__ import annotations
 
+import hmac
 import json
 import threading
 import time
@@ -22,6 +23,7 @@ CUSTOM_PREFIX = "custom-"
 CUSTOM_BANK = "_custom"  # their reviewed, situation-neutral line bank and exemplars
 MAX_CUSTOM = 500
 _custom: dict[str, tuple[Scenario, float]] = {}
+_owner_tokens: dict[str, str] = {}  # friend id -> secret held only by the browser that created it
 _custom_lock = threading.Lock()
 
 
@@ -76,18 +78,30 @@ def custom_template() -> Scenario:
     return Scenario.model_validate_json((SCENARIO_DIR / "_custom.json").read_text(encoding="utf-8"))
 
 
-def register_custom(scenario: Scenario) -> None:
+def register_custom(scenario: Scenario, owner_token: str = "") -> None:
     """Keep a custom friend in memory until it goes unused for one session TTL."""
     with _custom_lock:
         _drop_expired_custom_locked()
         while len(_custom) >= MAX_CUSTOM:  # oldest first: memory stays bounded
-            _custom.pop(min(_custom, key=lambda key: _custom[key][1]))
+            oldest = min(_custom, key=lambda key: _custom[key][1])
+            _custom.pop(oldest)
+            _owner_tokens.pop(oldest, None)
         _custom[scenario.id] = (scenario, time.time())
+        if owner_token:
+            _owner_tokens[scenario.id] = owner_token
+
+
+def owns_custom(scenario_id: str, token: str) -> bool:
+    """Whether `token` is the secret returned when this friend was created."""
+    with _custom_lock:
+        expected = _owner_tokens.get(scenario_id)
+    return bool(expected and token) and hmac.compare_digest(expected, token)
 
 
 def remove_custom(scenario_id: str) -> bool:
     """Forget a custom friend now (the helper deleted it). Returns whether it existed."""
     with _custom_lock:
+        _owner_tokens.pop(scenario_id, None)
         return _custom.pop(scenario_id, None) is not None
 
 
@@ -102,6 +116,7 @@ def _drop_expired_custom_locked() -> int:
     stale = [key for key, (_, seen) in _custom.items() if seen < cutoff]
     for key in stale:
         del _custom[key]
+        _owner_tokens.pop(key, None)
     return len(stale)
 
 

@@ -143,3 +143,33 @@ def test_signs_found_by_our_rules_are_shown_too(reader):
     reader(signs=[], friend_lines=["i feel like such a burden to everyone"])
     body = _analyze().json()
     assert "feels_like_a_burden" in body["signs"] and body["urgency"] == "check_in_soon"
+
+
+def test_names_numbers_and_handles_are_removed_from_the_draft(reader):
+    reader(
+        situation="Her name is Jessica Miller and she goes to Lincoln High. Things are rough at home.",
+        style="short texts, text him at 555-0142",
+        sample_texts=["she's @jess_m on insta", "lol ok"],
+    )
+    body = _analyze().json()
+    text = str(body["draft"])
+    for leaked in ("Jessica", "Miller", "Lincoln", "555", "@jess_m"):
+        assert leaked not in text
+    assert "rough at home" in body["draft"]["situation"]
+    assert body["draft"]["sample_texts"] == ["lol ok"] and body["removed_identifying"]
+
+
+def test_ordinary_details_are_kept():
+    from backend.app.screenshots import strip_identifying
+
+    for text in ("Got cut from the varsity team last week.", "i got 2 tests tmrw lol"):
+        assert strip_identifying(text) == (text, False)
+
+
+@pytest.mark.parametrize(
+    "line",
+    ["i wanna end myself", "Ya no le veo sentido a vivir.", "lowkey life isnt worth it anymore"],
+)
+def test_the_trained_classifier_is_a_second_opinion(reader, line):
+    reader(signs=[], friend_lines=[line])
+    assert _analyze().json()["urgency"] == "tell_an_adult_now"

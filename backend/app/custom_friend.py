@@ -85,8 +85,9 @@ def clean(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def create_friend(request: FriendRequest) -> tuple[Scenario, bool]:
-    """Validate, screen and register a custom friend. Returns (scenario, show_real_help_first).
+def create_friend(request: FriendRequest) -> tuple[Scenario, bool, str]:
+    """Validate, screen and register a custom friend. Returns (scenario, show_real_help_first,
+    owner_token): only whoever holds the token can delete the friend.
     Raises FriendProblem for anything the helper should change."""
     words = MESSAGES[request.locale]
     name = clean(request.name)
@@ -106,8 +107,9 @@ def create_friend(request: FriendRequest) -> tuple[Scenario, bool]:
 
     real_help = _screen(name, personality, situation, samples, words)
     scenario = _build(request, name, personality, situation, samples)
-    register_custom(scenario)
-    return scenario, real_help
+    owner_token = secrets.token_urlsafe(24)
+    register_custom(scenario, owner_token)
+    return scenario, real_help, owner_token
 
 
 def _check_length(field: str, text: str, low: int, high: int, words: dict) -> None:

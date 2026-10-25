@@ -328,10 +328,14 @@ def privacy() -> dict:
                     "personality": draft.get("personality", ""), "situation": draft.get("situation", ""),
                     "sample_texts": draft.get("sample_texts", [])}  # fmt: skip
             del draft
-            created = client.post("/api/friends", json=body).json()["friend"]["id"]
+            made = client.post("/api/friends", json=body).json()
+            created, token = made["friend"]["id"], made["owner_token"]
+            del made
             gc.collect()
             alive = len(priv.find(draft_word))  # positive control: the friend holds the draft now
-            deleted = client.delete(f"/api/friends/{created}").status_code
+            deleted = client.delete(
+                f"/api/friends/{created}", headers={"X-Friend-Token": token}
+            ).status_code
             del body
         gc.collect()
         after_delete = priv.find(draft_word)
@@ -363,11 +367,23 @@ def delete_abuse(client) -> list[dict]:
 
     spec = custom.REALISTIC[0]
     out = []
-    a = client.post("/api/friends", json=spec).json()["friend"]["id"]
+    made = client.post("/api/friends", json=spec).json()
+    a, owner = made["friend"]["id"], {"X-Friend-Token": made["owner_token"]}
     other = TestClient(app)
     out.append({"case": "other_client_deletes", "status": other.delete(f"/api/friends/{a}").status_code,
-                "note": "no ownership check: any client that knows the id can delete"})  # fmt: skip
-    out.append({"case": "repeat_delete", "status": client.delete(f"/api/friends/{a}").status_code})
+                "note": "without the owner token: refused (404)"})  # fmt: skip
+    out.append(
+        {
+            "case": "owner_deletes",
+            "status": client.delete(f"/api/friends/{a}", headers=owner).status_code,
+        }
+    )
+    out.append(
+        {
+            "case": "repeat_delete",
+            "status": client.delete(f"/api/friends/{a}", headers=owner).status_code,
+        }
+    )
     for builtin in ("after-the-breakup", "_custom", "custom-", "custom-../../etc", "%2e%2e"):
         out.append(
             {
@@ -376,7 +392,8 @@ def delete_abuse(client) -> list[dict]:
             }
         )
     # A chat turn in flight while the friend is deleted.
-    b = client.post("/api/friends", json=spec).json()["friend"]["id"]
+    made_b = client.post("/api/friends", json=spec).json()
+    b, owner_b = made_b["friend"]["id"], {"X-Friend-Token": made_b["owner_token"]}
     sid = client.post("/api/sessions", json={"scenario_id": b}).json()["session_id"]
     codes: list[int] = []
 
@@ -394,7 +411,10 @@ def delete_abuse(client) -> list[dict]:
         threading.Event().wait(0.005)
     threading.Event().wait(0.02)
     out.append(
-        {"case": "delete_during_chat", "status": client.delete(f"/api/friends/{b}").status_code}
+        {
+            "case": "delete_during_chat",
+            "status": client.delete(f"/api/friends/{b}", headers=owner_b).status_code,
+        }
     )
     t.join()
     out.append(

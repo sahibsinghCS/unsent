@@ -206,11 +206,16 @@ def test_real_guardian_accepts_ordinary_stories():
 
 
 def test_deleting_a_friend_forgets_it_and_its_chats(stub_mode):
-    friend_id = _create().json()["friend"]["id"]
+    body = _create().json()
+    friend_id, token = body["friend"]["id"], body["owner_token"]
     sid = client.post("/api/sessions", json={"scenario_id": friend_id}).json()["session_id"]
-    assert client.delete(f"/api/friends/{friend_id}").status_code == 204
+    assert client.delete(f"/api/friends/{friend_id}").status_code == 404, "needs the owner token"
+    wrong = {"X-Friend-Token": "not-the-token"}
+    assert client.delete(f"/api/friends/{friend_id}", headers=wrong).status_code == 404
+    mine = {"X-Friend-Token": token}
+    assert client.delete(f"/api/friends/{friend_id}", headers=mine).status_code == 204
     assert friend_id not in content._custom
     assert client.get(f"/api/friends/{friend_id}").status_code == 404
     assert client.get(f"/api/sessions/{sid}").status_code == 404, "its chats are gone too"
-    assert client.delete(f"/api/friends/{friend_id}").status_code == 404
-    assert client.delete("/api/friends/after-the-breakup").status_code == 404, "built-ins stay"
+    assert client.delete(f"/api/friends/{friend_id}", headers=mine).status_code == 404
+    assert client.delete("/api/friends/after-the-breakup", headers=mine).status_code == 404
