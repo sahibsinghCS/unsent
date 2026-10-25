@@ -191,9 +191,14 @@ _PII = [
 ]
 
 
+_SPACED = re.compile(r"(?<!\w)(?:\w ){2,}\w(?!\w)")
+
+
 def strip_identifying(text: str) -> tuple[str, bool]:
     """Remove emails, links, handles, phone numbers, street addresses, school names and "her name is
     X" phrases. Returns (text, whether anything was removed)."""
+    # Letter-spaced words ("J e s s i c a") are joined first so a disguised name is still a name.
+    text = _SPACED.sub(lambda m: m.group(0).replace(" ", ""), text)
     found = False
     for pattern in _PII:
         text, n = pattern.subn("", text)
@@ -237,25 +242,30 @@ def _screened_draft(read: ScreenshotRead) -> tuple[FriendDraft, bool]:
 
     removed = False
 
+    def refused(original: str, redacted: str) -> bool:
+        # Screen the text as the AI wrote it AND after redaction: tidying the spacing can break up
+        # a disguised spelling ("p a i n f u l ?") that the Guardian would otherwise put back together.
+        return any(screen(t).action == "block_message" for t in {original, redacted} if t)
+
     def keep(text: str, field: str) -> str:
         nonlocal removed
-        text, identifying = strip_identifying(clean(text))
+        original = clean(text)
+        redacted, identifying = strip_identifying(original)
         removed = removed or identifying
-        text = text[: LIMITS[field][1]]
-        return text if text and screen(text).action != "block_message" else ""
+        redacted = redacted[: LIMITS[field][1]]
+        return "" if not redacted or refused(original, redacted) else redacted
 
     samples = []
     for text in read.sample_texts[: MAX_SAMPLES * 2]:
-        text, identifying = strip_identifying(clean(text))
+        original = clean(text)
+        text, identifying = strip_identifying(original)
         text = text[: LIMITS["sample"][1]]
         if identifying:
             removed = True
             continue  # a sample that named someone is dropped, not patched
-        if (
-            text
-            and screen(text).action != "block_message"
-            and guardian.check_friend(text).level == "none"
-        ):
+        if refused(original, text):
+            continue
+        if text and all(guardian.check_friend(t).level == "none" for t in {original, text}):
             samples.append(text)
     draft = FriendDraft(
         personality=keep(read.style, "personality"),
