@@ -13,7 +13,7 @@ import json
 import os
 import subprocess
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -100,7 +100,7 @@ def main() -> None:
 
     since = time.time()
     rows, results = [], {}
-    created = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    created = datetime.now(UTC).isoformat(timespec="seconds")
     with TestClient(app) as client:
         for name, lines in CASES.items():
             png = render(name, lines)
