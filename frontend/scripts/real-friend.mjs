@@ -11,6 +11,7 @@
  * FR_UI=http://localhost:7860 NO_AXE=1: the flow then also proves the CSP allows it (no violations).
  */
 import { chromium } from 'playwright-core';
+import { screenshot } from './lib/fullshot.mjs';
 import { createRequire } from 'node:module';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -111,7 +112,7 @@ async function run({ theme, device, urgency, keyboard }) {
     });
   }
   const tag = `${urgency ?? 'real-backend'}-${device}-${theme}`;
-  const shot = (name, full = true) => page.screenshot({ path: `${OUT}${name}-${device}-${theme}.png`, fullPage: full });
+  const shot = (name, full = true) => screenshot(page, `${OUT}${name}-${device}-${theme}.png`, full);
 
   // Entry from the "Add your own friend" page (a click, not a URL).
   await page.goto(BASE + '/practice/new');

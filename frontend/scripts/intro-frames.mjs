@@ -30,6 +30,25 @@ for (const theme of ['dark', 'light']) {
       if (wait > 0) await page.waitForTimeout(wait);
       await page.screenshot({ path: `${OUT}intro-${theme}-${device}-${String(at).padStart(4, '0')}ms.png` });
     }
+    // After the intro the headline is plain text, and a resize (desktop 1440 → 1200 → 1440) or a
+    // rotation (mobile portrait → landscape → portrait) brings back exactly the same size and leading.
+    await page.waitForTimeout(1500);
+    const measure = () =>
+      page.evaluate(() => {
+        const h = document.querySelector('h1');
+        const cs = getComputedStyle(h);
+        return { size: cs.fontSize, leading: cs.lineHeight, height: Math.round(h.getBoundingClientRect().height), spans: h.querySelectorAll('[data-word]').length };
+      });
+    const before = await measure();
+    if (before.spans) throw new Error(`${theme} ${device}: headline still split into animated words after the intro`);
+    const vp = page.viewportSize();
+    await page.setViewportSize(device === 'desktop' ? { width: 1200, height: 900 } : { width: vp.height, height: vp.width });
+    await page.waitForTimeout(300);
+    await page.setViewportSize(vp);
+    await page.waitForTimeout(300);
+    const after = await measure();
+    if (JSON.stringify(before) !== JSON.stringify(after)) throw new Error(`${theme} ${device}: headline changed after resize ${JSON.stringify(before)} → ${JSON.stringify(after)}`);
+    if (device === 'desktop' && before.size !== '83.2px') throw new Error(`${theme} desktop: headline ${before.size}, expected 83.2px (5.2rem)`);
     await page.context().close();
   }
   // Reduced motion: everything is in its final state immediately.
@@ -38,7 +57,7 @@ for (const theme of ['dark', 'light']) {
   await page.locator('h1').waitFor();
   await page.waitForTimeout(100);
   const hidden = await page.evaluate(() =>
-    ['h1 [data-word]', '[data-testid="start-practicing"]', '.im-bubble'].filter((sel) => {
+    ['h1', '[data-testid="start-practicing"]', '.im-bubble'].filter((sel) => {
       const el = document.querySelector(sel);
       return !el || Number(getComputedStyle(el.closest('.animate-fade-in, .animate-rise-phone') ?? el).opacity) < 0.99 || Number(getComputedStyle(el).opacity) < 0.99;
     }),
@@ -46,6 +65,6 @@ for (const theme of ['dark', 'light']) {
   if (hidden.length) throw new Error(`reduced motion (${theme}): not in final state: ${hidden.join(', ')}`);
   await page.screenshot({ path: `${OUT}intro-${theme}-desktop-reduced.png` });
   await page.context().close();
-  console.log(`  ${theme}: ${FRAMES.length} frames × 2 devices, reduced motion static OK`);
+  console.log(`  ${theme}: ${FRAMES.length} frames × 2 devices, resize/rotate keeps the headline, reduced motion static OK`);
 }
 await browser.close();

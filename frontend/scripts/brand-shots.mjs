@@ -6,6 +6,7 @@
  *   FR_UI=http://localhost:4173 node scripts/brand-shots.mjs after    → screenshots/brand/after-*.png
  */
 import { chromium } from 'playwright-core';
+import { screenshot } from './lib/fullshot.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.FR_UI ?? 'http://localhost:4173';
@@ -48,7 +49,7 @@ for (const theme of ['dark', 'light']) {
     const shot = async (name, full = true) => {
       if (ONLY && !ONLY.includes(name)) return;
       await page.waitForTimeout(500);
-      await page.screenshot({ path: `${OUT}${PREFIX}-${name}-${device}-${theme}.png`, fullPage: full });
+      await screenshot(page, `${OUT}${PREFIX}-${name}-${device}-${theme}.png`, full);
     };
     await page.goto(`${BASE}/`);
     await page.getByTestId('start-practicing').waitFor();

@@ -3,7 +3,7 @@
 // steps that each animate a real snippet of the app when they scroll into view, the annotated
 // conversation (lib/demoTranscript), and where to get real help. Every motion plays once, is slow and
 // eased, and is skipped entirely with reduced motion. Help UI never animates.
-import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { LiveDemo } from '../components/LiveDemo';
 import { Bubble } from '../components/Phone';
@@ -12,6 +12,7 @@ import { StarField } from '../components/StarField';
 import { useCountUp } from '../components/TrustMeter';
 import { usePrefs } from '../i18n';
 import { demoRun, turnSummary, type DemoTurn } from '../lib/demoTranscript';
+import { prefersReducedMotion } from '../lib/typingDelay';
 import { useInView } from '../lib/useInView';
 
 // Rows shown before "See the whole conversation": the opening plus check-in, the dismissive reply
@@ -215,13 +216,17 @@ function Step({ n, title, body, children }: { n: number; title: string; body: st
 
 /**
  * The headline, rising line by line (700 ms each, 120 ms apart). Words are measured after layout so
- * the stagger follows the real line breaks at any width; no letter-by-letter typing.
+ * the stagger follows the real line breaks; no letter-by-letter typing. Once the last line has risen
+ * (or right away with reduced motion) it becomes plain text, so the layout never depends on the
+ * animation: resizing, rotating or a full-page capture re-wraps it like any other text.
  */
 function RiseLines({ text, delay = 0 }: { text: string; delay?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [lines, setLines] = useState<number[]>([]);
+  const [done, setDone] = useState(() => prefersReducedMotion());
   const words = text.split(' ');
   useLayoutEffect(() => {
+    if (done) return;
     const spans = ref.current?.querySelectorAll<HTMLSpanElement>('[data-word]') ?? [];
     const tops: number[] = [];
     setLines(
@@ -231,7 +236,13 @@ function RiseLines({ text, delay = 0 }: { text: string; delay?: number }) {
         return tops.indexOf(top);
       }),
     );
-  }, [text]);
+  }, [text, done]);
+  useEffect(() => {
+    if (done || !lines.length) return undefined;
+    const timer = setTimeout(() => setDone(true), delay + Math.max(...lines) * 120 + 700 + 50);
+    return () => clearTimeout(timer);
+  }, [lines, delay, done]);
+  if (done) return <>{text}</>;
   return (
     <span ref={ref}>
       {words.map((w, i) => (
@@ -245,13 +256,17 @@ function RiseLines({ text, delay = 0 }: { text: string; delay?: number }) {
   );
 }
 
-/** "1 in 5" with the digits set in Plex Sans (Syne's "1" reads like a dotless i). */
+/**
+ * "1 in 5" with the digits set in Plex Sans (Syne's "1" reads like a dotless i). Plex's figures are
+ * shorter than Syne's lowercase ascenders at the same size, so they're scaled up to the "i" height,
+ * on the same baseline.
+ */
 function StatNumeral({ text }: { text: string }) {
   return (
     <>
       {text.split(/(\d+)/).map((part, i) =>
         /\d/.test(part) ? (
-          <span key={i} className="font-sans font-semibold">
+          <span key={i} className="font-sans text-[1.2em] font-semibold leading-none">
             {part}
           </span>
         ) : (

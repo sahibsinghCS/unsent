@@ -5,6 +5,7 @@
  * Usage: API on :8000 + `npm run preview`, then `node scripts/friends.mjs`.
  */
 import { chromium } from 'playwright-core';
+import { screenshot } from './lib/fullshot.mjs';
 import { createRequire } from 'node:module';
 import { mkdirSync } from 'node:fs';
 
@@ -56,7 +57,7 @@ async function run(browser, lang, device) {
   const shot = async (name, full = false) => {
     if (full) await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(400);
-    await page.screenshot({ path: `${OUT}${name}-${lang}-${device}.png`, fullPage: full });
+    await screenshot(page, `${OUT}${name}-${lang}-${device}.png`, full);
     console.log(`   ${name}-${lang}-${device}.png`);
   };
   const waitIdle = () => page.locator('[role="status"][aria-label*="typ"], [role="status"][aria-label*="escrib"]').first().waitFor({ state: 'detached', timeout: 40000 }).catch(() => {});

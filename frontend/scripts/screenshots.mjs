@@ -9,6 +9,7 @@
  * Uses the preinstalled Chromium (CHROMIUM_PATH overrides it).
  */
 import { chromium } from 'playwright-core';
+import { screenshot } from './lib/fullshot.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.FR_UI ?? 'http://localhost:4173';
@@ -36,7 +37,7 @@ async function run(device) {
   const shot = async (name, opts = {}) => {
     if (opts.full) await page.evaluate(() => window.scrollTo(0, 0)); // keep the sticky header at the top
     await page.waitForTimeout(450); // let charts and pop-in animations settle
-    await page.screenshot({ path: `${OUT}${name}-${device}.png`, fullPage: opts.full ?? false });
+    await screenshot(page, `${OUT}${name}-${device}.png`, opts.full ?? false);
     log(`${name}-${device}.png`);
   };
   // Scroll moments play once when they come into view: scroll through the page before a full shot.
