@@ -85,6 +85,12 @@ def register_custom(scenario: Scenario) -> None:
         _custom[scenario.id] = (scenario, time.time())
 
 
+def remove_custom(scenario_id: str) -> bool:
+    """Forget a custom friend now (the helper deleted it). Returns whether it existed."""
+    with _custom_lock:
+        return _custom.pop(scenario_id, None) is not None
+
+
 def purge_custom() -> int:
     """Drop custom friends unused for longer than the session TTL. Returns the count."""
     with _custom_lock:

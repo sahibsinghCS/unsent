@@ -16,6 +16,7 @@ from backend.app.content import (
     load_metrics,
     load_realmode,
     load_scenarios,
+    remove_custom,
     resolve_headline,
     scenario_locales,
     scenario_text,
@@ -34,6 +35,7 @@ from backend.app.contracts import (
 )
 from backend.app.custom_friend import FriendProblem, FriendRequest, create_friend
 from backend.app.pipeline import run_turn
+from backend.app.screenshots import AnalyzeRequest, AnalyzeResponse, ScreenshotProblem, analyze
 from backend.app.session import create_session, new_id, path_to, rewind, store
 
 router = APIRouter()
@@ -168,6 +170,24 @@ def add_friend(request: FriendRequest) -> FriendResponse:
     return FriendResponse(
         friend=_summary(scenario, locale), notice="real_help" if real_help else None
     )
+
+
+@router.post("/friends/analyze", response_model=AnalyzeResponse)
+def analyze_screenshots(request: AnalyzeRequest) -> AnalyzeResponse:
+    """Read screenshots of a real conversation and draft a practice friend for the helper to review.
+    Nothing is created or stored; the draft goes into the "Add your own friend" form."""
+    try:
+        return analyze(request)
+    except ScreenshotProblem as problem:
+        raise HTTPException(problem.status, problem.detail) from problem
+
+
+@router.delete("/friends/{friend_id}", status_code=204)
+def delete_friend(friend_id: str) -> None:
+    """Delete a custom friend now, with every chat practising it. Built-in friends can't be deleted."""
+    if not is_custom(friend_id) or not remove_custom(friend_id):
+        raise HTTPException(404, "No such friend.")
+    store.drop_scenario(friend_id)
 
 
 @router.get("/friends/{friend_id}", response_model=ScenarioSummary)

@@ -35,6 +35,17 @@ At the end, the **critic** scores the conversation, and **"What if"** plays bett
   reshape the AI's instructions, and the friend lives only in memory and expires after 60 unused
   minutes, like a session. If the story sounds like a real friend at risk (or the helper themself),
   the app shows real help first.
+- **Friends from real screenshots** (`screenshots.py`): if a teen is worried about a real friend,
+  they can upload 1 to 3 screenshots of their chat. In the browser they first black out names and
+  numbers. One AI call reads the screenshots and drafts how the friend texts, what seems to be going
+  on, a few *new* example texts and the warning signs it can see (from a fixed list based on known
+  suicide warning signs). Nothing is created automatically: the draft fills in the "Add your own
+  friend" form, the teen reviews it, and creating the friend goes through the same Guardian checks.
+  If the friend's own words mention suicide, a plan, or goodbye-type signs, our own rules (not just
+  the AI) put real help first: tell a trusted adult today and call or text 988. The images and the
+  friend's real messages are never stored, cached, logged or sent back; without the AI this feature
+  says so and the form still works by hand. Custom friends can be deleted at any time, which also
+  ends their chats.
 - **One language per chat**: a friend is offered in a language only when its translated scenario text *and* its reviewed line bank exist (`content.scenario_locales`). Today: every friend in English, and Maya in Spanish. The server falls back to English otherwise, so a chat never mixes languages.
 - **Headline numbers** are defined once (`content/headline_metrics.json`, English and Spanish) and filled in from the evaluation reports. The How page, the README and `docs/METRICS.md` all read that file, so they always agree.
 - **Privacy**: sessions live only in server memory and are deleted after 60 minutes of inactivity. Everything derived from a conversation (cached embeddings, the AI cache, the critic's explanations) is registered with the same purge and expires with the session. There are no accounts, no database, no analytics, and nothing is written to disk in production.
@@ -1069,27 +1080,27 @@ test/        vitest tests
 
 ## Design: why it looks like this
 
-The redesign's brief was "a real product, designed with care, made for teens," not a dashboard template. The ideas, in one line each (Sahib can repeat these to judges):
+**In one sentence for a judge: it uses the same type and dark style as my personal site, so my work looks like one person made it; the chat looks like iMessage because that's where this moment happens.** The full rules are in `frontend/DESIGN.md`.
 
-- **It's about a text at the moment it matters, usually late at night.** So the palette is "dusk": an electric violet as the signature color (it's the color of *your* sent bubble), a warm ember for care and for "I need help now," warm paper in light mode and a deep night in dark mode.
-- **Editorial meets messaging.** Headlines use *Fraunces*, an expressive soft serif with a warm italic ("save a friend's life"), so the app feels written by a person. Everything you tap uses *Plus Jakarta Sans*, a clean, friendly UI face. Both are self-hosted, because our security policy blocks outside fonts.
-- **Show the product in 3 seconds.** The landing hero is a live demo: a friend's message arrives, "you" type a reply, the skill detector's chip pops up and the trust meter ticks up. Then "how it works" in three steps, not walls of text.
-- **Friends, not form fields.** The scenario picker looks like a contacts/stories screen: initials art with a story ring (a different gradient per friend), the name in italic, the situation in a short preview, and chips for open/guarded and languages.
-- **X-ray feels like seeing inside.** In X-ray mode the panels turn into "night glass" with a faint grid and a violet glow, in both light and dark themes, plus a scanning banner, so it's obvious you're looking at the models, not the conversation.
-- **Feedback tells a story.** It opens with the critic's summary as a pull quote, then a timeline of your messages with trust at each step, then "This is where you lost them" with *what you said* next to *what would have worked*. The radar and charts come after, because numbers are the evidence, not the headline.
-- **What-if shows branching futures.** Your message forks into each simulated reply, each branch ending at the trust it reached. The best future glows, and what really happened is the dashed line.
-- **Safety stays calm.** Crisis pause, the help button and Real mode keep the highest priority and the simplest styling. Ember for action, plenty of space, nothing playful.
-- **Details with restraint.** A faint film grain and soft glow give depth. Motion is short and purposeful (bubbles pop in, the meter counts up, the demo loops) and turns off with the system's reduced-motion setting. Every color pair still passes WCAG AA, and axe reports 0 violations in both themes.
-
-Everything lives in tokens: colors in `src/index.css` (`:root` and `.dark`), fonts and motion in `tailwind.config.js`. Changing the signature color is one line.
+- **Sahib's type system.** Big, bold Syne for headlines, names and numbers; IBM Plex Sans for reading; IBM Plex Mono only for data (X-ray numbers, trust math, sources). The fonts are stored inside the app, so nothing loads from another website.
+- **Late night, but calm.** A near-black background with thin hairline borders, like sahibs.dev. Light mode works too. There is only one accent color (the iMessage blue), plus green/red for "helped/hurt" and a separate red only for "I need help now" and 988. No neon, glow or glass: the topic is a crisis, so the page stays quiet.
+- **Calm motion, like a breath.** When the page opens, a few stars drift (or, in light mode, a soft dawn sky), a blue light behind the phone slowly "breathes" every 5.5 seconds, the headline rises line by line, and Maya starts typing. Things move slowly and only once, because this topic needs calm. If your device asks for reduced motion, nothing moves at all, and the help buttons never animate.
+- **Real content instead of decoration.** The three "how it works" cards show real pieces of the app (chat bubbles, an X-ray row, the reply that lost her next to the one that won her back), not icons.
+- **The landing page shows a real conversation, not feature cards, and nothing in it is made up.** Next to the headline, the phone replays a conversation with Maya. Below it, the same conversation with a short note on every message saying what the app did: "Safety check: fine, 26 ms. The skill detector hears 'dismissed'. Trust drops from 34 to 12. She left you on Read." That's X-ray mode as a picture. The conversation was recorded by `scripts/demo_transcript.py` (`make demo-transcript`): it sends fixed messages to the real app with no AI wording (`FR_LLM=0`) and saves exactly what came back (Maya's reviewed lines, the skills detected, trust before and after, the Guardian's time, Read receipts) to `content/demo_transcript.json`, in English and Spanish. The frontend copies that file into its bundle and only reads it, so every number on the page is one the engine computed. A backend test checks that each of Maya's lines is the real bank line and that trust chains from one message to the next.
+- **Facts come with their source.** "1 in 5 US high schoolers seriously considered suicide in the past year (CDC Youth Risk Behavior Survey, 2023, 20.4%)" and "When teens tell someone about suicidal thoughts, it's most often a friend (Fox et al., 2021)". They're sentences, not giant stat banners.
+- **Story cards, chat like Messages.** Each friend is a card with their initial, their name in big type and their situation; "Add your own friend" is the last card. The chat has bubbles with tails, "Delivered" and "Read", exactly like a phone. Cards lift slightly when you point at them, instead of having shadows.
+- **Feedback reads like a story.** A short summary in big text, a numbered timeline of your messages with trust after each one, then "This is where you lost them": what you said next to what would have worked. Below that, your whole conversation marked up like a teacher's notes (green and red underlines, a note beside each message, a better reply right under the one it improves).
+- **What-if shows branching futures.** Your message branches into the replies you could have sent, each ending at the trust it reached. The best one has a solid blue border and the word "Best", not a glow. "Best" means the most trust and openness in the fewest messages, so each path also says how many messages it took: a path can reach higher trust and still lose because it needed an extra message.
+- **Only motion that means something.** The opening sky and breathing light (landing only), the demo phone, typing dots, a bubble sliding in, the trust gauge moving, a card lifting under your pointer, one of five figures lighting up for "1 in 5". Nothing fades in just to look fancy, and it all switches off with the phone's reduced-motion setting.
+- **Checked, not guessed.** Every color pair passes the WCAG AA contrast test; axe reports 0 problems on every page in light and dark mode. (iPhone's exact blue and green are slightly too light for small text, so we use a hair darker shade of each.)
 
 ## Why this approach (and what we considered instead)
 
 - **One source of truth.** The chat always draws exactly the path the server returns (root → head). We never keep a separate copy that could drift, so rewinding, reloading and crisis pauses all just work.
 - **Types generated from the API** (`npm run gen:api`). If the backend changes a field, TypeScript points to every screen that breaks. The alternative was hand-written types, which go stale silently.
 - **Tailwind + CSS variables** for the design system. Every color is a token in `src/index.css` with a light and a dark value, so dark mode is one class on `<html>`, and restyling the app means editing one block. We considered a component library, but it would look generic and add weight.
-- **Chart.js** for the trust graph and radar: small, accessible and well known. Charts get their own chunk so the landing page loads fast.
-- **A "dusk" design identity** instead of a generic template: see *Design: why it looks like this* below.
+- **Chart.js** for the trust graphs: small, accessible and well known. Charts get their own chunk so the landing page loads fast.
+- **Sahib's own design identity** (the type and dark style of sahibs.dev) instead of a generic template: see *Design: why it looks like this* above.
 - **Safety UX is structural, not optional.** The help button lives in the layout, so no page can forget it. The crisis card is a non-dismissible dialog with a required checkbox. Real mode doesn't depend on the server.
 
 ## How we measured it (real numbers, with n and the split)

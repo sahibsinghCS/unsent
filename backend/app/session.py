@@ -133,6 +133,15 @@ class SessionStore:
         sweep_derived_caches()
         return len(expired)
 
+    def drop_scenario(self, scenario_id: str) -> int:
+        """Delete every session practising this scenario (its custom friend was deleted)."""
+        with self._lock:
+            doomed = [sid for sid, (s, _) in self._items.items() if s.scenario_id == scenario_id]
+            for sid in doomed:
+                del self._items[sid]
+                self._turn_locks.pop(sid, None)
+        return len(doomed)
+
     def __len__(self) -> int:
         with self._lock:
             return len(self._items)

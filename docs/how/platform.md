@@ -28,6 +28,17 @@ At the end, the **critic** scores the conversation, and **"What if"** plays bett
   reshape the AI's instructions, and the friend lives only in memory and expires after 60 unused
   minutes, like a session. If the story sounds like a real friend at risk (or the helper themself),
   the app shows real help first.
+- **Friends from real screenshots** (`screenshots.py`): if a teen is worried about a real friend,
+  they can upload 1 to 3 screenshots of their chat. In the browser they first black out names and
+  numbers. One AI call reads the screenshots and drafts how the friend texts, what seems to be going
+  on, a few *new* example texts and the warning signs it can see (from a fixed list based on known
+  suicide warning signs). Nothing is created automatically: the draft fills in the "Add your own
+  friend" form, the teen reviews it, and creating the friend goes through the same Guardian checks.
+  If the friend's own words mention suicide, a plan, or goodbye-type signs, our own rules (not just
+  the AI) put real help first: tell a trusted adult today and call or text 988. The images and the
+  friend's real messages are never stored, cached, logged or sent back; without the AI this feature
+  says so and the form still works by hand. Custom friends can be deleted at any time, which also
+  ends their chats.
 - **One language per chat**: a friend is offered in a language only when its translated scenario text *and* its reviewed line bank exist (`content.scenario_locales`). Today: every friend in English, and Maya in Spanish. The server falls back to English otherwise, so a chat never mixes languages.
 - **Headline numbers** are defined once (`content/headline_metrics.json`, English and Spanish) and filled in from the evaluation reports. The How page, the README and `docs/METRICS.md` all read that file, so they always agree.
 - **Privacy**: sessions live only in server memory and are deleted after 60 minutes of inactivity. Everything derived from a conversation (cached embeddings, the AI cache, the critic's explanations) is registered with the same purge and expires with the session. There are no accounts, no database, no analytics, and nothing is written to disk in production.

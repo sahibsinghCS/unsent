@@ -246,7 +246,7 @@ def _ensure_real_call_allowed() -> None:
 
 def chat_json(
     prompt_name: str,
-    messages: list[dict[str, str]],
+    messages: list[dict[str, Any]],
     schema: type[T],
     role: str = "actor",
     temperature: float | None = 0.8,
@@ -307,7 +307,7 @@ def _timed_completion(
     role: str,
     prompt_name: str,
     model: str,
-    messages: list[dict[str, str]],
+    messages: list[dict[str, Any]],
     schema: type[BaseModel],
     temperature: float | None,
     max_tokens: int,
@@ -338,7 +338,7 @@ def _timed_completion(
 
 def _create_completion(
     model: str,
-    messages: list[dict[str, str]],
+    messages: list[dict[str, Any]],
     schema: type[BaseModel],
     temperature: float | None,
     max_tokens: int,

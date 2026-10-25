@@ -89,12 +89,14 @@ class OpsMiddleware:
         docs_csp: str,
         trust_proxy: bool,
         proxy_hops: int = 1,
+        upload_paths: dict[str, int] | None = None,
     ) -> None:
         self.app = app
         self.limiter = limiter
         self.max_body = max_body_bytes
         self.trust_proxy = trust_proxy
         self.proxy_hops = proxy_hops
+        self.upload_paths = upload_paths or {}  # endpoints that take screenshots get a bigger cap
         self.app_headers = security_headers(app_csp)
         self.docs_headers = security_headers(docs_csp)
 
@@ -133,15 +135,16 @@ class OpsMiddleware:
                     )
                     return
 
+            limit = self.upload_paths.get(path.rstrip("/"), self.max_body)
             length = _content_length(scope)
-            if length is not None and length > self.max_body:
-                await _too_large(send_wrapper, self.max_body)
+            if length is not None and length > limit:
+                await _too_large(send_wrapper, limit)
                 return
             if length is None and method in ("POST", "PUT", "PATCH"):
-                # Chunked body with no declared length: read it here (it's small) and cap it.
-                body = await self._read_capped(receive)
+                # Chunked body with no declared length: read it here and cap it.
+                body = await self._read_capped(receive, limit)
                 if body is None:
-                    await _too_large(send_wrapper, self.max_body)
+                    await _too_large(send_wrapper, limit)
                     return
                 receive = _replay(body, receive)
 
@@ -149,7 +152,7 @@ class OpsMiddleware:
         finally:
             _log_request(method, scope, state["status"], started, ip)
 
-    async def _read_capped(self, receive: Receive) -> bytes | None:
+    async def _read_capped(self, receive: Receive, limit: int) -> bytes | None:
         """The whole body, or None as soon as it passes the limit (a declared Content-Length
         is enforced by the HTTP server itself, so only chunked bodies need this)."""
         chunks: list[bytes] = []
@@ -160,7 +163,7 @@ class OpsMiddleware:
                 break
             chunk = message.get("body", b"")
             size += len(chunk)
-            if size > self.max_body:
+            if size > limit:
                 return None
             chunks.append(chunk)
             if not message.get("more_body", False):
