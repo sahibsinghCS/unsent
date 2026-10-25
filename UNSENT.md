@@ -1,11 +1,11 @@
-# FirstReply: the complete idea (final design, v3)
+# Unsent: the complete idea (final design, v3)
 
 *Updated Thu Oct 22, 2026, late night. This is the single source of truth for what we're building. Build details for agents are in `docs/LANES.md`.*
 
 ---
 
 ## 1. One sentence
-**FirstReply lets teens practice the text that could save a friend's life: they chat with a realistic AI friend who's struggling while models we built score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.**
+**Unsent lets teens practice the text that could save a friend's life: they chat with a realistic AI friend who's struggling while models we built score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.**
 
 Short version: *a safety-first simulator that trains teens to respond when a friend texts that they're not okay.*
 
@@ -76,7 +76,7 @@ Short version: *a safety-first simulator that trains teens to respond when a fri
     - **missed opportunities** ("Maya hinted at hopelessness at turn 4, and you didn't ask directly")
     - a short summary
 14. **Rewind and branch:** tap any of your messages → "Rewind to here" → try a different reply. A **tree view** shows all your branches.
-15. **"What if?" simulation:** from the turning point, FirstReply tries several better replies, **simulates each conversation forward** through the real engine, and shows the alternate futures side by side with their trust curves. *"If you'd said this, she would have opened up two messages later."*
+15. **"What if?" simulation:** from the turning point, Unsent tries several better replies, **simulates each conversation forward** through the real engine, and shows the alternate futures side by side with their trust curves. *"If you'd said this, she would have opened up two messages later."*
 
 ### Real life
 16. **Real mode ("It's real right now"):** fixed, counselor-reviewable steps with **no AI**:
@@ -243,4 +243,4 @@ All written by AI coding agents into files, and checked by people:
 ---
 
 ## 14. Short-answer draft: "What technical challenge did you face?"
-> *Fill in the real numbers after the build.* Large language models are great at sounding human but can't be trusted to decide anything in a suicide-prevention tool. So in FirstReply the AI only writes the friend's words. A deterministic state engine I designed decides what the friend is allowed to reveal. A verifier rejects any AI reply that leaks a locked fact or fails our safety check, and falls back to a reviewed line. A speaker-aware Guardian catches risk, including teen slang like "unalive," without flagging the most important question: "are you thinking about suicide?" (false-positive rate [x]%). Two models I trained detect seven helping skills (macro-F1 [x] vs [y] for keywords), with calibrated probabilities and word-level explanations. Their scores agree with a school counselor at kappa [x]. [N] automated attack conversations found [k] failures, which are now permanent tests.
+> *Fill in the real numbers after the build.* Large language models are great at sounding human but can't be trusted to decide anything in a suicide-prevention tool. So in Unsent the AI only writes the friend's words. A deterministic state engine I designed decides what the friend is allowed to reveal. A verifier rejects any AI reply that leaks a locked fact or fails our safety check, and falls back to a reviewed line. A speaker-aware Guardian catches risk, including teen slang like "unalive," without flagging the most important question: "are you thinking about suicide?" (false-positive rate [x]%). Two models I trained detect seven helping skills (macro-F1 [x] vs [y] for keywords), with calibrated probabilities and word-level explanations. Their scores agree with a school counselor at kappa [x]. [N] automated attack conversations found [k] failures, which are now permanent tests.

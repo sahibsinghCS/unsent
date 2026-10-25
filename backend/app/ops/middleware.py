@@ -20,7 +20,7 @@ from starlette.types import ASGIApp, Message, Receive, Scope, Send
 from backend.app.ops.headers import DOCS_PATHS, security_headers
 from backend.app.ops.ratelimit import RateLimiter, retry_after_header
 
-log = logging.getLogger("firstreply.request")
+log = logging.getLogger("unsent.request")
 
 # A random secret per process: the client hash can't be reversed into an IP, even by us later.
 _SALT = secrets.token_bytes(32)

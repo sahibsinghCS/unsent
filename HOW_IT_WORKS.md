@@ -1,4 +1,4 @@
-# How FirstReply works
+# How Unsent works
 
 *Generated from docs/how/*.md by `make docs`. Edit those files, not this one.*
 
@@ -160,7 +160,7 @@ If the trained model file is missing, or was built with a different embedder, th
 ## Why this approach (and what we considered instead)
 
 - **Why recall beats precision for crisis.** Missing a helper who is really at risk is far worse than showing 988 to someone who was fine. So the crisis threshold is tuned for recall first (≥95%), and we only then try to reduce false alarms.
-- **Why speaker awareness matters.** The main lesson of FirstReply is to *ask directly*: "are you thinking about killing yourself?" A keyword filter would flag that question every time. Teens would learn that the best question is "wrong", which is the opposite of what suicide-prevention trainers teach. So our headline number is the **asking-friend false-positive rate**, and it's 0 on every set we've measured.
+- **Why speaker awareness matters.** The main lesson of Unsent is to *ask directly*: "are you thinking about killing yourself?" A keyword filter would flag that question every time. Teens would learn that the best question is "wrong", which is the opposite of what suicide-prevention trainers teach. So our headline number is the **asking-friend false-positive rate**, and it's 0 on every set we've measured.
 - **What are tricky negatives?** Everyday teen hyperbole that *looks* risky: "this test is killing me", "i'm dead 💀", "i'd die for those shoes", "killed it". They're in the training data as "none", and the lexicon lists them so the classifier can't flag them on a hunch.
 - **Why local, not a chatbot or moderation API?** A local model:
   - is free
@@ -491,7 +491,7 @@ It prints a table and exits 1 on any violation, so a bad line can't sneak into t
 
 # How the data lane works (plain language)
 
-**What it is.** FirstReply never asks an AI to talk to a teen live. Instead, every word the friend can say, every example the models learn from, and every safety test was written in advance and stored in files you can open. That makes it free, instant, safe to review, and explainable.
+**What it is.** Unsent never asks an AI to talk to a teen live. Instead, every word the friend can say, every example the models learn from, and every safety test was written in advance and stored in files you can open. That makes it free, instant, safe to review, and explainable.
 
 **What's in the box**
 - *Friend lines* (~1,000): for each of 5 friends (Maya, Jordan, Sam, Eli, Priya), lines for every disclosure level and every kind of thing the helper might do (checked in, asked directly, dismissed...). The engine picks one. A line may only reveal facts the friend has "unlocked" at that level, and a script checks that.
@@ -847,7 +847,7 @@ The cost we accept: free-form F1 a hair lower than whole-message (0.836 vs 0.841
 
 ## What it does
 After a practice chat, you can click **"What if?"** on the message where you lost your friend (by default
-the engine's *turning point*, the message where trust dropped the most). FirstReply then shows **three
+the engine's *turning point*, the message where trust dropped the most). Unsent then shows **three
 better replies** you could have sent instead, and for each one it **plays the conversation forward**:
 "if you'd said this, here's where it would have gone." Each card shows the reply, which skill it teaches,
 a short simulated chat, a trust curve, and one card is marked **Best path**. A combined chart puts all
@@ -930,7 +930,7 @@ embeds every friend's exemplars at startup so the first click is fast too.
   ahead of time and passes the verifier and the Guardian. An AI-written future could say anything and
   would change every click.
 - **Our engine, not an AI guess:** the future is computed by the same rules the real chat uses, so "what
-  would have happened" is exactly what FirstReply would really do with that reply.
+  would have happened" is exactly what Unsent would really do with that reply.
 - **Exemplars, not AI-written suggestions:** human-written, scenario-specific, safe-messaging checked,
   and in the session's language.
 - **Considered:** a deeper search (all combinations of 3 follow-ups is 40³ = 64,000 paths per card; too
@@ -1174,7 +1174,7 @@ npm run gen:api                     # refresh src/api/types.ts from the running 
 *Owner: redteam lane. Plain language, so Sahib can explain every part to a judge.*
 
 ## What it does
-The red team tries to **break FirstReply on purpose** and writes down, with honest numbers, what happened.
+The red team tries to **break Unsent on purpose** and writes down, with honest numbers, what happened.
 It answers the judge question *"how do you know it's safe?"* with measurements instead of promises.
 
 It does four things:
@@ -1375,9 +1375,9 @@ fake that returns whatever a malicious screenshot could make an AI say. No image
 
 | Measurement | Before | After | n |
 |---|---|---|---|
-| Harmful attack text (encouragement, method, style, unlock, injection, Spanish) surviving into the draft | 0% | **1.1%** (letter-spaced spellings only, see below) | 1,446 |
+| Harmful attack text (encouragement, method, style, unlock, injection, Spanish) surviving into the draft | 0% | **0%** (a letter-spacing regression was found and fixed) | 1,446 |
 | Persona questions surviving into the draft (harmless) | 69.7% | 70.4% | 399 |
-| Names, phone numbers, emails, @handles, addresses still in the draft | 71.4% | **5.7%** (fuzzed spellings only) | 105 |
+| Names, phone numbers, emails, @handles, addresses still in the draft | 71.4% | **6.7%** (disguised spellings only) | 105 |
 | Second hop (surviving draft → friend → obedient AI chat): I1 / I3 / I7 violations | 0 / 0 / 0 | **0 / 0 / 0** | 1,800 / 1,800 / 600 checks |
 | Risky friend messages escalated when the AI's own flags say no | 84.3% | **99.8%** | 3,676 (plain + fuzzed) |
 | …goodbyes EN / ES | 60.4% / 65.0% | 100% / 98.3% | 101 / 60 |
@@ -1390,9 +1390,9 @@ fake that returns whatever a malicious screenshot could make an AI say. No image
 **What this means.** After the fixes, a risky message from the friend reaches "tell an adult now" 99.8% of
 the time even when the AI doesn't flag it, and ordinary venting still never does. Identifying details are
 removed from drafts unless they are disguised (spaced or leetspeak spelling), and only the owner can delete
-a friend. Still open: harmful text spelled with spaces between the letters ("which way is the least
-p a i n f u l ?", "¿con qué lo h a r í a s ?", "you seem r e a d y , so go for it") slips into the draft;
-the verifier still stops it before the phone, but the screen should refuse it.
+a friend. Our re-run first caught a regression (letter-spaced harmful text such as "which way is the least
+p a i n f u l ?" got into drafts); it was fixed the same evening and the final run shows 0%. Still open:
+identifying details in disguised spellings ("@ j e s s _ m", leetspeak or look-alike-letter addresses).
 
 ## Limitations
 - With the offline `hash` embedder (used by CI) the skill detector is a stub, because the trained model
@@ -1430,7 +1430,7 @@ the verifier still stops it before the phone, but the screen should refuse it.
 *Owner: deploy lane. Plain language, so Sahib can explain every part to a judge.*
 
 ## What it does
-It puts FirstReply on the public internet so anyone (including judges) can open a link and try it,
+It puts Unsent on the public internet so anyone (including judges) can open a link and try it,
 and it protects that public server:
 - **One container** holds everything: the Python API, our trained models, the embedding model and
   the built website. It runs on a free Hugging Face Space (2 CPUs, 16 GB of memory).

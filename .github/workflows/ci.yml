@@ -75,18 +75,18 @@ jobs:
         with:
           context: .
           load: true
-          tags: firstreply:ci
+          tags: unsent:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Runs as the unprivileged user
         if: hashFiles('Dockerfile') != ''
         run: |
-          user=$(docker inspect --format '{{.Config.User}}' firstreply:ci)
+          user=$(docker inspect --format '{{.Config.User}}' unsent:ci)
           echo "image user: $user"; test "$user" = "user"
       - name: Run container and wait for /api/health (3 min max)
         if: hashFiles('Dockerfile') != ''
         run: |
-          docker run -d --name fr -p ${APP_PORT}:${APP_PORT} -e FR_LLM=0 firstreply:ci
+          docker run -d --name fr -p ${APP_PORT}:${APP_PORT} -e FR_LLM=0 unsent:ci
           for i in $(seq 1 90); do
             code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:${APP_PORT}/api/health || true)
             if [ "$code" = "200" ]; then

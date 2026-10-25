@@ -60,13 +60,13 @@ async function run(browser, lang, patchScroll) {
   await go('footer → how', link(footer, t.how), /\/how$/, 'guardian-box');
   await go('footer → privacy', link(footer, t.privacy), /\/privacy$/, t.privacy);
   await go('footer → real', link(footer, t.real), /\/real$/, 'primary-line');
-  await go('logo → home', () => header.getByRole('link', { name: 'FirstReply home' }).click(), /\/$/, 'start-practicing');
+  await go('logo → home', () => header.getByRole('link', { name: 'Unsent home' }).click(), /\/$/, 'start-practicing');
   await go('hero "see how" → how', link(page.locator('main'), t.seeHow), /\/how$/, 'guardian-box');
   await go('header → practice', link(header, t.practice), /\/practice$/, 'scenarios');
   await go('practice → add your own friend', () => page.getByTestId('add-friend').click(), /\/practice\/new$/, 'friend-form');
   await go('new friend → back to friends', link(page.locator('main'), t.backFriends), /\/practice$/, 'scenarios');
   await go('header → how', link(header, t.how), /\/how$/, 'guardian-box');
-  await go('logo → home', () => header.getByRole('link', { name: 'FirstReply home' }).click(), /\/$/, 'start-practicing');
+  await go('logo → home', () => header.getByRole('link', { name: 'Unsent home' }).click(), /\/$/, 'start-practicing');
   await go('hero CTA → practice', () => page.getByTestId('start-practicing').click(), /\/practice$/, 'scenarios');
   await page.locator('[data-testid="scenarios"] button').first().click();
   await page.getByTestId('content-warning').waitFor();

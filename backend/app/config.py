@@ -1,6 +1,6 @@
 """Runtime configuration, read from environment variables (and an optional .env file).
 
-FirstReply needs no API keys: everything runs locally and free.
+Unsent needs no API keys: everything runs locally and free.
 """
 
 from __future__ import annotations

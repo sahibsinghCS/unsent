@@ -42,7 +42,7 @@ function AnnotatedExample() {
   const run = demoRun(lang);
   const [open, setOpen] = useState(false);
   const restId = useId();
-  const firstReply = run.turns.findIndex((x) => x.line_id);
+  const unsent = run.turns.findIndex((x) => x.line_id);
   const row = (turn: DemoTurn, i: number) => (
     <Row
       key={i}
@@ -62,7 +62,7 @@ function AnnotatedExample() {
         </>
       }
       label={t('landing.run.label_you', { n: i + 1 })}
-      note={turnNote(turn, i > 0 ? run.turns[i - 1].level_after : null, i === firstReply, t)}
+      note={turnNote(turn, i > 0 ? run.turns[i - 1].level_after : null, i === unsent, t)}
     />
   );
   return (

@@ -1,4 +1,4 @@
-# FirstReply Guardian lexicon (SAFETY lane). Human-reviewable: a counselor can read and edit this.
+# Unsent Guardian lexicon (SAFETY lane). Human-reviewable: a counselor can read and edit this.
 #
 # How matching works
 # - Every phrase is run through the same normalizer as the message (lowercase, no accents,

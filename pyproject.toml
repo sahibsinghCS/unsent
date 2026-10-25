@@ -1,5 +1,5 @@
 [project]
-name = "firstreply"
+name = "unsent"
 version = "0.1.0"
 description = "Practice the text that could save a friend: a safety-first training simulator for teens."
 readme = "README.md"

@@ -1,4 +1,4 @@
-# FirstReply vs CareCrew: side-by-side comparison and final pick
+# Unsent vs CareCrew: side-by-side comparison and final pick
 
 *Thu Oct 22, 2026.*
 
@@ -12,39 +12,39 @@
 
 ## 1. Blind judge panel results
 
-| Judge | CareCrew (Idea / UX / Code) | FirstReply (Idea / UX / Code) | Who ranked higher |
+| Judge | CareCrew (Idea / UX / Code) | Unsent (Idea / UX / Code) | Who ranked higher |
 |---|---|---|---|
-| Software engineer | 4 / 4 / 4 = **12** | 5 / 5 / 3 = **13** | FirstReply, slightly |
-| CS teacher (past CAC judge) | 4 / 3 / 4 = **11** | 5 / 5 / 4 = **14** | **FirstReply, clearly** |
-| Public-health director | 4 / 4 / 5 = **13** | 5 / 5 / 4 = **14** | FirstReply, slightly |
-| **Total** | **36 / 45** | **41 / 45** | **FirstReply 3–0** |
+| Software engineer | 4 / 4 / 4 = **12** | 5 / 5 / 3 = **13** | Unsent, slightly |
+| CS teacher (past CAC judge) | 4 / 3 / 4 = **11** | 5 / 5 / 4 = **14** | **Unsent, clearly** |
+| Public-health director | 4 / 4 / 5 = **13** | 5 / 5 / 4 = **14** | Unsent, slightly |
+| **Total** | **36 / 45** | **41 / 45** | **Unsent 3–0** |
 | Estimated chance of 1st in a strong district | 20% / 20% / 20% → **avg 20%** | 30% / 35% / 27% → **avg 31%** | |
 
 **What all three agreed on:**
-1. **FirstReply's idea and demo are stronger.** A friend leaving you on "Seen" after you say the wrong thing lands in seconds. CareCrew has to explain sundowning and DICE before the demo makes sense.
+1. **Unsent's idea and demo are stronger.** A friend leaving you on "Seen" after you say the wrong thing lands in seconds. CareCrew has to explain sundowning and DICE before the demo makes sense.
 2. **CareCrew is the deeper statistics and engineering job**: retrieval with citations checked by a second model, change-point detection on the logs. But it shows up as dashboards, and its statistics run on data too thin to mean much (20–60 incidents a month from one family).
 3. **Both had too many features.** All three judges said 10+ systems built solo in 3.5 days *looks AI-generated* and makes them doubt who built it. **Depth beats breadth.** In an interview they would ask "how is the hidden trust state updated?" and "who labeled your 50 test replies?" If the student can't answer without notes, they'd score coding at 2 or lower.
-4. **FirstReply's main risk is safety and comfort**: an AI playing a suicidal teen, used by teens. The fix is outside review by a school counselor or QPR/MHFA instructor, mentioned in the video, plus vetted scenario templates and content warnings.
+4. **Unsent's main risk is safety and comfort**: an AI playing a suicidal teen, used by teens. The fix is outside review by a school counselor or QPR/MHFA instructor, mentioned in the video, plus vetted scenario templates and content warnings.
 5. **CareCrew depends on a real family story.** Without one, it "looks reverse-engineered from a gap in past winners." It's also the 14th dementia or caregiver app since 2023.
 
 ---
 
 ## 2. Side by side
 
-| Criterion | FirstReply | CareCrew | Edge |
+| Criterion | Unsent | CareCrew | Edge |
 |---|---|---|---|
 | Problem | Teen suicide and mental health (20.4% seriously considered it, CDC 2023) | Dementia caregiving (13M caregivers, 5.4M+ child caregivers) | Tie: both universal |
 | Specific audience | Teens who get the worrying text | Teens and young adults helping care for a grandparent | Tie |
-| CAC originality | Mental health is common, but **no winner trains the peer** | About 13 dementia/caregiver winners since 2023; none does behavior coaching or teen caregivers | **FirstReply** |
-| First-15-second demo | A text pops up and the friend shuts down when you answer wrong | Needs context explained first | **FirstReply** |
+| CAC originality | Mental health is common, but **no winner trains the peer** | About 13 dementia/caregiver winners since 2023; none does behavior coaching or teen caregivers | **Unsent** |
+| First-15-second demo | A text pops up and the friend shuts down when you answer wrong | Needs context explained first | **Unsent** |
 | Is the AI essential? | Yes: role-play plus grading free-form replies | Yes: extracting incidents plus advice backed by citations | Tie |
 | How advanced it can get | High | Higher (statistics, retrieval, a verification model) | CareCrew |
-| Data available to prove it works | You create it (labeled replies, simulated conversations) | Only synthetic logs; real logs too small | **FirstReply** |
-| Build risk in 3.5 days | Lower: no outside data, no voice pipeline needed | Higher: voice, document retrieval, statistics, PDF | **FirstReply** |
-| Your honest personal angle | **You are the audience**, and a classmate survey proves it | Only works if you really have a family member with dementia | **FirstReply** (unless you do) |
+| Data available to prove it works | You create it (labeled replies, simulated conversations) | Only synthetic logs; real logs too small | **Unsent** |
+| Build risk in 3.5 days | Lower: no outside data, no voice pipeline needed | Higher: voice, document retrieval, statistics, PDF | **Unsent** |
+| Your honest personal angle | **You are the audience**, and a classmate survey proves it | Only works if you really have a family member with dementia | **Unsent** (unless you do) |
 | Safety / judge discomfort | Higher (suicide topic); fixable with counselor review and guardrails | Medical-advice risk (delirium flag) | CareCrew slightly |
 | Product potential | Schools would use it (a free alternative to Kognito) | Families and clinics | Tie |
-| Simulated chance of 1st | **~31%** | ~20% | **FirstReply** |
+| Simulated chance of 1st | **~31%** | ~20% | **Unsent** |
 
 ---
 
@@ -52,7 +52,7 @@
 
 The judges' message was clear: **"advanced" means a few systems you can fully explain and that you measured, not 12 features.** Here's the upgraded version of each, cut down to what one person can build and defend.
 
-### FirstReply: advanced build (recommended)
+### Unsent: advanced build (recommended)
 | Component | The advanced part | Why judges will respect it |
 |---|---|---|
 | **1. Conversation engine where code controls the state** | The AI only *labels* each user message into skill events (asked directly? dismissed? promised secrecy?). **Your Python code** updates trust and how much the friend reveals, using rules you wrote. The friend's reply then reflects the current level. | It answers the engineer's question "is the state deterministic?" with yes. The AI isn't grading itself. This is your best technical-challenge answer. |
@@ -79,14 +79,14 @@ The judges' message was clear: **"advanced" means a few systems you can fully ex
 
 ---
 
-## 4. Verdict: build FirstReply
+## 4. Verdict: build Unsent
 
 - **It won the blind panel 3–0** (41 vs 36 points; about 31% vs 20% estimated chance of 1st).
 - It has the stronger idea and demo, a lower risk of not finishing in time, an honest personal angle (you are the user), and the evidence to prove it works can be created this week.
 - Its biggest weakness, safety and comfort, can be fixed with guardrails and **one counselor's review**.
 - CareCrew's biggest weakness, a crowded category plus thin data plus needing a real family story, can't be fixed by Monday unless you already have that connection.
 
-**When CareCrew would be the better pick:** only if you personally help care for a relative with dementia *and* that family will use it this weekend and let you quote them. Even then, the judges preferred FirstReply's idea and demo, so it would be closer to a tie.
+**When CareCrew would be the better pick:** only if you personally help care for a relative with dementia *and* that family will use it this weekend and let you quote them. Even then, the judges preferred Unsent's idea and demo, so it would be closer to a tie.
 
 ### Authenticity rule for the build (the judges insisted on this)
 Whatever we build, **you need to understand and be able to explain every component**: how the state machine updates trust, why kappa, what the classifier was trained on, and what the red-team found. I'll write a plain-language `HOW_IT_WORKS.md` as we build, so you can answer any judge question without notes. Also disclose AI-assisted development, as the rules require.

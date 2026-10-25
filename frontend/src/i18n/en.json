@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "FirstReply",
+    "name": "Unsent",
     "tagline": "Practice the text that could save a friend's life.",
     "help_now": "I need help now",
     "skip": "Skip to content",
@@ -8,7 +8,7 @@
     "theme_dark": "Switch to dark mode",
     "theme_light": "Switch to light mode",
     "menu": "Menu",
-    "footer": "FirstReply is a practice tool, not a crisis service. In immediate danger, call 911. In the US, call or text 988 any time.",
+    "footer": "Unsent is a practice tool, not a crisis service. In immediate danger, call 911. In the US, call or text 988 any time.",
     "footer_links": {
       "real": "If it's real",
       "how": "How it works",
@@ -23,7 +23,7 @@
     "retry": "Try again",
     "back": "Back",
     "close": "Close",
-    "offline": "Can't reach the FirstReply server right now."
+    "offline": "Can't reach the Unsent server right now."
   },
   "landing": {
     "title": "Practice the text that could save a friend's life.",
@@ -313,7 +313,7 @@
     "back": "Back to practice"
   },
   "how": {
-    "title": "How FirstReply works",
+    "title": "How Unsent works",
     "sub": "The AI is only the voice. OpenAI words the friend's replies, but our own code decides everything that matters: what the friend may reveal, whether a reply is safe, and how you're scored. Every AI reply is checked before you see it, and the app still works without it.",
     "pipeline_title": "What happens when you hit Send",
     "pipeline": {
@@ -436,7 +436,7 @@
   },
   "privacy": {
     "title": "Privacy",
-    "intro": "FirstReply is built so there is as little as possible to leak.",
+    "intro": "Unsent is built so there is as little as possible to leak.",
     "_meta": {
       "verify": "The 'openai' point must be checked against OpenAI's current API data policy (openai.com/policies) before release."
     },

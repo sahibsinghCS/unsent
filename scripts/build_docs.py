@@ -9,7 +9,7 @@ ORDER = ["platform", "safety", "engine", "data", "ml", "whatif", "frontend", "re
 
 if __name__ == "__main__":
     parts = [
-        "# How FirstReply works\n\n*Generated from docs/how/*.md by `make docs`. Edit those files, not this one.*\n"
+        "# How Unsent works\n\n*Generated from docs/how/*.md by `make docs`. Edit those files, not this one.*\n"
     ]
     for name in ORDER:
         path = ROOT / "docs" / "how" / f"{name}.md"

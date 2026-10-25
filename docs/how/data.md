@@ -1,6 +1,6 @@
 # How the data lane works (plain language)
 
-**What it is.** FirstReply never asks an AI to talk to a teen live. Instead, every word the friend can say, every example the models learn from, and every safety test was written in advance and stored in files you can open. That makes it free, instant, safe to review, and explainable.
+**What it is.** Unsent never asks an AI to talk to a teen live. Instead, every word the friend can say, every example the models learn from, and every safety test was written in advance and stored in files you can open. That makes it free, instant, safe to review, and explainable.
 
 **What's in the box**
 - *Friend lines* (~1,000): for each of 5 friends (Maya, Jordan, Sam, Eli, Priya), lines for every disclosure level and every kind of thing the helper might do (checked in, asked directly, dismissed...). The engine picks one. A line may only reveal facts the friend has "unlocked" at that level, and a script checks that.

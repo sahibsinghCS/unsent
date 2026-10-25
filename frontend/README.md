@@ -1,4 +1,4 @@
-# FirstReply frontend
+# Unsent frontend
 
 React + TypeScript + Tailwind, built with Vite. Full explanation: [`docs/how/frontend.md`](../docs/how/frontend.md).
 

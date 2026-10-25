@@ -1,6 +1,6 @@
-# FirstReply design: "late night"
+# Unsent design: "late night"
 
-FirstReply uses the same type and dark style as Sahib's personal site (sahibs.dev), so his work looks
+Unsent uses the same type and dark style as Sahib's personal site (sahibs.dev), so his work looks
 like one person made it. The chat looks like iMessage, because that's where this moment happens.
 It's calmer than the site because the topic is a crisis: one accent color, no neon.
 

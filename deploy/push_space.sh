@@ -31,7 +31,7 @@ if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
   echo "note: you have uncommitted changes; they are NOT deployed (only commit $SHA is)." >&2
 fi
 
-WORKTREE="$(mktemp -d "${TMPDIR:-/tmp}/firstreply-space.XXXXXX")"
+WORKTREE="$(mktemp -d "${TMPDIR:-/tmp}/unsent-space.XXXXXX")"
 cleanup() { git -C "$REPO" worktree remove --force "$WORKTREE" >/dev/null 2>&1 || rm -rf "$WORKTREE"; }
 trap cleanup EXIT
 git worktree add --detach --quiet "$WORKTREE" HEAD
@@ -77,7 +77,7 @@ api.upload_folder(
     allow_patterns=allow,
     ignore_patterns=ignore,
     delete_patterns=["*"],  # mirror this commit: remove files that are no longer part of it
-    commit_message=f"Deploy FirstReply {sha}",
+    commit_message=f"Deploy Unsent {sha}",
 )
 print(f"pushed. The Space now rebuilds (about 5-10 minutes): https://huggingface.co/spaces/{space}")
 PY

@@ -1,6 +1,6 @@
-# FirstReply rubric: the 7 helping skills
+# Unsent rubric: the 7 helping skills
 
-*Draft for counselor review. Inspired by publicly described gatekeeper frameworks, such as the QPR model (Question, Persuade, Refer), and by teen peer-support guidance. FirstReply is not affiliated with or endorsed by QPR Institute or Mental Health First Aid.*
+*Draft for counselor review. Inspired by publicly described gatekeeper frameworks, such as the QPR model (Question, Persuade, Refer), and by teen peer-support guidance. Unsent is not affiliated with or endorsed by QPR Institute or Mental Health First Aid.*
 
 The helper (the user) practices these skills while texting a struggling friend. The skill detector predicts 10 labels per message (`docs/LABEL_GUIDE.md`). The feedback report rolls those labels up into these 7 skills.
 

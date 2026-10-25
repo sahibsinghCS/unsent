@@ -102,7 +102,7 @@ def embed(texts: list[str]) -> np.ndarray:
 CACHE_MAX_TEXTS = 8192
 _cache_lock = threading.Lock()
 _cache: OrderedDict[tuple[str, str], tuple[float, np.ndarray]] = OrderedDict()
-_scoped: ContextVar[bool] = ContextVar("firstreply_embed_cached_scope", default=False)
+_scoped: ContextVar[bool] = ContextVar("unsent_embed_cached_scope", default=False)
 
 
 def _evict_locked(now: float) -> None:

@@ -4,7 +4,7 @@
     "note": "Spanish UI strings drafted by an agent. A native speaker must review before release."
   },
   "app": {
-    "name": "FirstReply",
+    "name": "Unsent",
     "tagline": "Practica el mensaje que podría salvar la vida de un amigo.",
     "help_now": "Necesito ayuda ya",
     "skip": "Saltar al contenido",
@@ -12,7 +12,7 @@
     "theme_dark": "Cambiar a modo oscuro",
     "theme_light": "Cambiar a modo claro",
     "menu": "Menú",
-    "footer": "FirstReply es una herramienta de práctica, no un servicio de crisis. Si hay peligro inmediato, llama al 911. En EE. UU., llama o escribe al 988 a cualquier hora.",
+    "footer": "Unsent es una herramienta de práctica, no un servicio de crisis. Si hay peligro inmediato, llama al 911. En EE. UU., llama o escribe al 988 a cualquier hora.",
     "footer_links": {
       "real": "Si es real",
       "how": "Cómo funciona",
@@ -27,7 +27,7 @@
     "retry": "Reintentar",
     "back": "Volver",
     "close": "Cerrar",
-    "offline": "No se puede conectar con el servidor de FirstReply ahora."
+    "offline": "No se puede conectar con el servidor de Unsent ahora."
   },
   "landing": {
     "title": "Practica el mensaje que podría salvar la vida de un amigo.",
@@ -317,7 +317,7 @@
     "back": "Volver a practicar"
   },
   "how": {
-    "title": "Cómo funciona FirstReply",
+    "title": "Cómo funciona Unsent",
     "sub": "La IA es solo la voz. OpenAI redacta las respuestas del amigo, pero nuestro propio código decide todo lo importante: qué puede contar el amigo, si una respuesta es segura y cómo se te evalúa. Cada respuesta de la IA se revisa antes de que la veas, y la app funciona sin ella.",
     "pipeline_title": "Qué pasa cuando tocas Enviar",
     "pipeline": {
@@ -440,7 +440,7 @@
   },
   "privacy": {
     "title": "Privacidad",
-    "intro": "FirstReply está hecho para que haya lo menos posible que filtrar.",
+    "intro": "Unsent está hecho para que haya lo menos posible que filtrar.",
     "_meta": {
       "verify": "Verificar el punto sobre OpenAI con su política actual de datos de la API (openai.com/policies) antes de publicar."
     },

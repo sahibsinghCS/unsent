@@ -1,4 +1,4 @@
-"""The only place FirstReply talks to an LLM (OpenAI).
+"""The only place Unsent talks to an LLM (OpenAI).
 
 What it is used for (and nothing else):
   - the friend's wording (ENGINE lane): the state engine decides WHAT the friend may reveal; the LLM only

@@ -4,7 +4,7 @@
 
 ## What it does
 After a practice chat, you can click **"What if?"** on the message where you lost your friend (by default
-the engine's *turning point*, the message where trust dropped the most). FirstReply then shows **three
+the engine's *turning point*, the message where trust dropped the most). Unsent then shows **three
 better replies** you could have sent instead, and for each one it **plays the conversation forward**:
 "if you'd said this, here's where it would have gone." Each card shows the reply, which skill it teaches,
 a short simulated chat, a trust curve, and one card is marked **Best path**. A combined chart puts all
@@ -87,7 +87,7 @@ embeds every friend's exemplars at startup so the first click is fast too.
   ahead of time and passes the verifier and the Guardian. An AI-written future could say anything and
   would change every click.
 - **Our engine, not an AI guess:** the future is computed by the same rules the real chat uses, so "what
-  would have happened" is exactly what FirstReply would really do with that reply.
+  would have happened" is exactly what Unsent would really do with that reply.
 - **Exemplars, not AI-written suggestions:** human-written, scenario-specific, safe-messaging checked,
   and in the session's language.
 - **Considered:** a deeper search (all combinations of 3 follow-ups is 40³ = 64,000 paths per card; too

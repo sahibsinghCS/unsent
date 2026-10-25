@@ -11,7 +11,7 @@ import threading
 
 from backend.app.session import SessionStore
 
-log = logging.getLogger("firstreply.ops")
+log = logging.getLogger("unsent.ops")
 
 
 class Purger:

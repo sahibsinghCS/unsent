@@ -1,6 +1,6 @@
-# Deploying FirstReply (about 10 minutes)
+# Deploying Unsent (about 10 minutes)
 
-FirstReply runs as one Docker container: FastAPI serves the API under `/api` and the built React app
+Unsent runs as one Docker container: FastAPI serves the API under `/api` and the built React app
 at `/`. The original plan was a **Hugging Face Docker Space** (CPU basic: 2 vCPU, 16 GB RAM). You click
 through the Hugging Face and OpenAI websites; one script does the upload.
 
@@ -25,15 +25,15 @@ Before you start, on your computer: this repo cloned, `uv` installed and `make i
 1. Go to **https://huggingface.co/join**, sign up and confirm your email.
 2. Open **https://huggingface.co/new-space**.
 3. Fill in:
-   - **Owner:** your username. **Space name:** `firstreply`.
+   - **Owner:** your username. **Space name:** `unsent`.
    - **Short description:** `Practice the text that could help a struggling friend`.
    - **Select the Space SDK:** click **Docker**, then the **Blank** template.
    - **Space hardware:** **CPU basic · 2 vCPU · 16 GB · FREE**.
    - **Public** (judges must be able to open it).
 4. Click **Create Space**. Ignore the "add a Dockerfile" instructions; our script uploads everything.
 
-Your Space lives at `https://huggingface.co/spaces/<user>/firstreply`, and the app itself at
-`https://<user>-firstreply.hf.space` (that direct link is the one to give judges).
+Your Space lives at `https://huggingface.co/spaces/<user>/unsent`, and the app itself at
+`https://<user>-unsent.hf.space` (that direct link is the one to give judges).
 
 ## 2. Add the secret and the variables
 
@@ -55,13 +55,13 @@ the budget estimate), `FR_RL_MESSAGES_PER_DAY` (default 300 per visitor).
 ## 3. Create a write token and push
 
 1. Open **https://huggingface.co/settings/tokens** → **Create new token**.
-2. **Token type: Write**, name `firstreply-deploy` → **Create token** → copy it (starts with `hf_`).
+2. **Token type: Write**, name `unsent-deploy` → **Create token** → copy it (starts with `hf_`).
 3. In a terminal at the repo root, on the commit you want to deploy:
 
 ```bash
 export HF_TOKEN=hf_xxxxxxxx            # pasted, not saved anywhere
-deploy/push_space.sh <user>/firstreply --dry-run   # optional: see the file list first
-deploy/push_space.sh <user>/firstreply
+deploy/push_space.sh <user>/unsent --dry-run   # optional: see the file list first
+deploy/push_space.sh <user>/unsent
 ```
 
 The script checks out the current commit into a temporary folder, swaps in
@@ -72,10 +72,10 @@ time: the frontend build, Python packages and the embedding model are all baked 
 ## 4. Check it is healthy
 
 1. On the Space page the status badge goes **Building → Running**.
-2. Open `https://<user>-firstreply.hf.space/api/health`. You should see `"ok": true`,
+2. Open `https://<user>-unsent.hf.space/api/health`. You should see `"ok": true`,
    every component `"real"` (what-if may say `"stub"` until that lane ships) and
    `"llm": {"enabled": true, "has_key": true, ...}`.
-3. Open `https://<user>-firstreply.hf.space/`, start a practice chat and send one message.
+3. Open `https://<user>-unsent.hf.space/`, start a practice chat and send one message.
 
 If `has_key` is `false`, the secret name is wrong (it must be exactly `OPENAI_API_KEY`); fix it and
 the Space restarts by itself.
@@ -85,7 +85,7 @@ the Space restarts by itself.
 1. Go to **https://platform.openai.com** → **Settings** → your project → **Limits**
    (or **Organization → Limits**).
 2. Set a **monthly budget** (for example **$5**) and an email alert at 80%.
-3. Best practice: make a separate project called `firstreply-demo`, create the key there, and use
+3. Best practice: make a separate project called `unsent-demo`, create the key there, and use
    that key in step 2. If it ever leaks, you revoke just that key.
 
 ## 6. Wake the Space before judging
@@ -108,7 +108,7 @@ restart (about 1 minute). The day before and an hour before judging:
 
 ```bash
 git checkout <good-commit>
-deploy/push_space.sh <user>/firstreply
+deploy/push_space.sh <user>/unsent
 git checkout -          # back to your branch
 ```
 
@@ -122,8 +122,8 @@ git checkout -          # back to your branch
 Any machine with Docker:
 
 ```bash
-docker build -t firstreply .
-docker run --rm -p 7860:7860 -e OPENAI_API_KEY="$OPENAI_API_KEY" -e LLM_DAILY_BUDGET_USD=1 firstreply
+docker build -t unsent .
+docker run --rm -p 7860:7860 -e OPENAI_API_KEY="$OPENAI_API_KEY" -e LLM_DAILY_BUDGET_USD=1 unsent
 # open http://localhost:7860   (leave out OPENAI_API_KEY to run fully offline)
 ```
 
@@ -152,7 +152,7 @@ account; with the budget alert below nothing should be charged. The only thing t
 month is storing the built image (about 1-2 GB in Artifact Registry, 0.5 GB free); delete it after judging.
 
 1. **Account and project:** go to **https://console.cloud.google.com**, sign in, accept the free trial /
-   create a billing account, then **Select a project → New project** named `firstreply`.
+   create a billing account, then **Select a project → New project** named `unsent`.
 2. **Budget alert (safety net):** **Billing → Budgets & alerts → Create budget**, amount **$1**, alerts
    at 50% / 100%, email to you.
 3. **Store the OpenAI key as a secret:** search **Secret Manager** → enable the API → **Create secret**,
@@ -162,7 +162,7 @@ month is storing the built image (about 1-2 GB in Artifact Registry, 0.5 GB free
    Build** → connect GitHub → repository `sahibsinghcs/hackathon-cac`, branch `^wt/live$` (or `^main$` once
    merged) → Build type **Dockerfile**, path `/Dockerfile` → **Save**.
 5. **Service settings** (same page):
-   - Service name `firstreply`, region `us-central1`.
+   - Service name `unsent`, region `us-central1`.
    - Authentication: **Allow unauthenticated invocations** (judges must open it without a login).
    - Billing: **Request-based**. Minimum instances **0**. **Maximum instances 1** (required: practice
      sessions live in one process's memory, so a second instance would not find them; this also caps cost).
@@ -175,7 +175,7 @@ month is storing the built image (about 1-2 GB in Artifact Registry, 0.5 GB free
    - **Reference a secret:** `OPENAI_API_KEY` → exposed as environment variable `OPENAI_API_KEY`, version
      `latest` (if asked, grant the service account *Secret Manager Secret Accessor*).
    - **Create.** The first build takes about 5-10 minutes; the URL looks like
-     `https://firstreply-xxxxxxxx-uc.a.run.app`.
+     `https://unsent-xxxxxxxx-uc.a.run.app`.
 6. **Check it:** open `<URL>/api/health`. All five components must say `"real"`, and `llm.has_key` and
    `llm.enabled` must be `true`, with `model_actor` `gpt-6-luna`.
 
@@ -187,7 +187,7 @@ month is storing the built image (about 1-2 GB in Artifact Registry, 0.5 GB free
   requests, so **Finish** takes about 1-2.5 s instead of 0.25 s. The feedback is the same; this is expected.
 
 **Redeploy:** push to the connected branch; Cloud Build rebuilds and Cloud Run switches over with no
-downtime. **Roll back:** Cloud Run → `firstreply` → **Revisions** → pick the previous one → **Manage
+downtime. **Roll back:** Cloud Run → `unsent` → **Revisions** → pick the previous one → **Manage
 traffic** → 100%. **Off switch for OpenAI:** **Edit & deploy new revision** → add `FR_LLM=0`.
 **After judging:** delete the service and the image in Artifact Registry.
 

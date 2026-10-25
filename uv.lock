@@ -466,7 +466,7 @@ wheels = [
 ]
 
 [[package]]
-name = "firstreply"
+name = "unsent"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

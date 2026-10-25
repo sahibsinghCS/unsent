@@ -1,7 +1,7 @@
-# FirstReply: one container that serves the API and the built React app on port 7860.
+# Unsent: one container that serves the API and the built React app on port 7860.
 # Built for a free Hugging Face Docker Space (CPU basic, non-root uid 1000); runs anywhere Docker does.
-#   docker build -t firstreply .
-#   docker run --rm -p 7860:7860 -e OPENAI_API_KEY=... firstreply
+#   docker build -t unsent .
+#   docker run --rm -p 7860:7860 -e OPENAI_API_KEY=... unsent
 
 # ---- 1. Build the frontend -------------------------------------------------------------------
 FROM node:20-slim AS frontend

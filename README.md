@@ -1,18 +1,18 @@
-# FirstReply
+# Unsent
 
 **Practice the text that could save a friend's life.**
 
 [![CI](https://github.com/sahibsinghCS/hackathon-cac/actions/workflows/ci.yml/badge.svg)](https://github.com/sahibsinghCS/hackathon-cac/actions/workflows/ci.yml)
 
-FirstReply lets teens practice the text that could save a friend's life. They chat with a realistic simulated friend who is struggling, while models we trained score every reply, keep the conversation safe, and show exactly where they lost the friend and what would have worked.
+Unsent lets teens practice the text that could save a friend's life. They chat with a realistic simulated friend who is struggling, while models we trained score every reply, keep the conversation safe, and show exactly where they lost the friend and what would have worked.
 
 Built for the 2026 Congressional App Challenge (IL-11).
 
-> **FirstReply is a practice tool, not a crisis service.** If someone is in immediate danger, call 911. In the US, call or text **988** (en español: llama al 988 y oprime 2, o envía AYUDA al 988).
+> **Unsent is a practice tool, not a crisis service.** If someone is in immediate danger, call 911. In the US, call or text **988** (en español: llama al 988 y oprime 2, o envía AYUDA al 988).
 
 ## Why
 
-In 2023, 20.4% of US high school students seriously considered suicide (CDC YRBS), and teens usually tell a friend before they tell an adult. Most apps help the person who is struggling. FirstReply trains the *friend*: what to say first, how to ask directly, and how to get them to a trusted adult or 988.
+In 2023, 20.4% of US high school students seriously considered suicide (CDC YRBS), and teens usually tell a friend before they tell an adult. Most apps help the person who is struggling. Unsent trains the *friend*: what to say first, how to ask directly, and how to get them to a trusted adult or 988.
 
 ## What it looks like
 

@@ -1,6 +1,6 @@
-# FirstReply: technical design (from AI wrapper to real system)
+# Unsent: technical design (from AI wrapper to real system)
 
-**The idea in one sentence:** *"LLMs are unreliable judges and unsafe actors, so the LLM in FirstReply is only the friend's voice. My own models and algorithms make every decision, and every decision is measured."*
+**The idea in one sentence:** *"LLMs are unreliable judges and unsafe actors, so the LLM in Unsent is only the friend's voice. My own models and algorithms make every decision, and every decision is measured."*
 
 That sentence is your answer to the technical-challenge short answer, your README intro, and the 20 seconds of your video that convince the engineer judge.
 

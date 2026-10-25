@@ -1,11 +1,11 @@
-# FirstReply: shared context for every lane (authoritative)
+# Unsent: shared context for every lane (authoritative)
 
-*Last updated Thu Oct 22, 2026 (late night, v3: OpenAI writes the friend's wording; our engine and models make every decision). If `PLAN_WORKTREES.md` conflicts with this file, **this file wins**. Product overview: `FIRSTREPLY.md`.*
+*Last updated Thu Oct 22, 2026 (late night, v3: OpenAI writes the friend's wording; our engine and models make every decision). If `PLAN_WORKTREES.md` conflicts with this file, **this file wins**. Product overview: `UNSENT.md`.*
 
 ## 1. Mission
-**FirstReply** is a web app for the **2026 Congressional App Challenge** (district IL-11, Rep. Bill Foster).
+**Unsent** is a web app for the **2026 Congressional App Challenge** (district IL-11, Rep. Bill Foster).
 
-> *FirstReply lets teens practice the text that could save a friend's life: they chat with a realistic simulated friend who's struggling while models we trained score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.*
+> *Unsent lets teens practice the text that could save a friend's life: they chat with a realistic simulated friend who's struggling while models we trained score every reply, keep it safe, and show exactly where they lost the friend and what would have worked.*
 
 - **Developer:** Sahib, a high-school student, solo. Several cloud agents build lanes in parallel. Sahib reviews, labels data, integrates and presents.
 - **Ship target:** Sun Oct 25, 10 pm CT (code freeze Sun 2 pm). Hard deadline: Mon Oct 26, 11:00 am CT.

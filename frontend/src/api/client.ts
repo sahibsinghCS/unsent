@@ -54,7 +54,7 @@ export async function request<T>(path: string, init: RequestInit & { timeoutMs?:
       headers: { 'Content-Type': 'application/json', ...(init.headers ?? {}) },
     });
   } catch {
-    throw new ApiError("Can't reach the FirstReply server. Check your connection and try again.", 0);
+    throw new ApiError("Can't reach the Unsent server. Check your connection and try again.", 0);
   } finally {
     clearTimeout(timer);
   }

@@ -3,7 +3,7 @@
 *Owner: redteam lane. Plain language, so Sahib can explain every part to a judge.*
 
 ## What it does
-The red team tries to **break FirstReply on purpose** and writes down, with honest numbers, what happened.
+The red team tries to **break Unsent on purpose** and writes down, with honest numbers, what happened.
 It answers the judge question *"how do you know it's safe?"* with measurements instead of promises.
 
 It does four things:

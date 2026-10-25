@@ -16,7 +16,7 @@
 
 | # | App | Problem | Specific audience | Score |
 |---|---|---|---|---|
-| **1** | **FirstReply** | Teen suicide and mental health | **Teens who get the worrying text from a friend** | **8.5** |
+| **1** | **Unsent** | Teen suicide and mental health | **Teens who get the worrying text from a friend** | **8.5** |
 | 2 | **CareCrew** | Dementia caregiving | **Teens and young adults helping care for a grandparent** | 8 |
 | 3 | **Prove $35** | Hunger among seniors | **Older adults missing SNAP money they qualify for** | 8 |
 | 4 | **Gavel** (round 2) | Local news deserts and civic exclusion | Residents of any town | 8.5* |
@@ -31,9 +31,9 @@
 
 ---
 
-## #1 FirstReply: practice the text that could save a friend ⭐ RECOMMENDED
+## #1 Unsent: practice the text that could save a friend ⭐ RECOMMENDED
 
-**Pitch:** When a friend is struggling, another teen usually hears about it first, by text, and most of us freeze or say the wrong thing. FirstReply is an AI simulator. You text with a realistic struggling "friend," then get scored feedback based on the suicide-prevention methods adults are trained in. When it's real, it gives you a step-by-step plan.
+**Pitch:** When a friend is struggling, another teen usually hears about it first, by text, and most of us freeze or say the wrong thing. Unsent is an AI simulator. You text with a realistic struggling "friend," then get scored feedback based on the suicide-prevention methods adults are trained in. When it's real, it gives you a step-by-step plan.
 
 **The problem:**
 - **CDC YRBS 2023:**
@@ -53,7 +53,7 @@
 
 **Competitor and how you differ:**
 - **Kognito Friend2Friend** is sold to schools. It's a 25-minute avatar simulation with scripted multiple choice.
-- FirstReply is **free, open-ended texting like a real phone conversation, with unlimited scenarios and feedback on each message.**
+- Unsent is **free, open-ended texting like a real phone conversation, with unlimited scenarios and feedback on each message.**
 - Static guides (Seize the Awkward, Jed) and crisis lines (Crisis Text Line) don't let you practice.
 
 **How it works:**
@@ -101,7 +101,7 @@
   - record the video, write the README
 - **Mon by 9 am CT:** submit.
 
-**Video hook:** a phone screen. A text pops up: *"honestly idk why i even bother anymore."* Cursor blinks. *"What would you text back? One in five high schoolers seriously considered suicide last year, and the first person they tell is usually a friend. Not a counselor. Us. Nobody teaches us what to say. So I built FirstReply."*
+**Video hook:** a phone screen. A text pops up: *"honestly idk why i even bother anymore."* Cursor blinks. *"What would you text back? One in five high schoolers seriously considered suicide last year, and the first person they tell is usually a friend. Not a counselor. Us. Nobody teaches us what to say. So I built Unsent."*
 
 **Risks and how to handle them:**
 - Sensitive topic: follow safe-messaging guidelines, avoid methods, put 988 on every screen, and say clearly that the AI never counsels real people. "Real" mode has no AI.
@@ -219,7 +219,7 @@
 
 ---
 
-## Recommendation: build FirstReply
+## Recommendation: build Unsent
 
 1. **The theme** (teen mental health) is the kind that reaches the podium, and **the angle** (training the friend, not treating the patient) is new for CAC.
 2. **The AI is essential:** realistic role-play plus scoring of free-form replies can't be done with a database or fixed decision tree.

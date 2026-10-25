@@ -55,7 +55,7 @@ def warm_up() -> None:
 
             whatif_cache.warm_up()  # embed every exemplar once, so the first "What if" is fast
     except Exception:  # warm-up must never stop the server from starting
-        logging.getLogger("firstreply").exception("warm-up failed (continuing)")
+        logging.getLogger("unsent").exception("warm-up failed (continuing)")
     on_startup = getattr(ops, "on_startup", None)  # DEPLOY lane hook
     if callable(on_startup):
         on_startup()
@@ -75,7 +75,7 @@ def mount_frontend(app: FastAPI, directory: Path) -> None:
 
 app = FastAPI(
     lifespan=lifespan,
-    title="FirstReply API",
+    title="Unsent API",
     version=CONTRACTS_VERSION,
     description=(
         "Practice the text that could save a friend. OpenAI writes the friend's wording; "

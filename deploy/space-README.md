@@ -1,5 +1,5 @@
 ---
-title: FirstReply
+title: Unsent
 emoji: 💬
 colorFrom: green
 colorTo: blue
@@ -9,7 +9,7 @@ pinned: false
 short_description: Practice the text that could help a struggling friend
 ---
 
-# FirstReply
+# Unsent
 
 Practice texting a friend who is struggling, then get feedback on what helped.
 

@@ -25,7 +25,7 @@ from backend.app.session import store
 IMPLEMENTED = True
 
 PROCESS_STARTED = time.time()
-log = logging.getLogger("firstreply.ops")
+log = logging.getLogger("unsent.ops")
 purger = Purger(store, interval=float(env_int("FR_PURGE_INTERVAL_S", 60)))
 
 
@@ -40,7 +40,7 @@ def max_upload_bytes() -> int:
 
 def _configure_logging() -> None:
     """Plain JSON lines on stdout for our loggers (Hugging Face shows stdout in its Logs tab)."""
-    root = logging.getLogger("firstreply")
+    root = logging.getLogger("unsent")
     if any(getattr(h, "_fr_ops", False) for h in root.handlers):
         return
     handler = logging.StreamHandler(sys.stdout)

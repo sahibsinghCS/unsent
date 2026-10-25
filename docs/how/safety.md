@@ -81,7 +81,7 @@ If the trained model file is missing, or was built with a different embedder, th
 ## Why this approach (and what we considered instead)
 
 - **Why recall beats precision for crisis.** Missing a helper who is really at risk is far worse than showing 988 to someone who was fine. So the crisis threshold is tuned for recall first (≥95%), and we only then try to reduce false alarms.
-- **Why speaker awareness matters.** The main lesson of FirstReply is to *ask directly*: "are you thinking about killing yourself?" A keyword filter would flag that question every time. Teens would learn that the best question is "wrong", which is the opposite of what suicide-prevention trainers teach. So our headline number is the **asking-friend false-positive rate**, and it's 0 on every set we've measured.
+- **Why speaker awareness matters.** The main lesson of Unsent is to *ask directly*: "are you thinking about killing yourself?" A keyword filter would flag that question every time. Teens would learn that the best question is "wrong", which is the opposite of what suicide-prevention trainers teach. So our headline number is the **asking-friend false-positive rate**, and it's 0 on every set we've measured.
 - **What are tricky negatives?** Everyday teen hyperbole that *looks* risky: "this test is killing me", "i'm dead 💀", "i'd die for those shoes", "killed it". They're in the training data as "none", and the lexicon lists them so the classifier can't flag them on a hunch.
 - **Why local, not a chatbot or moderation API?** A local model:
   - is free

@@ -1,4 +1,4 @@
-# FirstReply dataset card
+# Unsent dataset card
 
 *Data lane. All files are in `data/`. Everything is synthetic text written for this project; no paid APIs or LLM calls were used at any point to run the app, the tests or the scripts.*
 

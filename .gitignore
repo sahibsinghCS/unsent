@@ -42,6 +42,6 @@ DerivedData/
 .cache/
 *.egg-info/
 
-# FirstReply
+# Unsent
 eval/logs/
 frontend/dist/

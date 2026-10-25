@@ -1,9 +1,9 @@
-# FirstReply: parallel build plan (worktrees + AI agents)
+# Unsent: parallel build plan (worktrees + AI agents)
 
 > **⚠️ Update, Oct 22 night:** the build now runs as **cloud agents** with a **zero-cost architecture**: no OpenAI or other paid API, and the friend speaks from a reviewed line bank. Where this file conflicts with [`docs/LANES.md`](docs/LANES.md), **docs/LANES.md wins**.
 
 
-*Written Thu Oct 22, 2026. Read with `FIRSTREPLY.md` (what we're building). This file covers **how** to build it fast with parallel worktrees, which tool runs which lane, what each lane builds, and how everything merges.*
+*Written Thu Oct 22, 2026. Read with `UNSENT.md` (what we're building). This file covers **how** to build it fast with parallel worktrees, which tool runs which lane, what each lane builds, and how everything merges.*
 
 **Tools:** Claude Code Max, Cursor Pro, ChatGPT Plus (includes Codex), OpenAI API key. **Grok is not used anywhere.**
 
@@ -64,7 +64,7 @@
 | 25 | **Tell a parent or guardian what you're building.** It's a heavy topic, and the counselor may ask. | §15 Thu |
 | 26 | **Sleep, and look after yourself.** You'll be reading suicide-related content for days. Take breaks, and 988 is there for you too. | §16 |
 | 27 | **Accessibility:** keyboard use, contrast, screen-reader labels, reduced motion. | Frontend lane |
-| 28 | **README written for judges:** screenshots or GIF, architecture diagram, evaluation tables, safety section. Optionally rename the repo to `firstreply` (GitHub redirects old URLs). | §14 |
+| 28 | **README written for judges:** screenshots or GIF, architecture diagram, evaluation tables, safety section. Optionally rename the repo to `unsent` (GitHub redirects old URLs). | §14 |
 
 ---
 
@@ -86,9 +86,9 @@
 ## 3. Repo layout and ownership
 
 ```
-firstreply/                          (your repo)
+unsent/                          (your repo)
 ├─ AGENTS.md  CLAUDE.md               rules for all agents (CLAUDE.md just contains "@AGENTS.md")
-├─ FIRSTREPLY.md  PLAN_WORKTREES.md   product plan / this plan
+├─ UNSENT.md  PLAN_WORKTREES.md   product plan / this plan
 ├─ README.md  DEVLOG.md  HOW_IT_WORKS.md (generated from docs/how/*)
 ├─ ownership.yaml                     which branch may touch which paths
 ├─ pyproject.toml  uv.lock  Makefile  .env.example  .gitignore    ← INTEGRATOR ONLY
@@ -336,7 +336,7 @@ class WhatIfService(Protocol):
 
 **Mission prompt (paste into Claude Code):**
 ```
-You are the INTEGRATOR for FirstReply. First read FIRSTREPLY.md and PLAN_WORKTREES.md §3–§4 and §10.
+You are the INTEGRATOR for Unsent. First read UNSENT.md and PLAN_WORKTREES.md §3–§4 and §10.
 Goal: build the foundation so parallel lanes can work without blocking or conflicting.
 Do NOT implement lane logic (engine/safety/ml/whatif/ops) beyond stubs.
 
@@ -447,7 +447,7 @@ Every lane follows the same routine:
 
 ### Lane 1: ENGINE (Claude Code A) · branch `wt/engine` · worktree `../fr-engine` · port 8101
 ```
-Lane: ENGINE (branch wt/engine). Read AGENTS.md, FIRSTREPLY.md §6, PLAN_WORKTREES.md §4 + this lane.
+Lane: ENGINE (branch wt/engine). Read AGENTS.md, UNSENT.md §6, PLAN_WORKTREES.md §4 + this lane.
 Own ONLY the paths for wt/engine in ownership.yaml. Goal: the friend is a state machine OUR code controls;
 the LLM is only the voice. Write tests first; commit after each green step ("engine: ...").
 1. engine/state.py — pure, deterministic. initial_state(scenario); update(state, events: SkillProbs, scenario) -> State.
@@ -482,7 +482,7 @@ Acceptance: make check green; one @pytest.mark.llm test runs 3 real turns with z
 
 ### Lane 2: SAFETY (Claude Code B) · `wt/safety` · `../fr-safety` · port 8102
 ```
-Lane: SAFETY (branch wt/safety). Read AGENTS.md, FIRSTREPLY.md §6, PLAN_WORKTREES.md §4 + this lane.
+Lane: SAFETY (branch wt/safety). Read AGENTS.md, UNSENT.md §6, PLAN_WORKTREES.md §4 + this lane.
 Own ONLY wt/safety paths. Goal: a local, layered Guardian that runs before any LLM call, works offline,
 p95 < 50 ms, understands teen slang, with honestly measured recall. Tests first; commit often ("safety: ...").
 1. safety/normalizer.py: NFKC, lowercase, leetspeak map (1→i 3→e 0→o 4/@→a $→s 7→t), squeeze repeated
@@ -542,7 +542,7 @@ PRIORITY: push data/skills/prelabeled.jsonl by Friday 12:00 CT (the ML lane depe
 
 ### Lane 4: ML (Claude Code C) · `wt/ml` · `../fr-ml` · port 8103
 ```
-Lane: ML (branch wt/ml). Read AGENTS.md, FIRSTREPLY.md §6, PLAN_WORKTREES.md §4 + this lane, docs/RUBRIC.md.
+Lane: ML (branch wt/ml). Read AGENTS.md, UNSENT.md §6, PLAN_WORKTREES.md §4 + this lane, docs/RUBRIC.md.
 Own ONLY wt/ml paths. Goal: OUR trained skill detector + a calibrated Critic ensemble + explanations.
 Phase A (now — before human labels): build the whole pipeline on data/skills/prelabeled.jsonl; if not yet
 pushed, generate a 120-item seed set via llm into tests/unit/ml/fixtures to develop against.
@@ -732,7 +732,7 @@ git worktree list
 
 ```markdown
 # AGENTS.md — rules for every AI coding agent in this repo
-Project: FirstReply — see FIRSTREPLY.md. Plan: PLAN_WORKTREES.md. Ship target: Sun Oct 25 night.
+Project: Unsent — see UNSENT.md. Plan: PLAN_WORKTREES.md. Ship target: Sun Oct 25 night.
 
 ## Golden rules
 1. Stay in your lane. Only edit paths your branch owns (ownership.yaml). Run `make ownership` before saying done.
@@ -856,7 +856,7 @@ Never rewrite main's history.
   - nothing is used for training
   - a privacy page that says exactly this
 - **Disclaimers:**
-  - footer: *"FirstReply is a practice tool, not a crisis service or therapy. If someone is in immediate danger, call 911. In the US, call or text 988."*
+  - footer: *"Unsent is a practice tool, not a crisis service or therapy. If someone is in immediate danger, call 911. In the US, call or text 988."*
   - a content warning before every session
 
 ---
@@ -881,7 +881,7 @@ Never rewrite main's history.
    - Required items: your name, app name, one-sentence purpose, audience, languages and tools, the app working, what you learned.
    - Thumbnail from ChatGPT.
    - Upload as **Public** and test the link in an incognito window.
-6. **Short answers + AI disclosure (7–9 pm):** use the draft in `FIRSTREPLY.md` §9 with the real numbers.
+6. **Short answers + AI disclosure (7–9 pm):** use the draft in `UNSENT.md` §9 with the real numbers.
 7. **SUBMIT by 10 pm CT Sunday.** Screenshot the confirmation page. Monday 7 am is buffer only, for checking the submission and fixing a broken link.
 
 ---
@@ -971,7 +971,7 @@ Everything else (what-if, the red-team matrix, calibration plot, voice) is a bon
 ### Counselor or teacher ask (in person Friday; email backup)
 > **Subject:** Quick review for a student app that helps teens support struggling friends
 >
-> Hi [Name], I'm [your name], a [grade] at [school]. For the Congressional App Challenge I'm building **FirstReply**, a practice simulator where teens learn what to say when a friend texts that they're not okay. It's based on publicly described gatekeeper frameworks like QPR (Question, Persuade, Refer). It never gives crisis counseling, and its "real situation" mode is a fixed plan that points to a trusted adult and 988.
+> Hi [Name], I'm [your name], a [grade] at [school]. For the Congressional App Challenge I'm building **Unsent**, a practice simulator where teens learn what to say when a friend texts that they're not okay. It's based on publicly described gatekeeper frameworks like QPR (Question, Persuade, Refer). It never gives crisis counseling, and its "real situation" mode is a fixed plan that points to a trusted adult and 988.
 >
 > Could you spare **15–20 minutes before Saturday evening** to:
 > 1. look over the 7-skill rubric and the 5 practice scenarios (1–2 pages), and
@@ -998,7 +998,7 @@ Finally, list 3 things I should be able to say about its limitations.
 ```
 
 ### AI-use disclosure (fill in honestly)
-> I designed FirstReply's architecture and safety approach, wrote and reviewed the scenarios, rubric and crisis content, labeled the training data, ran and interpreted the evaluations, organized the parallel build and code reviews, and built [which frontend parts]. I used AI coding assistants (Claude Code, OpenAI Codex, Cursor) to write much of the code under my direction, and ChatGPT to draft content I then edited. At runtime the app uses OpenAI models only for the simulated friend's wording and as one input to scoring; my own models and code make the safety, scoring and conversation decisions.
+> I designed Unsent's architecture and safety approach, wrote and reviewed the scenarios, rubric and crisis content, labeled the training data, ran and interpreted the evaluations, organized the parallel build and code reviews, and built [which frontend parts]. I used AI coding assistants (Claude Code, OpenAI Codex, Cursor) to write much of the code under my direction, and ChatGPT to draft content I then edited. At runtime the app uses OpenAI models only for the simulated friend's wording and as one input to scoring; my own models and code make the safety, scoring and conversation decisions.
 
 ### DEVLOG entry format (2 lines, every session)
 `2026-10-23 16:40 — Labeled 312 replies; LLM-vs-human audit agreement 0.87; decided "are you ok?" ≠ asked_directly.`

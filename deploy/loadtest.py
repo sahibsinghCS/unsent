@@ -1,4 +1,4 @@
-"""Load test for a prod-mode FirstReply server (run with FR_LLM=0: no OpenAI calls, ever).
+"""Load test for a prod-mode Unsent server (run with FR_LLM=0: no OpenAI calls, ever).
 
     uv run python deploy/loadtest.py                 # spawns its own prod-mode server on :7861
     uv run python deploy/loadtest.py --url http://127.0.0.1:7860   # test a server you started

@@ -23,7 +23,7 @@ BLOCK_TEXT = {
         "listen, and help them reach a trusted adult or 988. Try a different reply."
     ),
     "method_seeking": (
-        "FirstReply never talks about ways people might hurt themselves. Try asking how they're "
+        "Unsent never talks about ways people might hurt themselves. Try asking how they're "
         "feeling, or whether they're thinking about suicide, instead."
     ),
     "prompt_injection": "The practice friend stays in character. Try replying to what they said.",

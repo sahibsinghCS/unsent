@@ -11,7 +11,7 @@
 @tailwind utilities;
 
 /*
- * FirstReply design tokens: "late night". The same type and dark style as Sahib's site (Syne display,
+ * Unsent design tokens: "late night". The same type and dark style as Sahib's site (Syne display,
  * IBM Plex Sans/Mono, near-black canvas, hairline cards), calmer because the topic is a crisis.
  * ONE accent (--brand, the iMessage blue): primary buttons, links, focus, "Best", your bubbles. To
  * re-brand (e.g. #FF4FD8), change --brand / --brand-deep only. Help red only for help/988/crisis;

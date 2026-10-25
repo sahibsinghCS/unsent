@@ -9,7 +9,7 @@ export function Logo({ className = '' }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <img src="/favicon.svg" alt="" className="h-7 w-7" />
-      <span className="font-display text-[1.15rem] font-bold tracking-tight">FirstReply</span>
+      <span className="font-display text-[1.15rem] font-bold tracking-tight">Unsent</span>
     </span>
   );
 }
@@ -55,7 +55,7 @@ export function Layout() {
       </a>
       <header className="sticky top-0 z-40 border-b border-line bg-bg">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:px-6">
-          <Link to="/" className="mr-1 rounded-lg text-lg" aria-label="FirstReply home">
+          <Link to="/" className="mr-1 rounded-lg text-lg" aria-label="Unsent home">
             <Logo />
           </Link>
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main">

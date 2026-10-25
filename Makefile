@@ -1,4 +1,4 @@
-# FirstReply task runner. Every target works from the repo root.
+# Unsent task runner. Every target works from the repo root.
 UV ?= uv
 export PYTHONPATH := $(CURDIR)
 
@@ -75,7 +75,7 @@ csp-check: ## check the security policy in headless Chromium (FR_URL, default ht
 	node deploy/csp_check.mjs $${FR_URL:-http://127.0.0.1:7860}
 
 docker: ## build the container (DEPLOY lane)
-	@if [ -f Dockerfile ]; then docker build -t firstreply .; else echo "docker: not implemented yet (lane: deploy)"; fi
+	@if [ -f Dockerfile ]; then docker build -t unsent .; else echo "docker: not implemented yet (lane: deploy)"; fi
 
 spike: ## refusal/quality test of the OpenAI friend voice (needs OPENAI_API_KEY)
 	$(UV) run python scripts/spike_actor.py

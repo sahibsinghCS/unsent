@@ -5,7 +5,7 @@ The local Guardian decides. Moderation can only:
   - raise "none" to "concern" (show resources, keep practicing) when it is very sure about self-harm
     AND our lexicon found nothing allowed in the message.
 It can never pause the role-play or block a message on its own, and it can never overrule the speaker
-rules. Moderation reads "are you thinking about killing yourself?" as self-harm content; for FirstReply
+rules. Moderation reads "are you thinking about killing yourself?" as self-harm content; for Unsent
 that question is the skill we teach, so our "asking the friend" match wins and the score is only noted.
 Offline (no key, FR_LLM=0, budget spent, API error) it returns None and the Guardian behaves identically.
 """

@@ -3,7 +3,7 @@
 *Owner: deploy lane. Plain language, so Sahib can explain every part to a judge.*
 
 ## What it does
-It puts FirstReply on the public internet so anyone (including judges) can open a link and try it,
+It puts Unsent on the public internet so anyone (including judges) can open a link and try it,
 and it protects that public server:
 - **One container** holds everything: the Python API, our trained models, the embedding model and
   the built website. It runs on a free Hugging Face Space (2 CPUs, 16 GB of memory).

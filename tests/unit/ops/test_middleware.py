@@ -176,9 +176,9 @@ def test_docs_pages_get_their_own_policy(monkeypatch):
 
 def test_one_log_line_per_request_without_text_or_ids(monkeypatch, caplog):
     client = TestClient(make_app(monkeypatch))
-    with caplog.at_level(logging.INFO, logger="firstreply.request"):
+    with caplog.at_level(logging.INFO, logger="unsent.request"):
         client.post("/api/sessions/s_secret123/messages", json={"text": SECRET})
-    lines = [r.getMessage() for r in caplog.records if r.name == "firstreply.request"]
+    lines = [r.getMessage() for r in caplog.records if r.name == "unsent.request"]
     assert len(lines) == 1
     entry = json.loads(lines[0])
     assert set(entry) == {"evt", "method", "route", "status", "ms", "client"}
@@ -198,7 +198,7 @@ def test_client_hash_is_salted_and_rotates_daily():
 def test_static_requests_log_as_static(monkeypatch, tmp_path, caplog):
     (tmp_path / "index.html").write_text("<html>app</html>")
     client = TestClient(make_app(monkeypatch, tmp_path))
-    with caplog.at_level(logging.INFO, logger="firstreply.request"):
+    with caplog.at_level(logging.INFO, logger="unsent.request"):
         client.get("/feedback/s_private")
     entry = json.loads(caplog.records[-1].getMessage())
     assert entry["route"] == "static"
@@ -206,7 +206,7 @@ def test_static_requests_log_as_static(monkeypatch, tmp_path, caplog):
 
 def test_on_startup_starts_purge_and_logs_ready(monkeypatch, caplog):
     monkeypatch.setattr(ops.purger, "interval", 3600.0)
-    with caplog.at_level(logging.INFO, logger="firstreply.ops"):
+    with caplog.at_level(logging.INFO, logger="unsent.ops"):
         ops.on_startup()
     assert ops.purger.running
     ready = [json.loads(r.getMessage()) for r in caplog.records if '"ready"' in r.getMessage()]
@@ -225,7 +225,7 @@ def test_route_template_keeps_router_prefix(caplog):
     from backend.app.main import app
 
     client = TestClient(app)
-    with caplog.at_level(logging.INFO, logger="firstreply.request"):
+    with caplog.at_level(logging.INFO, logger="unsent.request"):
         client.get("/api/sessions/s_nothere")
     entry = json.loads(caplog.records[-1].getMessage())
     assert entry["route"] == "/api/sessions/{session_id}"

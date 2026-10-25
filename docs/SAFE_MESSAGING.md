@@ -1,6 +1,6 @@
 # Safe-messaging checklist (non-negotiable)
 
-FirstReply is about suicide. Every piece of content (scenarios, friend lines, exemplars, UI text, the video) must follow public safe-messaging guidance, such as that from the American Foundation for Suicide Prevention (AFSP) and reportingonsuicide.org. Agents and humans check content against this list before committing it.
+Unsent is about suicide. Every piece of content (scenarios, friend lines, exemplars, UI text, the video) must follow public safe-messaging guidance, such as that from the American Foundation for Suicide Prevention (AFSP) and reportingonsuicide.org. Agents and humans check content against this list before committing it.
 
 ## Never
 - [ ] Describe, name, hint at or ask about **methods, means, locations or plans**, even vaguely ("pills", "the bridge", "how", "when").
