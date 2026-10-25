@@ -33,6 +33,11 @@ def max_body_bytes() -> int:
     return env_int("FR_MAX_BODY_BYTES", 32 * 1024)
 
 
+def max_upload_bytes() -> int:
+    """Screenshot uploads (base64): up to 3 images of about 1.5 MB each."""
+    return env_int("FR_MAX_UPLOAD_BYTES", 6 * 1024 * 1024)
+
+
 def _configure_logging() -> None:
     """Plain JSON lines on stdout for our loggers (Hugging Face shows stdout in its Logs tab)."""
     root = logging.getLogger("firstreply")
@@ -58,6 +63,7 @@ def install(app: FastAPI) -> None:
         docs_csp=docs_csp(),
         trust_proxy=trust_proxy(),
         proxy_hops=proxy_hops(),
+        upload_paths={"/api/friends/analyze": max_upload_bytes()},
     )
 
 

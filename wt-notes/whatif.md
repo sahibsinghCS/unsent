@@ -13,6 +13,8 @@
 
 - Merged `claude/amazing-carson-31tzo3` @ e8a9a1f (Maya's Spanish exemplars, deploy lane). Rollout fallback now reuses `pipeline._fallback_bubbles` (chat-language fallback) and calls `engine.verify` exactly as the pipeline does. Eval adds a Spanish split and a wrong-language bubble count.
 
+- Merged 816723b ("Add your own friend"): what-if on a `custom-…` friend works through `content.load_exemplars` → shared `_custom` bank. Two tests: API end to end (no `_custom` exemplars yet → valid result, `paths: []`), and a rollout with stand-in exemplars (real paths, all friend lines safe).
+
 ## In progress
 - Nothing.
 

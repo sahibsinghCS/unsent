@@ -39,6 +39,15 @@ async function run(device) {
     await page.screenshot({ path: `${OUT}${name}-${device}.png`, fullPage: opts.full ?? false });
     log(`${name}-${device}.png`);
   };
+  // Scroll moments play once when they come into view: scroll through the page before a full shot.
+  const revealAll = async () => {
+    const height = await page.evaluate(() => document.body.scrollHeight);
+    for (let y = 0; y < height; y += 500) {
+      await page.evaluate((top) => window.scrollTo(0, top), y);
+      await page.waitForTimeout(60);
+    }
+    await page.waitForTimeout(700);
+  };
   const waitIdle = async () => {
     // The friend has finished "typing" when the typing dots disappear and Send is usable again.
     await page.waitForFunction(() => !document.querySelector('[role="status"][aria-label*="typing"], [role="status"][aria-label*="escribiendo"]'), null, { timeout: 20000 });
@@ -53,6 +62,8 @@ async function run(device) {
   // 1. Landing
   await page.goto(BASE + '/');
   await page.getByTestId('start-practicing').waitFor();
+  await page.waitForTimeout(19500); // the replay shows the Read dip and the apology that wins her back
+  await revealAll();
   await shot('01-landing', { full: true });
 
   // 2. Scenario picker + content warning
@@ -159,7 +170,7 @@ async function run(device) {
 
   // 10. "Try again from here" (rewind) from the feedback page
   await page.goto(`${BASE}/feedback/${sessionId}`);
-  await page.getByTestId('turning-point').getByRole('button', { name: /Try again from here/ }).click();
+  await page.getByTestId('turning-point').getByRole('button', { name: /Try a different reply/ }).click();
   await page.waitForURL(/\/chat\//);
   await page.getByTestId('composer').waitFor();
   await shot('15-chat-rewound');
@@ -246,6 +257,8 @@ async function run(device) {
   await page.goto(`${BASE}/`);
   await page.locator('button:visible:text-is("es")').first().click();
   await page.locator('button:visible[aria-label*="oscuro"]').first().click();
+  await page.waitForTimeout(19500); // same replay point as 01-landing
+  await revealAll();
   await shot('22-landing-es-dark', { full: true });
 
   // Transparency in Spanish (headline labels and explanations come from the API in ES)

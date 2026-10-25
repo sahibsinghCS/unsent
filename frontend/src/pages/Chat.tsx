@@ -1,5 +1,5 @@
 /**
- * The practice chat. The conversation is the server's root → head path (SessionView.nodes); every
+ * The practice chat. The conversation is the server's root-to-head path (SessionView.nodes); every
  * turn appends the nodes from the TurnResponse. Friend bubbles are revealed one at a time behind a
  * typing indicator. X-ray mode shows the Guardian, skill probabilities and trust math per message.
  */
@@ -8,18 +8,18 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../api/client';
 import type { Node, SessionView } from '../api/models';
 import { Icon } from '../components/Icon';
-import { Bubble, ContactHeader, PhoneFrame, TypingDots } from '../components/Phone';
+import { Bubble, MessagesHeader, PhoneFrame, TypingDots } from '../components/Phone';
 import { DisclosureLadder, SkillChips } from '../components/Progress';
 import { BlockedCard, CrisisModal } from '../components/Safety';
 import { ErrorBox, Spinner } from '../components/Status';
 import { TreeDrawer } from '../components/TreeDrawer';
 import { TrustChart } from '../components/TrustChart';
+import { TrustMeter } from '../components/TrustMeter';
 import { XrayFriend, XrayHelper } from '../components/Xray';
 import { usePrefs } from '../i18n';
 import { isEnded, labelsSeen, trustPoints } from '../lib/conversation';
 import { scenarioById } from '../lib/scenarios';
 import { load, save } from '../lib/storage';
-import { signed } from '../lib/trustMath';
 import { prefersReducedMotion, typingDelay } from '../lib/typingDelay';
 
 const MAX_CHARS = 500;
@@ -64,8 +64,15 @@ export function Chat() {
       (e: ApiError) => setLoadError(e),
     );
   }, [sessionId]);
-  useEffect(loadSession, [loadSession]);
-  useEffect(() => () => void animation.current++, []);
+  useEffect(() => {
+    loadSession();
+  }, [loadSession]);
+  useEffect(
+    () => () => {
+      animation.current++; // cancel any reveal still running when the page unmounts
+    },
+    [],
+  );
 
   const nodes = useMemo(() => view?.nodes ?? [], [view]);
   const last = nodes[nodes.length - 1];
@@ -185,16 +192,21 @@ export function Chat() {
   const trustNow = points[points.length - 1]?.trust ?? 0;
   const lastDelta = points.length > 1 ? points[points.length - 1].delta : 0;
 
+  // Only your most recent message gets a receipt ("Delivered", then "Read"), like a messaging app.
+  const lastUserIdx = nodes.reduce((last, n, i) => (n.role === 'user' ? i : last), -1);
+  const clock = (createdAt?: number) =>
+    createdAt ? new Date(createdAt * 1000).toLocaleTimeString(lang === 'es' ? 'es-US' : 'en-US', { hour: 'numeric', minute: '2-digit' }) : '';
+
   /** Render one node of the path. */
   function renderNode(node: Node, idx: number) {
     const prev = nodes[idx - 1] ?? null;
     const next = nodes[idx + 1] ?? null;
 
     if (node.role === 'friend') {
-      if (node.seen_no_reply) return null; // shown as "Seen" under the helper's message
+      if (node.seen_no_reply) return null; // shown as "Read …" under the helper's message
       const shown = reveal?.id === node.id ? reveal.shown : node.bubbles.length;
       return (
-        <div className="space-y-1">
+        <div className="space-y-0.5">
           {node.bubbles.slice(0, shown).map((b, i) => (
             <Bubble key={i} tail={i === shown - 1}>
               {b}
@@ -220,18 +232,25 @@ export function Chat() {
     const concern = node.guardian?.action === 'show_resources';
     const showSeen = next?.seen_no_reply && reveal?.id !== next.id;
     const canRewind = !blocked && !paused && !!node.parent_id;
+    // Receipt under your latest message: Delivered while they type, then Read (with a time if they
+    // left you on read).
+    let receipt: { text: string; seen: boolean } | null = null;
+    if (idx === lastUserIdx && next?.role === 'friend') {
+      if (next.seen_no_reply) receipt = showSeen ? { text: t('chat.read_at', { time: clock(next.created_at) }), seen: true } : { text: t('chat.delivered'), seen: false };
+      else receipt = { text: reveal?.id === next.id ? t('chat.delivered') : t('chat.read'), seen: false };
+    }
     return (
       <div className="space-y-1">
-        <div className="flex justify-end">
+        <div className="flex justify-end pr-1.5">
           <button
             type="button"
             disabled={!canRewind || busy}
             onClick={() => setSelected(selected === node.id ? null : node.id)}
             aria-expanded={canRewind ? selected === node.id : undefined}
             aria-label={`${t('chat.you')}: ${node.bubbles[0]}`}
-            className={`max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md px-3.5 py-2 text-left text-[15px] leading-snug text-white animate-pop-in disabled:cursor-default ${
-              blocked ? 'bg-me/45 line-through decoration-white/60' : 'bg-me hover:brightness-110'
-            } ${selected === node.id ? 'ring-2 ring-warm ring-offset-2 ring-offset-surface' : ''}`}
+            className={`im im-bubble im-sent im-tail text-left animate-pop-in disabled:cursor-default ${
+              blocked ? 'line-through decoration-white/70 opacity-60' : 'hover:brightness-110'
+            } ${selected === node.id ? 'ring-2 ring-brand ring-offset-2 ring-offset-[rgb(var(--im-bg))]' : ''}`}
           >
             {node.bubbles[0]}
           </button>
@@ -244,9 +263,9 @@ export function Chat() {
             </button>
           </div>
         )}
-        {showSeen && (
-          <p className="pr-1 text-right text-[11px] font-medium text-muted animate-pop-in" data-testid="seen">
-            {t('chat.seen')}
+        {receipt && (
+          <p className="im-meta pr-2 text-right animate-pop-in" data-testid={receipt.seen ? 'seen' : 'receipt'}>
+            {receipt.text}
           </p>
         )}
         {concern && <p className="ml-auto max-w-[80%] text-right text-xs text-muted">{t('chat.concern')}</p>}
@@ -256,21 +275,36 @@ export function Chat() {
     );
   }
 
+  // X-ray banner: a solid strip under the contact bar (outside the scrolling messages, so nothing
+  // ever slides underneath it).
+  const xrayBanner = xray && (
+    <div className="mt-2.5 flex items-center gap-2 overflow-hidden rounded-xl bg-night px-3 py-1.5 text-[11px] font-semibold text-night-ink" role="note" data-testid="xray-banner">
+      <Icon name="eye" className="h-3.5 w-3.5 shrink-0 text-night-muted" />
+      {t('chat.xray_banner')}
+    </div>
+  );
+
   const header = (
-    <ContactHeader
+    <>
+    <MessagesHeader
       name={friendName}
+      left={
+        <Link to="/practice" className="flex items-center rounded-full py-1 pr-2 text-[rgb(var(--im-sent))]" aria-label={t('chat.back')}>
+          <Icon name="chevron" className="h-6 w-6" />
+        </Link>
+      }
       sub={
         typing ? (
-          <span className="text-brand">{t('chat.typing', { name: friendName })}…</span>
+          <span>{t('chat.typing', { name: friendName })}…</span>
         ) : (
           <span>
-            {t('chat.trust')} <span className="mono-num font-semibold text-ink">{Math.round(trustNow)}</span>
+            {t('chat.trust')} <span className="mono-num font-semibold">{Math.round(trustNow)}</span>
           </span>
         )
       }
       right={
-        <div className="flex items-center gap-1">
-          <button type="button" onClick={() => setTreeOpen(true)} className="rounded-full p-2 text-muted hover:bg-sunken hover:text-ink" aria-label={t('chat.branches')} title={t('chat.branches')}>
+        <>
+          <button type="button" onClick={() => setTreeOpen(true)} className="im-icon-btn" aria-label={t('chat.branches')} title={t('chat.branches')}>
             <Icon name="branch" className="h-4 w-4" />
           </button>
           <button
@@ -279,28 +313,28 @@ export function Chat() {
             aria-checked={xray}
             onClick={toggleXray}
             title={xray ? t('chat.xray_off') : t('chat.xray_on')}
-            className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition ${
-              xray ? 'border-brand bg-brand text-brand-ink' : 'border-line text-muted hover:text-ink'
-            }`}
+            className={`im-icon-btn ${xray ? '!bg-[rgb(var(--im-sent))] !text-white' : ''}`}
             data-testid="xray-toggle"
           >
-            <Icon name="eye" className="h-3.5 w-3.5" />
-            {t('chat.xray')}
+            <Icon name="eye" className="h-4 w-4" />
+            <span className="sr-only">{t('chat.xray')}</span>
           </button>
-        </div>
+        </>
       }
     />
+    {xrayBanner}
+    </>
   );
 
   const composer = ended ? (
-    <div className="border-t border-line bg-surface p-3">
+    <div className="border-t border-line/60 bg-[rgb(var(--im-bar))] p-3">
       <button type="button" className="btn-primary w-full" onClick={() => navigate(`/feedback/${sessionId}`)}>
         {t('chat.ended.see_feedback')}
       </button>
     </div>
   ) : (
     <form
-      className="border-t border-line bg-surface p-2.5"
+      className="border-t border-line/60 bg-[rgb(var(--im-bar))] px-2.5 pb-1.5 pt-2"
       onSubmit={(e) => {
         e.preventDefault();
         void send();
@@ -312,28 +346,39 @@ export function Chat() {
         </p>
       )}
       <div className="flex items-end gap-2">
-        <label htmlFor="composer" className="sr-only">
-          {t('chat.placeholder', { name: friendName })}
-        </label>
-        <textarea
-          id="composer"
-          ref={input}
-          rows={1}
-          value={draft}
-          maxLength={MAX_CHARS}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={onKeyDown}
-          placeholder={t('chat.placeholder', { name: friendName })}
-          disabled={!!crisisNode}
-          aria-describedby="composer-count"
-          className="max-h-32 min-h-[2.6rem] flex-1 resize-none rounded-3xl border border-line bg-bg px-4 py-2.5 text-[15px] leading-snug placeholder:text-muted focus:border-brand"
-          data-testid="composer"
-        />
-        <button type="submit" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-brand-ink transition disabled:opacity-40" disabled={!draft.trim() || busy} aria-label={t('chat.send')}>
-          <Icon name="send" className="h-4 w-4" />
-        </button>
+        {/* The round "+" of a messaging app: decorative here (practice is text only). */}
+        <span className="im-icon-btn mb-0.5 shrink-0 !text-[rgb(var(--im-meta))]" aria-hidden="true">
+          <Icon name="plus" className="h-4 w-4" />
+        </span>
+        <div className="flex min-w-0 flex-1 items-end rounded-[1.3rem] border border-[rgb(var(--im-meta)/0.4)] bg-[rgb(var(--im-bg))] py-1 pl-3.5 pr-1 focus-within:ring-2 focus-within:ring-brand">
+          <label htmlFor="composer" className="sr-only">
+            {t('chat.placeholder', { name: friendName })}
+          </label>
+          <textarea
+            id="composer"
+            ref={input}
+            rows={1}
+            value={draft}
+            maxLength={MAX_CHARS}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder={t('chat.placeholder', { name: friendName })}
+            disabled={!!crisisNode}
+            aria-describedby="composer-count"
+            className="im max-h-32 min-h-[1.9rem] flex-1 resize-none bg-transparent py-1 leading-snug text-ink outline-none placeholder:text-[rgb(var(--im-meta))] focus-visible:ring-0 focus-visible:ring-offset-0"
+            data-testid="composer"
+          />
+          <button
+            type="submit"
+            className="mb-px grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[rgb(var(--im-sent))] text-white transition disabled:opacity-35"
+            disabled={!draft.trim() || busy}
+            aria-label={t('chat.send')}
+          >
+            <Icon name="up" className="h-4 w-4" />
+          </button>
+        </div>
       </div>
-      <p id="composer-count" className={`mono-num mt-1 pr-12 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-warm' : 'text-muted'}`}>
+      <p id="composer-count" className={`mono-num mt-1 pr-2 text-right text-[10px] ${draft.length > MAX_CHARS - 50 ? 'text-bad' : 'im-meta'}`}>
         {t('chat.counter', { n: draft.length })}
       </p>
     </form>
@@ -358,20 +403,26 @@ export function Chat() {
             {t('chat.finish')}
           </button>
         </div>
-        <PhoneFrame header={header} footer={composer} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
-          <div ref={scroller} className="h-full space-y-2.5 overflow-y-auto overscroll-contain bg-surface px-3 py-4" aria-live="polite" aria-relevant="additions" data-testid="messages">
+        <PhoneFrame header={header} footer={composer} bezelOnMobile={false} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
+          <div ref={scroller} className="im-screen h-full space-y-2.5 overflow-y-auto overscroll-contain px-2.5 py-3" aria-live="polite" aria-relevant="additions" data-testid="messages">
+            {nodes[0]?.created_at && (
+              <p className="im-meta pb-1 text-center" data-testid="chat-timestamp">
+                <b className="font-semibold">{t('chat.today')}</b> {clock(nodes[0].created_at)}
+              </p>
+            )}
             {nodes.map((node, idx) => (
               <Fragment key={node.id}>{renderNode(node, idx)}</Fragment>
             ))}
             {pendingText && (
-              <div className="flex justify-end" aria-busy="true">
-                <div className="max-w-[80%] whitespace-pre-wrap break-words rounded-bubble rounded-br-md bg-me px-3.5 py-2 text-[15px] leading-snug text-white">{pendingText}</div>
+              <div className="space-y-1" aria-busy="true">
+                <Bubble me>{pendingText}</Bubble>
+                <p className="im-meta pr-2 text-right">{t('chat.delivered')}</p>
               </div>
             )}
             {typing && <TypingDots label={t('chat.typing', { name: friendName })} />}
             {ended && !reveal && (
               <div
-                className={`mt-4 rounded-2xl p-4 text-center animate-pop-in ${status === 'ended_success' ? 'bg-gradient-to-br from-good-soft to-brand-soft' : 'bg-sunken'}`}
+                className={`mt-4 rounded-2xl p-4 text-center animate-pop-in ${status === 'ended_success' ? 'bg-good-soft' : 'bg-sunken'}`}
                 data-testid={status === 'ended_success' ? 'end-success' : 'end-fail'}
               >
                 <p className="text-3xl" aria-hidden="true">
@@ -388,29 +439,24 @@ export function Chat() {
 
       <aside className="space-y-4" aria-label={t('chat.panel_title')}>
         <section className="card p-4">
-          <div className="mb-2 flex items-end justify-between">
+          <div className="mb-3 flex items-center justify-between gap-4">
             <div>
-              <h2 className="eyebrow">{t('chat.trust_graph')}</h2>
-              <p className="mono-num text-3xl font-extrabold" data-testid="trust-now">
-                {Math.round(trustNow)}
-                <span className="text-base font-semibold text-muted">/100</span>
-              </p>
+              <h2 className="text-lg">{t('chat.trust_graph')}</h2>
+              <p className="mt-1 max-w-[12rem] text-sm text-muted">{t('chat.trust_hint')}</p>
             </div>
-            {points.length > 1 && (
-              <span className={`chip mono-num border-transparent text-sm ${lastDelta > 0 ? 'bg-good-soft text-good' : lastDelta < 0 ? 'bg-bad-soft text-bad' : 'bg-sunken text-muted'}`}>
-                {signed(lastDelta)}
-              </span>
-            )}
+            <div data-testid="trust-now">
+              <TrustMeter value={trustNow} delta={points.length > 1 ? lastDelta : undefined} label={t('chat.trust')} />
+            </div>
           </div>
           <TrustChart points={points} />
         </section>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
           <section className="card p-4">
-            <h2 className="eyebrow mb-3">{t('chat.ladder')}</h2>
+            <h2 className="mb-3 text-lg">{t('chat.ladder')}</h2>
             <DisclosureLadder level={last?.state_after.level ?? 0} />
           </section>
           <section className="card p-4">
-            <h2 className="eyebrow mb-1">{t('chat.skills')}</h2>
+            <h2 className="mb-1 text-lg">{t('chat.skills')}</h2>
             <p className="mb-3 text-xs text-muted">{t('chat.skills_hint')}</p>
             <SkillChips seen={seen} latest={latest} />
           </section>

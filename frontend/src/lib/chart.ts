@@ -7,11 +7,10 @@ import {
   CategoryScale,
   LineElement,
   PointElement,
-  RadialLinearScale,
   Tooltip,
 } from 'chart.js';
 
-Chart.register(LineElement, PointElement, LinearScale, CategoryScale, RadialLinearScale, Filler, Tooltip, Legend);
+Chart.register(LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip, Legend);
 Chart.defaults.font.family = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
 
 /** A CSS token (see index.css) as an rgb()/rgba() string for Chart.js. */

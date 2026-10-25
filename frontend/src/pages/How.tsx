@@ -24,7 +24,7 @@ function HeadlineCard({ item }: { item: HeadlineMetric }) {
   const base = item.baseline && item.baseline.value !== null ? item.baseline : null;
   return (
     <li className="card flex flex-col p-5" data-testid="headline-card">
-      <p className="mono-num text-4xl font-extrabold tracking-tight text-brand">
+      <p className="numeral text-5xl">
         {formatMetric(item.value, item.format)}
         {item.format === 'messages' && <span className="ml-1.5 text-base font-semibold text-muted">{t('how.unit_messages')}</span>}
       </p>
@@ -60,8 +60,8 @@ function MetricsSection({ metrics, failed }: { metrics: Metrics | null; failed: 
         </div>
         <ul className="flex flex-wrap gap-1.5" data-testid="component-status" aria-label={t('how.status_title')}>
           {Object.entries(metrics?.components ?? {}).map(([name, state]) => (
-            <li key={name} className={`chip border-transparent ${state === 'real' ? 'bg-good-soft text-good' : 'bg-warm-soft text-ink'}`}>
-              <span className={`h-2 w-2 rounded-full ${state === 'real' ? 'bg-good' : 'bg-warm'}`} aria-hidden="true" />
+            <li key={name} className={`chip border-transparent ${state === 'real' ? 'bg-good-soft text-good' : 'bg-sunken text-ink'}`}>
+              <span className={`h-2 w-2 rounded-full ${state === 'real' ? 'bg-good' : 'bg-muted'}`} aria-hidden="true" />
               <span className="font-mono">{name}</span>
               <span className="sr-only">: </span>
               <span>{state === 'real' ? t('how.real') : t('how.stub')}</span>
@@ -104,7 +104,7 @@ function MetricsSection({ metrics, failed }: { metrics: Metrics | null; failed: 
               {groups.length === 0 && <p className="p-4 text-sm text-muted">{t('how.no_match', { q: query })}</p>}
               {groups.map(([lane, rows]) => (
                 <table key={lane} className="w-full text-left text-sm">
-                  <caption className="sticky top-0 bg-surface px-3 py-2 text-left font-mono text-xs font-bold uppercase tracking-wide text-muted">
+                  <caption className="sticky top-0 bg-surface px-3 py-2 text-left text-[13px] font-semibold text-muted">
                     {lane} · {rows.length}
                   </caption>
                   <thead className="sr-only">
@@ -120,7 +120,7 @@ function MetricsSection({ metrics, failed }: { metrics: Metrics | null; failed: 
                     {rows.map((r, i) => (
                       <tr key={i} className="border-t border-line/50" title={r.notes ?? undefined}>
                         <td className="break-all px-3 py-1.5 font-mono text-xs">{r.metric}</td>
-                        <td className="mono-num px-3 py-1.5 font-bold text-brand">{formatValue(r.value)}</td>
+                        <td className="mono-num px-3 py-1.5 font-bold text-brand-deep">{formatValue(r.value)}</td>
                         <td className="mono-num px-3 py-1.5 text-muted">{r.n ?? '—'}</td>
                         <td className="px-3 py-1.5 text-xs text-muted">{r.split ?? '—'}</td>
                       </tr>
@@ -163,15 +163,15 @@ function GuardianBox() {
     : result.action === 'block_message'
       ? { text: t('how.blocked'), cls: 'bg-bad-soft text-bad' }
       : result.level === 'crisis'
-        ? { text: t('how.crisis'), cls: 'bg-warm-soft text-ink' }
+        ? { text: t('how.crisis'), cls: 'bg-bad-soft text-bad' }
         : result.level === 'concern'
-          ? { text: t('how.concern'), cls: 'bg-warm-soft text-ink' }
+          ? { text: t('how.concern'), cls: 'bg-sunken text-ink' }
           : { text: t('how.allowed'), cls: 'bg-good-soft text-good' };
 
   return (
     <section className="card p-5 sm:p-6" data-testid="guardian-box">
-      <h2 className="flex items-center gap-2 text-xl font-bold">
-        <Icon name="shield" className="h-5 w-5 text-warm" />
+      <h2 className="flex items-center gap-2 text-2xl">
+        <Icon name="shield" className="h-5 w-5 text-muted" />
         {t('how.try_title')}
       </h2>
       <p className="mt-1 text-sm leading-relaxed text-muted">{t('how.try_sub')}</p>
@@ -213,7 +213,7 @@ function GuardianBox() {
       {result && verdict && (
         <div className="mt-4 rounded-2xl border border-line bg-sunken/60 p-4 animate-pop-in" aria-live="polite" data-testid="guardian-result">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="eyebrow">{t('how.result')}</span>
+            <span className="small-label">{t('how.result')}</span>
             <span className={`chip border-transparent px-3 py-1 text-sm font-bold ${verdict.cls}`}>{verdict.text}</span>
             <span className="mono-num ml-auto text-xs text-muted">⏱ {result.latency_ms.toFixed(2)} ms</span>
           </div>
@@ -251,29 +251,29 @@ function VoiceSection({ health, failed }: { health: Health | null; failed: boole
     : [];
   return (
     <section className="card mt-5 p-5 sm:p-6" data-testid="voice-section">
-      <h2 className="flex items-center gap-2 text-xl font-bold">
-        <Icon name="sparkle" className="h-5 w-5 text-warm" />
+      <h2 className="flex items-center gap-2 text-2xl">
+        <Icon name="message" className="h-5 w-5 text-muted" />
         {t('how.voice_title')}
       </h2>
       <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted">{t('how.voice_sub')}</p>
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl bg-warm-soft/50 p-4">
+        <div className="rounded-xl border border-line p-4">
           <h3 className="font-bold">{t('how.voice_llm_title')}</h3>
           <ul className="mt-2 space-y-2 text-sm leading-relaxed">
             {tl('how.voice_llm').map((item, i) => (
               <li key={i} className="flex gap-2">
-                <Icon name="message" className="mt-0.5 h-4 w-4 shrink-0 text-warm" />
+                <Icon name="message" className="mt-0.5 h-4 w-4 shrink-0 text-muted" />
                 {item}
               </li>
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl bg-brand-soft/60 p-4">
+        <div className="rounded-xl border border-line p-4">
           <h3 className="font-bold">{t('how.voice_code_title')}</h3>
           <ul className="mt-2 space-y-2 text-sm leading-relaxed">
             {tl('how.voice_code').map((item, i) => (
               <li key={i} className="flex gap-2">
-                <Icon name="shield" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                <Icon name="shield" className="mt-0.5 h-4 w-4 shrink-0 text-muted" />
                 {item}
               </li>
             ))}
@@ -289,7 +289,7 @@ function VoiceSection({ health, failed }: { health: Health | null; failed: boole
                 <div key={label} className="flex items-center justify-between gap-3">
                   <dt className="text-muted">{label}</dt>
                   <dd className="flex items-center gap-1.5 font-mono text-xs">
-                    <span className={`h-2 w-2 rounded-full ${ok ? 'bg-good' : 'bg-warm'}`} aria-hidden="true" />
+                    <span className={`h-2 w-2 rounded-full ${ok ? 'bg-good' : 'bg-muted'}`} aria-hidden="true" />
                     {value}
                   </dd>
                 </div>
@@ -317,11 +317,11 @@ export function How() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold sm:text-4xl">{t('how.title')}</h1>
+      <h1 className="text-5xl sm:text-6xl">{t('how.title')}</h1>
       <p className="mt-3 max-w-3xl text-lg leading-relaxed text-muted">{t('how.sub')}</p>
 
       <section className="card mt-8 p-5 sm:p-6">
-        <h2 className="mb-4 text-xl font-bold">{t('how.pipeline_title')}</h2>
+        <h2 className="mb-4 text-2xl">{t('how.pipeline_title')}</h2>
         <PipelineDiagram />
       </section>
 
@@ -359,8 +359,8 @@ export function How() {
       </div>
 
       <section className="card mt-5 p-5">
-        <h2 className="flex items-center gap-2 text-lg font-bold">
-          <Icon name="lock" className="h-5 w-5 text-brand" />
+        <h2 className="flex items-center gap-2 text-xl">
+          <Icon name="lock" className="h-5 w-5 text-brand-deep" />
           {t('how.privacy_title')}
         </h2>
         <ul className="mt-3 grid gap-3 md:grid-cols-3">

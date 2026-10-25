@@ -15,14 +15,15 @@ export function DisclosureLadder({ level }: { level: number }) {
           <li
             key={n}
             aria-current={current ? 'step' : undefined}
-            className={`flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs transition ${
-              current ? 'bg-brand text-brand-ink font-semibold shadow-card' : reached ? 'bg-brand-soft text-ink' : 'text-muted'
+            className={`flex items-center gap-2.5 rounded-xl border px-2.5 py-1.5 text-sm ${
+              current ? 'border-brand bg-brand font-semibold text-brand-ink' : reached ? 'border-line bg-sunken/60 text-ink' : 'border-transparent text-muted'
             }`}
           >
-            <span className={`mono-num grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-bold ${current ? 'bg-white/25' : reached ? 'bg-brand/20' : 'border border-line'}`}>
+            <span className={`mono-num grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-bold ${current ? 'bg-white/25' : reached ? 'bg-surface text-ink' : 'border border-line'}`}>
               {n}
             </span>
             {names[n]}
+            {current && <span className="ml-auto font-mono text-[10px] font-medium uppercase tracking-[0.12em]">{t('chat.level_now')}</span>}
           </li>
         );
       })}

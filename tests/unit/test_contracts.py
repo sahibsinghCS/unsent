@@ -8,8 +8,10 @@ import re
 import pytest
 
 from backend.app.content import (
+    CUSTOM_BANK,
     EXEMPLARS_DIR,
     LINES_DIR,
+    custom_template,
     load_crisis_lines,
     load_realmode,
     load_scenarios,
@@ -47,7 +49,7 @@ def test_scenario_has_no_method_words(scenario):
 
 
 def test_line_bank_and_exemplar_files_validate():
-    scenarios = load_scenarios()
+    scenarios = {**load_scenarios(), CUSTOM_BANK: custom_template()}  # + the custom-friend bank
     for path in sorted(LINES_DIR.glob("*.jsonl")) if LINES_DIR.exists() else []:
         for row in read_jsonl(path):
             line = Line.model_validate(row)

@@ -61,6 +61,51 @@ def converse(word: str) -> None:
         del response, view
 
 
+CUSTOM_MARKER_PARTS = ("vel", "drino", "pax")
+
+
+def custom_marker() -> str:
+    return "".join(CUSTOM_MARKER_PARTS) + str(common.SEED % 89)
+
+
+def converse_custom(word: str) -> str:
+    """A custom friend whose name, situation and sample texts carry the marker, then a short chat
+    (messages, finish, what-if). Returns the friend id (which holds no marker) to check expiry."""
+    from fastapi.testclient import TestClient
+
+    from backend.app.main import app
+
+    with TestClient(app) as client:
+        body = {
+            "name": word,
+            "age": 16,
+            "guardedness": "guarded",
+            "personality": f"quiet, calls bad days {word} days",
+            "situation": f"{word} moved schools this year and stopped talking to everyone",
+            "sample_texts": [f"{word} is just tired lol", "idk its whatever"],
+            "locale": "en",
+        }
+        response = client.post("/api/friends", json=body)
+        assert response.status_code == 200, response.text
+        friend_id = response.json()["friend"]["id"]
+        sid = client.post("/api/sessions", json={"scenario_id": friend_id}).json()["session_id"]
+        for text in helper_script(word)[:4]:
+            client.post(f"/api/sessions/{sid}/messages", json={"text": text})
+        client.post(f"/api/sessions/{sid}/finish")
+        client.post(f"/api/sessions/{sid}/whatif", json={})
+        del response, body
+    return friend_id
+
+
+def custom_expired(friend_id: str) -> bool:
+    from fastapi.testclient import TestClient
+
+    from backend.app.main import app
+
+    with TestClient(app) as client:
+        return client.get(f"/api/friends/{friend_id}").status_code == 404
+
+
 def expire_everything() -> None:
     from backend.app import session
 
@@ -119,9 +164,18 @@ def check() -> tuple[list[str], int]:
     return leaks, 1  # one end-to-end conversation
 
 
+def check_custom() -> tuple[list[str], bool]:
+    """(leaks, friend expired): the custom-friend version of check()."""
+    word = custom_marker()
+    friend_id = converse_custom(word)
+    expire_everything()
+    return find(word), custom_expired(friend_id)
+
+
 def run(embed: str = "auto") -> dict:
     embed = common.configure(embed)
     leaks, n = check()
+    custom_leaks, custom_gone = check_custom()
     records = [
         common.record(
             "invariants.I8.violations",
@@ -130,17 +184,27 @@ def run(embed: str = "auto") -> dict:
             "full conversation incl. finish, what-if, rewind",
             "places in memory still holding the helper's words after every session expired and "
             "every derived cache was swept; must be 0",
-        )
+        ),
+        common.record(
+            "invariants.I8.violations",
+            len(custom_leaks) + (not custom_gone),
+            1,
+            "custom friends: marker in name, personality, situation and sample_texts",
+            "places in memory still holding the custom friend's words after expiry, plus 1 if "
+            "GET /api/friends/{id} still finds the friend; must be 0",
+        ),
     ]
-    common.write_report("privacy", records, embed, {"embed": embed, "leaks": leaks})
-    return {"records": records, "leaks": leaks}
+    details = {"embed": embed, "leaks": leaks, "custom_leaks": custom_leaks,
+               "custom_friend_expired": custom_gone}  # fmt: skip
+    common.write_report("privacy", records, embed, details)
+    return {"records": records, "leaks": leaks + custom_leaks, "custom_gone": custom_gone}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--embed", default="auto", choices=["auto", "hash", "fastembed"])
     out = run(parser.parse_args().embed)
-    print(f"I8 leaks: {len(out['leaks'])}")
+    print(f"I8 leaks: {len(out['leaks'])}; custom friend expired: {out['custom_gone']}")
     for leak in out["leaks"]:
         print("  ", leak)
 

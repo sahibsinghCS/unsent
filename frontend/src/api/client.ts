@@ -17,6 +17,8 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public status: number,
+    /** The raw FastAPI `detail` when it is an object (e.g. {field, reason, message} from /friends). */
+    public detail?: unknown,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -47,14 +49,17 @@ export async function request<T>(path: string, init: RequestInit = {}): Promise<
   }
   if (!response.ok) {
     let message = `Something went wrong (error ${response.status}).`;
+    let detail: unknown;
     try {
       const body = await response.json();
+      detail = body?.detail;
       if (typeof body?.detail === 'string') message = body.detail;
       else if (Array.isArray(body?.detail) && body.detail[0]?.msg) message = String(body.detail[0].msg);
+      else if (typeof body?.detail?.message === 'string') message = body.detail.message;
     } catch {
       /* not JSON: keep the generic message */
     }
-    throw new ApiError(message, response.status);
+    throw new ApiError(message, response.status, detail);
   }
   try {
     return (await response.json()) as T;
@@ -80,6 +85,17 @@ export const api = {
   finish: (id: string) => post<CriticReport>(`/sessions/${encodeURIComponent(id)}/finish`),
   whatif: (id: string, node_id?: string | null) =>
     post<WhatIfResult>(`/sessions/${encodeURIComponent(id)}/whatif`, { node_id: node_id ?? null }),
+  /** Add your own friend (custom scenario). 422 carries {detail: {field, reason, message}}. */
+  createFriend: (body: {
+    name: string;
+    age: number;
+    guardedness: 'open' | 'guarded';
+    personality: string;
+    situation: string;
+    sample_texts: string[];
+    locale: string;
+  }) => post<{ friend: ScenarioSummary & { custom?: boolean }; notice: 'real_help' | null }>('/friends', body),
+  friend: (id: string) => request<ScenarioSummary & { custom?: boolean }>(`/friends/${encodeURIComponent(id)}`),
   realmode: (lang: string, country: string) =>
     request<RealMode>(`/realmode?lang=${encodeURIComponent(lang)}&country=${encodeURIComponent(country)}`),
   guardianCheck: (text: string) => post<GuardianResult>('/guardian/check', { text }),

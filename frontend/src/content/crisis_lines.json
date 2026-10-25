@@ -1,7 +1,7 @@
 {
-  "verified": false,
-  "verified_on": null,
-  "note": "Check every entry on its official website before release, then set verified=true and verified_on.",
+  "verified": true,
+  "verified_on": "2026-10-23",
+  "note": "Each entry was checked against its official website on verified_on (sources below). Re-check before every release.",
   "lines": [
     {
       "country": "US",
@@ -62,5 +62,12 @@
     "GB": "999",
     "AU": "000",
     "*": "your local emergency number"
+  },
+  "sources": {
+    "US": "https://988lifeline.org/get-help/ (Spanish: call 988 and press 2, or text AYUDA to 988)",
+    "CA": "https://988.ca/get-help/what-to-expect (call or text 9-8-8, English or French)",
+    "GB": "https://www.samaritans.org/ (116 123, free, 24/7)",
+    "AU": "https://www.lifeline.org.au/131114 and https://www.lifeline.org.au/text (13 11 14; text 0477 13 11 14)",
+    "*": "https://findahelpline.com"
   }
 }

@@ -30,35 +30,57 @@
     "offline": "No se puede conectar con el servidor de FirstReply ahora."
   },
   "landing": {
-    "eyebrow": "Práctica de prevención del suicidio para adolescentes",
     "title": "Practica el mensaje que podría salvar la vida de un amigo.",
-    "sub": "Chatea con un amigo simulado que está pasando por un mal momento. Modelos que entrenamos evalúan cada respuesta, la mantienen segura y te muestran dónde lo perdiste y qué habría funcionado.",
-    "start": "Empezar a practicar",
+    "sub": "Le escribes a un amigo simulado que la está pasando mal. Nuestros propios modelos revisan la seguridad de cada respuesta, la evalúan y te muestran dónde dejó de confiar en ti y qué habría ayudado.",
+    "start": "Elige a un amigo para escribirle",
     "how": "Ver cómo funciona",
-    "stat": "1 de cada 5 estudiantes de secundaria en EE. UU. consideró seriamente el suicidio el año pasado.",
-    "stat_source": "Encuesta YRBS de los CDC, 2023",
-    "stat_kicker": "La primera persona a quien se lo cuentan suele ser un amigo.",
-    "features_title": "Nadie nos enseña qué decir. Así que practícalo.",
-    "features": {
-      "practice": {
-        "title": "Practica",
-        "body": "Escríbele a un amigo realista que se abre poco a poco, pero solo si escuchas, validas y preguntas directamente."
-      },
-      "feedback": {
-        "title": "Comentarios",
-        "body": "Mira tu gráfica de confianza, las palabras exactas que ayudaron o dañaron y mejores respuestas verificadas."
-      },
-      "safety": {
-        "title": "La seguridad primero",
-        "body": "Nuestro Guardián revisa cada mensaje primero. La ayuda real está a un toque en cada pantalla y no se guarda nada."
-      }
+    "stat": "estudiantes de secundaria en EE. UU. consideró seriamente el suicidio en el último año.",
+    "stat_source": "Encuesta YRBS de los CDC, 2023 (20.4%)",
+    "stat_kicker": "Cuando los adolescentes le cuentan a alguien que tienen pensamientos suicidas, casi siempre es a un amigo.",
+    "safety_title": "Si esto está pasando de verdad ahora",
+    "safety_body": "Llama o escribe al 988 a cualquier hora en EE. UU., o cuéntaselo hoy a un adulto de confianza. Si alguien está en peligro inmediato, llama al 911.",
+    "kicker_source": "Fox et al., 2021, Research on Child and Adolescent Psychopathology 50:669–681",
+    "example_title": "Qué pasa cuando envías un mensaje",
+    "example_sub": "Una conversación real con Maya, jugada en la app. Cada nota dice qué hizo la app con ese mensaje.",
+    "safety_link": "Qué hacer, paso a paso",
+    "run": {
+      "trust_short": "confianza {from} a {to}",
+      "label_friend": "Maya.",
+      "label_you": "Mensaje {n}.",
+      "opening": "Así empieza. La confianza arranca en {trust} y solo cuenta más cuando confía en ti.",
+      "safety": "Revisión de seguridad: bien, {ms} ms.",
+      "heard": "El detector de habilidades escucha {labels}.",
+      "heard_none": "El detector de habilidades no escucha ninguna habilidad.",
+      "direct": "Preguntar directamente nunca se bloquea.",
+      "up": "La confianza sube de {from} a {to}.",
+      "down": "La confianza baja de {from} a {to}.",
+      "read": "Te dejó en Leído.",
+      "level_up": "Cuenta más (nivel de apertura {level}). Nuestro motor decide qué está lista para contar.",
+      "bank": "Sus respuestas son frases revisadas de nuestro banco, no texto de IA.",
+      "note": "Una conversación real en la app con nuestras frases revisadas (sin texto de IA). Cada número es el que calculó el motor.",
+      "not_ready": "Todavía no está lista para decirlo. Nuestro motor decide qué está lista para contar.",
+      "more": "Ver toda la conversación ({n} mensajes más)",
+      "less": "Mostrar menos",
+      "expanded": "Se muestra toda la conversación."
     },
-    "demo": {
-      "friend1": "la verdad no sé ni para qué me esfuerzo ya",
-      "you1": "suena muy pesado. ¿estás pensando en suicidarte?",
-      "friend2": "…sí. a veces",
-      "you2": "me alegra mucho que me lo contaras. ¿hablamos mañana con el consejero? yo voy contigo",
-      "trust": "Confianza"
+    "stat_big": "1 de cada 5",
+    "features_title": "Nadie nos enseña qué decir. Así que practícalo.",
+    "steps_title": [
+      "Escríbele a un amigo que está mal",
+      "Mira por dentro, en vivo",
+      "Aprende qué lo hace volver"
+    ],
+    "steps_body": [
+      "Cinco amigos, cada uno con su historia. Solo se abren si escuchas, validas y preguntas directamente.",
+      "El modo rayos X muestra la revisión de seguridad, las habilidades que detectaron nuestros modelos y cómo cambió la confianza.",
+      "Encuentra el momento en que lo perdiste, repite con mejores respuestas y mira otro final."
+    ],
+    "snip": {
+      "guardian": "Revisión de seguridad",
+      "heard": "Habilidad detectada",
+      "trust": "Confianza",
+      "lost": "Dijiste",
+      "back": "Lo que la hizo volver"
     }
   },
   "practice": {
@@ -88,7 +110,7 @@
     "with": "Chateando con {name}",
     "typing": "{name} está escribiendo",
     "seen": "Visto",
-    "placeholder": "Escribe a {name}…",
+    "placeholder": "Escribe a {name}",
     "send": "Enviar",
     "counter": "{n}/500",
     "finish": "Terminar",
@@ -140,7 +162,15 @@
     },
     "concern": "Si algo de esto te toca de cerca, puedes llamar o escribir al 988 a cualquier hora.",
     "empty_reply": "(sin respuesta)",
-    "practice_in": "Práctica en {lang}"
+    "practice_in": "Práctica en {lang}",
+    "delivered": "Entregado",
+    "xray_banner": "Rayos X activado: ves lo que ven nuestros modelos",
+    "trust_hint": "Qué tan seguro se siente para abrirse contigo. Cambia con cada mensaje.",
+    "read": "Leído",
+    "read_at": "Leído {time}",
+    "today": "Hoy",
+    "back": "Volver a los amigos",
+    "level_now": "ahora"
   },
   "tree": {
     "title": "Ramas de la conversación",
@@ -214,8 +244,8 @@
     "uncertain": "incierto: {labels}",
     "uncertain_hint": "Nuestros dos modelos no estuvieron de acuerdo aquí; toma este puntaje con cautela.",
     "try_instead": "Prueba mejor",
-    "gain": "{skill} {gain}",
-    "try_again": "Intentar de nuevo desde aquí",
+    "gain": "suma: {skill}",
+    "try_again": "Probar otra respuesta",
     "what_if": "¿Y si…?",
     "new_scenario": "Practicar con otro amigo",
     "back_chat": "Volver al chat",
@@ -225,14 +255,22 @@
     "rewrite_exemplar": "De nuestro banco de ejemplos",
     "strength_strong": "señal fuerte",
     "strength_some": "algo de señal",
-    "legend_strong": "subrayado sólido = fuerte, punteado = algo"
+    "legend_strong": "subrayado sólido = fuerte, punteado = algo",
+    "story_with": "Tu conversación con {name}",
+    "story_title": "Cómo fue",
+    "lost_here": "aquí lo perdiste",
+    "you_said": "Dijiste",
+    "would_have_worked": "Lo que habría funcionado",
+    "gain_generic": "mejor verificada",
+    "gain_hint": "Nuestro detector de habilidades puntúa esta respuesta {gain} puntos más alto en la habilidad que faltó.",
+    "transcript_title": "Tu conversación, con notas"
   },
   "whatif": {
     "title": "¿Y si hubieras dicho otra cosa?",
     "sub": "Repetimos la conversación desde tu mensaje con mejores respuestas, usando el mismo motor de confianza y banco de líneas.",
     "simulated": "Simulado",
     "simulated_hint": "Son simulaciones, no personas reales. Muestran cómo reacciona el modelo.",
-    "best": "Mejor camino",
+    "best": "Mejor",
     "score": "Coincidencia con la habilidad {score}%",
     "overlay": "Todos los caminos, confianza en el tiempo",
     "you_said": "Lo que dijiste",
@@ -241,7 +279,7 @@
     "error": "No se pudo ejecutar la simulación.",
     "back": "Volver a los comentarios",
     "try_this": "Probar esto en el chat",
-    "trust_end": "Confianza {from} → {to}",
+    "trust_end": "Confianza de {from} a {to}",
     "score_hint": "Qué tan claramente nuestro detector ve la habilidad que enseña esta respuesta.",
     "empty": "No encontramos una respuesta mejor verificada para este mensaje. Prueba con otro.",
     "strategies": {
@@ -251,7 +289,13 @@
       "refer": "derivar",
       "follow_up": "dar seguimiento",
       "combo": "combinación"
-    }
+    },
+    "futures": "Respuestas que podrías haber enviado",
+    "rule": "Mejor = la mayor confianza y apertura en la menor cantidad de mensajes.",
+    "messages": "en {n} mensajes",
+    "messages_one": "en 1 mensaje",
+    "levels": "se abrió {n} niveles",
+    "levels_one": "se abrió 1 nivel"
   },
   "real": {
     "country": "¿Dónde estás?",
@@ -422,5 +466,53 @@
   "langs": {
     "en": "inglés",
     "es": "español"
+  },
+  "skills_verb": {
+    "check_in": "preguntar cómo está",
+    "listen": "escuchar",
+    "ask_directly": "preguntar directo",
+    "no_secrecy": "sin secretos",
+    "persuade": "animar a pedir ayuda",
+    "refer": "un adulto de confianza o el 988",
+    "follow_up": "dar seguimiento"
+  },
+  "friends": {
+    "back": "Volver a los amigos",
+    "small-label": "Agrega a tu propio amigo",
+    "title": "¿Con quién quieres practicar?",
+    "sub": "Describe a un amigo con tus propias palabras. Nuestro motor sigue decidiendo qué revela, y nuestras revisiones de seguridad siguen corriendo en cada mensaje.",
+    "privacy": "Este amigo solo existe para esta práctica: se guarda en la memoria del servidor y se borra tras 60 minutos de inactividad. Para escribir sus respuestas, tu descripción se envía a OpenAI. Usa un apodo y no pegues mensajes privados de nadie.",
+    "safety": "Si un amigo real está pasando por esto ahora mismo, la práctica puede esperar. Esto es lo que puedes hacer.",
+    "name": "Nombre o apodo",
+    "name_ph": "p. ej. Alex",
+    "age": "Edad",
+    "style": "¿Qué tan fácil se abre?",
+    "open_hint": "Comparte lo que siente bastante pronto",
+    "guarded_hint": "Necesita paciencia y confianza primero",
+    "personality": "¿Cómo es y cómo escribe?",
+    "personality_ph": "p. ej. gracioso, se pone sarcástico cuando está estresado, escribe en minúsculas con muchos emojis",
+    "situation": "¿Qué pasó hace poco?",
+    "situation_ph": "p. ej. sus papás se están separando y dejó de ir a los entrenamientos",
+    "situation_hint": "Obligatorio, al menos 10 caracteres. Sin nombres reales ni datos privados.",
+    "texts": "Mensajes que podría enviar",
+    "texts_hint": "Opcional, hasta 5. A la derecha ves cómo suena.",
+    "text_n": "Mensaje {n}",
+    "text_ph": "p. ej. nose solo estoy cansado jaja",
+    "add_text": "Agregar otro mensaje",
+    "remove_text": "Quitar mensaje {n}",
+    "preview": "Vista previa",
+    "preview_empty": "Sus mensajes aparecerán aquí mientras escribes.",
+    "create": "Crear amigo",
+    "creating": "Creando…",
+    "real_title": "Si esto está pasando de verdad ahora",
+    "real_body": "Lo que escribiste suena a que podría estar pasándole a alguien que conoces. La práctica puede esperar. Esto es lo que puedes hacer primero.",
+    "real_open": "Abrir la página de ayuda",
+    "real_continue": "Continuar a la práctica",
+    "expired": "Este amigo expiró: no guardamos nada después de 60 minutos.",
+    "create_again": "Crear de nuevo",
+    "custom_chip": "Hecho por ti, no revisado por nosotros",
+    "yours": "Tu amigo",
+    "add_card": "Agrega a tu propio amigo",
+    "add_card_sub": "Describe a alguien con tus palabras y practica escribiéndole."
   }
 }

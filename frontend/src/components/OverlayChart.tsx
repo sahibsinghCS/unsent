@@ -38,13 +38,21 @@ export function OverlayChart({ series, height = 260 }: { series: Series[]; heigh
       x: { ticks: { color: tokenColor('muted') }, grid: { display: false }, border: { display: false } },
     },
     plugins: {
-      legend: { position: 'bottom', labels: { color: tokenColor('ink'), usePointStyle: true, boxWidth: 8, padding: 14 } },
+      legend: { position: 'bottom', labels: {
+          color: tokenColor('ink'),
+          usePointStyle: true,
+          boxWidth: 8,
+          padding: 14,
+          // The best line is drawn on top (`order`), but the legend keeps the cards' order.
+          sort: (a, b) => (a.datasetIndex ?? 0) - (b.datasetIndex ?? 0),
+        },
+      },
       tooltip: { callbacks: { label: (i) => `${i.dataset.label}: ${Math.round(Number(i.raw))}` } },
     },
   };
   return (
     <div style={{ height }}>
-      <Line key={theme} data={data} options={options} role="img" aria-label={series.map((s) => `${s.label}: ${s.values.map(Math.round).join(' → ')}`).join('; ')} />
+      <Line key={theme} data={data} options={options} role="img" aria-label={series.map((s) => `${s.label}: ${s.values.map(Math.round).join(', ')}`).join('; ')} />
     </div>
   );
 }

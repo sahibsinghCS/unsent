@@ -22,20 +22,22 @@ export const RUBRIC_SKILLS = ['check_in', 'listen', 'ask_directly', 'no_secrecy'
 /** Same threshold the engine uses (engine/config.yaml `event_threshold`). */
 export const EVENT_THRESHOLD = 0.5;
 
-/** One color per label: cool/green hues help, warm/red hues hurt. Used for chips and chart markers. */
+/** Two annotation colors only: green for behaviours that help, red for ones that hurt (iOS-like). */
+const HELPED = '#248A3D';
+const HURT = '#D70015';
 export const LABEL_COLOR: Record<SkillLabel, string> = {
-  checked_in: '#0ea5e9',
-  validated: '#10b981',
-  asked_directly: '#8b5cf6',
-  encouraged_help: '#14b8a6',
-  referred_adult: '#f59e0b',
-  referred_988: '#eab308',
-  follow_up: '#6366f1',
-  dismissed: '#ef4444',
-  advice_dump: '#f97316',
-  promised_secrecy: '#db2777',
+  checked_in: HELPED,
+  validated: HELPED,
+  asked_directly: HELPED,
+  encouraged_help: HELPED,
+  referred_adult: HELPED,
+  referred_988: HELPED,
+  follow_up: HELPED,
+  dismissed: HURT,
+  advice_dump: HURT,
+  promised_secrecy: HURT,
 };
-export const NEUTRAL_COLOR = '#94a3b8';
+export const NEUTRAL_COLOR = '#8E8E93';
 
 /** Labels whose probability reaches the threshold, strongest first. */
 export function activeLabels(probs: SkillProbs | null | undefined, threshold = EVENT_THRESHOLD): SkillLabel[] {

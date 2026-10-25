@@ -1,12 +1,13 @@
 /**
- * Inline SVG of the pipeline: You → Guardian → Skill detector → State engine → Friend voice →
- * Verifier → Friend. The Guardian can stop a message early (crisis pause / blocked). Drawn
+ * Inline SVG of the pipeline: you, Guardian, skill detector, state engine, friend voice, verifier,
+ * friend. The Guardian can stop a message early (crisis pause / blocked). Drawn
  * horizontally on wide screens and vertically on phones; colors come from the theme tokens.
  */
 import { usePrefs } from '../i18n';
 
 const STEPS = ['you', 'guardian', 'skills', 'engine', 'lines', 'verifier', 'friend'] as const;
-const ACCENT: Record<string, string> = { guardian: 'var(--warm)', skills: 'var(--brand)', engine: 'var(--brand)', lines: 'var(--brand)', verifier: 'var(--brand)' };
+// All steps are plain boxes; only the Guardian's early exit (crisis/block) gets a color.
+const ACCENT: Record<string, string> = {};
 
 function Box({ x, y, w, h, step }: { x: number; y: number; w: number; h: number; step: (typeof STEPS)[number] }) {
   const { t } = usePrefs();
@@ -38,7 +39,7 @@ function Arrowhead({ id }: { id: string }) {
 
 export function PipelineDiagram() {
   const { t } = usePrefs();
-  const title = STEPS.map((s) => t(`how.pipeline.${s}.name`)).join(' → ');
+  const title = STEPS.map((s) => t(`how.pipeline.${s}.name`)).join(', then ');
   // Horizontal layout
   const W = 160, H = 84, GAP = 18, Y = 24;
   // Vertical layout
@@ -60,8 +61,8 @@ export function PipelineDiagram() {
         <path d={`M${4 + (W + GAP) + W / 2} ${Y + H} v 34`} stroke="rgb(var(--warm))" strokeWidth={2} strokeDasharray="5 4" markerEnd="url(#arrow-h)" fill="none" />
         <g fontSize={11.5} fontWeight={600}>
           <rect x={4 + (W + GAP) - 40} y={Y + H + 40} width={W + 80} height={50} rx={12} fill="rgb(var(--warm-soft))" />
-          <text x={4 + (W + GAP) + W / 2} y={Y + H + 61} textAnchor="middle" fill="rgb(var(--ink))">crisis → pause + resources</text>
-          <text x={4 + (W + GAP) + W / 2} y={Y + H + 79} textAnchor="middle" fill="rgb(var(--ink))">block → teaching card</text>
+          <text x={4 + (W + GAP) + W / 2} y={Y + H + 61} textAnchor="middle" fill="rgb(var(--ink))">crisis: pause and show help</text>
+          <text x={4 + (W + GAP) + W / 2} y={Y + H + 79} textAnchor="middle" fill="rgb(var(--ink))">block: explain why</text>
         </g>
       </svg>
 
@@ -79,8 +80,8 @@ export function PipelineDiagram() {
         <path d={`M${VX + VW} ${4 + VH + VGAP + VH / 2} h 22`} stroke="rgb(var(--warm))" strokeWidth={2} strokeDasharray="4 3" markerEnd="url(#arrow-v)" fill="none" />
         <g fontSize={10.5} fontWeight={600}>
           <rect x={VX + VW + 26} y={4 + VH + VGAP + 2} width={92} height={58} rx={10} fill="rgb(var(--warm-soft))" />
-          <text x={VX + VW + 72} y={4 + VH + VGAP + 22} textAnchor="middle" fill="rgb(var(--ink))">crisis → pause</text>
-          <text x={VX + VW + 72} y={4 + VH + VGAP + 42} textAnchor="middle" fill="rgb(var(--ink))">block → teach</text>
+          <text x={VX + VW + 72} y={4 + VH + VGAP + 22} textAnchor="middle" fill="rgb(var(--ink))">crisis: pause</text>
+          <text x={VX + VW + 72} y={4 + VH + VGAP + 42} textAnchor="middle" fill="rgb(var(--ink))">block: explain</text>
         </g>
       </svg>
       <figcaption className="sr-only">{title}</figcaption>

@@ -4,7 +4,8 @@
     uv run python deploy/loadtest.py --url http://127.0.0.1:7860   # test a server you started
 
 Each simulated user opens the scenario list, starts a session, sends a 6-message conversation,
-finishes (feedback) and asks for the what-if. Every user gets its own client address (via
+finishes (feedback) and asks for the what-if. Every 4th user first builds their own friend
+(POST /api/friends, "Add your own friend") and practices with that one. Every user gets its own client address (via
 X-Forwarded-For, which the server trusts with FR_TRUST_PROXY=1), so the real per-visitor rate
 limits stay on, exactly as in production. The same 20 conversations run at 1, 5, 10 and 20
 concurrent users. When it spawns the server it also measures cold start (process start -> first
@@ -73,6 +74,18 @@ async def pause(rng: random.Random, bounds: tuple[float, float]) -> None:
         await asyncio.sleep(rng.uniform(*bounds))
 
 
+# Every FRIEND_EVERY-th user practices with a friend they describe themselves.
+FRIEND_EVERY = 4
+CUSTOM_FRIEND = {
+    "name": "Alex",
+    "age": 17,
+    "guardedness": "guarded",
+    "personality": "quiet, dry humor, plays soccer, texts in lowercase",
+    "situation": "Got cut from the varsity team last week and has been skipping lunch.",
+    "sample_texts": ["lol its whatever", "cant even be mad tbh"],
+}
+
+
 class Recorder:
     def __init__(self) -> None:
         self.latency: dict[str, list[float]] = defaultdict(list)
@@ -104,6 +117,13 @@ async def one_user(base: str, index: int, level: int, rec: Recorder, think: Thin
             return
         items = scenarios.json()
         scenario = items[index % len(items)]["id"]
+        if index % FRIEND_EVERY == 0:
+            friend = await rec.call(
+                client, "friend_create", "POST", "/api/friends", json=CUSTOM_FRIEND
+            )
+            if friend is None or friend.status_code != 200:
+                return
+            scenario = friend.json()["friend"]["id"]
         created = await rec.call(
             client,
             "session_create",

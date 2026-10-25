@@ -80,6 +80,7 @@ WORD_MAP = {
     "havent": "have not", "hasnt": "has not", "whats": "what is", "thats": "that is",
     "its": "it is", "theyd": "they would", "theyre": "they are", "lets": "let us",
     # Spanish texting shorthand
+    "nose": "no se",  # Spanish texting for "no sé", not a misspelled means word
     "q": "que", "xq": "porque", "pq": "porque", "tmb": "tambien", "tb": "tambien",
 }  # fmt: skip
 
@@ -240,7 +241,11 @@ def normalize(text: str) -> Normalized:
     words, mapped = [], False
     for lead, core, trail in fixed:
         canon = WORD_MAP.get(core)
-        if canon is None and re.fullmatch(r"[a-z]*([a-z])\1[a-z]*", core or "-"):
+        if (
+            canon is None
+            and re.fullmatch(r"[a-z]*([a-z])\1[a-z]*", core or "-")
+            and core not in _vocab()  # "noose" is a lexicon word, not a misspelled "nose"
+        ):
             canon = WORD_MAP.get(re.sub(r"([a-z])\1", r"\1", core))  # "suiciidde" -> "suicide"
         if canon is not None:
             mapped = True

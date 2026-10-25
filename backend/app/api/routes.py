@@ -12,9 +12,11 @@ from backend.app.config import max_message_chars
 from backend.app.content import (
     crisis_lines_for,
     get_scenario,
+    is_custom,
     load_metrics,
     load_realmode,
     load_scenarios,
+    remove_custom,
     resolve_headline,
     scenario_locales,
     scenario_text,
@@ -25,12 +27,15 @@ from backend.app.contracts import (
     GuardianResult,
     Node,
     Reaction,
+    Scenario,
     Session,
     State,
     TurnResponse,
     WhatIfResult,
 )
+from backend.app.custom_friend import FriendProblem, FriendRequest, create_friend
 from backend.app.pipeline import run_turn
+from backend.app.screenshots import AnalyzeRequest, AnalyzeResponse, ScreenshotProblem, analyze
 from backend.app.session import create_session, new_id, path_to, rewind, store
 
 router = APIRouter()
@@ -48,6 +53,13 @@ class ScenarioSummary(BaseModel):
     review_status: str
     # languages this friend can be practiced in (see content.scenario_locales)
     locales: list[str] = ["en"]
+    custom: bool = False  # written by the helper ("Add your own friend"); lives only in memory
+
+
+class FriendResponse(BaseModel):
+    friend: ScenarioSummary
+    # "real_help": the story may be about a real friend (or the helper) at risk: show real help first
+    notice: str | None = None
 
 
 class CreateSessionRequest(BaseModel):
@@ -127,23 +139,66 @@ def health() -> dict:
 @router.get("/scenarios", response_model=list[ScenarioSummary])
 def scenarios(lang: str = "en") -> list[ScenarioSummary]:
     """Every scenario, with its text in `lang` where that friend supports it (English otherwise)."""
-    summaries = []
-    for s in load_scenarios().values():
-        text = scenario_text(s, lang)
-        summaries.append(
-            ScenarioSummary(
-                id=s.id,
-                title=text.title,
-                persona_name=s.persona.name,
-                persona_age=s.persona.age,
-                guardedness=s.persona.guardedness,
-                situation=text.situation,
-                content_warning=text.content_warning,
-                review_status=s.review_status,
-                locales=scenario_locales(s),
-            )
-        )
-    return summaries
+    return [_summary(s, lang) for s in load_scenarios().values()]
+
+
+def _summary(scenario: Scenario, lang: str) -> ScenarioSummary:
+    text = scenario_text(scenario, lang)
+    custom = is_custom(scenario.id)
+    return ScenarioSummary(
+        id=scenario.id,
+        title=text.title,
+        persona_name=scenario.persona.name,
+        persona_age=scenario.persona.age,
+        guardedness=scenario.persona.guardedness,
+        situation=text.situation,
+        content_warning=text.content_warning,
+        review_status="custom" if custom else scenario.review_status,
+        locales=scenario_locales(scenario),
+        custom=custom,
+    )
+
+
+@router.post("/friends", response_model=FriendResponse)
+def add_friend(request: FriendRequest) -> FriendResponse:
+    """A friend the helper describes. Kept in memory only, and expires like a session."""
+    try:
+        scenario, real_help = create_friend(request)
+    except FriendProblem as problem:
+        raise HTTPException(422, problem.detail) from problem
+    locale = scenario_locales(scenario)[0]
+    return FriendResponse(
+        friend=_summary(scenario, locale), notice="real_help" if real_help else None
+    )
+
+
+@router.post("/friends/analyze", response_model=AnalyzeResponse)
+def analyze_screenshots(request: AnalyzeRequest) -> AnalyzeResponse:
+    """Read screenshots of a real conversation and draft a practice friend for the helper to review.
+    Nothing is created or stored; the draft goes into the "Add your own friend" form."""
+    try:
+        return analyze(request)
+    except ScreenshotProblem as problem:
+        raise HTTPException(problem.status, problem.detail) from problem
+
+
+@router.delete("/friends/{friend_id}", status_code=204)
+def delete_friend(friend_id: str) -> None:
+    """Delete a custom friend now, with every chat practising it. Built-in friends can't be deleted."""
+    if not is_custom(friend_id) or not remove_custom(friend_id):
+        raise HTTPException(404, "No such friend.")
+    store.drop_scenario(friend_id)
+
+
+@router.get("/friends/{friend_id}", response_model=ScenarioSummary)
+def get_friend(friend_id: str, lang: str = "en") -> ScenarioSummary:
+    try:
+        scenario = get_scenario(friend_id) if is_custom(friend_id) else None
+    except KeyError:
+        scenario = None
+    if scenario is None:
+        raise HTTPException(404, "This friend has expired.")
+    return _summary(scenario, lang)
 
 
 @router.post("/sessions", response_model=SessionView)
@@ -153,7 +208,8 @@ def start_session(request: CreateSessionRequest) -> SessionView:
     except KeyError as exc:
         raise HTTPException(404, f"Unknown scenario '{request.scenario_id}'.") from exc
     # Never a mixed-language chat: fall back to English when this friend can't be practiced in the language.
-    locale = request.locale if request.locale in scenario_locales(scenario) else "en"
+    locales = scenario_locales(scenario)
+    locale = request.locale if request.locale in locales else locales[0]
     state = services.engine().initial_state(scenario)
     opening = Node(
         id=new_id("n"),

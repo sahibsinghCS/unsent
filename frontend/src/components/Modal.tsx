@@ -59,7 +59,7 @@ export function Modal({ open, title, onClose, dismissible = true, children, tone
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-[2px] animate-pop-in"
+        className="absolute inset-0 bg-black/40 animate-pop-in"
         onClick={dismissible ? onClose : undefined}
         aria-hidden="true"
       />
@@ -69,9 +69,7 @@ export function Modal({ open, title, onClose, dismissible = true, children, tone
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={`relative max-h-[92vh] w-full overflow-y-auto rounded-t-3xl border border-line bg-surface p-6 shadow-phone animate-pop-in sm:max-w-lg sm:rounded-3xl ${
-          tone === 'warm' ? 'border-t-4 border-t-warm' : ''
-        }`}
+        className={`relative max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border border-line bg-surface p-6 sm:max-w-lg sm:rounded-2xl ${tone === 'warm' ? 'border-t-4 border-t-warm' : 'animate-pop-in'}`}
       >
         <div className="mb-4 flex items-start gap-3">
           {icon}

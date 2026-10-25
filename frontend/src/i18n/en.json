@@ -26,35 +26,57 @@
     "offline": "Can't reach the FirstReply server right now."
   },
   "landing": {
-    "eyebrow": "Suicide-prevention practice for teens",
     "title": "Practice the text that could save a friend's life.",
-    "sub": "Chat with a simulated friend who's struggling. Models we trained score every reply, keep it safe, and show you exactly where you lost them and what would have worked.",
-    "start": "Start practicing",
+    "sub": "You text a simulated friend who is having a hard time. Our own models check every reply for safety, score it, and show where they stopped trusting you and what would have helped.",
+    "start": "Pick a friend to text",
     "how": "See how it works",
-    "stat": "1 in 5 US high schoolers seriously considered suicide last year.",
-    "stat_source": "CDC Youth Risk Behavior Survey, 2023",
-    "stat_kicker": "The first person they tell is usually a friend.",
-    "features_title": "Nobody teaches us what to say. So practice it.",
-    "features": {
-      "practice": {
-        "title": "Practice",
-        "body": "Text a realistic friend who opens up in layers, but only if you listen, validate and ask directly."
-      },
-      "feedback": {
-        "title": "Feedback",
-        "body": "See your trust graph, the exact words that helped or hurt, and better replies that were checked before you see them."
-      },
-      "safety": {
-        "title": "Safety first",
-        "body": "Every message is checked by our Guardian first. Real help is one tap away on every screen, and nothing is stored."
-      }
+    "stat": "US high schoolers seriously considered suicide in the past year.",
+    "stat_source": "CDC Youth Risk Behavior Survey, 2023 (20.4%)",
+    "stat_kicker": "When teens tell someone about suicidal thoughts, it's most often a friend.",
+    "safety_title": "If this is real right now",
+    "safety_body": "Call or text 988 any time in the US, or tell a trusted adult today. If someone is in immediate danger, call 911.",
+    "kicker_source": "Fox et al., 2021, Research on Child and Adolescent Psychopathology 50:669–681",
+    "example_title": "What happens when you send a text",
+    "example_sub": "A real conversation with Maya, played through the app. Each note says what the app did with that message.",
+    "safety_link": "What to do, step by step",
+    "run": {
+      "trust_short": "trust {from} to {to}",
+      "label_friend": "Maya.",
+      "label_you": "Message {n}.",
+      "opening": "She opens with this. Trust starts at {trust}, and she only says more once she trusts you.",
+      "safety": "Safety check: fine, {ms} ms.",
+      "heard": "The skill detector hears {labels}.",
+      "heard_none": "The skill detector hears no skill.",
+      "direct": "Asking directly is never blocked.",
+      "up": "Trust rises from {from} to {to}.",
+      "down": "Trust drops from {from} to {to}.",
+      "read": "She left you on Read.",
+      "level_up": "She shares more (disclosure level {level}). Our engine decides what she's ready to share.",
+      "bank": "Her replies are reviewed lines from our bank, not AI wording.",
+      "note": "A real run of the app with our reviewed lines (no AI wording). Every number is what the engine computed.",
+      "not_ready": "She isn't ready to say it yet. Our engine decides what she's ready to share.",
+      "more": "See the whole conversation ({n} more messages)",
+      "less": "Show less",
+      "expanded": "The whole conversation is shown."
     },
-    "demo": {
-      "friend1": "honestly idk why i even bother anymore",
-      "you1": "that sounds really heavy. are you thinking about killing yourself?",
-      "friend2": "…yeah. sometimes",
-      "you2": "i'm really glad you told me. can we talk to the counselor tomorrow? i'll go with you",
-      "trust": "Trust"
+    "stat_big": "1 in 5",
+    "features_title": "Nobody teaches us what to say. So practice it.",
+    "steps_title": [
+      "Text a friend who's struggling",
+      "See inside, live",
+      "Learn what brings them back"
+    ],
+    "steps_body": [
+      "Five friends, each with a story. They open up only if you listen, validate and ask directly.",
+      "X-ray mode shows the safety check, the skills our models heard and exactly how trust moved.",
+      "Find the moment you lost them, then replay better replies and watch a different ending."
+    ],
+    "snip": {
+      "guardian": "Safety check",
+      "heard": "Skill heard",
+      "trust": "Trust",
+      "lost": "You said",
+      "back": "What brought her back"
     }
   },
   "practice": {
@@ -84,7 +106,7 @@
     "with": "Texting {name}",
     "typing": "{name} is typing",
     "seen": "Seen",
-    "placeholder": "Text {name}…",
+    "placeholder": "Text {name}",
     "send": "Send",
     "counter": "{n}/500",
     "finish": "Finish",
@@ -136,7 +158,15 @@
     },
     "concern": "If any of this feels close to home, you can call or text 988 any time.",
     "empty_reply": "(no reply)",
-    "practice_in": "Practice in {lang}"
+    "practice_in": "Practice in {lang}",
+    "delivered": "Delivered",
+    "xray_banner": "X-ray on: you're seeing what our models see",
+    "trust_hint": "How safe they feel opening up to you. It moves with every message.",
+    "read": "Read",
+    "read_at": "Read {time}",
+    "today": "Today",
+    "back": "Back to friends",
+    "level_now": "now"
   },
   "tree": {
     "title": "Conversation branches",
@@ -210,8 +240,8 @@
     "uncertain": "uncertain: {labels}",
     "uncertain_hint": "Our two models disagreed here, so treat this score with caution.",
     "try_instead": "Try instead",
-    "gain": "{skill} {gain}",
-    "try_again": "Try again from here",
+    "gain": "adds: {skill}",
+    "try_again": "Try a different reply",
     "what_if": "What if?",
     "new_scenario": "Practice another friend",
     "back_chat": "Back to chat",
@@ -221,14 +251,22 @@
     "rewrite_exemplar": "From our exemplar bank",
     "strength_strong": "strong signal",
     "strength_some": "some signal",
-    "legend_strong": "solid underline = strong, dotted = some"
+    "legend_strong": "solid underline = strong, dotted = some",
+    "story_with": "Your conversation with {name}",
+    "story_title": "How it went",
+    "lost_here": "lost them here",
+    "you_said": "You said",
+    "would_have_worked": "What would have worked",
+    "gain_generic": "verified better",
+    "gain_hint": "Our skill detector scores this reply {gain} points higher on the skill you missed.",
+    "transcript_title": "Your conversation, with notes"
   },
   "whatif": {
     "title": "What if you'd said something else?",
     "sub": "We replayed the conversation from your message with stronger replies, through the same trust engine and friend line bank.",
     "simulated": "Simulated",
     "simulated_hint": "These are simulations, not real people. They show how the model reacts.",
-    "best": "Best path",
+    "best": "Best",
     "score": "Skill match {score}%",
     "overlay": "All paths, trust over time",
     "you_said": "What you said",
@@ -237,7 +275,7 @@
     "error": "Couldn't run the simulation.",
     "back": "Back to feedback",
     "try_this": "Try this in the chat",
-    "trust_end": "Trust {from} → {to}",
+    "trust_end": "Trust {from} to {to}",
     "score_hint": "How strongly our skill detector sees the skill this reply teaches.",
     "empty": "We couldn't find a verified better reply for this message. Try another one.",
     "strategies": {
@@ -247,7 +285,13 @@
       "refer": "refer",
       "follow_up": "follow up",
       "combo": "combination"
-    }
+    },
+    "futures": "Replies you could have sent instead",
+    "rule": "Best = the most trust and openness in the fewest messages.",
+    "messages": "in {n} messages",
+    "messages_one": "in 1 message",
+    "levels": "she opened up {n} levels",
+    "levels_one": "she opened up 1 level"
   },
   "real": {
     "country": "Where are you?",
@@ -418,5 +462,53 @@
   "langs": {
     "en": "English",
     "es": "Spanish"
+  },
+  "skills_verb": {
+    "check_in": "checking in",
+    "listen": "listening",
+    "ask_directly": "asking directly",
+    "no_secrecy": "no secrecy",
+    "persuade": "encouraging help",
+    "refer": "a trusted adult or 988",
+    "follow_up": "following up"
+  },
+  "friends": {
+    "back": "Back to friends",
+    "small-label": "Add your own friend",
+    "title": "Who do you want to practice with?",
+    "sub": "Describe a friend in your own words. Our engine still decides what they reveal, and our safety checks still run on every message.",
+    "privacy": "This friend only exists for this practice: it's kept in server memory and deleted after 60 minutes of inactivity. To write the friend's replies, your description is sent to OpenAI. Use a nickname, and don't paste anyone's private messages.",
+    "safety": "If a real friend is going through this right now, practice can wait. Here's what to do.",
+    "name": "Name or nickname",
+    "name_ph": "e.g. Alex",
+    "age": "Age",
+    "style": "How easily do they open up?",
+    "open_hint": "Shares feelings fairly soon",
+    "guarded_hint": "Needs patience and trust first",
+    "personality": "What are they like and how do they text?",
+    "personality_ph": "e.g. funny, gets sarcastic when stressed, types in lowercase with lots of emoji",
+    "situation": "What happened recently?",
+    "situation_ph": "e.g. their parents are splitting up and they've stopped coming to practice",
+    "situation_hint": "Required, at least 10 characters. No real names or private details.",
+    "texts": "Texts they might send",
+    "texts_hint": "Optional, up to 5. They preview their voice on the right.",
+    "text_n": "Text {n}",
+    "text_ph": "e.g. idk im just tired lol",
+    "add_text": "Add another text",
+    "remove_text": "Remove text {n}",
+    "preview": "Preview",
+    "preview_empty": "Their texts will appear here as you type.",
+    "create": "Create friend",
+    "creating": "Creating…",
+    "real_title": "If this is real right now",
+    "real_body": "What you wrote sounds like it might be happening to someone you know. Practice can wait. Here's what to do first.",
+    "real_open": "Open the help page",
+    "real_continue": "Continue to practice",
+    "expired": "This friend has expired: we don't keep anything after 60 minutes.",
+    "create_again": "Create again",
+    "custom_chip": "Made by you, not reviewed by us",
+    "yours": "Your friend",
+    "add_card": "Add your own friend",
+    "add_card_sub": "Describe someone in your own words and practice texting them."
   }
 }

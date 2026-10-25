@@ -19,6 +19,26 @@ At the end, the **critic** scores the conversation, and **"What if"** plays bett
 - **One message at a time**: each chat has its own lock, so a double-click or a second tab can't
   run two turns at once and tangle the tree. Blocked and crisis messages never reach the AI, are
   never scored by the critic, and a crisis message has no "What if" (it isn't a mistake).
+- **Add your own friend** (`custom_friend.py`): the helper writes a friend's name, age, personality,
+  what happened and a few example texts. Only those words change. The five disclosure levels, the
+  facts behind them (including the suicidal thoughts at level 3), the safe fallback lines and the
+  reviewed line bank all come from a fixed template (`data/scenarios/_custom.json`), so nobody can
+  script a friend to describe methods. Every field goes through the Guardian first (instructions
+  to the AI and harmful details are refused), line breaks and `#` are removed so the text can't
+  reshape the AI's instructions, and the friend lives only in memory and expires after 60 unused
+  minutes, like a session. If the story sounds like a real friend at risk (or the helper themself),
+  the app shows real help first.
+- **Friends from real screenshots** (`screenshots.py`): if a teen is worried about a real friend,
+  they can upload 1 to 3 screenshots of their chat. In the browser they first black out names and
+  numbers. One AI call reads the screenshots and drafts how the friend texts, what seems to be going
+  on, a few *new* example texts and the warning signs it can see (from a fixed list based on known
+  suicide warning signs). Nothing is created automatically: the draft fills in the "Add your own
+  friend" form, the teen reviews it, and creating the friend goes through the same Guardian checks.
+  If the friend's own words mention suicide, a plan, or goodbye-type signs, our own rules (not just
+  the AI) put real help first: tell a trusted adult today and call or text 988. The images and the
+  friend's real messages are never stored, cached, logged or sent back; without the AI this feature
+  says so and the form still works by hand. Custom friends can be deleted at any time, which also
+  ends their chats.
 - **One language per chat**: a friend is offered in a language only when its translated scenario text *and* its reviewed line bank exist (`content.scenario_locales`). Today: every friend in English, and Maya in Spanish. The server falls back to English otherwise, so a chat never mixes languages.
 - **Headline numbers** are defined once (`content/headline_metrics.json`, English and Spanish) and filled in from the evaluation reports. The How page, the README and `docs/METRICS.md` all read that file, so they always agree.
 - **Privacy**: sessions live only in server memory and are deleted after 60 minutes of inactivity. Everything derived from a conversation (cached embeddings, the AI cache, the critic's explanations) is registered with the same purge and expires with the session. There are no accounts, no database, no analytics, and nothing is written to disk in production.
@@ -40,5 +60,9 @@ Parallel development needs fixed interfaces. Stubs let the frontend and every la
 - *Why not store conversations?* This is a mental-health topic and users are minors. Nothing is stored, and the privacy test proves nothing lingers in memory after a session expires.
 - *What happens if a part breaks or OpenAI is down?* Every AI reply is optional: the engine still decides, and the reviewed line bank speaks instead. The app fully works with `FR_LLM=0`.
 - *How did several agents build this without breaking each other?* Frozen contracts, a stub for every part, file ownership per lane (`ownership.yaml`, checked automatically) and one integration branch where every merge must pass about 700 tests.
+- *Can't someone use "Add your own friend" to make the AI say something harmful?* Their words only
+  set the name, personality and situation. What the friend reveals, and when, comes from our fixed
+  template; every field is screened first; and every reply still passes the verifier and the
+  Guardian before it's shown, exactly as for our own friends.
 - *Why only one language per chat?* A Spanish-speaking teen should never get an English reply halfway through. So a language only appears when every line in it has been written and reviewed.
 - *How do you know your numbers are honest?* Each number comes with n and the split. The headline uses data the models never trained on, and the red team's holdout attacks were never shown to whoever tunes the safety filter.
