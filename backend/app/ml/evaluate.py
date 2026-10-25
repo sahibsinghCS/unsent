@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import random
 from pathlib import Path
 
 import matplotlib
@@ -17,6 +18,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
+from backend.app.content import read_jsonl  # noqa: E402
 from backend.app.ml.calibrate import expected_calibration_error, reliability_curve  # noqa: E402
 from backend.app.ml.data import load_extra_test_sets, load_splits, to_xy  # noqa: E402
 from backend.app.ml.metrics import THRESHOLD, per_label_scores  # noqa: E402
@@ -143,6 +145,36 @@ def run_probes(model: SkillModel) -> list[dict]:
             probe["independent"] = False
             probe["note"] = NOT_INDEPENDENT[text]
         out.append(probe)
+    return out
+
+
+# Context-shift check: does accuracy depend on the scenario's own friend messages? The same free-form
+# replies are re-scored after swapping the friend's messages for random lines from the situation-neutral
+# custom-friend bank (data/lines/_custom.<lang>.jsonl), and with no friend context at all.
+CONTEXT_SHIFT_SEED = 0
+CUSTOM_SPLIT = "test_freeform (custom-friend contexts)"
+NO_CONTEXT_SPLIT = "test_freeform (no context)"
+
+
+def load_custom_bank(lines_dir: Path) -> dict[str, list[list[str]]]:
+    """{lang: [bubbles, ...]} from the custom-friend line bank, if present."""
+    bank: dict[str, list[list[str]]] = {}
+    for path in sorted(lines_dir.glob("_custom.*.jsonl")):
+        lang = path.name.split(".")[1]
+        bank[lang] = [row["bubbles"] for row in read_jsonl(path) if row.get("bubbles")]
+    return {lang: lines for lang, lines in bank.items() if lines}
+
+
+def with_custom_contexts(
+    rows: list[dict], bank: dict[str, list[list[str]]], seed: int
+) -> list[dict]:
+    """Same rows, each friend context replaced by a random custom-bank line in the row's language."""
+    rng = random.Random(seed)
+    fallback = bank.get("en") or next(iter(bank.values()))
+    out = []
+    for row in rows:
+        lines = bank.get(row.get("lang", "en"), fallback)
+        out.append({**row, "context": list(rng.choice(lines))[-2:]})
     return out
 
 
@@ -300,6 +332,14 @@ def run(model: SkillModel, data_dir: Path, report_path: Path, figure_dir: Path, 
             len(spanish) >= MIN_SUBSET
         ):  # language slice of the same held-out set (not a new test set)
             results[f"{name}_es"] = score_rows(model, spanish, f"{name}_es")
+    if "test_freeform" in results:
+        freeform = load_extra_test_sets(data_dir)["test_freeform"]
+        bank = load_custom_bank(data_dir.parent / "lines")
+        if bank:
+            shifted = with_custom_contexts(freeform, bank, CONTEXT_SHIFT_SEED)
+            results[CUSTOM_SPLIT] = score_rows(model, shifted, CUSTOM_SPLIT)
+        no_context = [{**row, "context": []} for row in freeform]
+        results[NO_CONTEXT_SPLIT] = score_rows(model, no_context, NO_CONTEXT_SPLIT)
 
     figure_dir.mkdir(parents=True, exist_ok=True)
     for split in ("test", "test_freeform"):

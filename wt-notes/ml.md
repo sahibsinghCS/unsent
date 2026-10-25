@@ -25,6 +25,8 @@
 - Later: kappa when counselor labels exist.
 
 ## Decisions
+- Critic skips both Guardian-blocked and crisis (pause_roleplay) messages: they aren't practice replies, so
+  they're never scored or coached (integrator fix d9e1026, merged here).
 - "Almost asked" (integrator request): `rules.almost_asked` = no explicit term AND Model A ≥ 0.5 AND Model B
   ≥ 0.5 AND a recognised hint phrase (`rules.HINT_PHRASES`). Deviation from the request: the "or stacked p ≥
   0.5 before the cap" branch and the no-hint-phrase case were dropped, because they produced false coaching
@@ -127,5 +129,8 @@ worth-affirming validation without feeling words; (3) agreement replies. No test
   probe "no tienes que pasar por esto solo, aquí estoy" (0.88) is NOT independent (near-duplicate train row
   added in 1992f84); Spanish is judged on the freeform ES slice instead.
 - Almost-asked: fires on the hinted probes, 0 flags on all labeled rows.
+- Context shift (no retraining; seed 0): test_freeform with the friend's messages swapped for random lines from
+  data/lines/_custom.<lang>.jsonl → ensemble 0.845; no friend context → 0.837; original contexts 0.836. Splits
+  "test_freeform (custom-friend contexts)" / "test_freeform (no context)" in eval/reports/ml_skills.json.
 - /finish p50 (fixed 6-message chat, 1 user): 0.24 s with 2 s think time; 1.66 s if finish is sent instantly.
 - Counselor kappa: not yet (no counselor labels).

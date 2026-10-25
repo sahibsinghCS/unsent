@@ -12,6 +12,11 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
     shutil.copy(SEED, data_dir / "survey_real.jsonl")  # extra test sets are evaluated separately
     (data_dir / "splits").mkdir()
     shutil.copy(SEED, data_dir / "splits" / "test_freeform.jsonl")
+    lines = tmp_path / "lines"  # the custom-friend bank lives next to data/skills
+    lines.mkdir()
+    (lines / "_custom.en.jsonl").write_text(
+        "\n".join(json.dumps({"bubbles": [f"line {i}", "idk"]}) for i in range(5))
+    )
     report = tmp_path / "ml_skills.json"
     figures = tmp_path / "fig"
     args = ["--data-dir", str(data_dir), "--models-dir", str(trained_dir)]
@@ -19,7 +24,14 @@ def test_run_eval_writes_report_and_figures(trained_dir, seed_data_dir, tmp_path
 
     records = json.loads(report.read_text())
     splits = {r["split"] for r in records}
-    assert splits == {"val", "test", "test_freeform", "survey_real"}
+    assert splits == {
+        "val",
+        "test",
+        "test_freeform",
+        "survey_real",
+        "test_freeform (custom-friend contexts)",
+        "test_freeform (no context)",
+    }
     metrics = {r["metric"] for r in records if r["split"] == "test"}
     assert {
         "macro_f1_keyword_baseline",
@@ -70,3 +82,15 @@ def test_unseen_rows_drops_texts_seen_in_training():
 
     test = [{"text": "You OK??"}, {"text": "that sounds hard"}]
     assert unseen_rows(test, [{"text": "you ok"}]) == [{"text": "that sounds hard"}]
+
+
+def test_custom_contexts_are_seeded_and_match_the_language():
+    from backend.app.ml.evaluate import with_custom_contexts
+
+    rows = [{"text": "u ok?", "lang": "en", "context": ["x"]}, {"text": "¿bien?", "lang": "es"}]
+    bank = {"en": [["hey", "im fine"], ["whatever"]], "es": [["hola", "nada"]]}
+    first = with_custom_contexts(rows, bank, seed=0)
+    assert first == with_custom_contexts(rows, bank, seed=0)
+    assert first[0]["context"] in (["hey", "im fine"], ["whatever"])
+    assert first[1]["context"] == ["hola", "nada"]
+    assert rows[0]["context"] == ["x"]  # the original rows are untouched
