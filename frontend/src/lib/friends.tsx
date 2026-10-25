@@ -16,7 +16,13 @@ export interface FriendDraft {
 }
 
 /** A custom friend as returned by POST /api/friends (a ScenarioSummary with custom: true). */
-export type CustomFriend = ScenarioSummary & { custom?: boolean; /** set up from screenshots of a real friend's chat */ realFriend?: boolean };
+export type CustomFriend = ScenarioSummary & {
+  custom?: boolean;
+  /** set up from screenshots of a real friend's chat */
+  realFriend?: boolean;
+  /** from POST /friends; sent back as X-Friend-Token to delete it (memory only, never stored) */
+  ownerToken?: string;
+};
 
 export const EMPTY_DRAFT: FriendDraft = { name: '', age: 16, guardedness: 'guarded', personality: '', situation: '', sample_texts: [''] };
 
@@ -33,6 +39,9 @@ interface FriendsState {
   /** True while the form holds a draft that came from screenshots of a real friend's chat. */
   fromRealFriend: boolean;
   setFromRealFriend: (value: boolean) => void;
+  /** The screenshot reader removed identifying details from the draft (show a note on the form). */
+  removedIdentifying: boolean;
+  setRemovedIdentifying: (value: boolean) => void;
 }
 
 const FriendsContext = createContext<FriendsState | null>(null);
@@ -41,7 +50,11 @@ export function FriendsProvider({ children }: { children: ReactNode }) {
   const [draft, setDraft] = useState<FriendDraft>(EMPTY_DRAFT);
   const [friend, setFriend] = useState<CustomFriend | null>(null);
   const [fromRealFriend, setFromRealFriend] = useState(false);
-  const value = useMemo(() => ({ draft, setDraft, friend, setFriend, fromRealFriend, setFromRealFriend }), [draft, friend, fromRealFriend]);
+  const [removedIdentifying, setRemovedIdentifying] = useState(false);
+  const value = useMemo(
+    () => ({ draft, setDraft, friend, setFriend, fromRealFriend, setFromRealFriend, removedIdentifying, setRemovedIdentifying }),
+    [draft, friend, fromRealFriend, removedIdentifying],
+  );
   return <FriendsContext.Provider value={value}>{children}</FriendsContext.Provider>;
 }
 

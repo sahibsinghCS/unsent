@@ -107,7 +107,7 @@ async function run({ theme, device, urgency, keyboard }) {
     await page.route('**/api/friends/analyze', async (route) => {
       uploaded = JSON.parse(route.request().postData() ?? '{}');
       await new Promise((r) => setTimeout(r, 600)); // let the progress state show
-      await route.fulfill({ json: { draft: DRAFT, signs: SIGNS[urgency === 'imminent' ? 'tell_an_adult_now' : urgency], urgency: urgency === 'imminent' ? 'tell_an_adult_now' : urgency, imminent: urgency === 'imminent' } });
+      await route.fulfill({ json: { draft: DRAFT, signs: SIGNS[urgency === 'imminent' ? 'tell_an_adult_now' : urgency], urgency: urgency === 'imminent' ? 'tell_an_adult_now' : urgency, imminent: urgency === 'imminent', removed_identifying: urgency === 'tell_an_adult_now' } });
     });
   }
   const tag = `${urgency ?? 'real-backend'}-${device}-${theme}`;
@@ -221,6 +221,7 @@ async function run({ theme, device, urgency, keyboard }) {
     await page.getByTestId('to-form').click();
     await page.waitForURL(/\/practice\/new$/);
     await page.getByTestId('from-screenshots').waitFor();
+    if (!(await page.getByTestId('removed-identifying').isVisible())) fail(`${tag}: no "we removed identifying details" note`);
     if ((await page.locator('#f-situation').inputValue()) !== DRAFT.situation) fail(`${tag}: situation not pre-filled`);
     if ((await page.locator('#f-name').inputValue()) !== '' || (await page.locator('#f-name').getAttribute('placeholder')) !== 'Use a nickname') fail(`${tag}: name must be empty with the nickname hint`);
     await axe(page, `${tag} prefilled form`);
@@ -237,7 +238,10 @@ async function run({ theme, device, urgency, keyboard }) {
     await page.getByTestId('real-friend-chip').waitFor();
     await shot('06-chat-real-friend', false);
     await page.getByTestId('delete-friend').click();
+    const deleted = page.waitForResponse((r) => r.request().method() === 'DELETE' && r.url().includes('/api/friends/'));
     await page.getByTestId('delete-friend-confirm').click();
+    const res = await deleted;
+    if (res.status() !== 204 || !res.request().headers()['x-friend-token']) fail(`${tag}: DELETE with owner token should be 204, got ${res.status()}`);
     await page.waitForURL(/\/practice$/);
     if (await page.getByText('Sky', { exact: true }).count()) fail(`${tag}: deleted friend still listed`);
   }
@@ -270,7 +274,14 @@ async function deleteFromCard() {
   }
   await page.getByTestId('delete-friend').click();
   await page.screenshot({ path: `${OUT}08-delete-confirm-desktop-light.png` });
+  const deleted = page.waitForResponse((r) => r.request().method() === 'DELETE' && r.url().includes('/api/friends/'));
   await page.getByTestId('delete-friend-confirm').click();
+  const res = await deleted;
+  if (res.status() !== 204) fail(`card delete: DELETE with owner token should be 204, got ${res.status()}`);
+  // Without the token the server refuses (404), so nobody else can delete your friend.
+  const id = new URL(res.url()).pathname.split('/').pop();
+  const anon = await page.request.delete(`${BASE}/api/friends/${id}`);
+  if (anon.status() !== 404) fail(`card delete: tokenless DELETE should be 404, got ${anon.status()}`);
   await page.getByTestId('delete-friend').waitFor({ state: 'detached' });
   if (await page.getByText('Rio', { exact: true }).count()) fail('card delete: Rio still listed');
   await context.close();

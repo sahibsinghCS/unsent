@@ -41,7 +41,7 @@ const inputCls =
 export function NewFriend() {
   const { t, lang, country } = usePrefs();
   const navigate = useNavigate();
-  const { draft, setDraft, setFriend, fromRealFriend, setFromRealFriend } = useFriends();
+  const { draft, setDraft, setFriend, fromRealFriend, setFromRealFriend, removedIdentifying, setRemovedIdentifying } = useFriends();
   const [errors, setErrors] = useState<FieldErrors>({});
   const [banner, setBanner] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -61,7 +61,7 @@ export function NewFriend() {
     setErrors({});
     setBanner(null);
     try {
-      const { friend, notice } = await api.createFriend({
+      const { friend, notice, owner_token } = await api.createFriend({
         name: draft.name.trim(),
         age: draft.age,
         guardedness: draft.guardedness,
@@ -70,8 +70,9 @@ export function NewFriend() {
         sample_texts: previewTexts,
         locale: lang,
       });
-      setFriend(fromRealFriend ? { ...friend, realFriend: true } : friend);
+      setFriend({ ...friend, ownerToken: owner_token, ...(fromRealFriend ? { realFriend: true } : {}) });
       setFromRealFriend(false);
+      setRemovedIdentifying(false);
       setCreated(friend);
       setShowRealHelp(notice === 'real_help');
     } catch (e) {
@@ -112,11 +113,17 @@ export function NewFriend() {
         <h1 className="mt-5 text-5xl sm:text-6xl">{t('friends.title')}</h1>
         <p className="mt-3 max-w-xl text-lg text-muted">{t('friends.sub')}</p>
 
-        {fromRealFriend ? (
+        {fromRealFriend && (
           <p className="card mt-6 p-4 text-sm leading-relaxed" data-testid="from-screenshots">
             <span className="font-semibold">{t('real_friend.prefilled_title')}</span> {t('real_friend.prefilled_body')}
           </p>
-        ) : (
+        )}
+        {fromRealFriend && removedIdentifying && (
+          <p className="mt-3 rounded-xl border border-line bg-sunken/60 p-4 text-sm leading-relaxed" data-testid="removed-identifying">
+            {t('real_friend.removed_identifying')}
+          </p>
+        )}
+        {!fromRealFriend && (
           <Link to="/practice/real" className="card card-lift mt-6 flex items-center gap-4 p-4" data-testid="real-friend-entry">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line-strong text-brand-deep" aria-hidden="true">
               <Icon name="image" className="h-5 w-5" />

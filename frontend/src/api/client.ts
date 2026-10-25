@@ -38,6 +38,8 @@ export interface AnalyzeResult {
   urgency: 'none' | 'check_in_soon' | 'tell_an_adult_now';
   /** The friend may act soon (a plan, a way, a time): show the emergency card above everything. */
   imminent: boolean;
+  /** The server removed names, numbers or other identifying details from the draft. */
+  removed_identifying: boolean;
 }
 
 /** fetch + JSON with timeouts and readable errors (FastAPI puts messages in `detail`). */
@@ -104,10 +106,12 @@ export const api = {
     situation: string;
     sample_texts: string[];
     locale: string;
-  }) => post<{ friend: ScenarioSummary & { custom?: boolean }; notice: 'real_help' | null }>('/friends', body),
+  }) => post<{ friend: ScenarioSummary & { custom?: boolean }; notice: 'real_help' | null; owner_token?: string }>('/friends', body),
   friend: (id: string) => request<ScenarioSummary & { custom?: boolean }>(`/friends/${encodeURIComponent(id)}`),
-  /** Delete a custom friend and every chat with it (204; 404 if it's already gone). */
-  deleteFriend: (id: string) => request<void>(`/friends/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  /** Delete a custom friend and every chat with it (204). Needs the owner token from POST /friends;
+   * a missing or wrong token gets 404, the same as an already-deleted friend. */
+  deleteFriend: (id: string, ownerToken = '') =>
+    request<void>(`/friends/${encodeURIComponent(id)}`, { method: 'DELETE', headers: { 'X-Friend-Token': ownerToken } }),
   /** Read 1-3 redacted screenshots (JPEG data URLs) into a draft friend. Takes ~5-10 s. */
   analyzeFriend: (images: string[], locale: string) =>
     request<AnalyzeResult>('/friends/analyze', { method: 'POST', body: JSON.stringify({ images, locale }), timeoutMs: 60000 }),

@@ -582,6 +582,7 @@
     },
     "imminent_title": "Si podría hacerlo pronto",
     "imminent_body": "Si tu amigo podría hacerlo pronto, o tiene un plan o una forma de hacerse daño, llama al {emergency} o al 988 ahora. Si estás con él y es seguro, quédate a su lado hasta que llegue un adulto o ayuda. No lo guardes en secreto.",
-    "call_number": "Llamar al {number}"
+    "call_number": "Llamar al {number}",
+    "removed_identifying": "Quitamos nombres, números y otros datos que podrían identificar a alguien. Revisa que el texto siga teniendo sentido."
   }
 }
