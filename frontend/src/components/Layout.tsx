@@ -4,12 +4,12 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import { usePrefs, type Lang } from '../i18n';
 import { Icon } from './Icon';
 
-/** Wordmark: the app icon plus the name in the system font. */
+/** Wordmark: the app mark (a message bubble with a send arrow: the text you haven't sent yet) plus "Unsent" in Syne. */
 export function Logo({ className = '' }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
-      <img src="/favicon.svg" alt="" className="h-7 w-7" />
-      <span className="font-display text-[1.15rem] font-bold tracking-tight">Unsent</span>
+    <span className={`inline-flex items-center gap-2.5 ${className}`}>
+      <img src="/favicon.svg" alt="" className="h-8 w-8" />
+      <span className="font-display text-[1.4rem] font-bold leading-none tracking-[-0.02em]">Unsent</span>
     </span>
   );
 }
