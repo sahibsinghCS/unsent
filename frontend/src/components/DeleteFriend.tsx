@@ -1,6 +1,6 @@
 /**
  * Delete a custom friend: a small button and a calm confirm. DELETE /api/friends/{id} also ends every
- * chat with that friend on the server; afterwards the friend is removed from React state and
+ * chat with that friend on the server (it needs the owner token we got when creating it); afterwards the friend is removed from React state and
  * `onDeleted` runs (e.g. go back to /practice from its chat). A 404 means it's already gone.
  */
 import { useState } from 'react';
@@ -21,7 +21,7 @@ export function DeleteFriendButton({ id, name, onDeleted, className = '' }: { id
     setBusy(true);
     setError(null);
     try {
-      await api.deleteFriend(id);
+      await api.deleteFriend(id, friend?.id === id ? friend.ownerToken : undefined);
     } catch (e) {
       if ((e as ApiError).status !== 404) {
         setError((e as ApiError).message);

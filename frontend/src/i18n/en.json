@@ -578,6 +578,7 @@
     },
     "imminent_title": "If they might act on it soon",
     "imminent_body": "If your friend might act on it soon, or has a plan or a way to hurt themselves, call {emergency} or 988 now. If you're with them and it's safe, stay with them until an adult or help arrives. Don't keep this a secret.",
-    "call_number": "Call {number}"
+    "call_number": "Call {number}",
+    "removed_identifying": "We removed names, numbers and other details that could identify someone. Check the text still makes sense."
   }
 }

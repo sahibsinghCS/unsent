@@ -24,7 +24,7 @@ type Step = 'explain' | 'pick' | 'redact' | 'analyzing' | 'noticed';
 export function RealFriend() {
   const { t, lang } = usePrefs();
   const navigate = useNavigate();
-  const { setDraft, setFromRealFriend } = useFriends();
+  const { setDraft, setFromRealFriend, setRemovedIdentifying } = useFriends();
   const [step, setStep] = useState<Step>('explain');
   const [consent, setConsent] = useState(false);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
@@ -108,6 +108,7 @@ export function RealFriend() {
       });
     }
     setFromRealFriend(fromScreens);
+    setRemovedIdentifying(fromScreens && !!result?.removed_identifying);
     forget();
     setResult(null);
     navigate('/practice/new');

@@ -1,9 +1,10 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { ApiError, api, type AnalyzeResult } from '../api/client';
 import { DeleteFriendButton } from '../components/DeleteFriend';
 import { PrefsProvider } from '../i18n';
-import { FriendsProvider } from '../lib/friends';
+import { useEffect, useState } from 'react';
+import { FriendsProvider, useFriends, type CustomFriend } from '../lib/friends';
 import { Noticed, RealFriend } from '../pages/RealFriend';
 
 afterEach(() => vi.unstubAllGlobals());
@@ -19,6 +20,7 @@ const wrap = (ui: React.ReactNode) =>
 
 const result = (urgency: AnalyzeResult['urgency'], signs: string[] = [], imminent = false): AnalyzeResult => ({
   imminent,
+  removed_identifying: false,
   draft: { personality: 'dry humor', situation: 'Their parents are splitting up.', sample_texts: ['idk'], guardedness: 'guarded' },
   signs,
   urgency,
@@ -78,22 +80,45 @@ describe('Practice for a real friend', () => {
   });
 });
 
+/** Puts a custom friend (with its owner token) into React state, like POST /friends does, then renders. */
+function WithFriend({ friend, children }: { friend: CustomFriend; children: React.ReactNode }) {
+  const { setFriend } = useFriends();
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    setFriend(friend);
+    setReady(true);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  return ready ? <>{children}</> : null;
+}
+
+const ALEX = { id: 'custom-abc', persona_name: 'Alex', persona_age: 16, title: 'Alex', guardedness: 'guarded', situation: 'x', content_warning: '', review_status: 'custom', locales: ['en'], custom: true, ownerToken: 'tok-123' } as unknown as CustomFriend;
+
 describe('Delete a custom friend', () => {
-  it('asks first, sends DELETE, then runs onDeleted', async () => {
+  it('asks first, sends DELETE with the owner token, then runs onDeleted', async () => {
     const fetchFn = vi.fn((_url: string, _init?: RequestInit) => Promise.resolve({ ok: true, status: 204, json: () => Promise.reject(new Error('no body')) }));
     vi.stubGlobal('fetch', fetchFn);
     const done = vi.fn();
     wrap(
-      <Routes>
-        <Route path="*" element={<DeleteFriendButton id="custom-abc" name="Alex" onDeleted={done} />} />
-      </Routes>,
+      <WithFriend friend={ALEX}>
+        <DeleteFriendButton id="custom-abc" name="Alex" onDeleted={done} />
+      </WithFriend>,
     );
-    fireEvent.click(screen.getByTestId('delete-friend'));
+    fireEvent.click(await screen.findByTestId('delete-friend'));
     expect(screen.getByText('This ends your practice chats with them. Nothing is kept.')).toBeInTheDocument();
     expect(fetchFn).not.toHaveBeenCalled();
     fireEvent.click(screen.getByTestId('delete-friend-confirm'));
     await waitFor(() => expect(done).toHaveBeenCalled());
     expect(fetchFn.mock.calls[0][0]).toBe('/api/friends/custom-abc');
     expect(fetchFn.mock.calls[0][1]?.method).toBe('DELETE');
+    expect((fetchFn.mock.calls[0][1]?.headers as Record<string, string>)['X-Friend-Token']).toBe('tok-123');
+  });
+
+  it('treats 404 (already gone, or no token) as deleted', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve({ ok: false, status: 404, json: () => Promise.resolve({ detail: 'No such friend.' }) })));
+    const done = vi.fn();
+    wrap(<DeleteFriendButton id="custom-gone" name="Sam" onDeleted={done} />);
+    fireEvent.click(screen.getByTestId('delete-friend'));
+    fireEvent.click(screen.getByTestId('delete-friend-confirm'));
+    await waitFor(() => expect(done).toHaveBeenCalled());
   });
 });
