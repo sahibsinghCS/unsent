@@ -15,6 +15,7 @@ import { RedactEditor } from '../components/RedactEditor';
 import { Call988 } from '../components/Safety';
 import { usePrefs } from '../i18n';
 import { EMPTY_DRAFT, LIMITS, useFriends } from '../lib/friends';
+import { offlineRealMode } from '../lib/realmode';
 import { loadImage, prepareScreenshot, type Box } from '../lib/redact';
 
 const MAX_IMAGES = 3;
@@ -220,16 +221,45 @@ export function RealFriend() {
   );
 }
 
-/** "What we noticed": real help comes FIRST (steady, help red) when urgency is tell_an_adult_now. */
+/**
+ * "What we noticed": real help comes FIRST, steady and in help red: the imminent card (call the
+ * country's emergency number or 988 now) above the urgent card (tell a trusted adult today), then the
+ * signs. Copy is the safety lane's reviewed wording (wt-notes/safety.md).
+ */
 export function Noticed({ result, onContinue, headingRef }: { result: AnalyzeResult; onContinue: () => void; headingRef?: RefObject<HTMLHeadingElement> }) {
-  const { t } = usePrefs();
+  const { t, lang, country } = usePrefs();
   const heading = headingRef;
   const toForm = () => onContinue();
+  // The country's emergency number from the bundled crisis_lines (same source as /api/realmode; works offline).
+  const emergency = offlineRealMode(lang, country).crisis.emergency || '911';
+  const dialable = /^\d+$/.test(emergency);
+  const urgent = result.urgency === 'tell_an_adult_now';
   return (
         <div className="mt-8 space-y-5">
-          {result.urgency === 'tell_an_adult_now' && (
+          {result.imminent && (
+            <section className="rounded-2xl border-2 border-warm bg-warm-soft p-6 sm:p-7" aria-labelledby="rf-imminent" data-testid="imminent-help">
+              <h2 id="rf-imminent" ref={heading} tabIndex={-1} className="flex items-center gap-2 text-2xl outline-none">
+                <Icon name="phone" className="h-6 w-6 shrink-0 text-warm" />
+                {t('real_friend.imminent_title')}
+              </h2>
+              <p className="mt-3 text-[17px] font-medium leading-relaxed">{t('real_friend.imminent_body', { emergency })}</p>
+              <div className="mt-5 grid max-w-md gap-2 sm:grid-cols-2">
+                {dialable && (
+                  <a href={`tel:${emergency}`} className="btn-warm py-3" data-testid="call-emergency">
+                    <Icon name="phone" className="h-4 w-4" />
+                    {t('real_friend.call_number', { number: emergency })}
+                  </a>
+                )}
+                <a href="tel:988" className={dialable ? 'btn-ghost border-warm/50 py-3' : 'btn-warm py-3'}>
+                  <Icon name="phone" className="h-4 w-4" />
+                  {t('chat.crisis.call')}
+                </a>
+              </div>
+            </section>
+          )}
+          {urgent && (
             <section className="rounded-2xl border-2 border-warm bg-warm-soft/40 p-6 sm:p-7" aria-labelledby="rf-urgent" data-testid="urgent-help">
-              <h2 id="rf-urgent" ref={heading} tabIndex={-1} className="flex items-center gap-2 text-2xl outline-none">
+              <h2 id="rf-urgent" ref={result.imminent ? undefined : heading} tabIndex={-1} className="flex items-center gap-2 text-2xl outline-none">
                 <Icon name="heart" className="h-6 w-6 shrink-0 text-warm" />
                 {t('real_friend.urgent_title')}
               </h2>
@@ -243,7 +273,7 @@ export function Noticed({ result, onContinue, headingRef }: { result: AnalyzeRes
             </section>
           )}
           <section className="card p-6 sm:p-7" aria-labelledby="rf-step" data-testid="noticed">
-            <h2 id="rf-step" ref={result.urgency === 'tell_an_adult_now' ? undefined : heading} tabIndex={-1} className="text-2xl outline-none">
+            <h2 id="rf-step" ref={urgent || result.imminent ? undefined : heading} tabIndex={-1} className="text-2xl outline-none">
               {t('real_friend.noticed_title')}
             </h2>
             {result.signs.length > 0 ? (
@@ -261,7 +291,7 @@ export function Noticed({ result, onContinue, headingRef }: { result: AnalyzeRes
               <p className="mt-3 text-muted">{t('real_friend.no_signs')}</p>
             )}
             {result.urgency === 'check_in_soon' && (
-              <p className="mt-4 font-medium" data-testid="check-in-soon">
+              <p className="mt-4 rounded-xl border border-line-strong p-4 leading-relaxed" data-testid="check-in-soon">
                 {t('real_friend.check_in_soon')}
               </p>
             )}
@@ -269,7 +299,7 @@ export function Noticed({ result, onContinue, headingRef }: { result: AnalyzeRes
             <div className="mt-5">
               <button
                 type="button"
-                className={result.urgency === 'tell_an_adult_now' ? 'btn-ghost' : 'btn-primary'}
+                className={urgent || result.imminent ? 'btn-ghost' : 'btn-primary'}
                 onClick={toForm}
                 data-testid="to-form"
               >

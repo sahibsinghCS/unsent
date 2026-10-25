@@ -36,6 +36,8 @@ export interface AnalyzeResult {
   draft: { personality: string; situation: string; sample_texts: string[]; guardedness: 'open' | 'guarded' };
   signs: string[];
   urgency: 'none' | 'check_in_soon' | 'tell_an_adult_now';
+  /** The friend may act soon (a plan, a way, a time): show the emergency card above everything. */
+  imminent: boolean;
 }
 
 /** fetch + JSON with timeouts and readable errors (FastAPI puts messages in `detail`). */
