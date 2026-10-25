@@ -17,7 +17,8 @@ const wrap = (ui: React.ReactNode) =>
     </PrefsProvider>,
   );
 
-const result = (urgency: AnalyzeResult['urgency'], signs: string[] = []): AnalyzeResult => ({
+const result = (urgency: AnalyzeResult['urgency'], signs: string[] = [], imminent = false): AnalyzeResult => ({
+  imminent,
   draft: { personality: 'dry humor', situation: 'Their parents are splitting up.', sample_texts: ['idk'], guardedness: 'guarded' },
   signs,
   urgency,
@@ -42,15 +43,27 @@ describe('Practice for a real friend', () => {
     expect(help.compareDocumentPosition(noticed) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(help).toHaveTextContent('Practice can wait');
     expect(help.querySelector('a[href="tel:988"]')).not.toBeNull();
-    expect(screen.getByTestId('signs')).toHaveTextContent('talked about dying or not being here');
-    expect(screen.getByText('These are warning signs to check in about, not a diagnosis.')).toBeInTheDocument();
+    expect(screen.getByTestId('signs')).toHaveTextContent('Talks about wanting to die or not being here');
+    expect(screen.queryByTestId('imminent-help')).not.toBeInTheDocument();
+    expect(screen.getByText("These are warning signs to check in about, not a diagnosis. You don't have to be sure to ask for help.")).toBeInTheDocument();
     expect(screen.getByTestId('to-form').className).toContain('btn-ghost'); // practice is the secondary action
   });
 
   it('shows a gentle check-in line and no help card for check_in_soon', () => {
     wrap(<Noticed result={result('check_in_soon', ['withdrawing'])} onContinue={() => undefined} />);
     expect(screen.queryByTestId('urgent-help')).not.toBeInTheDocument();
-    expect(screen.getByTestId('check-in-soon')).toHaveTextContent('It sounds like a good time to check in.');
+    expect(screen.getByTestId('check-in-soon')).toHaveTextContent('Check in with them soon, and think about which adult you could tell.');
+  });
+
+  it('puts the imminent card (emergency number or 988 now) above the urgent card', () => {
+    wrap(<Noticed result={result('tell_an_adult_now', ['saying_goodbye'], true)} onContinue={() => undefined} />);
+    const imminent = screen.getByTestId('imminent-help');
+    const urgent = screen.getByTestId('urgent-help');
+    expect(imminent.compareDocumentPosition(urgent) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(imminent).toHaveTextContent('call 911 or 988 now');
+    expect(imminent).toHaveTextContent("Don't keep this a secret.");
+    expect(imminent.querySelector('a[href="tel:911"]')).not.toBeNull();
+    expect(imminent.querySelector('a[href="tel:988"]')).not.toBeNull();
   });
 
   it("passes the server's analyze error message through (needs_ai, unreadable…)", async () => {

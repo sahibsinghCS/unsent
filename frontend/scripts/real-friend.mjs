@@ -107,7 +107,7 @@ async function run({ theme, device, urgency, keyboard }) {
     await page.route('**/api/friends/analyze', async (route) => {
       uploaded = JSON.parse(route.request().postData() ?? '{}');
       await new Promise((r) => setTimeout(r, 600)); // let the progress state show
-      await route.fulfill({ json: { draft: DRAFT, signs: SIGNS[urgency], urgency } });
+      await route.fulfill({ json: { draft: DRAFT, signs: SIGNS[urgency === 'imminent' ? 'tell_an_adult_now' : urgency], urgency: urgency === 'imminent' ? 'tell_an_adult_now' : urgency, imminent: urgency === 'imminent' } });
     });
   }
   const tag = `${urgency ?? 'real-backend'}-${device}-${theme}`;
@@ -189,7 +189,18 @@ async function run({ theme, device, urgency, keyboard }) {
   if (uploaded.locale !== 'en') fail(`${tag}: locale ${uploaded.locale}`);
 
   const help = page.getByTestId('urgent-help');
-  if (urgency === 'tell_an_adult_now') {
+  const imminentCard = page.getByTestId('imminent-help');
+  if (urgency === 'imminent') {
+    const before = await page.evaluate(() => {
+      const a = document.querySelector('[data-testid="imminent-help"]');
+      const b = document.querySelector('[data-testid="urgent-help"]');
+      return !!(a && b && a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+    });
+    if (!before) fail(`${tag}: the imminent card must sit above the urgent card`);
+    if (!(await imminentCard.locator('a[href^="tel:"]').count())) fail(`${tag}: no call buttons on the imminent card`);
+    if (await imminentCard.evaluate((el) => [el, ...el.querySelectorAll('*')].some((n) => getComputedStyle(n).animationName !== 'none'))) fail(`${tag}: imminent card animates`);
+  } else if (await imminentCard.count()) fail(`${tag}: imminent card shown for ${urgency}`);
+  if (urgency === 'tell_an_adult_now' || urgency === 'imminent') {
     if (!(await help.isVisible())) fail(`${tag}: no real-help card`);
     const order = await page.evaluate(() => {
       const a = document.querySelector('[data-testid="urgent-help"]');
@@ -271,6 +282,8 @@ await run({ theme: 'light', device: 'desktop', urgency: 'tell_an_adult_now', key
 await run({ theme: 'light', device: 'mobile', urgency: 'tell_an_adult_now', keyboard: false });
 await run({ theme: 'dark', device: 'mobile', urgency: 'check_in_soon', keyboard: true });
 await run({ theme: 'light', device: 'desktop', urgency: 'none', keyboard: false });
+await run({ theme: 'dark', device: 'desktop', urgency: 'imminent', keyboard: true });
+await run({ theme: 'light', device: 'mobile', urgency: 'imminent', keyboard: false });
 await run({ theme: 'light', device: 'desktop', urgency: null, keyboard: true });
 await deleteFromCard();
 await browser.close();
