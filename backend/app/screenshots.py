@@ -176,7 +176,7 @@ def _classifier_hears_self_risk(lines: list[str]) -> bool:
 _PII = [
     re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+"),  # email
     re.compile(r"https?://\S+|www\.\S+"),  # link
-    re.compile(r"(?<![\w@])@[A-Za-z0-9_.]{2,}"),  # social handle
+    re.compile(r"(?<![\w@])@\s?[A-Za-z0-9_.]{2,}"),  # social handle (also "@ jess_m")
     re.compile(r"\+?\d[\d\s().-]{5,}\d"),  # phone number
     re.compile(
         r"\b\d{1,5}\s+(?:[A-Z][a-z]+\s){0,3}"

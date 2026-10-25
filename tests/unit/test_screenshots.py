@@ -195,3 +195,5 @@ def test_letter_spaced_names_are_still_removed():
 
     text, found = strip_identifying("her name is J e s s i c a Miller and she plays soccer")
     assert found and "Jessica" not in text and "J e s" not in text and "soccer" in text
+    text, found = strip_identifying("she's @ j e s s _ m on insta")
+    assert found and "jess" not in text
