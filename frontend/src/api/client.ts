@@ -31,10 +31,17 @@ export class ApiError extends Error {
 
 const TIMEOUT_MS = 15000;
 
+/** POST /friends/analyze: a draft friend from screenshots, the warning signs seen, and how urgent it is. */
+export interface AnalyzeResult {
+  draft: { personality: string; situation: string; sample_texts: string[]; guardedness: 'open' | 'guarded' };
+  signs: string[];
+  urgency: 'none' | 'check_in_soon' | 'tell_an_adult_now';
+}
+
 /** fetch + JSON with timeouts and readable errors (FastAPI puts messages in `detail`). */
-export async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+export async function request<T>(path: string, init: RequestInit & { timeoutMs?: number } = {}): Promise<T> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), init.timeoutMs ?? TIMEOUT_MS);
   let response: Response;
   try {
     response = await fetch(`/api${path}`, {
@@ -61,6 +68,7 @@ export async function request<T>(path: string, init: RequestInit = {}): Promise<
     }
     throw new ApiError(message, response.status, detail);
   }
+  if (response.status === 204) return undefined as T;
   try {
     return (await response.json()) as T;
   } catch {
@@ -96,6 +104,11 @@ export const api = {
     locale: string;
   }) => post<{ friend: ScenarioSummary & { custom?: boolean }; notice: 'real_help' | null }>('/friends', body),
   friend: (id: string) => request<ScenarioSummary & { custom?: boolean }>(`/friends/${encodeURIComponent(id)}`),
+  /** Delete a custom friend and every chat with it (204; 404 if it's already gone). */
+  deleteFriend: (id: string) => request<void>(`/friends/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  /** Read 1-3 redacted screenshots (JPEG data URLs) into a draft friend. Takes ~5-10 s. */
+  analyzeFriend: (images: string[], locale: string) =>
+    request<AnalyzeResult>('/friends/analyze', { method: 'POST', body: JSON.stringify({ images, locale }), timeoutMs: 60000 }),
   realmode: (lang: string, country: string) =>
     request<RealMode>(`/realmode?lang=${encodeURIComponent(lang)}&country=${encodeURIComponent(country)}`),
   guardianCheck: (text: string) => post<GuardianResult>('/guardian/check', { text }),

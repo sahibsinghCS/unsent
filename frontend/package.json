@@ -18,7 +18,8 @@
     "test:nav": "node scripts/clicknav.mjs",
     "test:friends": "node scripts/friends.mjs",
     "screenshots:brand": "node scripts/brand-shots.mjs",
-    "screenshots:intro": "node scripts/intro-frames.mjs"
+    "screenshots:intro": "node scripts/intro-frames.mjs",
+    "test:real-friend": "node scripts/real-friend.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",

@@ -7,6 +7,7 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type Keybo
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../api/client';
 import type { Node, SessionView } from '../api/models';
+import { DeleteFriendButton } from '../components/DeleteFriend';
 import { Icon } from '../components/Icon';
 import { Bubble, MessagesHeader, PhoneFrame, TypingDots } from '../components/Phone';
 import { DisclosureLadder, SkillChips } from '../components/Progress';
@@ -18,6 +19,7 @@ import { TrustMeter } from '../components/TrustMeter';
 import { XrayFriend, XrayHelper } from '../components/Xray';
 import { usePrefs } from '../i18n';
 import { isEnded, labelsSeen, trustPoints } from '../lib/conversation';
+import { isCustomId, useFriends } from '../lib/friends';
 import { scenarioById } from '../lib/scenarios';
 import { load, save } from '../lib/storage';
 import { prefersReducedMotion, typingDelay } from '../lib/typingDelay';
@@ -32,6 +34,7 @@ type Reveal = { id: string; shown: number } | null;
 export function Chat() {
   const { sessionId = '' } = useParams();
   const navigate = useNavigate();
+  const { friend } = useFriends();
   const location = useLocation();
   const { t, lang } = usePrefs();
 
@@ -188,6 +191,7 @@ export function Chat() {
     );
   }
   if (!view) return <Spinner />;
+  const realFriend = !!friend?.realFriend && friend.id === view.scenario_id;
 
   const trustNow = points[points.length - 1]?.trust ?? 0;
   const lastDelta = points.length > 1 ? points[points.length - 1].delta : 0;
@@ -391,6 +395,11 @@ export function Chat() {
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <h1 className="text-lg font-bold">{t('chat.with', { name: friendName })}</h1>
             {/* The chat's language is the session's; the UI language never changes. */}
+            {realFriend && (
+              <span className="chip border-line text-muted" data-testid="real-friend-chip">
+                {t('friends.real_chip')}
+              </span>
+            )}
             {view.locale && view.locale !== lang && (
               <span className="chip border-line bg-sunken text-muted" data-testid="chat-locale">
                 <Icon name="globe" className="h-3.5 w-3.5" />
@@ -398,10 +407,13 @@ export function Chat() {
               </span>
             )}
           </div>
-          <button type="button" className="btn-ghost px-4 py-2" onClick={() => navigate(`/feedback/${sessionId}`)} disabled={points.length < 2} data-testid="finish">
-            <Icon name="flag" className="h-4 w-4" />
-            {t('chat.finish')}
-          </button>
+          <div className="flex shrink-0 items-center gap-2">
+            {isCustomId(view.scenario_id) && <DeleteFriendButton id={view.scenario_id} name={friendName} onDeleted={() => navigate('/practice')} />}
+            <button type="button" className="btn-ghost px-4 py-2" onClick={() => navigate(`/feedback/${sessionId}`)} disabled={points.length < 2} data-testid="finish">
+              <Icon name="flag" className="h-4 w-4" />
+              {t('chat.finish')}
+            </button>
+          </div>
         </div>
         <PhoneFrame header={header} footer={composer} bezelOnMobile={false} className="h-[calc(100svh-11rem)] min-h-[32rem] lg:h-[min(46rem,calc(100vh-9rem))]">
           <div ref={scroller} className="im-screen h-full space-y-2.5 overflow-y-auto overscroll-contain px-2.5 py-3" aria-live="polite" aria-relevant="additions" data-testid="messages">

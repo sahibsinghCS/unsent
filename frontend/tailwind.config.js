@@ -48,6 +48,7 @@ export default {
         'rise-in': { '0%': { opacity: 0, transform: 'translateY(12px)' }, '100%': { opacity: 1, transform: 'none' } },
         'rise-phone': { '0%': { opacity: 0, transform: 'translateY(24px)' }, '100%': { opacity: 1, transform: 'none' } },
         'fade-in': { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+        slide: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(300%)' } },
         breathe: { '0%, 100%': { transform: 'scale(0.84)', opacity: 'calc(var(--breathe-max) * 0.55)' }, '50%': { transform: 'scale(1.06)', opacity: 'var(--breathe-max)' } },
       },
       animation: {

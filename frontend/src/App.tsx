@@ -8,6 +8,7 @@ import { How } from './pages/How';
 import { Landing } from './pages/Landing';
 import { NotFound } from './pages/NotFound';
 import { NewFriend } from './pages/NewFriend';
+import { RealFriend } from './pages/RealFriend';
 import { Practice } from './pages/Practice';
 import { Privacy } from './pages/Privacy';
 import { RealMode } from './pages/RealMode';
@@ -32,6 +33,7 @@ export function App() {
           <Route index element={<Landing />} />
           <Route path="practice" element={<Practice />} />
           <Route path="practice/new" element={<NewFriend />} />
+          <Route path="practice/real" element={<RealFriend />} />
           <Route path="chat/:sessionId" element={<Chat />} />
           <Route path="feedback/:sessionId" element={<Feedback />} />
           <Route path="whatif/:sessionId" element={<WhatIf />} />

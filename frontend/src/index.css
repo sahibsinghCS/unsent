@@ -30,6 +30,7 @@
     --line-strong: 200 197 212; /* hover border */
     --brand: 0 113 235;         /* accent fill (white text passes AA) */
     --brand-deep: 0 98 204;     /* accent as text/links */
+    --brand-press: 0 98 204;    /* primary button hover/press */
     --brand-soft: 230 240 255;
     --brand-ink: 255 255 255;
     --warm: 196 18 48;          /* help red */
@@ -65,6 +66,7 @@
     --line-strong: 62 62 76;
     --brand: 10 110 240;
     --brand-deep: 77 163 255;
+    --brand-press: 0 92 204;
     --brand-soft: 14 30 56;
     --brand-ink: 255 255 255;
     --warm: 214 58 64;          /* help red #D63A40: steady, white label passes AA (4.6) */
@@ -106,7 +108,8 @@
   .card-lift { @apply transition duration-200 ease-out hover:-translate-y-0.5 hover:border-line-strong motion-reduce:hover:translate-y-0; }
   /* Pill buttons with a subtle press state. */
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-semibold transition duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100; }
-  .btn-primary { @apply btn bg-brand text-brand-ink hover:bg-brand/90; }
+  /* Hover goes darker, never lighter, so the white label keeps its AA contrast. */
+  .btn-primary { @apply btn bg-brand text-brand-ink hover:bg-[rgb(var(--brand-press))]; }
   .btn-ghost { @apply btn border border-line-strong bg-transparent text-ink hover:border-ink/50 hover:bg-sunken/60; }
   /* Help actions stay still: no press scale. */
   .btn-warm { @apply btn bg-warm text-white hover:bg-warm/90 active:scale-100; }
