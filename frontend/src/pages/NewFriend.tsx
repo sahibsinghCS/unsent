@@ -41,7 +41,7 @@ const inputCls =
 export function NewFriend() {
   const { t, lang, country } = usePrefs();
   const navigate = useNavigate();
-  const { draft, setDraft, setFriend } = useFriends();
+  const { draft, setDraft, setFriend, fromRealFriend, setFromRealFriend } = useFriends();
   const [errors, setErrors] = useState<FieldErrors>({});
   const [banner, setBanner] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -70,7 +70,8 @@ export function NewFriend() {
         sample_texts: previewTexts,
         locale: lang,
       });
-      setFriend(friend);
+      setFriend(fromRealFriend ? { ...friend, realFriend: true } : friend);
+      setFromRealFriend(false);
       setCreated(friend);
       setShowRealHelp(notice === 'real_help');
     } catch (e) {
@@ -110,6 +111,23 @@ export function NewFriend() {
         </Link>
         <h1 className="mt-5 text-5xl sm:text-6xl">{t('friends.title')}</h1>
         <p className="mt-3 max-w-xl text-lg text-muted">{t('friends.sub')}</p>
+
+        {fromRealFriend ? (
+          <p className="card mt-6 p-4 text-sm leading-relaxed" data-testid="from-screenshots">
+            <span className="font-semibold">{t('real_friend.prefilled_title')}</span> {t('real_friend.prefilled_body')}
+          </p>
+        ) : (
+          <Link to="/practice/real" className="card card-lift mt-6 flex items-center gap-4 p-4" data-testid="real-friend-entry">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line-strong text-brand-deep" aria-hidden="true">
+              <Icon name="image" className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-semibold">{t('real_friend.entry_title')}</span>
+              <span className="block text-sm text-muted">{t('real_friend.entry_body')}</span>
+            </span>
+            <Icon name="chevron" className="h-5 w-5 shrink-0 rotate-180 text-muted" />
+          </Link>
+        )}
 
         <div className="mt-6 space-y-3">
           <p className="flex gap-3 rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed" data-testid="friend-privacy">
@@ -153,7 +171,7 @@ export function NewFriend() {
                 value={draft.name}
                 maxLength={LIMITS.name[1]}
                 onChange={(e) => update({ name: e.target.value })}
-                placeholder={t('friends.name_ph')}
+                placeholder={fromRealFriend ? t('real_friend.name_hint') : t('friends.name_ph')}
                 aria-invalid={!!errors.name}
                 aria-describedby={describedBy('name', 'c-name')}
                 autoComplete="off"

@@ -73,6 +73,15 @@ test/        vitest tests
 
 **Rewind.** The server keeps the whole conversation as a tree. "Rewind to here" moves the head back to the friend's message before yours and puts your old text in the input box so you can edit it. The branch drawer draws the tree: straight runs stay in one column, and only real forks are indented, so it stays readable on a phone.
 
+### Practice for a real friend (from screenshots) and deleting friends
+
+- **Why:** a teen who is worried about a real friend can practice for *that* conversation. They upload 1 to 3 screenshots of their chat, and the app sets up a practice version of the friend.
+- **Privacy first, in the browser:** before anything is sent, you draw black boxes over names and numbers (drag with a mouse or finger; or "Add box" and the arrow keys; or one tap on "Cover the top bar", where phones show the contact's name). The boxes are burned into the pixels on a canvas, the image is shrunk to at most 1280 px and saved again as a JPEG (which also removes hidden photo data like location), and only that copy is sent. The original file never leaves the device. Nothing is stored: the images are dropped from memory as soon as the reading is done.
+- **Safety first:** the server says how urgent it looks. If the friend's own words can be a sign of suicide, a steady red card comes first: "Practice can wait. Today, tell a trusted adult… call or text 988 together", with Call/Text 988. Warning signs are shown as plain chips ("pulling away from people") with "These are warning signs to check in about, not a diagnosis."
+- **You stay in charge:** the AI's draft only fills in the normal "Add your own friend" form. The name stays empty ("Use a nickname"), you edit everything, and the same safety checks run when you create the friend. The chat is labelled "Practicing for a real friend". If the AI isn't available, the app says so and you fill in the form yourself.
+- **Deleting:** your friend's card and the chat both have "Delete". It asks first ("This ends your practice chats with them. Nothing is kept."), then the server deletes the friend and every chat with it.
+- **Checked:** unit tests check that pixels under a box really are black in the exported image, the 1280 px and 1.5 MB limits, the consent gate, that real help comes before the form, the error messages and the delete flow. `npm run test:real-friend` runs the whole flow in a browser: each urgency level (with a stand-in for the AI), keyboard-only redaction, a finger drag on mobile, both themes, axe with 0 problems, and one pass against the real backend with the AI off.
+
 ## Design: why it looks like this
 
 **In one sentence for a judge: it uses the same type and dark style as my personal site, so my work looks like one person made it; the chat looks like iMessage because that's where this moment happens.** The full rules are in `frontend/DESIGN.md`.

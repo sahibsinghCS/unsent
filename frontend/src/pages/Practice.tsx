@@ -6,6 +6,7 @@ import { isCustomId, useFriends } from '../lib/friends';
 import { scenarioList, supportsLang } from '../lib/scenarios';
 import type { ScenarioSummary } from '../api/models';
 import { Avatar } from '../components/Avatar';
+import { DeleteFriendButton } from '../components/DeleteFriend';
 import { Icon } from '../components/Icon';
 import { ContentWarningModal } from '../components/Safety';
 import { ErrorBox, Spinner } from '../components/Status';
@@ -69,9 +70,9 @@ export function Practice() {
       {scenarios && (
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-testid="scenarios">
           {[...(friend ? [friend] : []), ...scenarios].map((s) => (
-            <li key={s.id}>
+            <li key={s.id} className="relative">
               <button type="button" onClick={() => setChosen(s)} className="card card-lift group flex h-full w-full flex-col p-6 text-left">
-                <span className="flex items-center gap-4">
+                <span className={`flex items-center gap-4 ${isCustomId(s.id) ? 'pr-24' : ''}`}>
                   <Avatar name={s.persona_name} size="lg" tone />
                   <span className="min-w-0 flex-1">
                     {isCustomId(s.id) && <span className="meta-label block">{t('friends.yours')}</span>}
@@ -100,6 +101,8 @@ export function Practice() {
                   {t('practice.start', { name: s.persona_name })}
                 </span>
               </button>
+              {/* A sibling of the card button (buttons can't nest), pinned to its top-right corner. */}
+              {isCustomId(s.id) && <DeleteFriendButton id={s.id} name={s.persona_name} className="absolute right-4 top-4" />}
             </li>
           ))}
           <li>

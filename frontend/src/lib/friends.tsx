@@ -16,7 +16,7 @@ export interface FriendDraft {
 }
 
 /** A custom friend as returned by POST /api/friends (a ScenarioSummary with custom: true). */
-export type CustomFriend = ScenarioSummary & { custom?: boolean };
+export type CustomFriend = ScenarioSummary & { custom?: boolean; /** set up from screenshots of a real friend's chat */ realFriend?: boolean };
 
 export const EMPTY_DRAFT: FriendDraft = { name: '', age: 16, guardedness: 'guarded', personality: '', situation: '', sample_texts: [''] };
 
@@ -30,6 +30,9 @@ interface FriendsState {
   setDraft: (draft: FriendDraft) => void;
   friend: CustomFriend | null;
   setFriend: (friend: CustomFriend | null) => void;
+  /** True while the form holds a draft that came from screenshots of a real friend's chat. */
+  fromRealFriend: boolean;
+  setFromRealFriend: (value: boolean) => void;
 }
 
 const FriendsContext = createContext<FriendsState | null>(null);
@@ -37,7 +40,8 @@ const FriendsContext = createContext<FriendsState | null>(null);
 export function FriendsProvider({ children }: { children: ReactNode }) {
   const [draft, setDraft] = useState<FriendDraft>(EMPTY_DRAFT);
   const [friend, setFriend] = useState<CustomFriend | null>(null);
-  const value = useMemo(() => ({ draft, setDraft, friend, setFriend }), [draft, friend]);
+  const [fromRealFriend, setFromRealFriend] = useState(false);
+  const value = useMemo(() => ({ draft, setDraft, friend, setFriend, fromRealFriend, setFromRealFriend }), [draft, friend, fromRealFriend]);
   return <FriendsContext.Provider value={value}>{children}</FriendsContext.Provider>;
 }
 

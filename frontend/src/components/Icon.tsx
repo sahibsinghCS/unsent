@@ -21,6 +21,8 @@ const PATHS: Record<string, string> = {
   chevron: 'M15 5l-7 7 7 7',
   plus: 'M12 5v14M5 12h14',
   up: 'M12 19V5m-6 6 6-6 6 6',
+  trash: 'M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13',
+  image: 'M4 5h16v14H4V5zm0 11 5-5 4 4 2-2 5 5M15 9.5a1.5 1.5 0 1 0 0-.01',
 };
 
 export type IconName = keyof typeof PATHS;
