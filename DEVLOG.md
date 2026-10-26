@@ -2,7 +2,7 @@
 
 Format: `YYYY-MM-DD HH:MM CT — what happened / decision and why`
 
-- 2026-10-22 — Picked the idea (first called FirstReply, renamed Unsent on 2026-10-25) after three research rounds (see research/). Mental health keeps winning CAC, but no winner trains the *friend*.
+- 2026-10-22 — Picked the idea (first called FirstReply, renamed Unsent on 2026-10-25) after three research rounds. Mental health keeps winning CAC, but no winner trains the *friend*.
 - 2026-10-22 — Decided on a **zero-cost architecture**: no paid AI at runtime. The friend speaks from a pre-written, safety-checked line bank chosen by our own state engine and models. Every friend line can be reviewed by a counselor.
 - 2026-10-22 — Phase 0: contracts, stubs, pipeline, API, content drafts, ownership rules, CI. Launched 5 parallel lanes (engine, safety, data, ml, frontend).
 - 2026-10-22 — **Changed to architecture v3:** OpenAI writes only the friend's *wording*. Our engine still decides what the friend may reveal, the verifier and Guardian check every reply, and the reviewed line bank is the fallback (the app fully works with `FR_LLM=0`). Training data is still written into files, never generated with the API.
