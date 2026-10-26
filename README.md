@@ -160,3 +160,7 @@ Deployment (Docker, or Google Cloud Run): [`docs/DEPLOY.md`](docs/DEPLOY.md).
 - [`docs/DATASET.md`](docs/DATASET.md): how the data was made and checked
 - [`docs/METRICS.md`](docs/METRICS.md): every measured number
 - [`DEVLOG.md`](DEVLOG.md): decisions and what changed along the way
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).
