@@ -95,8 +95,14 @@ export const api = {
     post<SessionView>(`/sessions/${encodeURIComponent(id)}/rewind`, { node_id }),
   tree: (id: string) => request<TreeView>(`/sessions/${encodeURIComponent(id)}/tree`),
   finish: (id: string) => post<CriticReport>(`/sessions/${encodeURIComponent(id)}/finish`),
+  // The server replays several whole conversations; the first run after a restart, or on a busy
+  // machine, can pass 15 s, so allow a minute like the screenshot reader.
   whatif: (id: string, node_id?: string | null) =>
-    post<WhatIfResult>(`/sessions/${encodeURIComponent(id)}/whatif`, { node_id: node_id ?? null }),
+    request<WhatIfResult>(`/sessions/${encodeURIComponent(id)}/whatif`, {
+      method: 'POST',
+      body: JSON.stringify({ node_id: node_id ?? null }),
+      timeoutMs: 60000,
+    }),
   /** Add your own friend (custom scenario). 422 carries {detail: {field, reason, message}}. */
   createFriend: (body: {
     name: string;

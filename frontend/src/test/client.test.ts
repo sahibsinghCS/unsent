@@ -60,6 +60,47 @@ describe('API client', () => {
   });
 });
 
+describe('timeouts', () => {
+  /** A fetch that never answers, and fails only when the client aborts it. */
+  function hangingFetch() {
+    mockFetch(
+      (_url, init) =>
+        new Promise((_, reject) => {
+          (init as RequestInit).signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')));
+        }),
+    );
+  }
+  /** Settle state of a request after `ms` of fake time. */
+  async function after(ms: number, call: Promise<unknown>) {
+    let settled: unknown = 'pending';
+    void call.then(
+      () => (settled = 'ok'),
+      (e) => (settled = e),
+    );
+    await vi.advanceTimersByTimeAsync(ms);
+    return settled;
+  }
+
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it('gives up on ordinary requests after 15 seconds', async () => {
+    hangingFetch();
+    const settled = await after(15_001, api.health());
+    expect(settled).toBeInstanceOf(ApiError);
+    expect((settled as ApiError).offline).toBe(true);
+  });
+
+  it('waits up to a minute for "What if" (it replays whole conversations on the server)', async () => {
+    hangingFetch();
+    const call = api.whatif('s_1', 'n_1');
+    expect(await after(15_001, call)).toBe('pending');
+    const settled = await after(45_000, call);
+    expect(settled).toBeInstanceOf(ApiError);
+    expect((settled as ApiError).offline).toBe(true);
+  });
+});
+
 describe('localized scenarios', () => {
   it('asks the API for the UI language', async () => {
     const fn = mockFetch(json(200, []));
